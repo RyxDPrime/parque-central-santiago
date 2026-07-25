@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Miembros de la Junta Directiva del Patronato (institución, representante, cargo)
+model JuntaDirectivo {
+  id            Int      @id @default(autoincrement())
+  institucion   String
+  representante String
+  cargo         String
+  orden         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Instalaciones y áreas del parque (Instalaciones y servicios)
+model Instalacion {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  cantidad    Int?
+  orden       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Programas y servicios activos (Programas y proyectos)
+model Programa {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  categoria   String
+  descripcion String
+  orden       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Agenda de eventos (Actividades) — sin datos reales todavía, pendientes del calendario 2026
+model Actividad {
+  id          Int       @id @default(autoincrement())
+  titulo      String
+  descripcion String?
+  fechaInicio DateTime
+  fechaFin    DateTime?
+  lugar       String?
+  imagenUrl   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Galería multimedia — pendiente de fotos reales (carpeta FOTOS Y AUDIOVISUALES)
+model GaleriaItem {
+  id        Int      @id @default(autoincrement())
+  titulo    String?
+  url       String
+  tipo      String   @default("imagen") // imagen | video
+  categoria String?
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Aliados y patrocinadores (logos de las instituciones de la Junta Directiva)
+model Aliado {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  logoUrl   String?
+  sitioWeb  String?
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Mensajes del formulario de Contacto y ubicación
+model ContactMessage {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  email        String
+  telefono     String?
+  asunto       String?
+  mensaje      String
+  emailEnviado Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}

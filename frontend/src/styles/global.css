@@ -38,6 +38,7 @@ ul{list-style:none}
 .nav-cta{display:flex;align-items:center;gap:12px}
 .nav-cta a{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:4px}
 .nav-cta a:hover{color:var(--green-600)}
+.nav-cta a.btn-primary,.nav-cta a.btn-primary:hover{color:#fff}
 .btn-primary{background:var(--green-600);color:#fff;border:none;padding:9px 18px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;transition:background .2s}
 .btn-primary:hover{background:var(--green-800)}
 .btn-outline{background:transparent;color:var(--green-600);border:1.5px solid var(--green-600);padding:9px 18px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;transition:background .2s}

@@ -71,6 +71,97 @@ export function Home() {
         </div>
       </section>
 
+      <section id="stats" aria-label="El parque en cifras">
+        <div className="sec-label">Instalaciones</div>
+        <h2 className="sec-title" style={{ marginBottom: 40 }}>
+          El parque en cifras
+        </h2>
+
+        <div className="stat-row img-left">
+          <div className="stat-img">
+            <img src="/images/galeria/campo-futbol.jpg" alt="Campos de fútbol" />
+            <div className="stat-img-label">
+              <span className="img-pill">Complejo Deportivo</span>
+            </div>
+          </div>
+          <div>
+            <div className="stat-num">2 campos</div>
+            <p className="stat-desc">
+              Dos campos de fútbol reglamentarios, además de canchas de baloncesto, tenis,
+              voleibol y disc golf para toda la comunidad.
+            </p>
+            <Link to="/instalaciones-y-servicios" className="stat-cta">
+              Ver instalaciones y servicios <i className="ti ti-arrow-right" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="stat-row img-right">
+          <div>
+            <div className="stat-num">17</div>
+            <p className="stat-desc">
+              Instituciones públicas y privadas conforman la Junta Directiva del Patronato para
+              la Administración del Parque Central de Santiago.
+            </p>
+            <Link to="/junta-directiva" className="stat-cta">
+              Conoce la Junta Directiva <i className="ti ti-arrow-right" />
+            </Link>
+          </div>
+          <div className="stat-img">
+            <img src="/images/galeria/entrada-parque.jpg" alt="Entrada del parque" />
+            <div className="stat-img-label">
+              <span className="img-pill">Patronato PCS</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="stat-row two-col">
+          <div>
+            <div className="stat-img">
+              <img src="/images/galeria/gimnasio-aire-libre.jpg" alt="Áreas de picnic y kioscos" />
+              <div className="stat-img-label">
+                <span className="img-pill">Áreas de Picnic</span>
+              </div>
+            </div>
+            <div className="stat-num" style={{ fontSize: 40, marginTop: 16 }}>
+              32 kioscos
+            </div>
+            <p className="stat-desc">8 grandes y 24 pequeños para reuniones familiares.</p>
+          </div>
+          <div>
+            <div className="stat-img">
+              <img src="/images/galeria/voleibol.jpg" alt="Parqueos del parque" />
+              <div className="stat-img-label">
+                <span className="img-pill">Parqueos</span>
+              </div>
+            </div>
+            <div className="stat-num" style={{ fontSize: 40, marginTop: 16 }}>
+              450
+            </div>
+            <p className="stat-desc">Espacios de estacionamiento para los visitantes.</p>
+          </div>
+        </div>
+
+        <div className="stat-row img-right">
+          <div>
+            <div className="stat-num">2018</div>
+            <p className="stat-desc">
+              Año de inauguración del parque, resultado de casi dos décadas de gestión de la
+              Asociación para el Desarrollo, Inc. (APEDI).
+            </p>
+            <Link to="/sobre-el-parque" className="stat-cta">
+              Conoce nuestra historia <i className="ti ti-arrow-right" />
+            </Link>
+          </div>
+          <div className="stat-img">
+            <img src="/images/galeria/cancha-tenis.jpg" alt="Vista aérea del parque" />
+            <div className="stat-img-label">
+              <span className="img-pill">Desde 2018</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section">
         <div className="section-inner">
           <div className="sec-label">Explora el parque</div>
@@ -94,17 +185,35 @@ export function Home() {
       </section>
 
       <section className="section" style={{ background: 'var(--gray-100)' }}>
-        <div className="section-inner">
-          <div className="sec-label">Quiénes somos</div>
-          <h2 className="sec-title">Una institución al servicio de Santiago</h2>
-          <p className="sec-sub">
-            El Parque Central de Santiago es administrado por un patronato sin fines de lucro,
-            nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc.
-            (APEDI) junto a instituciones públicas y privadas de la región.
-          </p>
-          <Link to="/sobre-el-parque" className="btn-outline" style={{ marginTop: 20 }}>
-            Conoce nuestra historia <i className="ti ti-arrow-right" />
-          </Link>
+        <div className="about-inner">
+          <div>
+            <div className="sec-label">Quiénes somos</div>
+            <h2 className="sec-title">Una institución al servicio de Santiago</h2>
+            <p className="sec-sub">
+              El Parque Central de Santiago es administrado por un patronato sin fines de lucro,
+              nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc.
+              (APEDI) junto a instituciones públicas y privadas de la región.
+            </p>
+            <Link to="/sobre-el-parque" className="btn-outline" style={{ marginTop: 20 }}>
+              Conoce nuestra historia <i className="ti ti-arrow-right" />
+            </Link>
+          </div>
+          <div className="about-img">
+            <div className="about-img-wrap">
+              <img src="/images/galeria/carnaval-2025.jpg" alt="Vida comunitaria en el parque" />
+            </div>
+            <div className="about-badge">
+              <div className="about-badge-icon">
+                <i className="ti ti-calendar-event" />
+              </div>
+              <div>
+                <div style={{ fontSize: 20, fontWeight: 600 }}>2018</div>
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                  año de fundación
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>

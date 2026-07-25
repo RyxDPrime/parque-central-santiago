@@ -44,11 +44,28 @@ Páginas: Inicio, Sobre el Parque, Misión y Visión, Instalaciones y Servicios,
 
 ## Despliegue (Railway)
 
-El plan es desplegar `backend` y `frontend` como dos servicios independientes en Railway, más un servicio de PostgreSQL:
+Se despliegan **tres servicios** dentro de un mismo proyecto de Railway, dos apuntando a este repo (con distinto Root Directory) y uno de base de datos:
 
-1. **PostgreSQL**: agregar el plugin de Railway y copiar su `DATABASE_URL` a las variables del servicio de backend.
-2. **Backend**: desplegar la carpeta `backend/` (root directory `backend`), build `npm run build`, start `npm run start`. Configurar ahí las variables de `.env.example` (incluyendo `CORS_ORIGIN` con la URL pública del frontend).
-3. **Frontend**: desplegar la carpeta `frontend/` (root directory `frontend`), build `npm run build`, sirviendo `dist/`. Configurar `VITE_API_URL` con la URL pública del backend.
+### 1. PostgreSQL
+Agregar el plugin de Railway (New → Database → PostgreSQL). Railway genera su propia `DATABASE_URL`.
+
+### 2. Backend
+- **Root Directory**: `backend`
+- Build y start ya están definidos en `backend/package.json` / `backend/railway.json` (Railway los detecta solo): build corre `tsc`, start corre `prisma migrate deploy` y luego levanta el servidor. No hace falta configurar nada extra a mano.
+- Variables de entorno a copiar de `backend/.env.example`, con estos valores reales:
+  - `DATABASE_URL` → referenciar la del servicio de Postgres (Railway permite enlazarla con `${{Postgres.DATABASE_URL}}`)
+  - `SMTP_*`, `MAIL_FROM`, `CONTACT_TO_EMAIL` → cuenta de correo real (no la de prueba)
+  - `CORS_ORIGIN` → la URL pública que Railway le asigne al servicio de frontend
+- Healthcheck configurado en `/api/health`.
+
+### 3. Frontend
+- **Root Directory**: `frontend`
+- Build: `npm run build` (ya lo detecta Railway). Start: `npm run start` (sirve `dist/` con `serve`, con fallback de rutas para el SPA).
+- Variable de entorno: `VITE_API_URL` → la URL pública del backend.
+  - **Importante**: Vite incrusta esta variable *durante el build*, no en tiempo de ejecución. Hay que configurarla en Railway **antes** del primer deploy del frontend (o forzar un redeploy después de cambiarla), de lo contrario el sitio queda apuntando al backend equivocado.
+
+### Orden recomendado
+Desplegar primero Postgres, luego backend (para tener su URL pública), y al final el frontend usando esa URL en `VITE_API_URL`.
 
 ## Estado
 

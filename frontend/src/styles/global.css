@@ -109,8 +109,26 @@ ul{list-style:none}
 .about-link:hover{border-color:var(--green-400);color:var(--green-600)}
 .about-link i{color:var(--green-600);font-size:18px}
 
-/* ── PROGRAMAS TEASER (inicio) ── */
-.proj-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
+/* ── PROGRAMAS CARRUSEL (inicio) ── */
+.prog-wrap{position:relative;width:100%;height:420px;overflow:hidden;border-radius:var(--radius-xl);margin-top:28px}
+.prog-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.prog-slide.active{opacity:1;pointer-events:auto}
+.prog-slide-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 6s ease-out}
+.prog-slide.active .prog-slide-bg{transform:scale(1)}
+.prog-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.2) 55%,rgba(0,0,0,.05) 100%)}
+.prog-content{position:absolute;bottom:0;left:0;right:0;padding:32px 40px 36px}
+.prog-label{font-size:12px;font-weight:500;color:rgba(255,255,255,.75);margin-bottom:10px}
+.prog-title{font-family:var(--font);font-size:34px;font-weight:600;color:#fff;line-height:1.1;margin-bottom:18px}
+.prog-btn{display:inline-flex;align-items:center;gap:8px;border:1.5px solid rgba(255,255,255,.55);padding:10px 20px;font-size:13px;color:#fff;cursor:pointer;background:transparent;font-family:var(--font);border-radius:var(--radius);transition:background .2s}
+.prog-btn:hover{background:rgba(255,255,255,.14)}
+.prog-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;transition:background .2s}
+.prog-nav:hover{background:rgba(255,255,255,.3)}
+.prog-nav.prev{left:16px}
+.prog-nav.next{right:16px}
+.prog-indicators{position:absolute;bottom:14px;right:20px;display:flex;gap:6px;z-index:5}
+.prog-dot{height:3px;border-radius:2px;cursor:pointer;transition:all .3s;border:none;padding:0}
+.prog-dot.active{width:24px;background:#fff}
+.prog-dot:not(.active){width:10px;background:rgba(255,255,255,.4)}
 
 /* ── MAPA TEASER (inicio) ── */
 .mini-map{position:relative;aspect-ratio:16/6;background:var(--green-50);border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--border);margin-top:28px}
@@ -126,7 +144,8 @@ ul{list-style:none}
 
 @media (max-width:900px){
   .about-inner{grid-template-columns:1fr}
-  .proj-teaser-grid{grid-template-columns:1fr 1fr}
+  .prog-wrap{height:340px}
+  .prog-title{font-size:26px}
 }
 
 /* ── QUICK LINKS (home) ── */

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ProgramsCarousel } from '../components/ProgramsCarousel'
 
 const quickLinks = [
   {
@@ -255,24 +256,7 @@ export function Home() {
               Ver todos <i className="ti ti-arrow-right" />
             </Link>
           </div>
-          <div className="proj-teaser-grid">
-            <div className="info-card">
-              <span className="tag">Deportivo · Fútbol</span>
-              <h3>Cibao Fútbol Club</h3>
-            </div>
-            <div className="info-card">
-              <span className="tag">Deportivo · Tenis</span>
-              <h3>Escuela de Tenis</h3>
-            </div>
-            <div className="info-card">
-              <span className="tag">Aventura familiar</span>
-              <h3>Tirolesa</h3>
-            </div>
-            <div className="info-card">
-              <span className="tag">Recreación infantil</span>
-              <h3>Fun Stop</h3>
-            </div>
-          </div>
+          <ProgramsCarousel />
         </div>
       </section>
 

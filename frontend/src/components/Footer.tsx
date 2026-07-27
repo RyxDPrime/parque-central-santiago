@@ -65,20 +65,30 @@ export function Footer() {
           </div>
 
           <div className="footer-col">
-            <h4>El Parque</h4>
-            <Link to="/instalaciones-y-servicios">Instalaciones y Servicios</Link>
-            <Link to="/programas-y-proyectos">Programas y Proyectos</Link>
-            <Link to="/actividades">Actividades</Link>
-            <Link to="/galeria">Galería</Link>
+            <h4>Sobre Nosotros</h4>
+            <Link to="/sobre-el-parque">Historia</Link>
+            <Link to="/mision-y-vision">Misión y Visión</Link>
+            <Link to="/valores">Valores</Link>
+            <Link to="/reglamento">Reglamento</Link>
           </div>
 
           <div className="footer-col">
             <h4>Institución</h4>
-            <Link to="/sobre-el-parque">Sobre el Parque</Link>
-            <Link to="/mision-y-vision">Misión y Visión</Link>
             <Link to="/junta-directiva">Junta Directiva</Link>
             <Link to="/aliados-y-patrocinadores">Aliados y Patrocinadores</Link>
             <Link to="/transparencia">Transparencia</Link>
+          </div>
+
+          <div className="footer-col">
+            <h4>El Parque</h4>
+            <Link to="/instalaciones-y-servicios">Instalaciones y Servicios</Link>
+            <Link to="/programas-y-proyectos">Programas y Proyectos</Link>
+            <Link to="/galeria">Galería</Link>
+            <Link to="/mapa">Mapa del Parque</Link>
+            <Link to="/actividades">Actividades</Link>
+            <Link to="/reserva">Reserva</Link>
+            <Link to="/blog">Blog</Link>
+            <Link to="/apoyanos">Apóyanos</Link>
           </div>
 
           <div className="footer-col">

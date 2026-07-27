@@ -104,9 +104,29 @@ ul{list-style:none}
 .about-badge{position:absolute;bottom:-16px;left:24px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .about-badge-icon{width:42px;height:42px;background:var(--green-50);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .about-badge-icon i{color:var(--green-600);font-size:20px}
+.about-links{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.about-link{display:flex;align-items:center;gap:8px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;color:var(--text-secondary);background:#fff;transition:border-color .2s,color .2s}
+.about-link:hover{border-color:var(--green-400);color:var(--green-600)}
+.about-link i{color:var(--green-600);font-size:18px}
+
+/* ── PROGRAMAS TEASER (inicio) ── */
+.proj-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
+
+/* ── MAPA TEASER (inicio) ── */
+.mini-map{position:relative;aspect-ratio:16/6;background:var(--green-50);border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--border);margin-top:28px}
+
+/* ── APOYANOS BANNER (inicio) ── */
+#support{background:var(--green-900);padding:56px 48px;text-align:center}
+#support i{font-size:36px;color:var(--green-100);margin-bottom:16px;display:block}
+#support h2{font-size:28px;font-weight:600;color:var(--green-50);margin-bottom:10px}
+#support p{font-size:14px;color:var(--green-100);line-height:1.7;margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto}
+.support-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-light{background:var(--green-50);color:var(--green-900);border:none;padding:11px 22px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-weight:600;transition:background .2s}
+.btn-light:hover{background:var(--green-100)}
 
 @media (max-width:900px){
   .about-inner{grid-template-columns:1fr}
+  .proj-teaser-grid{grid-template-columns:1fr 1fr}
 }
 
 /* ── QUICK LINKS (home) ── */

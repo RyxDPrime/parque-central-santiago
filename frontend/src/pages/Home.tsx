@@ -194,9 +194,26 @@ export function Home() {
               nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc.
               (APEDI) junto a instituciones públicas y privadas de la región.
             </p>
-            <Link to="/sobre-el-parque" className="btn-outline" style={{ marginTop: 20 }}>
-              Conoce nuestra historia <i className="ti ti-arrow-right" />
-            </Link>
+            <div className="about-links">
+              <Link to="/mision-y-vision" className="about-link">
+                <i className="ti ti-target" /> Misión y Visión
+              </Link>
+              <Link to="/valores" className="about-link">
+                <i className="ti ti-heart" /> Valores
+              </Link>
+              <Link to="/sobre-el-parque" className="about-link">
+                <i className="ti ti-book" /> Historia
+              </Link>
+              <Link to="/reglamento" className="about-link">
+                <i className="ti ti-clipboard-list" /> Reglamento
+              </Link>
+              <Link to="/junta-directiva" className="about-link">
+                <i className="ti ti-users" /> Junta Directiva
+              </Link>
+              <Link to="/transparencia" className="about-link">
+                <i className="ti ti-scale" /> Transparencia
+              </Link>
+            </div>
           </div>
           <div className="about-img">
             <div className="about-img-wrap">
@@ -214,6 +231,92 @@ export function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section-inner">
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 12,
+            }}
+          >
+            <div>
+              <div className="sec-label">En desarrollo</div>
+              <h2 className="sec-title" style={{ marginBottom: 0 }}>
+                Programas y Proyectos
+              </h2>
+            </div>
+            <Link to="/programas-y-proyectos" className="stat-cta" style={{ marginTop: 0 }}>
+              Ver todos <i className="ti ti-arrow-right" />
+            </Link>
+          </div>
+          <div className="proj-teaser-grid">
+            <div className="info-card">
+              <span className="tag">Deportivo · Fútbol</span>
+              <h3>Cibao Fútbol Club</h3>
+            </div>
+            <div className="info-card">
+              <span className="tag">Deportivo · Tenis</span>
+              <h3>Escuela de Tenis</h3>
+            </div>
+            <div className="info-card">
+              <span className="tag">Aventura familiar</span>
+              <h3>Tirolesa</h3>
+            </div>
+            <div className="info-card">
+              <span className="tag">Recreación infantil</span>
+              <h3>Fun Stop</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" style={{ background: 'var(--gray-100)' }}>
+        <div className="section-inner">
+          <div className="sec-label">Ubicación</div>
+          <h2 className="sec-title">Explora el parque</h2>
+          <p className="sec-sub">
+            Ubica las principales instalaciones del Parque Central de Santiago en el mapa.
+          </p>
+          <Link to="/mapa" className="mini-map" style={{ display: 'block' }}>
+            <div className="map-pin" style={{ top: '30%', left: '20%', background: 'var(--green-800)' }}>
+              A
+            </div>
+            <div className="map-pin" style={{ top: '55%', left: '45%', background: 'var(--accent-400)' }}>
+              B
+            </div>
+            <div className="map-pin" style={{ top: '35%', left: '72%', background: 'var(--green-400)' }}>
+              C
+            </div>
+          </Link>
+          <Link to="/mapa" className="btn-outline" style={{ marginTop: 20 }}>
+            Ver mapa completo <i className="ti ti-arrow-right" />
+          </Link>
+        </div>
+      </section>
+
+      <section id="support">
+        <i className="ti ti-heart" aria-hidden="true" />
+        <h2>¿Quieres apoyar al parque?</h2>
+        <p>
+          Súmate como voluntario, patrocinador o aliado institucional y ayuda a mantener vivo el
+          pulmón verde de Santiago de los Caballeros.
+        </p>
+        <div className="support-btns">
+          <Link to="/apoyanos" className="btn-light">
+            <i className="ti ti-cash" /> Hacer una donación
+          </Link>
+          <Link to="/apoyanos" className="btn-outline-white">
+            <i className="ti ti-run" /> Ser voluntario
+          </Link>
+          <Link to="/apoyanos" className="btn-outline-white">
+            <i className="ti ti-plant" /> Donar un árbol
+          </Link>
         </div>
       </section>
     </>

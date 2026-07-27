@@ -12,6 +12,15 @@ contentRouter.get("/junta-directiva", async (_req, res, next) => {
   }
 });
 
+contentRouter.get("/personal-tecnico", async (_req, res, next) => {
+  try {
+    const data = await prisma.personalTecnico.findMany({ orderBy: { orden: "asc" } });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
 contentRouter.get("/instalaciones", async (_req, res, next) => {
   try {
     const data = await prisma.instalacion.findMany({ orderBy: { orden: "asc" } });

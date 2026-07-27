@@ -18,6 +18,17 @@ model JuntaDirectivo {
   updatedAt     DateTime @updatedAt
 }
 
+// Personal técnico y administrativo del parque
+model PersonalTecnico {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  cargo     String
+  fotoUrl   String?
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Instalaciones y áreas del parque (Instalaciones y servicios)
 model Instalacion {
   id          Int      @id @default(autoincrement())
@@ -65,7 +76,7 @@ model GaleriaItem {
   updatedAt DateTime @updatedAt
 }
 
-// Aliados y patrocinadores (logos de las instituciones de la Junta Directiva)
+// Aliados institucionales (logos de las instituciones de la Junta Directiva)
 model Aliado {
   id        Int      @id @default(autoincrement())
   nombre    String

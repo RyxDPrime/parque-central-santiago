@@ -24,14 +24,6 @@ export function Navbar() {
                 <i className="ti ti-book" />
                 Historia
               </NavLink>
-              <NavLink to="/mision-y-vision">
-                <i className="ti ti-target" />
-                Misión y Visión
-              </NavLink>
-              <NavLink to="/valores">
-                <i className="ti ti-heart" />
-                Valores
-              </NavLink>
               <NavLink to="/reglamento">
                 <i className="ti ti-clipboard-list" />
                 Reglamento
@@ -48,9 +40,9 @@ export function Navbar() {
                 <i className="ti ti-users" />
                 Junta Directiva
               </NavLink>
-              <NavLink to="/aliados-y-patrocinadores">
-                <i className="ti ti-building-bank" />
-                Aliados y Patrocinadores
+              <NavLink to="/personal-tecnico">
+                <i className="ti ti-briefcase" />
+                Personal Técnico
               </NavLink>
             </div>
           </div>

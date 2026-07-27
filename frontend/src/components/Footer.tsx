@@ -67,15 +67,13 @@ export function Footer() {
           <div className="footer-col">
             <h4>Sobre Nosotros</h4>
             <Link to="/sobre-el-parque">Historia</Link>
-            <Link to="/mision-y-vision">Misión y Visión</Link>
-            <Link to="/valores">Valores</Link>
             <Link to="/reglamento">Reglamento</Link>
           </div>
 
           <div className="footer-col">
             <h4>Institución</h4>
             <Link to="/junta-directiva">Junta Directiva</Link>
-            <Link to="/aliados-y-patrocinadores">Aliados y Patrocinadores</Link>
+            <Link to="/personal-tecnico">Personal Técnico</Link>
             <Link to="/transparencia">Transparencia</Link>
           </div>
 

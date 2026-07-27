@@ -36,9 +36,14 @@ export function Transparencia() {
               </p>
             </div>
             <EmptyState
-              icon="ti-chart-pie"
-              title="Gestión económica"
-              description="Los informes de gestión económica del Patronato se publicarán en una fase posterior del proyecto."
+              icon="ti-file-invoice"
+              title="Estados Financieros Auditados"
+              description="Los estados financieros auditados del Patronato se publicarán en cuanto estén disponibles."
+            />
+            <EmptyState
+              icon="ti-report-money"
+              title="Estados Financieros Sin Auditar"
+              description="Los estados financieros sin auditar del Patronato se publicarán en cuanto estén disponibles."
             />
             <EmptyState
               icon="ti-heart-handshake"

@@ -25,6 +25,15 @@ const juntaDirectiva = [
   { institucion: "Asociación de Comerciantes e Industriales", representante: "Juan José Jiménez", cargo: "Vocal", logoUrl: "/images/logos/acis.jpg" },
 ];
 
+// Fuente: Personal administrativo.docx
+const personalTecnico = [
+  { nombre: "Saúl Abreu", cargo: "Director Ejecutivo" },
+  { nombre: "Jessica Diez", cargo: "Asistente Administrativa" },
+  { nombre: "July Rosa", cargo: "Contable" },
+  { nombre: "Laura Rodríguez", cargo: "Encargada de Comunicaciones" },
+  { nombre: "Ramón Peña", cargo: "Encargado de Seguridad" },
+];
+
 const instalaciones = [
   { nombre: "Canchas de Baloncesto", descripcion: "Espacios destinados a la práctica recreativa y competitiva del baloncesto, disponibles para entrenamientos y actividades deportivas.", cantidad: null },
   { nombre: "Canchas de Tenis", descripcion: "Instalaciones acondicionadas para la práctica del tenis, utilizadas para clases, entrenamientos y torneos.", cantidad: null },
@@ -109,6 +118,11 @@ async function main() {
     await prisma.juntaDirectivo.create({ data: { ...member, orden: i } });
   }
 
+  await prisma.personalTecnico.deleteMany();
+  for (const [i, p] of personalTecnico.entries()) {
+    await prisma.personalTecnico.create({ data: { ...p, orden: i } });
+  }
+
   await prisma.instalacion.deleteMany();
   for (const [i, inst] of instalaciones.entries()) {
     await prisma.instalacion.create({ data: { ...inst, orden: i } });
@@ -119,7 +133,7 @@ async function main() {
     await prisma.programa.create({ data: { ...p, orden: i } });
   }
 
-  // Aliados y patrocinadores: mismas instituciones de la Junta Directiva, con sus logos reales.
+  // Aliados institucionales: mismas instituciones de la Junta Directiva, con sus logos reales.
   await prisma.aliado.deleteMany();
   for (const [i, m] of juntaDirectiva.entries()) {
     await prisma.aliado.create({ data: { nombre: m.institucion, logoUrl: m.logoUrl, orden: i } });

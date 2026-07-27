@@ -196,12 +196,6 @@ export function Home() {
               (APEDI) junto a instituciones públicas y privadas de la región.
             </p>
             <div className="about-links">
-              <Link to="/mision-y-vision" className="about-link">
-                <i className="ti ti-target" /> Misión y Visión
-              </Link>
-              <Link to="/valores" className="about-link">
-                <i className="ti ti-heart" /> Valores
-              </Link>
               <Link to="/sobre-el-parque" className="about-link">
                 <i className="ti ti-book" /> Historia
               </Link>
@@ -210,6 +204,9 @@ export function Home() {
               </Link>
               <Link to="/junta-directiva" className="about-link">
                 <i className="ti ti-users" /> Junta Directiva
+              </Link>
+              <Link to="/personal-tecnico" className="about-link">
+                <i className="ti ti-briefcase" /> Personal Técnico
               </Link>
               <Link to="/transparencia" className="about-link">
                 <i className="ti ti-scale" /> Transparencia

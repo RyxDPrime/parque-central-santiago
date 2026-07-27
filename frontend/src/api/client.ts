@@ -43,11 +43,11 @@ export interface GaleriaItem {
   orden: number;
 }
 
-export interface Aliado {
+export interface PersonalTecnico {
   id: number;
   nombre: string;
-  logoUrl: string | null;
-  sitioWeb: string | null;
+  cargo: string;
+  fotoUrl: string | null;
   orden: number;
 }
 
@@ -86,6 +86,6 @@ export const api = {
   getProgramas: () => get<Programa[]>("/programas"),
   getActividades: () => get<Actividad[]>("/actividades"),
   getGaleria: () => get<GaleriaItem[]>("/galeria"),
-  getAliados: () => get<Aliado[]>("/aliados"),
+  getPersonalTecnico: () => get<PersonalTecnico[]>("/personal-tecnico"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

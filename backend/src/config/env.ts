@@ -23,4 +23,11 @@ export const env = {
   },
   mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
   contactToEmail: required("CONTACT_TO_EMAIL", "asistentepcs@gmail.com"),
+  admin: {
+    username: process.env.ADMIN_USERNAME ?? "",
+    // Hash bcrypt de la contraseña de administrador (generar con scripts/hash-password.ts)
+    passwordHash: process.env.ADMIN_PASSWORD_HASH ?? "",
+  },
+  jwtSecret: process.env.JWT_SECRET ?? "",
+  uploadsDir: process.env.UPLOADS_DIR ?? "uploads",
 };

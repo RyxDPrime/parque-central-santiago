@@ -87,6 +87,18 @@ model Aliado {
   updatedAt DateTime @updatedAt
 }
 
+// Documentos de Transparencia (estados financieros auditados / sin auditar)
+model DocumentoFinanciero {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  tipo      String // "auditado" | "sin_auditar"
+  url       String
+  fecha     DateTime?
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Mensajes del formulario de Contacto y ubicación
 model ContactMessage {
   id           Int      @id @default(autoincrement())

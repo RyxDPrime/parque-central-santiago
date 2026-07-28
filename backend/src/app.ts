@@ -1,3 +1,4 @@
+import path from "node:path";
 import cors from "cors";
 import express from "express";
 import { env } from "./config/env";
@@ -24,6 +25,7 @@ app.use(
 );
 app.use(express.json());
 
+app.use("/uploads", express.static(path.resolve(process.cwd(), env.uploadsDir)));
 app.use("/api", apiRouter);
 
 app.use(notFoundHandler);

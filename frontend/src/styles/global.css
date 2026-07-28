@@ -261,3 +261,45 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .section,.page-hero{padding:40px 24px}
   .map-layout{grid-template-columns:1fr}
 }
+
+/* ── ADMIN: LOGIN ── */
+.admin-login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--gray-100);padding:24px}
+.admin-login-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);padding:36px;width:100%;max-width:360px;display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+.admin-login-logo{height:56px;width:auto;margin:0 auto 8px}
+.admin-login-card h1{font-size:17px;font-weight:600;text-align:center;margin-bottom:8px}
+
+/* ── ADMIN: SHELL ── */
+.admin-shell{display:flex;min-height:100vh;background:var(--gray-100)}
+.admin-sidebar{width:230px;flex-shrink:0;background:var(--green-900);color:#fff;display:flex;flex-direction:column;padding:20px 0}
+.admin-sidebar-brand{display:flex;align-items:center;gap:10px;padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:12px}
+.admin-sidebar-brand img{width:28px;height:28px}
+.admin-sidebar-brand span{font-weight:600;font-size:14px}
+.admin-sidebar nav{display:flex;flex-direction:column;flex:1}
+.admin-nav-link{padding:11px 20px;font-size:13px;color:rgba(255,255,255,.75);border-left:3px solid transparent}
+.admin-nav-link:hover{color:#fff;background:rgba(255,255,255,.05)}
+.admin-nav-link.active{color:#fff;background:rgba(255,255,255,.08);border-left-color:var(--green-400)}
+.admin-logout-btn{margin:12px 20px 0;background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);border-radius:var(--radius);padding:9px 14px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:var(--font)}
+.admin-logout-btn:hover{color:#fff;border-color:rgba(255,255,255,.5)}
+.admin-content{flex:1;padding:36px 40px;max-width:1000px}
+.admin-content h1{font-size:22px;font-weight:600;margin-bottom:24px}
+
+/* ── ADMIN: FORM ── */
+.admin-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:28px}
+.admin-form h2{font-size:14px;font-weight:600;margin-bottom:16px;color:var(--green-800)}
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.admin-form-actions{display:flex;gap:10px;margin-top:16px}
+.admin-current-file{font-size:11px;color:var(--text-muted);margin-top:4px;display:block}
+
+/* ── ADMIN: TABLE ── */
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;font-size:13px}
+.admin-table th{text-align:left;background:var(--gray-100);font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);padding:10px 14px}
+.admin-table td{padding:10px 14px;border-top:1px solid var(--border);color:var(--text-secondary);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-table-actions{display:flex;gap:8px;white-space:nowrap}
+.admin-table-actions button{background:none;border:1px solid var(--border);border-radius:var(--radius);width:28px;height:28px;cursor:pointer;color:var(--text-secondary)}
+.admin-table-actions button:hover{border-color:var(--green-400);color:var(--green-600)}
+
+@media (max-width:900px){
+  .admin-shell{flex-direction:column}
+  .admin-sidebar{width:100%}
+  .admin-form-grid{grid-template-columns:1fr}
+}

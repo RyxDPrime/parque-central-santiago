@@ -65,3 +65,12 @@ contentRouter.get("/aliados", async (_req, res, next) => {
     next(err);
   }
 });
+
+contentRouter.get("/documentos-financieros", async (_req, res, next) => {
+  try {
+    const data = await prisma.documentoFinanciero.findMany({ orderBy: { orden: "asc" } });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});

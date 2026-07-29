@@ -114,8 +114,7 @@ async function main() {
 
   await prisma.juntaDirectivo.deleteMany();
   for (const [i, m] of juntaDirectiva.entries()) {
-    const { logoUrl, ...member } = m;
-    await prisma.juntaDirectivo.create({ data: { ...member, orden: i } });
+    await prisma.juntaDirectivo.create({ data: { ...m, orden: i } });
   }
 
   await prisma.personalTecnico.deleteMany();

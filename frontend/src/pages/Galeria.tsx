@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { PageHero } from '../components/PageHero'
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
-import { api } from '../api/client'
+import { api, type GaleriaItem } from '../api/client'
 
 export function Galeria() {
   const { data, loading, error } = useApiData(api.getGaleria)
+  const [active, setActive] = useState<GaleriaItem | null>(null)
 
   return (
     <>
@@ -28,20 +30,40 @@ export function Galeria() {
           )}
 
           {data && data.length > 0 && (
-            <div className="card-grid">
+            <div className="gallery-grid">
               {data.map((item) => (
-                <div key={item.id} className="info-card gallery-card">
+                <button type="button" key={item.id} className="gallery-tile" onClick={() => setActive(item)}>
                   {item.tipo === 'imagen' ? (
-                    <img src={item.url} alt={item.titulo ?? 'Fotografía del parque'} />
+                    <img src={item.url} alt={item.titulo ?? 'Fotografía del parque'} loading="lazy" />
                   ) : (
-                    <video src={item.url} controls />
+                    <video src={item.url} muted />
                   )}
-                </div>
+                  <span className="gallery-tile-overlay">
+                    <i className={`ti ${item.tipo === 'video' ? 'ti-player-play' : 'ti-zoom-in'}`} />
+                    {item.titulo && <span>{item.titulo}</span>}
+                  </span>
+                </button>
               ))}
             </div>
           )}
         </div>
       </section>
+
+      {active && (
+        <div className="lightbox" onClick={() => setActive(null)}>
+          <button type="button" className="lightbox-close" aria-label="Cerrar" onClick={() => setActive(null)}>
+            <i className="ti ti-x" />
+          </button>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            {active.tipo === 'imagen' ? (
+              <img src={active.url} alt={active.titulo ?? 'Fotografía del parque'} />
+            ) : (
+              <video src={active.url} controls autoPlay />
+            )}
+            {active.titulo && <p>{active.titulo}</p>}
+          </div>
+        </div>
+      )}
     </>
   )
 }

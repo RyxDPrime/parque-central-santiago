@@ -146,6 +146,12 @@ ul{list-style:none}
   .about-inner{grid-template-columns:1fr}
   .prog-wrap{height:340px}
   .prog-title{font-size:26px}
+  .facility-photo-grid{grid-template-columns:1fr 1fr}
+  .facility-icon-grid{grid-template-columns:1fr}
+  .service-row,.service-row.reverse{grid-template-columns:1fr;direction:ltr}
+  .transparency-grid{grid-template-columns:1fr}
+  .transparency-intro{flex-direction:column}
+  .gallery-grid{columns:2}
 }
 
 /* ── QUICK LINKS (home) ── */
@@ -165,25 +171,106 @@ ul{list-style:none}
 .info-card .badge{background:var(--green-50);color:var(--green-800);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px}
 .info-card p{font-size:13.5px;color:var(--text-secondary);line-height:1.7}
 .info-card .tag{display:inline-block;font-size:11px;color:var(--green-600);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px}
-.gallery-card{aspect-ratio:4/3;overflow:hidden}
-.gallery-card img{width:100%;height:100%;object-fit:cover}
-.gallery-card p{padding:14px;font-size:13px;font-weight:500;color:var(--text-primary)}
+/* ── GALERÍA ── */
+.gallery-grid{columns:3;column-gap:16px;margin-top:28px}
+.gallery-tile{position:relative;display:block;width:100%;break-inside:avoid;margin-bottom:16px;border-radius:var(--radius-lg);overflow:hidden;border:none;padding:0;cursor:pointer;background:var(--gray-100)}
+.gallery-tile img,.gallery-tile video{width:100%;display:block;height:auto}
+.gallery-tile-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,29,7,.75) 0%,rgba(13,29,7,0) 45%);opacity:0;transition:opacity .2s;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:14px;gap:4px;color:#fff}
+.gallery-tile:hover .gallery-tile-overlay{opacity:1}
+.gallery-tile-overlay i{font-size:20px}
+.gallery-tile-overlay span{font-size:12.5px;font-weight:500}
+
+.lightbox{position:fixed;inset:0;background:rgba(10,18,5,.92);z-index:2000;display:flex;align-items:center;justify-content:center;padding:32px;cursor:pointer}
+.lightbox-content{max-width:90vw;max-height:85vh;cursor:default;display:flex;flex-direction:column;align-items:center;gap:12px}
+.lightbox-content img,.lightbox-content video{max-width:90vw;max-height:80vh;border-radius:var(--radius-lg);object-fit:contain}
+.lightbox-content p{color:#fff;font-size:13.5px}
+.lightbox-close{position:absolute;top:20px;right:24px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.lightbox-close:hover{background:rgba(255,255,255,.22)}
+
+/* ── AGENDA (Actividades) ── */
+.agenda-month{margin-top:36px}
+.agenda-month:first-child{margin-top:28px}
+.agenda-month-title{font-family:var(--font);font-size:16px;font-weight:600;color:var(--green-800);text-transform:capitalize;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.agenda-timeline{position:relative;display:flex;flex-direction:column;gap:14px}
+.agenda-timeline::before{content:'';position:absolute;left:29px;top:8px;bottom:8px;width:1px;background:var(--border)}
+.agenda-item{position:relative;display:flex;gap:20px;align-items:flex-start}
+.agenda-date-badge{position:relative;z-index:1;width:58px;height:58px;flex-shrink:0;border-radius:var(--radius-lg);background:var(--green-600);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.agenda-day{font-size:19px;font-weight:700}
+.agenda-mon{font-size:10px;text-transform:uppercase;letter-spacing:.5px;opacity:.85;margin-top:2px}
+.agenda-content{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;flex:1;transition:border-color .2s,box-shadow .2s}
+.agenda-item:hover .agenda-content{border-color:var(--green-400);box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.agenda-range{font-size:11px;font-weight:600;color:var(--green-600);text-transform:uppercase;letter-spacing:.6px}
+.agenda-content h3{font-size:15px;font-weight:600;color:var(--text-primary);margin-top:4px;margin-bottom:6px}
+.agenda-lugar{font-size:12.5px;color:var(--text-secondary);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.agenda-lugar i{color:var(--green-600)}
+.agenda-desc{font-size:13px;color:var(--text-secondary);line-height:1.65}
+
+/* ── INSTALACIONES Y SERVICIOS ── */
+.facility-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.facility-photo-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/5}
+.facility-photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.facility-photo-card:hover img{transform:scale(1.05)}
+.facility-photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,29,7,.92) 0%,rgba(13,29,7,.35) 55%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.facility-photo-badge{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);color:var(--green-900);font-size:12px;font-weight:700;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.facility-photo-overlay h3{color:#fff;font-size:15px;font-weight:600;margin-bottom:4px}
+.facility-photo-overlay p{color:rgba(255,255,255,.8);font-size:12px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+.facility-icon-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.facility-icon-card{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px}
+.facility-icon-badge{width:42px;height:42px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.facility-icon-badge i{color:var(--green-600);font-size:19px}
+.facility-icon-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.facility-icon-head h3{font-size:14px;font-weight:600;color:var(--text-primary)}
+.facility-icon-card p{font-size:12.5px;color:var(--text-secondary);line-height:1.6}
+
+.service-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:44px}
+.service-row:last-child{margin-bottom:0}
+.service-row.reverse{direction:rtl}
+.service-row.reverse>*{direction:ltr}
+.service-row-img{border-radius:var(--radius-xl);overflow:hidden;height:280px}
+.service-row-img img{width:100%;height:100%;object-fit:cover}
+.service-row-text h3{font-family:var(--font-serif,var(--font));font-size:24px;font-weight:600;color:var(--text-primary);margin:10px 0 12px}
+.service-row-text p{font-size:14px;color:var(--text-secondary);line-height:1.75}
+
+/* ── TRANSPARENCIA ── */
+.transparency-intro{display:flex;gap:18px;align-items:flex-start;background:var(--green-900);border-radius:var(--radius-xl);padding:28px;margin-bottom:24px}
+.transparency-intro-icon{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.transparency-intro-icon i{color:var(--green-100);font-size:22px}
+.transparency-intro h3{color:#fff;font-size:16px;font-weight:600;margin-bottom:8px}
+.transparency-intro p{color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.75}
+.transparency-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.transparency-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px}
+.transparency-block h3{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--green-800);margin-bottom:16px}
+.transparency-block .empty-state{margin-top:0;padding:28px 18px}
+.document-card{display:flex;align-items:center;gap:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;transition:border-color .2s,background .2s}
+.document-card:last-child{margin-bottom:0}
+.document-card:hover{border-color:var(--green-400);background:var(--green-50)}
+.document-card>i:first-child{font-size:22px;color:#c0392b}
+.document-card div{flex:1;min-width:0}
+.document-card h4{font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.document-card span{font-size:11px;color:var(--text-muted)}
+.document-card-download{color:var(--green-600);font-size:16px}
 
 /* ── JUNTA DIRECTIVA ── */
-.board-list{margin-top:28px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.board-row{display:grid;grid-template-columns:2fr 1.3fr 1fr;gap:16px;padding:14px 20px;border-bottom:1px solid var(--border);align-items:center}
-.board-row:last-child{border-bottom:none}
-.board-row.header{background:var(--gray-100);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:600}
-.board-row .institucion{font-size:13.5px;font-weight:500;color:var(--text-primary)}
-.board-row .representante{font-size:13.5px;color:var(--text-secondary)}
-.board-row .cargo{font-size:12px;font-weight:600;color:var(--green-600)}
+.board-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.board-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;display:flex;gap:16px;align-items:flex-start;transition:box-shadow .2s,border-color .2s}
+.board-card:hover{border-color:var(--green-400);box-shadow:0 6px 20px rgba(0,0,0,.05)}
+.board-card-logo{width:56px;height:56px;border-radius:var(--radius);background:var(--gray-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:8px}
+.board-card-logo img{width:100%;height:100%;object-fit:contain}
+.board-card-logo i{font-size:24px;color:var(--green-600)}
+.board-card-body{min-width:0}
+.board-card-cargo{display:inline-block;font-size:10.5px;font-weight:600;color:var(--green-600);text-transform:uppercase;letter-spacing:.6px;background:var(--green-50);padding:3px 9px;border-radius:20px;margin-bottom:8px}
+.board-card-body h3{font-size:14.5px;font-weight:600;color:var(--text-primary);line-height:1.35;margin-bottom:4px}
+.board-card-body p{font-size:12.5px;color:var(--text-secondary)}
 
-/* ── ALIADOS ── */
-.allies-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
-.ally-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;min-height:140px}
-.ally-card i{color:var(--green-600);font-size:28px}
-.ally-logo{max-width:100%;max-height:56px;width:auto;object-fit:contain}
-.ally-card span{font-size:12px;color:var(--text-secondary);line-height:1.4}
+.staff-card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px}
+.staff-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px 18px;text-align:center;transition:box-shadow .2s,border-color .2s}
+.staff-card:hover{border-color:var(--green-400);box-shadow:0 6px 20px rgba(0,0,0,.05)}
+.staff-card-avatar{width:72px;height:72px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden}
+.staff-card-avatar img{width:100%;height:100%;object-fit:cover}
+.staff-card-avatar i{font-size:30px;color:var(--green-600)}
+.staff-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.staff-card-cargo{font-size:12px;color:var(--text-secondary)}
 
 /* ── EMPTY STATE ── */
 .empty-state{margin-top:28px;border:1px dashed var(--border);border-radius:var(--radius-lg);padding:48px 32px;text-align:center;background:var(--gray-100)}
@@ -195,17 +282,59 @@ ul{list-style:none}
 .status-msg{margin-top:28px;font-size:13.5px;color:var(--text-secondary)}
 .status-msg.is-error{color:#993C1D}
 
-/* ── TRANSPARENCIA ── */
+/* ── PROGRAMAS Y PROYECTOS ── */
+.program-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+.program-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px;transition:box-shadow .2s,border-color .2s}
+.program-card:hover{border-color:var(--green-400);box-shadow:0 6px 20px rgba(0,0,0,.05)}
+.program-card-icon{width:52px;height:52px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.program-card-icon i{font-size:24px;color:var(--green-600)}
+.program-card-cat{display:inline-block;font-size:10.5px;font-weight:600;color:var(--green-600);text-transform:uppercase;letter-spacing:.6px;background:var(--green-50);padding:3px 9px;border-radius:20px;margin-bottom:10px}
+.program-card h3{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px}
+.program-card p{font-size:13.5px;color:var(--text-secondary);line-height:1.75}
+
+/* ── APÓYANOS ── */
+.support-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+.support-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;transition:box-shadow .2s,border-color .2s}
+.support-card:hover{border-color:var(--green-400);box-shadow:0 6px 20px rgba(0,0,0,.05)}
+.support-card-icon{width:60px;height:60px;border-radius:50%;background:var(--green-800);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.support-card-icon i{font-size:26px;color:#fff}
+.support-card-tag{display:inline-block;font-size:10.5px;font-weight:600;color:var(--green-600);text-transform:uppercase;letter-spacing:.6px;background:var(--green-50);padding:3px 9px;border-radius:20px;margin-bottom:10px}
+.support-card h3{font-size:15.5px;font-weight:600;margin-bottom:8px}
+.support-card p{font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px}
+
+/* ── RESERVA (pasos) ── */
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:28px 0}
+.step-card{position:relative;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.step-num{position:absolute;top:-14px;left:22px;width:28px;height:28px;border-radius:50%;background:var(--green-600);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.step-card i{font-size:22px;color:var(--green-600);margin-bottom:10px;display:block}
+.step-card h3{font-size:14.5px;font-weight:600;margin-bottom:6px}
+.step-card p{font-size:13px;color:var(--text-secondary);line-height:1.65}
+
+/* ── RESERVA (normativa legal) ── */
 .legal-grid{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .legal-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
 .legal-card h3{font-size:14px;font-weight:600;color:var(--green-800);margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .legal-card h3 i{color:var(--green-600)}
 .legal-card p{font-size:13.5px;color:var(--text-secondary);line-height:1.75}
 
+/* ── SOBRE EL PARQUE (historia) ── */
+.story-hero{border-radius:var(--radius-xl);overflow:hidden;height:340px;margin-bottom:28px}
+.story-hero img{width:100%;height:100%;object-fit:cover}
+.story-timeline{position:relative;display:flex;flex-direction:column;gap:20px;padding-left:28px}
+.story-timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--green-100)}
+.story-hito{position:relative;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px}
+.story-hito::before{content:"";position:absolute;left:-28px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--green-500);border:3px solid var(--green-50)}
+.story-hito-fecha{display:inline-block;font-size:10.5px;font-weight:600;color:var(--green-600);text-transform:uppercase;letter-spacing:.6px;background:var(--green-50);padding:3px 9px;border-radius:20px;margin-bottom:8px}
+.story-hito h3{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.story-hito p{font-size:13.5px;color:var(--text-secondary);line-height:1.75}
+
 /* ── CONTACTO ── */
 .contact-grid{margin-top:28px;display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:start}
-.contact-info-list .contact-row{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text-secondary);margin-bottom:16px}
-.contact-info-list .contact-row i{color:var(--green-600);font-size:17px;margin-top:1px}
+.contact-info-card{background:var(--green-900);border-radius:var(--radius-xl);padding:32px}
+.contact-info-card h3{color:#fff;font-size:16px;font-weight:600;margin-bottom:20px}
+.contact-info-list .contact-row{display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(255,255,255,.8);margin-bottom:18px}
+.contact-row-icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-row-icon i{color:var(--green-100);font-size:16px}
 .contact-form{display:flex;flex-direction:column;gap:14px}
 .form-row{display:flex;flex-direction:column;gap:6px}
 .form-row label{font-size:12.5px;font-weight:500;color:var(--text-secondary)}
@@ -254,12 +383,14 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   #home-hero h1{font-size:32px}
   #home-hero .hero-content{padding:0 24px 40px}
   .quick-grid,.card-grid{grid-template-columns:1fr}
-  .allies-grid{grid-template-columns:1fr 1fr}
-  .board-row{grid-template-columns:1fr}
+  .board-card-grid{grid-template-columns:1fr}
+  .staff-card-grid{grid-template-columns:1fr 1fr}
   .legal-grid,.contact-grid{grid-template-columns:1fr}
   .footer-top{grid-template-columns:1fr 1fr;gap:32px}
   .section,.page-hero{padding:40px 24px}
   .map-layout{grid-template-columns:1fr}
+  .program-card-grid{grid-template-columns:1fr}
+  .support-grid,.steps-row{grid-template-columns:1fr}
 }
 
 /* ── ADMIN: LOGIN ── */
@@ -289,6 +420,15 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .admin-form-actions{display:flex;gap:10px;margin-top:16px}
 .admin-current-file{font-size:11px;color:var(--text-muted);margin-top:4px;display:block}
+
+/* ── ADMIN: FILE DROPZONE ── */
+.file-dropzone{border:1.5px dashed var(--border);border-radius:var(--radius);padding:20px 14px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.file-dropzone:hover{border-color:var(--green-400);background:var(--green-50)}
+.file-dropzone.drag-over{border-color:var(--green-600);background:var(--green-50)}
+.file-dropzone i{font-size:22px;color:var(--green-600);margin-bottom:2px}
+.file-dropzone-label{font-size:12.5px;color:var(--text-secondary)}
+.file-dropzone-current{font-size:11px;color:var(--text-muted)}
+.file-dropzone-name{font-size:13px;font-weight:500;color:var(--green-800);word-break:break-all}
 
 /* ── ADMIN: TABLE ── */
 .admin-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;font-size:13px}

@@ -5,6 +5,7 @@ export interface FieldConfig {
   options?: { value: string; label: string }[]
   accept?: string
   required?: boolean
+  placeholder?: string
 }
 
 export interface EntityConfig {
@@ -20,10 +21,11 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Junta Directiva',
     titleField: 'institucion',
     fields: [
-      { key: 'institucion', label: 'Institución', type: 'text', required: true },
-      { key: 'representante', label: 'Representante', type: 'text', required: true },
-      { key: 'cargo', label: 'Cargo', type: 'text', required: true },
-      { key: 'orden', label: 'Orden', type: 'number' },
+      { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.' },
+      { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz' },
+      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente' },
+      { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
     ],
   },
   {
@@ -31,10 +33,10 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Personal Técnico',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-      { key: 'cargo', label: 'Cargo', type: 'text', required: true },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez' },
+      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa' },
       { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*' },
-      { key: 'orden', label: 'Orden', type: 'number' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
     ],
   },
   {
@@ -42,10 +44,10 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Instalaciones',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true },
-      { key: 'cantidad', label: 'Cantidad (opcional)', type: 'number' },
-      { key: 'orden', label: 'Orden', type: 'number' },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Canchas de Baloncesto' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente esta instalación...' },
+      { key: 'cantidad', label: 'Cantidad (opcional)', type: 'number', placeholder: 'Ej: 2' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
     ],
   },
   {
@@ -53,10 +55,10 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Programas y Servicios',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-      { key: 'categoria', label: 'Categoría', type: 'text', required: true },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true },
-      { key: 'orden', label: 'Orden', type: 'number' },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club' },
+      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
     ],
   },
   {
@@ -64,11 +66,11 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Actividades',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título', type: 'text', required: true },
-      { key: 'descripcion', label: 'Descripción (opcional)', type: 'textarea' },
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Maratón 5K Club Banreservas' },
+      { key: 'descripcion', label: 'Descripción (opcional)', type: 'textarea', placeholder: 'Detalles del evento...' },
       { key: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true },
       { key: 'fechaFin', label: 'Fecha de fin (opcional)', type: 'date' },
-      { key: 'lugar', label: 'Lugar (opcional)', type: 'text' },
+      { key: 'lugar', label: 'Lugar (opcional)', type: 'text', placeholder: 'Ej: Anfiteatro' },
     ],
   },
   {
@@ -76,7 +78,7 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Galería',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título (opcional)', type: 'text' },
+      { key: 'titulo', label: 'Título (opcional)', type: 'text', placeholder: 'Ej: Campo de fútbol' },
       { key: 'url', label: 'Foto', type: 'file', accept: 'image/*', required: true },
       {
         key: 'tipo',
@@ -87,8 +89,8 @@ export const entityConfigs: EntityConfig[] = [
           { value: 'video', label: 'Video' },
         ],
       },
-      { key: 'categoria', label: 'Categoría (opcional)', type: 'text' },
-      { key: 'orden', label: 'Orden', type: 'number' },
+      { key: 'categoria', label: 'Categoría (opcional)', type: 'text', placeholder: 'Ej: Instalaciones, Eventos, Programas...' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
     ],
   },
   {
@@ -96,7 +98,7 @@ export const entityConfigs: EntityConfig[] = [
     label: 'Estados Financieros',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título', type: 'text', required: true },
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Estados Financieros 2026' },
       {
         key: 'tipo',
         label: 'Tipo',
@@ -108,7 +110,7 @@ export const entityConfigs: EntityConfig[] = [
       },
       { key: 'url', label: 'Documento (PDF)', type: 'file', accept: 'application/pdf', required: true },
       { key: 'fecha', label: 'Fecha (opcional)', type: 'date' },
-      { key: 'orden', label: 'Orden', type: 'number' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
     ],
   },
 ]

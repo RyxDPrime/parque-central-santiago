@@ -5,6 +5,7 @@ export interface JuntaDirectivoMember {
   institucion: string;
   representante: string;
   cargo: string;
+  logoUrl: string | null;
   orden: number;
 }
 
@@ -51,6 +52,15 @@ export interface PersonalTecnico {
   orden: number;
 }
 
+export interface DocumentoFinanciero {
+  id: number;
+  titulo: string;
+  tipo: string;
+  url: string;
+  fecha: string | null;
+  orden: number;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -87,5 +97,6 @@ export const api = {
   getActividades: () => get<Actividad[]>("/actividades"),
   getGaleria: () => get<GaleriaItem[]>("/galeria"),
   getPersonalTecnico: () => get<PersonalTecnico[]>("/personal-tecnico"),
+  getDocumentosFinancieros: () => get<DocumentoFinanciero[]>("/documentos-financieros"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

@@ -118,6 +118,7 @@ export function Footer() {
           <div className="footer-bottom-links">
             <Link to="/transparencia">Transparencia</Link>
             <Link to="/contacto">Contacto</Link>
+            <Link to="/admin/login">Acceso administrativo</Link>
           </div>
         </div>
       </div>

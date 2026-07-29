@@ -12,17 +12,27 @@ export function Blog() {
 
       <section className="section">
         <div className="section-inner">
-          <div className="card-grid">
-            <EmptyState
-              icon="ti-article"
-              title="Artículos — próximamente"
-              description="Contenido informativo y educativo del Parque, en preparación."
-            />
-            <EmptyState
-              icon="ti-news"
-              title="Noticias — próximamente"
-              description="Novedades y anuncios del Parque, en preparación."
-            />
+          <div className="transparency-grid">
+            <div className="transparency-block">
+              <h3>
+                <i className="ti ti-article" /> Artículos
+              </h3>
+              <EmptyState
+                icon="ti-article"
+                title="Próximamente"
+                description="Contenido informativo y educativo del parque, en preparación."
+              />
+            </div>
+            <div className="transparency-block">
+              <h3>
+                <i className="ti ti-news" /> Noticias
+              </h3>
+              <EmptyState
+                icon="ti-news"
+                title="Próximamente"
+                description="Novedades y anuncios del parque, en preparación."
+              />
+            </div>
           </div>
         </div>
       </section>

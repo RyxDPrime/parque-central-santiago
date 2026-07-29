@@ -42,33 +42,46 @@ export function Contacto() {
       <section className="section">
         <div className="section-inner">
           <div className="contact-grid">
-            <div className="contact-info-list">
-              <div className="contact-row">
-                <i className="ti ti-map-pin" />
-                Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros
-              </div>
-              <div className="contact-row">
-                <i className="ti ti-mail" />
-                asistentepcs@gmail.com
-              </div>
-              <div className="contact-row">
-                <i className="ti ti-phone" />
-                (809) 583-9581
-              </div>
-              <div className="contact-row">
-                <i className="ti ti-brand-whatsapp" />
-                (849) 580-7344
-              </div>
-              <div className="contact-row">
-                <i className="ti ti-clock" />
-                Parque: 5:30 a.m. – 9:00 p.m. · Oficina: lun–vie 8:30 a.m. – 5:00 p.m.
+            <div className="contact-info-card">
+              <h3>Información de contacto</h3>
+              <div className="contact-info-list">
+                <div className="contact-row">
+                  <span className="contact-row-icon">
+                    <i className="ti ti-map-pin" />
+                  </span>
+                  Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros
+                </div>
+                <div className="contact-row">
+                  <span className="contact-row-icon">
+                    <i className="ti ti-mail" />
+                  </span>
+                  asistentepcs@gmail.com
+                </div>
+                <div className="contact-row">
+                  <span className="contact-row-icon">
+                    <i className="ti ti-phone" />
+                  </span>
+                  (809) 583-9581
+                </div>
+                <div className="contact-row">
+                  <span className="contact-row-icon">
+                    <i className="ti ti-brand-whatsapp" />
+                  </span>
+                  (849) 580-7344
+                </div>
+                <div className="contact-row">
+                  <span className="contact-row-icon">
+                    <i className="ti ti-clock" />
+                  </span>
+                  Parque: 5:30 a.m. – 9:00 p.m. · Oficina: lun–vie 8:30 a.m. – 5:00 p.m.
+                </div>
               </div>
               <a
                 href="https://www.google.com/maps/place/Parque+Central+de+Santiago/@19.4667053,-70.695271,17z"
                 target="_blank"
                 rel="noopener"
-                className="btn-outline"
-                style={{ marginTop: 16 }}
+                className="btn-outline-white"
+                style={{ marginTop: 8 }}
               >
                 <i className="ti ti-map-2" /> Ver en Google Maps
               </a>

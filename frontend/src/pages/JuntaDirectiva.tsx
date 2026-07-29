@@ -20,17 +20,21 @@ export function JuntaDirectiva() {
           {error && <ErrorState message={error} />}
 
           {data && (
-            <div className="board-list">
-              <div className="board-row header">
-                <span>Institución</span>
-                <span>Representante</span>
-                <span>Cargo</span>
-              </div>
+            <div className="board-card-grid">
               {data.map((member) => (
-                <div className="board-row" key={member.id}>
-                  <span className="institucion">{member.institucion}</span>
-                  <span className="representante">{member.representante}</span>
-                  <span className="cargo">{member.cargo}</span>
+                <div className="board-card" key={member.id}>
+                  <div className="board-card-logo">
+                    {member.logoUrl ? (
+                      <img src={member.logoUrl} alt={member.institucion} />
+                    ) : (
+                      <i className="ti ti-building-bank" />
+                    )}
+                  </div>
+                  <div className="board-card-body">
+                    <span className="board-card-cargo">{member.cargo}</span>
+                    <h3>{member.institucion}</h3>
+                    <p>{member.representante}</p>
+                  </div>
                 </div>
               ))}
             </div>

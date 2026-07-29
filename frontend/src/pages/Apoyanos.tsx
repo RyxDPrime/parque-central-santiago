@@ -1,4 +1,26 @@
+import { Link } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
+
+const formas = [
+  {
+    icon: 'ti-hand-heart',
+    tag: 'Voluntariado',
+    titulo: 'Ser voluntario',
+    texto: 'Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias del parque.',
+  },
+  {
+    icon: 'ti-coin',
+    tag: 'Donaciones',
+    titulo: 'Hacer una donación',
+    texto: 'Tu aporte ayuda a mantener las instalaciones y los programas del parque. Próximamente habilitaremos donaciones en línea.',
+  },
+  {
+    icon: 'ti-plant-2',
+    tag: 'Reforestación',
+    titulo: 'Donar un árbol o una flor',
+    texto: 'Contribuye a la reforestación y el embellecimiento del parque dedicando un árbol o una flor.',
+  },
+]
 
 export function Apoyanos() {
   return (
@@ -11,32 +33,20 @@ export function Apoyanos() {
 
       <section className="section">
         <div className="section-inner">
-          <div className="card-grid">
-            <div className="info-card">
-              <span className="tag">Voluntariado</span>
-              <h3 style={{ marginBottom: 8 }}>Ser voluntario</h3>
-              <p>
-                Súmate a las jornadas de mantenimiento, educación ambiental y actividades
-                comunitarias del parque. Escríbenos por Contacto para más información.
-              </p>
-            </div>
-            <div className="info-card">
-              <span className="tag">Donaciones</span>
-              <h3 style={{ marginBottom: 8 }}>Hacer una donación</h3>
-              <p>
-                Tu aporte ayuda a mantener las instalaciones y los programas del parque.
-                Próximamente habilitaremos donaciones en línea; mientras tanto, contáctanos
-                directamente.
-              </p>
-            </div>
-            <div className="info-card">
-              <span className="tag">Reforestación</span>
-              <h3 style={{ marginBottom: 8 }}>Donar un árbol o una flor</h3>
-              <p>
-                Contribuye a la reforestación y el embellecimiento del parque. Escríbenos por
-                Contacto si quieres dedicar un árbol o una flor.
-              </p>
-            </div>
+          <div className="support-grid">
+            {formas.map((forma) => (
+              <div className="support-card" key={forma.titulo}>
+                <div className="support-card-icon">
+                  <i className={`ti ${forma.icon}`} />
+                </div>
+                <span className="support-card-tag">{forma.tag}</span>
+                <h3>{forma.titulo}</h3>
+                <p>{forma.texto}</p>
+                <Link to="/contacto" className="btn-outline">
+                  Escríbenos <i className="ti ti-arrow-right" />
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>

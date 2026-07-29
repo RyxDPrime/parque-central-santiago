@@ -20,15 +20,18 @@ export function PersonalTecnico() {
           {error && <ErrorState message={error} />}
 
           {data && (
-            <div className="board-list">
-              <div className="board-row header" style={{ gridTemplateColumns: '2fr 1fr' }}>
-                <span>Nombre</span>
-                <span>Cargo</span>
-              </div>
+            <div className="staff-card-grid">
               {data.map((persona) => (
-                <div className="board-row" key={persona.id} style={{ gridTemplateColumns: '2fr 1fr' }}>
-                  <span className="institucion">{persona.nombre}</span>
-                  <span className="cargo">{persona.cargo}</span>
+                <div className="staff-card" key={persona.id}>
+                  <div className="staff-card-avatar">
+                    {persona.fotoUrl ? (
+                      <img src={persona.fotoUrl} alt={persona.nombre} />
+                    ) : (
+                      <i className="ti ti-user" />
+                    )}
+                  </div>
+                  <h3>{persona.nombre}</h3>
+                  <span className="staff-card-cargo">{persona.cargo}</span>
                 </div>
               ))}
             </div>

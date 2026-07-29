@@ -2,12 +2,18 @@ import { type FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { createEntity, deleteEntity, listEntity, updateEntity, uploadFile } from './adminClient'
 import { entityConfigs, type FieldConfig } from './entityConfigs'
+import { FileDropzone } from './FileDropzone'
 
 type Row = Record<string, unknown> & { id: number }
 
 function coerceValue(field: FieldConfig, raw: FormDataEntryValue | null): unknown {
   if (field.type === 'number') {
-    if (raw === null || raw === '') return field.required ? 0 : null
+    if (raw === null || raw === '') {
+      // Se omite el campo (en vez de mandar null) para que la base de datos
+      // aplique su valor por defecto — varios campos numéricos como "orden"
+      // no aceptan null aunque sean opcionales en el formulario.
+      return field.required ? 0 : undefined
+    }
     return Number(raw)
   }
   if (raw === null || raw === '') return null
@@ -105,6 +111,7 @@ export function EntityManager() {
                   id={field.key}
                   name={field.key}
                   required={field.required}
+                  placeholder={field.placeholder}
                   defaultValue={(editing?.[field.key] as string) ?? ''}
                 />
               )}
@@ -122,12 +129,14 @@ export function EntityManager() {
                 </select>
               )}
               {field.type === 'file' && (
-                <>
-                  <input id={field.key} name={field.key} type="file" accept={field.accept} />
-                  {editing && Boolean(editing[field.key]) && (
-                    <span className="admin-current-file">Archivo actual: {String(editing[field.key])}</span>
-                  )}
-                </>
+                <FileDropzone
+                  name={field.key}
+                  accept={field.accept}
+                  required={field.required}
+                  currentFileLabel={
+                    editing && editing[field.key] ? String(editing[field.key]).split('/').pop() : null
+                  }
+                />
               )}
               {(field.type === 'text' || field.type === 'number' || field.type === 'date') && (
                 <input
@@ -135,6 +144,7 @@ export function EntityManager() {
                   name={field.key}
                   type={field.type}
                   required={field.required}
+                  placeholder={field.placeholder}
                   defaultValue={
                     field.type === 'date'
                       ? String(editing?.[field.key] ?? '').slice(0, 10)

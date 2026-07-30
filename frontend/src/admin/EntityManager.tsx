@@ -52,8 +52,9 @@ export function EntityManager() {
     if (!config) return
     setSaving(true)
     setFormError(null)
+    const formElement = event.currentTarget
     try {
-      const form = new FormData(event.currentTarget)
+      const form = new FormData(formElement)
       const data: Record<string, unknown> = {}
 
       for (const field of config.fields) {
@@ -77,7 +78,7 @@ export function EntityManager() {
         const created = await createEntity<Row>(config.path, data)
         setRows((prev) => [...prev, created])
       }
-      event.currentTarget.reset()
+      formElement.reset()
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Error al guardar')
     } finally {

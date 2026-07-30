@@ -1,4 +1,4 @@
-import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { clearToken, isLoggedIn } from './adminClient'
 import { entityConfigs } from './entityConfigs'
 
@@ -11,16 +11,16 @@ export function AdminLayout() {
 
   function handleLogout() {
     clearToken()
-    navigate('/admin/login')
+    navigate('/')
   }
 
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <div className="admin-sidebar-brand">
+        <Link to="/" className="admin-sidebar-brand" title="Volver a la página pública">
           <img src="/images/brand/logo-pcs-icon.png" alt="" />
           <span>Panel PCS</span>
-        </div>
+        </Link>
         <nav>
           {entityConfigs.map((entity) => (
             <NavLink key={entity.path} to={`/admin/${entity.path}`} className="admin-nav-link">

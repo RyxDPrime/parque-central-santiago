@@ -6,6 +6,7 @@ export interface FieldConfig {
   accept?: string
   required?: boolean
   placeholder?: string
+  showOnCreate?: boolean
 }
 
 export interface EntityConfig {
@@ -25,7 +26,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente' },
       { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*' },
-      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
   },
   {
@@ -36,7 +37,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa' },
       { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*' },
-      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
   },
   {
@@ -47,7 +48,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Canchas de Baloncesto' },
       { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente esta instalación...' },
       { key: 'cantidad', label: 'Cantidad (opcional)', type: 'number', placeholder: 'Ej: 2' },
-      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
   },
   {
@@ -58,7 +59,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club' },
       { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol' },
       { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...' },
-      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
   },
   {
@@ -90,7 +91,7 @@ export const entityConfigs: EntityConfig[] = [
         ],
       },
       { key: 'categoria', label: 'Categoría (opcional)', type: 'text', placeholder: 'Ej: Instalaciones, Eventos, Programas...' },
-      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
   },
   {
@@ -110,7 +111,7 @@ export const entityConfigs: EntityConfig[] = [
       },
       { key: 'url', label: 'Documento (PDF)', type: 'file', accept: 'application/pdf', required: true },
       { key: 'fecha', label: 'Fecha (opcional)', type: 'date' },
-      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0' },
+      { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
   },
 ]

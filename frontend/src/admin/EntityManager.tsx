@@ -104,8 +104,10 @@ export function EntityManager() {
       <form className="admin-form" onSubmit={handleSubmit} key={editing?.id ?? 'new'}>
         <h2>{editing ? `Editar: ${String(editing[config.titleField])}` : 'Agregar nuevo'}</h2>
         <div className="admin-form-grid">
-          {config.fields.map((field) => (
-            <div className="form-row" key={field.key}>
+          {config.fields
+            .filter((field) => editing || field.showOnCreate !== false)
+            .map((field) => (
+              <div className="form-row" key={field.key}>
               <label htmlFor={field.key}>{field.label}</label>
               {field.type === 'textarea' && (
                 <textarea
@@ -154,7 +156,7 @@ export function EntityManager() {
                 />
               )}
             </div>
-          ))}
+            ))}
         </div>
 
         {formError && <p className="form-feedback error">{formError}</p>}

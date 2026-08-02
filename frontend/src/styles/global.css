@@ -258,9 +258,21 @@ ul{list-style:none}
 .leadership-photo img{width:100%;height:100%;object-fit:cover}
 .leadership-photo img.leadership-photo-logo{object-fit:contain;padding:18%}
 .leadership-photo i{font-size:44px;color:var(--green-400)}
+/* La foto se agranda dentro de su marco al pasar el mouse por encima */
+.leadership-photo img,.leadership-photo i{transition:transform .35s ease}
+.leadership-photo:hover img,.leadership-photo:hover i{transform:scale(1.08)}
 .leadership-card h3{font-size:15px;font-weight:700;color:var(--green-800);line-height:1.35;margin-bottom:6px}
-.leadership-org{font-size:12.5px;font-weight:400;color:var(--text-secondary);line-height:1.5;margin-bottom:2px}
-.leadership-cargo{font-size:12.5px;font-weight:400;color:var(--text-muted);line-height:1.5}
+.leadership-org{font-size:12.5px;font-weight:600;color:var(--text-primary);line-height:1.5;margin-bottom:2px}
+.leadership-cargo{font-size:12.5px;font-weight:400;color:var(--text-secondary);line-height:1.5}
+
+@media (prefers-reduced-motion:reduce){
+  .leadership-photo img,.leadership-photo i{transition:none}
+  .leadership-photo:hover img,.leadership-photo:hover i{transform:none}
+}
+
+@media (max-width:1200px){
+  .leadership-grid{grid-template-columns:repeat(3,1fr);gap:32px 24px}
+}
 
 /* Personal Tecnico — filas intercaladas (zigzag) foto/texto */
 .staff-zigzag{display:flex;flex-direction:column;gap:20px;margin-top:24px}

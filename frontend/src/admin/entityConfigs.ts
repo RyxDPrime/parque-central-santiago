@@ -25,6 +25,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.' },
       { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente' },
+      { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*' },
       { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*' },
       { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],
@@ -36,6 +37,7 @@ export const entityConfigs: EntityConfig[] = [
     fields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa' },
+      { key: 'bio', label: 'Biografía', type: 'textarea', placeholder: 'Breve reseña profesional del miembro del equipo (opcional)' },
       { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*' },
       { key: 'orden', label: 'Orden', type: 'number', placeholder: '0', showOnCreate: false },
     ],

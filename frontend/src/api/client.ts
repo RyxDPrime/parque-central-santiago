@@ -6,6 +6,7 @@ export interface JuntaDirectivoMember {
   representante: string;
   cargo: string;
   logoUrl: string | null;
+  fotoUrl: string | null;
   orden: number;
 }
 
@@ -48,6 +49,7 @@ export interface PersonalTecnico {
   id: number;
   nombre: string;
   cargo: string;
+  bio: string | null;
   fotoUrl: string | null;
   orden: number;
 }

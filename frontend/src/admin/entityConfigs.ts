@@ -14,11 +14,15 @@ export interface EntityConfig {
   label: string
   fields: FieldConfig[]
   titleField: string
+  icon: string
+  description: string
 }
 
 export const entityConfigs: EntityConfig[] = [
   {
     path: 'junta-directiva',
+    icon: 'ti-building-bank',
+    description: 'Instituciones que conforman el Patronato y sus representantes.',
     label: 'Junta Directiva',
     titleField: 'institucion',
     fields: [
@@ -32,6 +36,8 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'personal-tecnico',
+    icon: 'ti-users',
+    description: 'Equipo administrativo y técnico que trabaja en el parque.',
     label: 'Personal Técnico',
     titleField: 'nombre',
     fields: [
@@ -44,6 +50,8 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'instalaciones',
+    icon: 'ti-building-stadium',
+    description: 'Áreas y facilidades disponibles dentro del parque.',
     label: 'Instalaciones',
     titleField: 'nombre',
     fields: [
@@ -55,6 +63,8 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'programas',
+    icon: 'ti-plant-2',
+    description: 'Programas y servicios activos que ofrece el parque.',
     label: 'Programas y Servicios',
     titleField: 'nombre',
     fields: [
@@ -66,6 +76,8 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'actividades',
+    icon: 'ti-calendar-event',
+    description: 'Agenda de eventos y actividades programadas.',
     label: 'Actividades',
     titleField: 'titulo',
     fields: [
@@ -78,6 +90,8 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'galeria',
+    icon: 'ti-photo',
+    description: 'Fotografías y videos que se muestran en la galería pública.',
     label: 'Galería',
     titleField: 'titulo',
     fields: [
@@ -98,6 +112,8 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'documentos-financieros',
+    icon: 'ti-file-invoice',
+    description: 'Estados financieros auditados y sin auditar del Patronato.',
     label: 'Estados Financieros',
     titleField: 'titulo',
     fields: [

@@ -20,6 +20,11 @@ function coerceValue(field: FieldConfig, raw: FormDataEntryValue | null): unknow
   return raw
 }
 
+// Los campos largos ocupan el ancho completo para que no queden apretados.
+function isWideField(field: FieldConfig) {
+  return field.type === 'textarea' || field.type === 'file'
+}
+
 export function EntityManager() {
   const { entity } = useParams<{ entity: string }>()
   const config = entityConfigs.find((e) => e.path === entity)
@@ -97,18 +102,50 @@ export function EntityManager() {
     }
   }
 
+  const visibleFields = config.fields.filter((f) => editing || f.showOnCreate !== false)
+
   return (
     <div className="admin-entity">
-      <h1>{config.label}</h1>
+      <header className="admin-page-head">
+        <div className="admin-page-icon">
+          <i className={`ti ${config.icon}`} />
+        </div>
+        <div>
+          <h1>{config.label}</h1>
+          <p>{config.description}</p>
+        </div>
+      </header>
 
-      <form className="admin-form" onSubmit={handleSubmit} key={editing?.id ?? 'new'}>
-        <h2>{editing ? `Editar: ${String(editing[config.titleField])}` : 'Agregar nuevo'}</h2>
+      <form
+        className={`admin-form${editing ? ' is-editing' : ''}`}
+        onSubmit={handleSubmit}
+        key={editing?.id ?? 'new'}
+      >
+        <div className="admin-form-head">
+          <span className="admin-form-badge">
+            <i className={`ti ${editing ? 'ti-pencil' : 'ti-plus'}`} />
+          </span>
+          <div>
+            <h2>{editing ? 'Editando registro' : 'Agregar nuevo'}</h2>
+            <p>
+              {editing
+                ? String(editing[config.titleField] ?? 'Sin título')
+                : 'Completa los campos y guarda para publicarlo en el sitio.'}
+            </p>
+          </div>
+        </div>
+
         <div className="admin-form-grid">
-          {config.fields
-            .filter((field) => editing || field.showOnCreate !== false)
-            .map((field) => (
-              <div className="form-row" key={field.key}>
-              <label htmlFor={field.key}>{field.label}</label>
+          {visibleFields.map((field) => (
+            <div
+              className={`admin-field${isWideField(field) ? ' is-wide' : ''}`}
+              key={field.key}
+            >
+              <label htmlFor={field.key}>
+                {field.label}
+                {field.required && <span className="admin-field-req">obligatorio</span>}
+              </label>
+
               {field.type === 'textarea' && (
                 <textarea
                   id={field.key}
@@ -118,6 +155,7 @@ export function EntityManager() {
                   defaultValue={(editing?.[field.key] as string) ?? ''}
                 />
               )}
+
               {field.type === 'select' && (
                 <select
                   id={field.key}
@@ -131,6 +169,7 @@ export function EntityManager() {
                   ))}
                 </select>
               )}
+
               {field.type === 'file' && (
                 <FileDropzone
                   name={field.key}
@@ -141,6 +180,7 @@ export function EntityManager() {
                   }
                 />
               )}
+
               {(field.type === 'text' || field.type === 'number' || field.type === 'date') && (
                 <input
                   id={field.key}
@@ -156,13 +196,18 @@ export function EntityManager() {
                 />
               )}
             </div>
-            ))}
+          ))}
         </div>
 
-        {formError && <p className="form-feedback error">{formError}</p>}
+        {formError && (
+          <p className="form-feedback error">
+            <i className="ti ti-alert-circle" /> {formError}
+          </p>
+        )}
 
         <div className="admin-form-actions">
           <button type="submit" className="btn-primary" disabled={saving}>
+            <i className={`ti ${editing ? 'ti-device-floppy' : 'ti-plus'}`} />
             {saving ? 'Guardando…' : editing ? 'Guardar cambios' : 'Agregar'}
           </button>
           {editing && (
@@ -173,44 +218,72 @@ export function EntityManager() {
         </div>
       </form>
 
-      {loading && <p className="status-msg">Cargando…</p>}
-      {error && <p className="status-msg is-error">{error}</p>}
+      <section className="admin-panel">
+        <div className="admin-panel-head">
+          <h2>Registros publicados</h2>
+          <span className="admin-count">{rows.length}</span>
+        </div>
 
-      {!loading && !error && (
-        <table className="admin-table">
-          <thead>
-            <tr>
-              {config.fields.map((f) => (
-                <th key={f.key}>{f.label}</th>
-              ))}
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.id}>
-                {config.fields.map((f) => (
-                  <td key={f.key}>
-                    {f.type === 'file'
-                      ? row[f.key]
-                        ? '✓'
-                        : '—'
-                      : String(row[f.key] ?? '—')}
-                  </td>
+        {loading && <p className="admin-panel-msg">Cargando…</p>}
+        {error && <p className="admin-panel-msg is-error">{error}</p>}
+
+        {!loading && !error && rows.length === 0 && (
+          <div className="admin-empty">
+            <i className={`ti ${config.icon}`} />
+            <h3>Todavía no hay registros</h3>
+            <p>Usa el formulario de arriba para agregar el primero.</p>
+          </div>
+        )}
+
+        {!loading && !error && rows.length > 0 && (
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  {config.fields.map((f) => (
+                    <th key={f.key}>{f.label}</th>
+                  ))}
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.id}>
+                    {config.fields.map((f) => (
+                      <td key={f.key}>
+                        {f.type === 'file' ? (
+                          row[f.key] ? (
+                            <span className="admin-chip is-ok">
+                              <i className="ti ti-check" /> Cargado
+                            </span>
+                          ) : (
+                            <span className="admin-chip">Sin archivo</span>
+                          )
+                        ) : (
+                          String(row[f.key] ?? '—')
+                        )}
+                      </td>
+                    ))}
+                    <td className="admin-table-actions">
+                      <button type="button" title="Editar" onClick={() => setEditing(row)}>
+                        <i className="ti ti-edit" />
+                      </button>
+                      <button
+                        type="button"
+                        title="Eliminar"
+                        className="is-danger"
+                        onClick={() => handleDelete(row.id)}
+                      >
+                        <i className="ti ti-trash" />
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-                <td className="admin-table-actions">
-                  <button type="button" onClick={() => setEditing(row)}>
-                    <i className="ti ti-edit" />
-                  </button>
-                  <button type="button" onClick={() => handleDelete(row.id)}>
-                    <i className="ti ti-trash" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </div>
   )
 }

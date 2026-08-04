@@ -37,6 +37,7 @@ export function Contacto() {
         label="Contacto"
         title="Contacto y Ubicación"
         description="Escríbenos, visítanos o contáctanos por teléfono y WhatsApp."
+        image="/images/galeria/gimnasio-aire-libre.jpg"
       />
 
       <section className="section">

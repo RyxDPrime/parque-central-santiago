@@ -15,6 +15,7 @@ export function PersonalTecnico() {
         label="Institución"
         title="Personal Técnico"
         description="El equipo administrativo y técnico del Parque Central de Santiago."
+        image="/images/galeria/entrada-parque.jpg"
       />
 
       <section className="section">

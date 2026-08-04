@@ -33,6 +33,14 @@ export function AdminLayout() {
               {entity.label}
             </NavLink>
           ))}
+
+          <p className="admin-nav-title" style={{ marginTop: 16 }}>
+            Buzón
+          </p>
+          <NavLink to="/admin/mensajes" className="admin-nav-link">
+            <i className="ti ti-mail" />
+            Mensajes de contacto
+          </NavLink>
         </nav>
 
         <div className="admin-sidebar-footer">

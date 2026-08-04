@@ -41,6 +41,7 @@ export function Actividades() {
         label="El Parque"
         title="Actividades"
         description="La agenda de eventos y actividades del Parque Central de Santiago."
+        image="/images/galeria/maraton-5k.jpg"
       />
 
       <section className="section">

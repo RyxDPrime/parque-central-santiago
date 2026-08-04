@@ -1,0 +1,149 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+
+const SITE = 'Parque Central de Santiago'
+const DEFAULT_IMAGE = '/images/galeria/vista-aerea-parque.jpg'
+
+interface PageMeta {
+  title: string
+  description: string
+  image?: string
+}
+
+// Título y descripción propios de cada ruta, para buscadores y para la
+// previsualización al compartir el enlace.
+const META: Record<string, PageMeta> = {
+  '/': {
+    title: SITE,
+    description:
+      'El pulmón verde de Santiago de los Caballeros: instalaciones deportivas, actividades culturales y espacios recreativos para toda la comunidad.',
+    image: DEFAULT_IMAGE,
+  },
+  '/sobre-el-parque': {
+    title: `Historia | ${SITE}`,
+    description:
+      'Casi 20 años de gestión hechos realidad: cómo se fundó el Parque Central de Santiago y su relación con APEDI.',
+    image: '/images/galeria/entrada-parque.jpg',
+  },
+  '/reglamento': {
+    title: `Reglamento | ${SITE}`,
+    description: 'Normas de convivencia y uso de los espacios del Parque Central de Santiago.',
+    image: '/images/galeria/vista-aerea-parque.jpg',
+  },
+  '/instalaciones-y-servicios': {
+    title: `Instalaciones y Servicios | ${SITE}`,
+    description:
+      'Canchas, campos de fútbol, área infantil, anfiteatro, kioscos y los servicios que ofrece el parque a la comunidad.',
+    image: '/images/galeria/cancha-basketball.jpg',
+  },
+  '/programas-y-proyectos': {
+    title: `Programas y Proyectos | ${SITE}`,
+    description:
+      'Cibao Fútbol Club, Escuela de Tenis, Tirolesa y Fun Stop: los programas activos del Parque Central de Santiago.',
+    image: '/images/galeria/cibao-futbol-club.jpg',
+  },
+  '/junta-directiva': {
+    title: `Junta Directiva | ${SITE}`,
+    description:
+      'Las instituciones que conforman el Patronato para la Administración del Parque Central de Santiago.',
+    image: '/images/galeria/vista-aerea-parque.jpg',
+  },
+  '/personal-tecnico': {
+    title: `Personal Técnico | ${SITE}`,
+    description: 'El equipo administrativo y técnico del Parque Central de Santiago.',
+    image: '/images/galeria/entrada-parque.jpg',
+  },
+  '/actividades': {
+    title: `Actividades | ${SITE}`,
+    description: 'La agenda de eventos y actividades del Parque Central de Santiago.',
+    image: '/images/galeria/maraton-5k.jpg',
+  },
+  '/reserva': {
+    title: `Reserva | ${SITE}`,
+    description:
+      'Calendario de actividades y cómo reservar un espacio en el Parque Central de Santiago.',
+    image: '/images/galeria/navidad-en-el-parque.jpg',
+  },
+  '/galeria': {
+    title: `Galería | ${SITE}`,
+    description: 'Fotografías del Parque Central de Santiago y sus espacios.',
+    image: '/images/galeria/parque-infantil.jpg',
+  },
+  '/mapa': {
+    title: `Mapa del Parque | ${SITE}`,
+    description: 'Ubica las principales instalaciones del Parque Central de Santiago.',
+    image: '/images/galeria/vista-aerea-parque.jpg',
+  },
+  '/transparencia': {
+    title: `Transparencia | ${SITE}`,
+    description:
+      'Quiénes somos, marco legal y estados financieros del Patronato para la Administración del Parque Central de Santiago.',
+    image: '/images/galeria/entrada-parque.jpg',
+  },
+  '/blog': {
+    title: `Blog | ${SITE}`,
+    description: 'Artículos y noticias del Parque Central de Santiago.',
+    image: '/images/galeria/dia-del-yoga.jpg',
+  },
+  '/apoyanos': {
+    title: `Apóyanos | ${SITE}`,
+    description:
+      'Voluntariado, donaciones y reforestación: formas de apoyar al Parque Central de Santiago.',
+    image: '/images/galeria/ciclistas.jpg',
+  },
+  '/contacto': {
+    title: `Contacto | ${SITE}`,
+    description:
+      'Escríbenos, visítanos o contáctanos por teléfono y WhatsApp. Av. Bartolomé Colón esq. Padre Las Casas, Santiago.',
+    image: '/images/galeria/gimnasio-aire-libre.jpg',
+  },
+}
+
+const NOT_FOUND: PageMeta = {
+  title: `Página no encontrada | ${SITE}`,
+  description: 'La página que buscas no existe o fue movida.',
+  image: DEFAULT_IMAGE,
+}
+
+function setTag(attr: 'name' | 'property', key: string, content: string) {
+  let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attr, key)
+    document.head.appendChild(el)
+  }
+  el.setAttribute('content', content)
+}
+
+export function usePageMeta() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    const meta = META[pathname] ?? NOT_FOUND
+    const url = window.location.origin + pathname
+    const image = window.location.origin + (meta.image ?? DEFAULT_IMAGE)
+
+    document.title = meta.title
+    setTag('name', 'description', meta.description)
+
+    setTag('property', 'og:type', 'website')
+    setTag('property', 'og:site_name', SITE)
+    setTag('property', 'og:title', meta.title)
+    setTag('property', 'og:description', meta.description)
+    setTag('property', 'og:image', image)
+    setTag('property', 'og:url', url)
+
+    setTag('name', 'twitter:card', 'summary_large_image')
+    setTag('name', 'twitter:title', meta.title)
+    setTag('name', 'twitter:description', meta.description)
+    setTag('name', 'twitter:image', image)
+
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.rel = 'canonical'
+      document.head.appendChild(canonical)
+    }
+    canonical.href = url
+  }, [pathname])
+}

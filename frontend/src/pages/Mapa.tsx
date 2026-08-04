@@ -64,6 +64,7 @@ export function Mapa() {
         label="El Parque"
         title="Mapa del Parque"
         description="Ubica las principales instalaciones del Parque Central de Santiago."
+        image="/images/galeria/vista-aerea-parque.jpg"
       />
 
       <section className="section">

@@ -75,6 +75,33 @@ export async function deleteEntity(entityPath: string, id: number): Promise<void
   if (!res.ok) throw new Error(await parseErrorMessage(res));
 }
 
+export interface ContactMessage {
+  id: number;
+  nombre: string;
+  email: string;
+  telefono: string | null;
+  asunto: string | null;
+  mensaje: string;
+  emailEnviado: boolean;
+  createdAt: string;
+}
+
+export async function listMessages(): Promise<ContactMessage[]> {
+  const res = await fetch(`${API_URL}/mensajes`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<ContactMessage[]>;
+}
+
+export async function deleteMessage(id: number): Promise<void> {
+  const res = await fetch(`${API_URL}/mensajes/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+}
+
 export async function uploadFile(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);

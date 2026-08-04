@@ -14,6 +14,7 @@ export function Galeria() {
         label="El Parque"
         title="Galería multimedia"
         description="Fotografías del Parque Central de Santiago y sus espacios."
+        image="/images/galeria/parque-infantil.jpg"
       />
 
       <section className="section">

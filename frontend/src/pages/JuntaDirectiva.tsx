@@ -12,6 +12,7 @@ export function JuntaDirectiva() {
         label="Institución"
         title="Junta Directiva"
         description="Las instituciones que conforman el Patronato para la Administración del Parque Central de Santiago."
+        image="/images/galeria/vista-aerea-parque.jpg"
       />
 
       <section className="section">

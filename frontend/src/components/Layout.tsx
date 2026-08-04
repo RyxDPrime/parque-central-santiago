@@ -3,8 +3,11 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { ScrollToTop } from './ScrollToTop'
 import { AlertBar } from './AlertBar'
+import { usePageMeta } from '../hooks/usePageMeta'
 
 export function Layout() {
+  usePageMeta()
+
   return (
     <div className="page">
       <ScrollToTop />

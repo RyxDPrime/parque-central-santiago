@@ -23,6 +23,7 @@ export function Reglamento() {
         label="Sobre Nosotros"
         title="Reglamento General"
         description="Normas de uso del Parque Central de Santiago, para preservar un ambiente seguro, limpio y agradable para todos los visitantes."
+        image="/images/galeria/vista-aerea-parque.jpg"
       />
 
       <section className="section">

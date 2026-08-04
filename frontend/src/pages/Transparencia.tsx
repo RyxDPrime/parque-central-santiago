@@ -17,6 +17,7 @@ export function Transparencia() {
         label="Institución"
         title="Transparencia"
         description="Quiénes somos y el marco bajo el que opera el Parque Central de Santiago."
+        image="/images/galeria/entrada-parque.jpg"
       />
 
       <section className="section">

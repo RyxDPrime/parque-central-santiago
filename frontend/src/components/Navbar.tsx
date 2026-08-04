@@ -1,11 +1,71 @@
-import { NavLink } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+
+const menuGroups = [
+  {
+    label: 'Sobre Nosotros',
+    items: [
+      { to: '/sobre-el-parque', icon: 'ti-book', label: 'Historia' },
+      { to: '/reglamento', icon: 'ti-clipboard-list', label: 'Reglamento' },
+    ],
+  },
+  {
+    label: 'Institución',
+    items: [
+      { to: '/junta-directiva', icon: 'ti-users', label: 'Junta Directiva' },
+      { to: '/personal-tecnico', icon: 'ti-briefcase', label: 'Personal Técnico' },
+    ],
+  },
+  {
+    label: 'El Parque',
+    items: [
+      { to: '/instalaciones-y-servicios', icon: 'ti-building', label: 'Instalaciones y Servicios' },
+      { to: '/programas-y-proyectos', icon: 'ti-plant-2', label: 'Programas y Proyectos' },
+      { to: '/galeria', icon: 'ti-photo', label: 'Galería' },
+      { to: '/mapa', icon: 'ti-map', label: 'Mapa del Parque' },
+    ],
+  },
+  {
+    label: 'Reserva',
+    items: [
+      { to: '/actividades', icon: 'ti-calendar-event', label: 'Actividades' },
+      { to: '/reserva', icon: 'ti-ticket', label: 'Reservar un Espacio' },
+    ],
+  },
+]
+
+const soloLinks = [
+  { to: '/transparencia', icon: 'ti-file-invoice', label: 'Transparencia' },
+  { to: '/blog', icon: 'ti-article', label: 'Blog' },
+  { to: '/apoyanos', icon: 'ti-heart-handshake', label: 'Apóyanos' },
+]
 
 export function Navbar() {
+  const [open, setOpen] = useState(false)
+  const location = useLocation()
+
+  // Al navegar se cierra el menú para que no tape la página nueva.
+  useEffect(() => {
+    setOpen(false)
+  }, [location.pathname])
+
+  // Evita que el fondo se desplace mientras el menú está abierto.
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
   return (
     <nav id="navbar">
       <div className="nav-inner">
         <NavLink to="/" className="logo">
-          <img src="/images/brand/logo-pcs.png" alt="Parque Central de Santiago" className="brand-logo" />
+          <img
+            src="/images/brand/logo-pcs.png"
+            alt="Parque Central de Santiago"
+            className="brand-logo"
+          />
         </NavLink>
 
         <div className="nav-links">
@@ -15,89 +75,27 @@ export function Navbar() {
             </NavLink>
           </div>
 
-          <div className="nav-item">
-            <button type="button">
-              Sobre Nosotros <i className="ti ti-chevron-down" style={{ fontSize: 12 }} />
-            </button>
-            <div className="dropdown">
-              <NavLink to="/sobre-el-parque">
-                <i className="ti ti-book" />
-                Historia
-              </NavLink>
-              <NavLink to="/reglamento">
-                <i className="ti ti-clipboard-list" />
-                Reglamento
-              </NavLink>
+          {menuGroups.map((group) => (
+            <div className="nav-item" key={group.label}>
+              <button type="button">
+                {group.label} <i className="ti ti-chevron-down" style={{ fontSize: 12 }} />
+              </button>
+              <div className="dropdown">
+                {group.items.map((item) => (
+                  <NavLink to={item.to} key={item.to}>
+                    <i className={`ti ${item.icon}`} />
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
             </div>
-          </div>
+          ))}
 
-          <div className="nav-item">
-            <button type="button">
-              Institución <i className="ti ti-chevron-down" style={{ fontSize: 12 }} />
-            </button>
-            <div className="dropdown">
-              <NavLink to="/junta-directiva">
-                <i className="ti ti-users" />
-                Junta Directiva
-              </NavLink>
-              <NavLink to="/personal-tecnico">
-                <i className="ti ti-briefcase" />
-                Personal Técnico
-              </NavLink>
+          {soloLinks.map((item) => (
+            <div className="nav-item" key={item.to}>
+              <NavLink to={item.to}>{item.label}</NavLink>
             </div>
-          </div>
-
-          <div className="nav-item">
-            <button type="button">
-              El Parque <i className="ti ti-chevron-down" style={{ fontSize: 12 }} />
-            </button>
-            <div className="dropdown">
-              <NavLink to="/instalaciones-y-servicios">
-                <i className="ti ti-building" />
-                Instalaciones y Servicios
-              </NavLink>
-              <NavLink to="/programas-y-proyectos">
-                <i className="ti ti-plant-2" />
-                Programas y Proyectos
-              </NavLink>
-              <NavLink to="/galeria">
-                <i className="ti ti-photo" />
-                Galería
-              </NavLink>
-              <NavLink to="/mapa">
-                <i className="ti ti-map" />
-                Mapa del Parque
-              </NavLink>
-            </div>
-          </div>
-
-          <div className="nav-item">
-            <button type="button">
-              Reserva <i className="ti ti-chevron-down" style={{ fontSize: 12 }} />
-            </button>
-            <div className="dropdown">
-              <NavLink to="/actividades">
-                <i className="ti ti-calendar-event" />
-                Actividades
-              </NavLink>
-              <NavLink to="/reserva">
-                <i className="ti ti-ticket" />
-                Reservar un Espacio
-              </NavLink>
-            </div>
-          </div>
-
-          <div className="nav-item">
-            <NavLink to="/transparencia">Transparencia</NavLink>
-          </div>
-
-          <div className="nav-item">
-            <NavLink to="/blog">Blog</NavLink>
-          </div>
-
-          <div className="nav-item">
-            <NavLink to="/apoyanos">Apóyanos</NavLink>
-          </div>
+          ))}
         </div>
 
         <div className="nav-cta">
@@ -108,7 +106,56 @@ export function Navbar() {
             <i className="ti ti-map-pin" /> Contáctanos
           </NavLink>
         </div>
+
+        <button
+          type="button"
+          className="nav-toggle"
+          aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <i className={`ti ${open ? 'ti-x' : 'ti-menu-2'}`} />
+        </button>
       </div>
+
+      {open && (
+        <div className="mobile-menu">
+          <NavLink to="/" end className="mobile-menu-link">
+            <i className="ti ti-home" />
+            Inicio
+          </NavLink>
+
+          {menuGroups.map((group) => (
+            <div className="mobile-menu-group" key={group.label}>
+              <p className="mobile-menu-title">{group.label}</p>
+              {group.items.map((item) => (
+                <NavLink to={item.to} key={item.to} className="mobile-menu-link">
+                  <i className={`ti ${item.icon}`} />
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
+          ))}
+
+          <div className="mobile-menu-group">
+            {soloLinks.map((item) => (
+              <NavLink to={item.to} key={item.to} className="mobile-menu-link">
+                <i className={`ti ${item.icon}`} />
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="mobile-menu-footer">
+            <NavLink to="/contacto" className="btn-primary">
+              <i className="ti ti-map-pin" /> Contáctanos
+            </NavLink>
+            <a href="mailto:asistentepcs@gmail.com" className="mobile-menu-mail">
+              <i className="ti ti-mail" /> asistentepcs@gmail.com
+            </a>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

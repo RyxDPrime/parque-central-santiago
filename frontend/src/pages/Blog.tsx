@@ -8,6 +8,7 @@ export function Blog() {
         label="Blog"
         title="Artículos y Noticias"
         description="Las publicaciones del Parque Central de Santiago."
+        image="/images/galeria/dia-del-yoga.jpg"
       />
 
       <section className="section">

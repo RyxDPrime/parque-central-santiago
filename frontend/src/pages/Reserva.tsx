@@ -27,6 +27,7 @@ export function Reserva() {
         label="El Parque"
         title="Reserva"
         description="Calendario de actividades y reserva de espacios del Parque Central de Santiago."
+        image="/images/galeria/navidad-en-el-parque.jpg"
       />
 
       <section className="section">

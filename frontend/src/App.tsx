@@ -15,9 +15,11 @@ import { Transparencia } from './pages/Transparencia'
 import { Blog } from './pages/Blog'
 import { Apoyanos } from './pages/Apoyanos'
 import { Contacto } from './pages/Contacto'
+import { NotFound } from './pages/NotFound'
 import { AdminLogin } from './admin/AdminLogin'
 import { AdminLayout } from './admin/AdminLayout'
 import { EntityManager } from './admin/EntityManager'
+import { MessagesInbox } from './admin/MessagesInbox'
 
 function App() {
   return (
@@ -39,11 +41,13 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/apoyanos" element={<Apoyanos />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/junta-directiva" replace />} />
+          <Route path="mensajes" element={<MessagesInbox />} />
           <Route path=":entity" element={<EntityManager />} />
         </Route>
       </Routes>

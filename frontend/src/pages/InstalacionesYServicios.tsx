@@ -42,6 +42,7 @@ export function InstalacionesYServicios() {
         label="El Parque"
         title="Instalaciones y Servicios"
         description="Las áreas y facilidades del parque, y los servicios que ofrece a la comunidad de Santiago."
+        image="/images/galeria/cancha-basketball.jpg"
       />
 
       <section className="section">

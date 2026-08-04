@@ -21,6 +21,7 @@ export function ProgramasYProyectos() {
         label="El Parque"
         title="Programas y Proyectos"
         description="Las iniciativas y proyectos institucionales del Parque Central de Santiago."
+        image="/images/galeria/cibao-futbol-club.jpg"
       />
 
       <section className="section">

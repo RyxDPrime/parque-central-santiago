@@ -8,6 +8,7 @@ function iconFor(categoria: string) {
   if (c.includes('fútbol') || c.includes('futbol')) return 'ti-ball-football'
   if (c.includes('tenis')) return 'ti-tournament'
   if (c.includes('aventura')) return 'ti-mountain'
+  if (c.includes('bicicleta')) return 'ti-bike'
   if (c.includes('infantil') || c.includes('recreación') || c.includes('recreacion')) return 'ti-car'
   return 'ti-plant-2'
 }

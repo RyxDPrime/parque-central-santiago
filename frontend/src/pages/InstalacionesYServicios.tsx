@@ -25,8 +25,9 @@ const instalacionIconos: Record<string, string> = {
 const servicioFotos: Record<string, string> = {
   'Cibao Fútbol Club': '/images/galeria/cibao-futbol-club.jpg',
   'Escuela de Tenis – Washington Heights Tennis Association': '/images/galeria/cancha-tenis.jpg',
-  Tirolesa: '/images/galeria/ciclistas.jpg',
+  Tirolesa: '/images/galeria/vista-aerea-parque.jpg',
   'Fun Stop – Carritos Corredores': '/images/galeria/funstop.jpg',
+  'Alquiler de Bicicletas – Bicicentro': '/images/galeria/ciclistas.jpg',
 }
 
 export function InstalacionesYServicios() {

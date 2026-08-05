@@ -67,6 +67,11 @@ const programas = [
     descripcion: "Servicio recreativo que ofrece una experiencia de aventura para visitantes de diferentes edades, bajo normas de seguridad establecidas. Constituye una de las principales atracciones del parque para el entretenimiento familiar.",
   },
   {
+    nombre: "Alquiler de Bicicletas – Bicicentro",
+    categoria: "Recreación · Bicicletas",
+    descripcion: "Servicio de alquiler de bicicletas operado por Bicicentro, disponible para recorrer las vías internas del parque en familia. Funciona de martes a domingo, de 4:00 p.m. a 7:00 p.m.",
+  },
+  {
     nombre: "Fun Stop – Carritos Corredores",
     categoria: "Recreación infantil",
     descripcion: "Servicio de alquiler de carritos corredores para el disfrute de niños y familias dentro de las áreas habilitadas del parque. Esta atracción complementa la oferta recreativa y promueve el esparcimiento en un ambiente seguro.",

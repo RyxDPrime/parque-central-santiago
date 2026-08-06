@@ -119,28 +119,28 @@ async function main() {
 
   await prisma.juntaDirectivo.deleteMany();
   for (const [i, m] of juntaDirectiva.entries()) {
-    await prisma.juntaDirectivo.create({ data: { ...m, orden: i } });
+    await prisma.juntaDirectivo.create({ data: { ...m, orden: i + 1 } });
   }
 
   await prisma.personalTecnico.deleteMany();
   for (const [i, p] of personalTecnico.entries()) {
-    await prisma.personalTecnico.create({ data: { ...p, orden: i } });
+    await prisma.personalTecnico.create({ data: { ...p, orden: i + 1 } });
   }
 
   await prisma.instalacion.deleteMany();
   for (const [i, inst] of instalaciones.entries()) {
-    await prisma.instalacion.create({ data: { ...inst, orden: i } });
+    await prisma.instalacion.create({ data: { ...inst, orden: i + 1 } });
   }
 
   await prisma.programa.deleteMany();
   for (const [i, p] of programas.entries()) {
-    await prisma.programa.create({ data: { ...p, orden: i } });
+    await prisma.programa.create({ data: { ...p, orden: i + 1 } });
   }
 
   // Aliados institucionales: mismas instituciones de la Junta Directiva, con sus logos reales.
   await prisma.aliado.deleteMany();
   for (const [i, m] of juntaDirectiva.entries()) {
-    await prisma.aliado.create({ data: { nombre: m.institucion, logoUrl: m.logoUrl, orden: i } });
+    await prisma.aliado.create({ data: { nombre: m.institucion, logoUrl: m.logoUrl, orden: i + 1 } });
   }
 
   await prisma.actividad.deleteMany();
@@ -156,7 +156,7 @@ async function main() {
 
   await prisma.galeriaItem.deleteMany();
   for (const [i, g] of galeria.entries()) {
-    await prisma.galeriaItem.create({ data: { ...g, tipo: "imagen", orden: i } });
+    await prisma.galeriaItem.create({ data: { ...g, tipo: "imagen", orden: i + 1 } });
   }
 
   console.log("Listo.");

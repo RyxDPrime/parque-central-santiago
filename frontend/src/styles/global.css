@@ -281,7 +281,9 @@ ul{list-style:none}
 /* ── JUNTA DIRECTIVA — galeria de liderazgo (grid limpio, sin bordes) ── */
 .leadership-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:36px 28px;margin-top:32px;background:#fff}
 .leadership-card{text-align:left}
-.leadership-photo{aspect-ratio:1;border-radius:var(--radius);overflow:hidden;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.leadership-photo{position:relative;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.leadership-logo-badge{position:absolute;right:8px;bottom:8px;width:38%;max-width:64px;aspect-ratio:1;background:rgba(255,255,255,.94);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;padding:6px;z-index:1}
+.leadership-logo-badge img{width:100%;height:100%;object-fit:contain}
 .leadership-photo img{width:100%;height:100%;object-fit:cover}
 .leadership-photo img.leadership-photo-logo{object-fit:contain;padding:18%}
 .leadership-photo i{font-size:44px;color:var(--green-400)}
@@ -472,6 +474,7 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-field input:hover,.admin-field textarea:hover,.admin-field select:hover{border-color:var(--green-400)}
 .admin-field input:focus,.admin-field textarea:focus,.admin-field select:focus{outline:none;background:#fff;border-color:var(--green-600);box-shadow:0 0 0 3px var(--green-50)}
 .admin-field textarea{resize:vertical;min-height:110px;line-height:1.65}
+.admin-field-hint{font-size:11px;color:var(--text-muted);line-height:1.5}
 
 /* ── ADMIN: LOGIN ── */
 .admin-login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--green-900);padding:24px}

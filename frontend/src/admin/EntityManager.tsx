@@ -246,12 +246,26 @@ export function EntityManager() {
                   type={field.type}
                   required={field.required}
                   placeholder={field.placeholder}
+                  min={field.nextPosition ? 1 : undefined}
+                  max={field.nextPosition ? (editing ? rows.length : rows.length + 1) : undefined}
+                  step={field.nextPosition ? 1 : undefined}
                   defaultValue={
                     field.type === 'date'
                       ? String(editing?.[field.key] ?? '').slice(0, 10)
-                      : ((editing?.[field.key] as string | number) ?? '')
+                      : field.nextPosition && !editing
+                        ? // Se propone la última posición: lo habitual al agregar
+                          // es que el registro nuevo vaya al final.
+                          rows.length + 1
+                        : ((editing?.[field.key] as string | number) ?? '')
                   }
                 />
+              )}
+              {field.nextPosition && (
+                <small className="admin-field-hint">
+                  {editing
+                    ? `Del 1 al ${rows.length}. Al cambiarla, los demás se renumeran solos.`
+                    : `Se agregará en la posición ${rows.length + 1}. Si eliges una menor, los siguientes bajan un puesto.`}
+                </small>
               )}
             </div>
           ))}

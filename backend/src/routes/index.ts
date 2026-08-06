@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { prisma } from "../config/db";
 import { adminRouter } from "./admin.routes";
 import { contactoRouter } from "./contacto.routes";
 import { contentRouter } from "./content.routes";
@@ -20,10 +19,11 @@ apiRouter.use(uploadsRouter);
 apiRouter.use(mensajesRouter);
 
 // Crear / editar / borrar (protegido) para las secciones administrables del panel.
-apiRouter.use("/junta-directiva", crudRoutes(prisma.juntaDirectivo));
-apiRouter.use("/personal-tecnico", crudRoutes(prisma.personalTecnico));
-apiRouter.use("/instalaciones", crudRoutes(prisma.instalacion));
-apiRouter.use("/programas", crudRoutes(prisma.programa));
-apiRouter.use("/actividades", crudRoutes(prisma.actividad));
-apiRouter.use("/galeria", crudRoutes(prisma.galeriaItem));
-apiRouter.use("/documentos-financieros", crudRoutes(prisma.documentoFinanciero));
+// Todas llevan posición reordenable salvo Actividades, que se ordena por fecha.
+apiRouter.use("/junta-directiva", crudRoutes("juntaDirectivo", { reorder: true }));
+apiRouter.use("/personal-tecnico", crudRoutes("personalTecnico", { reorder: true }));
+apiRouter.use("/instalaciones", crudRoutes("instalacion", { reorder: true }));
+apiRouter.use("/programas", crudRoutes("programa", { reorder: true }));
+apiRouter.use("/actividades", crudRoutes("actividad"));
+apiRouter.use("/galeria", crudRoutes("galeriaItem", { reorder: true }));
+apiRouter.use("/documentos-financieros", crudRoutes("documentoFinanciero", { reorder: true }));

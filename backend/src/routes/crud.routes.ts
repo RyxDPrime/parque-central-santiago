@@ -1,22 +1,72 @@
 import { Router } from "express";
+import { prisma } from "../config/db";
 import { requireAuth } from "../middleware/auth";
 
 // Fábrica genérica de rutas crear/editar/borrar para un modelo de Prisma.
-// Las 7 secciones administrables comparten la misma forma básica
-// (una tabla con columnas simples + "orden"), así que en vez de repetir
-// el mismo código 7 veces, se genera una sola vez por modelo.
+// Las secciones administrables comparten la misma forma básica (una tabla con
+// columnas simples + "orden"), así que en vez de repetir el mismo código por
+// cada una, se genera una sola vez por modelo.
+//
+// Con `reorder` la posición se mantiene siempre como una secuencia 1..n sin
+// huecos ni repetidos: al insertar en una posición ocupada, esa y las
+// siguientes se corren una hacia abajo; al mover o borrar, se cierra el hueco.
+// Todo va dentro de una transacción para que no queden posiciones a medias.
+
+type ClienteTx = Omit<typeof prisma, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends">;
+
+// Se accede al modelo por nombre para poder usar el cliente de la transacción.
 // Se tipa como `any` a propósito: cada modelo de Prisma tiene su propio tipo
-// estricto de "data" y no vale la pena reescribir esta fábrica por modelo
-// solo para satisfacer eso; la validación real ocurre en la base de datos
-// (columnas requeridas) y devuelve un error si el body no encaja.
+// estricto de "data" y no vale la pena reescribir esta fábrica por modelo solo
+// para satisfacer eso; la validación real ocurre en la base de datos.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function crudRoutes(model: any): Router {
+type Delegado = any;
+
+export type ModeloOrdenable =
+  | "juntaDirectivo"
+  | "personalTecnico"
+  | "instalacion"
+  | "programa"
+  | "galeriaItem"
+  | "documentoFinanciero";
+
+export type ModeloCrud = ModeloOrdenable | "actividad";
+
+export function crudRoutes(
+  modelo: ModeloCrud,
+  opciones: { reorder?: boolean } = {},
+): Router {
   const router = Router();
+  const del = (cliente: ClienteTx | typeof prisma): Delegado =>
+    (cliente as Record<string, Delegado>)[modelo];
+
+  function posicionPedida(valor: unknown): number | null {
+    const n = Number(valor);
+    return Number.isInteger(n) && n > 0 ? n : null;
+  }
 
   router.post("/", requireAuth, async (req, res, next) => {
     try {
-      const created = await model.create({ data: req.body });
-      res.status(201).json(created);
+      const creado = await prisma.$transaction(async (tx) => {
+        const m = del(tx);
+        const data = { ...req.body };
+
+        if (opciones.reorder) {
+          const total = await m.count();
+          const pedida = posicionPedida(data.orden);
+          // Sin posición explícita va al final; si la piden fuera de rango se
+          // ajusta al final para no dejar huecos.
+          const destino = pedida === null ? total + 1 : Math.min(pedida, total + 1);
+
+          await m.updateMany({
+            where: { orden: { gte: destino } },
+            data: { orden: { increment: 1 } },
+          });
+          data.orden = destino;
+        }
+
+        return m.create({ data });
+      });
+      res.status(201).json(creado);
     } catch (err) {
       next(err);
     }
@@ -24,11 +74,42 @@ export function crudRoutes(model: any): Router {
 
   router.put("/:id", requireAuth, async (req, res, next) => {
     try {
-      const updated = await model.update({
-        where: { id: Number(req.params.id) },
-        data: req.body,
+      const id = Number(req.params.id);
+      const actualizado = await prisma.$transaction(async (tx) => {
+        const m = del(tx);
+        const data = { ...req.body };
+
+        if (opciones.reorder && data.orden !== undefined) {
+          const actual = await m.findUnique({ where: { id } });
+          const pedida = posicionPedida(data.orden);
+
+          if (actual && pedida !== null) {
+            const total = await m.count();
+            const desde = actual.orden as number;
+            const hasta = Math.min(pedida, total);
+
+            if (hasta < desde) {
+              // Sube: los que estaban entre la posición nueva y la vieja bajan uno.
+              await m.updateMany({
+                where: { orden: { gte: hasta, lt: desde } },
+                data: { orden: { increment: 1 } },
+              });
+            } else if (hasta > desde) {
+              // Baja: los que quedaron por encima suben uno.
+              await m.updateMany({
+                where: { orden: { gt: desde, lte: hasta } },
+                data: { orden: { decrement: 1 } },
+              });
+            }
+            data.orden = hasta;
+          } else {
+            delete data.orden;
+          }
+        }
+
+        return m.update({ where: { id }, data });
       });
-      res.json(updated);
+      res.json(actualizado);
     } catch (err) {
       next(err);
     }
@@ -36,7 +117,21 @@ export function crudRoutes(model: any): Router {
 
   router.delete("/:id", requireAuth, async (req, res, next) => {
     try {
-      await model.delete({ where: { id: Number(req.params.id) } });
+      const id = Number(req.params.id);
+      await prisma.$transaction(async (tx) => {
+        const m = del(tx);
+        const actual = opciones.reorder ? await m.findUnique({ where: { id } }) : null;
+
+        await m.delete({ where: { id } });
+
+        if (actual) {
+          // Cierra el hueco que dejó el registro borrado.
+          await m.updateMany({
+            where: { orden: { gt: actual.orden as number } },
+            data: { orden: { decrement: 1 } },
+          });
+        }
+      });
       res.status(204).send();
     } catch (err) {
       next(err);

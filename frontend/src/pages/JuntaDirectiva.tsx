@@ -37,6 +37,14 @@ export function JuntaDirectiva() {
                     ) : (
                       <i className="ti ti-user" />
                     )}
+
+                    {/* Con foto de la persona, el logo pasa a un sello en la
+                        esquina: manda el rostro, sin perder la institución. */}
+                    {member.fotoUrl && member.logoUrl && (
+                      <span className="leadership-logo-badge">
+                        <img src={member.logoUrl} alt={member.institucion} loading="lazy" />
+                      </span>
+                    )}
                   </div>
                   <h3>{member.representante}</h3>
                   <p className="leadership-org">{member.institucion}</p>

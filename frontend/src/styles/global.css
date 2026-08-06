@@ -263,11 +263,12 @@ ul{list-style:none}
 .transparency-intro h3{color:#fff;font-size:16px;font-weight:600;margin-bottom:8px}
 .transparency-intro p{color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.75}
 .transparency-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.transparency-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px}
-.transparency-block h3{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--green-800);margin-bottom:16px}
-/* Ocupa todo el ancho de la tarjeta: encajonado se leía como desalineado
-   frente al título, que va pegado a la izquierda. */
-.transparency-block .empty-state{margin-top:0;padding:32px 20px;width:100%}
+.transparency-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;display:flex;flex-direction:column;min-height:280px}
+/* Solo el título del bloque: sin ">" la regla se filtraba al h3 del estado
+   vacío y su display:flex le rompía el centrado del texto. */
+.transparency-block>h3{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--green-800);margin-bottom:16px;align-self:flex-start}
+/* Ocupa el ancho completo y el alto restante, centrado en ambos ejes. */
+.transparency-block .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:0;padding:32px 20px;width:100%}
 .document-card{display:flex;align-items:center;gap:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;transition:border-color .2s,background .2s}
 .document-card:last-child{margin-bottom:0}
 .document-card:hover{border-color:var(--green-400);background:var(--green-50)}

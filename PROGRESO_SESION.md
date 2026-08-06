@@ -72,7 +72,10 @@ Tres formas de apoyar al parque, y formulario de contacto con los datos reales d
 
 Acceso desde el pie de página o en `/admin/login`.
 
-**Credenciales:** usuario `pcs.admin`
+**Credenciales:** 
+- usuario `pcs.admin`
+- contraseña: `AdminPCS2018!`
+
 
 ### Qué se puede editar
 Junta Directiva, Personal Técnico, Instalaciones, Programas, Actividades, Blog, Galería y Estados Financieros. Además, una **bandeja de mensajes** de contacto.

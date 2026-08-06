@@ -179,7 +179,10 @@ export function EntityManager() {
       <form
         className={`admin-form${editing ? ' is-editing' : ''}`}
         onSubmit={handleSubmit}
-        key={`${editing?.id ?? 'new'}-${formVersion}`}
+        // La cantidad entra en la clave porque la posición propuesta depende de
+        // ella, y los valores por defecto solo se aplican al montar: sin esto el
+        // campo se queda con el valor calculado antes de que lleguen los datos.
+        key={`${editing?.id ?? 'new'}-${formVersion}-${rows.length}`}
       >
         <div className="admin-form-head">
           <span className="admin-form-badge">

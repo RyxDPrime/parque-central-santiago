@@ -283,7 +283,9 @@ ul{list-style:none}
 .leadership-card{text-align:left}
 .leadership-photo{position:relative;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .leadership-logo-badge{position:absolute;right:8px;bottom:8px;width:38%;max-width:64px;aspect-ratio:1;background:rgba(255,255,255,.94);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;padding:6px;z-index:1}
-.leadership-logo-badge img{width:100%;height:100%;object-fit:contain}
+/* La regla generica de .leadership-photo img viene despues y usa cover, que
+   recortaria el logo: se sube la especificidad para conservar contain. */
+.leadership-photo .leadership-logo-badge img{width:100%;height:100%;object-fit:contain}
 .leadership-photo img{width:100%;height:100%;object-fit:cover}
 .leadership-photo img.leadership-photo-logo{object-fit:contain;padding:18%}
 .leadership-photo i{font-size:44px;color:var(--green-400)}

@@ -57,6 +57,16 @@ contentRouter.get("/galeria", async (_req, res, next) => {
   }
 });
 
+// Blog: se ordena por fecha, de la más reciente a la más antigua.
+contentRouter.get("/publicaciones", async (_req, res, next) => {
+  try {
+    const data = await prisma.publicacion.findMany({ orderBy: { fecha: "desc" } });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
 contentRouter.get("/aliados", async (_req, res, next) => {
   try {
     const data = await prisma.aliado.findMany({ orderBy: { orden: "asc" } });

@@ -1,7 +1,9 @@
 export interface FieldConfig {
   key: string
   label: string
-  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file'
+  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file' | 'checkbox'
+  /** Texto explicativo bajo el campo. */
+  hint?: string
   options?: { value: string; label: string }[]
   accept?: string
   required?: boolean
@@ -88,6 +90,35 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true },
       { key: 'fechaFin', label: 'Fecha de fin (opcional)', type: 'date' },
       { key: 'lugar', label: 'Lugar (opcional)', type: 'text', placeholder: 'Ej: Anfiteatro' },
+    ],
+  },
+  {
+    path: 'publicaciones',
+    icon: 'ti-news',
+    description: 'Artículos y noticias del blog. Se ordenan por fecha, de la más reciente a la más antigua.',
+    label: 'Blog',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Jornada de reforestación en el parque' },
+      {
+        key: 'tipo',
+        label: 'Tipo',
+        type: 'select',
+        options: [
+          { value: 'noticia', label: 'Noticia' },
+          { value: 'articulo', label: 'Artículo' },
+        ],
+      },
+      { key: 'fecha', label: 'Fecha de publicación', type: 'date', required: true },
+      { key: 'resumen', label: 'Resumen (opcional)', type: 'textarea', placeholder: 'Una o dos líneas que resuman la publicación. Se muestran en el listado.' },
+      { key: 'contenido', label: 'Contenido', type: 'textarea', required: true, placeholder: 'Texto completo de la publicación...' },
+      { key: 'imagenUrl', label: 'Imagen (opcional)', type: 'file', accept: 'image/*' },
+      {
+        key: 'destacada',
+        label: 'Anunciar en la página de inicio',
+        type: 'checkbox',
+        hint: 'Aparece en la barra superior y en una ventana emergente al entrar al sitio. Si marcas varias, se anuncia la más reciente.',
+      },
     ],
   },
   {

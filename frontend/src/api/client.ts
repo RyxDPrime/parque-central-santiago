@@ -63,6 +63,17 @@ export interface DocumentoFinanciero {
   orden: number;
 }
 
+export interface Publicacion {
+  id: number;
+  titulo: string;
+  tipo: string;
+  resumen: string | null;
+  contenido: string;
+  imagenUrl: string | null;
+  fecha: string;
+  destacada: boolean;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -100,5 +111,6 @@ export const api = {
   getGaleria: () => get<GaleriaItem[]>("/galeria"),
   getPersonalTecnico: () => get<PersonalTecnico[]>("/personal-tecnico"),
   getDocumentosFinancieros: () => get<DocumentoFinanciero[]>("/documentos-financieros"),
+  getPublicaciones: () => get<Publicacion[]>("/publicaciones"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

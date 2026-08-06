@@ -7,6 +7,11 @@ import { FileDropzone } from './FileDropzone'
 type Row = Record<string, unknown> & { id: number }
 
 function coerceValue(field: FieldConfig, raw: FormDataEntryValue | null): unknown {
+  // Las casillas sin marcar no aparecen en el formulario, así que su ausencia
+  // es justamente el "false".
+  if (field.type === 'checkbox') {
+    return raw !== null
+  }
   if (field.type === 'number') {
     if (raw === null || raw === '') {
       // Se omite el campo (en vez de mandar null) para que la base de datos
@@ -22,7 +27,7 @@ function coerceValue(field: FieldConfig, raw: FormDataEntryValue | null): unknow
 
 // Los campos largos ocupan el ancho completo para que no queden apretados.
 function isWideField(field: FieldConfig) {
-  return field.type === 'textarea' || field.type === 'file'
+  return field.type === 'textarea' || field.type === 'file' || field.type === 'checkbox'
 }
 
 function textoDe(valor: unknown): string {
@@ -203,10 +208,24 @@ export function EntityManager() {
         <div className="admin-form-grid">
           {visibleFields.map((field) => (
             <div className={`admin-field${isWideField(field) ? ' is-wide' : ''}`} key={field.key}>
-              <label htmlFor={field.key}>
-                {field.label}
-                {field.required && <span className="admin-field-req">obligatorio</span>}
-              </label>
+              {field.type !== 'checkbox' && (
+                <label htmlFor={field.key}>
+                  {field.label}
+                  {field.required && <span className="admin-field-req">obligatorio</span>}
+                </label>
+              )}
+
+              {field.type === 'checkbox' && (
+                <label className="admin-check" htmlFor={field.key}>
+                  <input
+                    id={field.key}
+                    name={field.key}
+                    type="checkbox"
+                    defaultChecked={Boolean(editing?.[field.key])}
+                  />
+                  <span>{field.label}</span>
+                </label>
+              )}
 
               {field.type === 'textarea' && (
                 <textarea
@@ -265,6 +284,8 @@ export function EntityManager() {
                   }
                 />
               )}
+              {field.hint && <small className="admin-field-hint">{field.hint}</small>}
+
               {field.nextPosition && (
                 <small className="admin-field-hint">
                   {editing
@@ -417,6 +438,16 @@ export function EntityManager() {
                           ) : (
                             <span className="admin-chip">Sin archivo</span>
                           )
+                        ) : f.type === 'checkbox' ? (
+                          row[f.key] ? (
+                            <span className="admin-chip is-ok">
+                              <i className="ti ti-check" /> Sí
+                            </span>
+                          ) : (
+                            <span className="admin-chip">No</span>
+                          )
+                        ) : f.type === 'date' ? (
+                          row[f.key] ? String(row[f.key]).slice(0, 10) : '—'
                         ) : (
                           String(row[f.key] ?? '—')
                         )}

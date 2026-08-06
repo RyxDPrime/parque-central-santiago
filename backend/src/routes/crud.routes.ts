@@ -29,7 +29,7 @@ export type ModeloOrdenable =
   | "galeriaItem"
   | "documentoFinanciero";
 
-export type ModeloCrud = ModeloOrdenable | "actividad";
+export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion";
 
 export function crudRoutes(
   modelo: ModeloCrud,

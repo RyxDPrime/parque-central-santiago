@@ -25,5 +25,6 @@ apiRouter.use("/personal-tecnico", crudRoutes("personalTecnico", { reorder: true
 apiRouter.use("/instalaciones", crudRoutes("instalacion", { reorder: true }));
 apiRouter.use("/programas", crudRoutes("programa", { reorder: true }));
 apiRouter.use("/actividades", crudRoutes("actividad"));
+apiRouter.use("/publicaciones", crudRoutes("publicacion"));
 apiRouter.use("/galeria", crudRoutes("galeriaItem", { reorder: true }));
 apiRouter.use("/documentos-financieros", crudRoutes("documentoFinanciero", { reorder: true }));

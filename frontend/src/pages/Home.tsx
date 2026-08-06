@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ProgramsCarousel } from '../components/ProgramsCarousel'
+import { AnnouncementPopup } from '../components/AnnouncementPopup'
 
 const quickLinks = [
   {
@@ -43,6 +44,8 @@ const quickLinks = [
 export function Home() {
   return (
     <>
+      <AnnouncementPopup />
+
       <section id="home-hero">
         <img
           src="/images/galeria/vista-aerea-parque.jpg"

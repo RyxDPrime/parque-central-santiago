@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { deleteMessage, listMessages, type ContactMessage } from './adminClient'
 
 const fechaFormatter = new Intl.DateTimeFormat('es-DO', {
@@ -13,6 +13,9 @@ export function MessagesInbox() {
   const [mensajes, setMensajes] = useState<ContactMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [busqueda, setBusqueda] = useState('')
+  const [filtroEstado, setFiltroEstado] = useState('')
+  const [orden, setOrden] = useState<'recientes' | 'antiguos' | 'nombre'>('recientes')
 
   useEffect(() => {
     listMessages()
@@ -35,6 +38,28 @@ export function MessagesInbox() {
   }
 
   const sinEnviar = mensajes.filter((m) => !m.emailEnviado).length
+
+  const visibles = useMemo(() => {
+    let r = mensajes
+    const q = busqueda.trim().toLowerCase()
+    if (q) {
+      r = r.filter((m) =>
+        [m.nombre, m.email, m.telefono, m.asunto, m.mensaje]
+          .some((v) => (v ?? '').toLowerCase().includes(q)),
+      )
+    }
+    if (filtroEstado === 'notificado') r = r.filter((m) => m.emailEnviado)
+    if (filtroEstado === 'sin_notificar') r = r.filter((m) => !m.emailEnviado)
+
+    return [...r].sort((a, b) => {
+      if (orden === 'nombre') return a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+      const ta = new Date(a.createdAt).getTime()
+      const tb = new Date(b.createdAt).getTime()
+      return orden === 'recientes' ? tb - ta : ta - tb
+    })
+  }, [mensajes, busqueda, filtroEstado, orden])
+
+  const hayFiltros = Boolean(busqueda.trim()) || Boolean(filtroEstado)
 
   return (
     <div className="admin-entity">
@@ -60,8 +85,59 @@ export function MessagesInbox() {
       <section className="admin-panel">
         <div className="admin-panel-head">
           <h2>Recibidos</h2>
-          <span className="admin-count">{mensajes.length}</span>
+          <span className="admin-count">
+            {hayFiltros ? `${visibles.length} de ${mensajes.length}` : mensajes.length}
+          </span>
         </div>
+
+        {!loading && !error && mensajes.length > 0 && (
+          <div className="admin-toolbar">
+            <div className="admin-search">
+              <i className="ti ti-search" />
+              <input
+                type="search"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+                placeholder="Buscar por nombre, correo, asunto o texto…"
+                aria-label="Buscar mensajes"
+              />
+            </div>
+
+            <label className="admin-toolbar-campo">
+              <span>Estado</span>
+              <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
+                <option value="">Todos</option>
+                <option value="notificado">Notificados</option>
+                <option value="sin_notificar">Sin notificar</option>
+              </select>
+            </label>
+
+            <label className="admin-toolbar-campo">
+              <span>Ordenar por</span>
+              <select
+                value={orden}
+                onChange={(e) => setOrden(e.target.value as typeof orden)}
+              >
+                <option value="recientes">Más recientes</option>
+                <option value="antiguos">Más antiguos</option>
+                <option value="nombre">Nombre</option>
+              </select>
+            </label>
+
+            {hayFiltros && (
+              <button
+                type="button"
+                className="admin-limpiar"
+                onClick={() => {
+                  setBusqueda('')
+                  setFiltroEstado('')
+                }}
+              >
+                <i className="ti ti-x" /> Limpiar
+              </button>
+            )}
+          </div>
+        )}
 
         {loading && <p className="admin-panel-msg">Cargando…</p>}
         {error && <p className="admin-panel-msg is-error">{error}</p>}
@@ -74,9 +150,17 @@ export function MessagesInbox() {
           </div>
         )}
 
-        {!loading && !error && mensajes.length > 0 && (
+        {!loading && !error && mensajes.length > 0 && visibles.length === 0 && (
+          <div className="admin-empty">
+            <i className="ti ti-search-off" />
+            <h3>Ningún mensaje coincide</h3>
+            <p>Prueba con otra búsqueda o quita los filtros.</p>
+          </div>
+        )}
+
+        {!loading && !error && visibles.length > 0 && (
           <ul className="inbox-list">
-            {mensajes.map((m) => (
+            {visibles.map((m) => (
               <li className="inbox-item" key={m.id}>
                 <div className="inbox-item-head">
                   <div>

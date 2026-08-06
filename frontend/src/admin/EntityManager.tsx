@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useState } from 'react'
+import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { createEntity, deleteEntity, listEntity, updateEntity, uploadFile } from './adminClient'
 import { entityConfigs, type FieldConfig } from './entityConfigs'
@@ -25,6 +25,10 @@ function isWideField(field: FieldConfig) {
   return field.type === 'textarea' || field.type === 'file'
 }
 
+function textoDe(valor: unknown): string {
+  return valor === null || valor === undefined ? '' : String(valor)
+}
+
 export function EntityManager() {
   const { entity } = useParams<{ entity: string }>()
   const config = entityConfigs.find((e) => e.path === entity)
@@ -35,10 +39,21 @@ export function EntityManager() {
   const [editing, setEditing] = useState<Row | null>(null)
   const [saving, setSaving] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  // Cambiarlo remonta el formulario, que es lo único que limpia de verdad los
+  // campos de archivo (reset() no borra la vista previa ni el nombre elegido).
+  const [formVersion, setFormVersion] = useState(0)
+
+  const [busqueda, setBusqueda] = useState('')
+  const [filtros, setFiltros] = useState<Record<string, string>>({})
+  const [ordenCampo, setOrdenCampo] = useState<string>('')
+  const [ordenDir, setOrdenDir] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     if (!config) return
     setLoading(true)
+    setBusqueda('')
+    setFiltros({})
+    setOrdenCampo('')
     listEntity<Row>(config.path)
       .then((data) => {
         setRows(data)
@@ -47,6 +62,50 @@ export function EntityManager() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Error al cargar'))
       .finally(() => setLoading(false))
   }, [config?.path])
+
+  // Los campos de tipo lista sirven como filtros (ej. auditado / sin auditar).
+  const camposFiltrables = useMemo(
+    () => config?.fields.filter((f) => f.type === 'select') ?? [],
+    [config],
+  )
+
+  const filasVisibles = useMemo(() => {
+    if (!config) return []
+    let resultado = rows
+
+    const q = busqueda.trim().toLowerCase()
+    if (q) {
+      resultado = resultado.filter((row) =>
+        config.fields
+          .filter((f) => f.type !== 'file')
+          .some((f) => textoDe(row[f.key]).toLowerCase().includes(q)),
+      )
+    }
+
+    for (const [clave, valor] of Object.entries(filtros)) {
+      if (!valor) continue
+      resultado = resultado.filter((row) => textoDe(row[clave]) === valor)
+    }
+
+    if (ordenCampo) {
+      const campo = config.fields.find((f) => f.key === ordenCampo)
+      resultado = [...resultado].sort((a, b) => {
+        const va = a[ordenCampo]
+        const vb = b[ordenCampo]
+        let cmp: number
+        if (campo?.type === 'number') {
+          cmp = Number(va ?? 0) - Number(vb ?? 0)
+        } else if (campo?.type === 'date') {
+          cmp = new Date(textoDe(va)).getTime() - new Date(textoDe(vb)).getTime()
+        } else {
+          cmp = textoDe(va).localeCompare(textoDe(vb), 'es', { sensitivity: 'base' })
+        }
+        return ordenDir === 'asc' ? cmp : -cmp
+      })
+    }
+
+    return resultado
+  }, [config, rows, busqueda, filtros, ordenCampo, ordenDir])
 
   if (!config) {
     return <p>Sección no encontrada.</p>
@@ -83,7 +142,7 @@ export function EntityManager() {
         const created = await createEntity<Row>(config.path, data)
         setRows((prev) => [...prev, created])
       }
-      formElement.reset()
+      setFormVersion((v) => v + 1)
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Error al guardar')
     } finally {
@@ -103,6 +162,7 @@ export function EntityManager() {
   }
 
   const visibleFields = config.fields.filter((f) => editing || f.showOnCreate !== false)
+  const hayFiltrosActivos = Boolean(busqueda.trim()) || Object.values(filtros).some(Boolean)
 
   return (
     <div className="admin-entity">
@@ -119,7 +179,7 @@ export function EntityManager() {
       <form
         className={`admin-form${editing ? ' is-editing' : ''}`}
         onSubmit={handleSubmit}
-        key={editing?.id ?? 'new'}
+        key={`${editing?.id ?? 'new'}-${formVersion}`}
       >
         <div className="admin-form-head">
           <span className="admin-form-badge">
@@ -137,10 +197,7 @@ export function EntityManager() {
 
         <div className="admin-form-grid">
           {visibleFields.map((field) => (
-            <div
-              className={`admin-field${isWideField(field) ? ' is-wide' : ''}`}
-              key={field.key}
-            >
+            <div className={`admin-field${isWideField(field) ? ' is-wide' : ''}`} key={field.key}>
               <label htmlFor={field.key}>
                 {field.label}
                 {field.required && <span className="admin-field-req">obligatorio</span>}
@@ -178,6 +235,7 @@ export function EntityManager() {
                   currentFileLabel={
                     editing && editing[field.key] ? String(editing[field.key]).split('/').pop() : null
                   }
+                  currentFileUrl={editing ? ((editing[field.key] as string) ?? null) : null}
                 />
               )}
 
@@ -221,8 +279,81 @@ export function EntityManager() {
       <section className="admin-panel">
         <div className="admin-panel-head">
           <h2>Registros publicados</h2>
-          <span className="admin-count">{rows.length}</span>
+          <span className="admin-count">
+            {hayFiltrosActivos ? `${filasVisibles.length} de ${rows.length}` : rows.length}
+          </span>
         </div>
+
+        {!loading && !error && rows.length > 0 && (
+          <div className="admin-toolbar">
+            <div className="admin-search">
+              <i className="ti ti-search" />
+              <input
+                type="search"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+                placeholder={`Buscar en ${config.label.toLowerCase()}…`}
+                aria-label="Buscar"
+              />
+            </div>
+
+            {camposFiltrables.map((campo) => (
+              <label className="admin-toolbar-campo" key={campo.key}>
+                <span>{campo.label}</span>
+                <select
+                  value={filtros[campo.key] ?? ''}
+                  onChange={(e) =>
+                    setFiltros((prev) => ({ ...prev, [campo.key]: e.target.value }))
+                  }
+                >
+                  <option value="">Todos</option>
+                  {campo.options?.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+
+            <label className="admin-toolbar-campo">
+              <span>Ordenar por</span>
+              <select value={ordenCampo} onChange={(e) => setOrdenCampo(e.target.value)}>
+                <option value="">Sin ordenar</option>
+                {config.fields
+                  .filter((f) => f.type !== 'file')
+                  .map((f) => (
+                    <option key={f.key} value={f.key}>
+                      {f.label}
+                    </option>
+                  ))}
+              </select>
+            </label>
+
+            <button
+              type="button"
+              className="admin-orden-dir"
+              onClick={() => setOrdenDir((d) => (d === 'asc' ? 'desc' : 'asc'))}
+              disabled={!ordenCampo}
+              title={ordenDir === 'asc' ? 'Ascendente' : 'Descendente'}
+            >
+              <i className={`ti ${ordenDir === 'asc' ? 'ti-sort-ascending' : 'ti-sort-descending'}`} />
+            </button>
+
+            {hayFiltrosActivos && (
+              <button
+                type="button"
+                className="admin-limpiar"
+                onClick={() => {
+                  setBusqueda('')
+                  setFiltros({})
+                }}
+              >
+                <i className="ti ti-x" /> Limpiar
+              </button>
+            )}
+          </div>
+        )}
 
         {loading && <p className="admin-panel-msg">Cargando…</p>}
         {error && <p className="admin-panel-msg is-error">{error}</p>}
@@ -235,7 +366,15 @@ export function EntityManager() {
           </div>
         )}
 
-        {!loading && !error && rows.length > 0 && (
+        {!loading && !error && rows.length > 0 && filasVisibles.length === 0 && (
+          <div className="admin-empty">
+            <i className="ti ti-search-off" />
+            <h3>Ningún registro coincide</h3>
+            <p>Prueba con otra búsqueda o quita los filtros.</p>
+          </div>
+        )}
+
+        {!loading && !error && filasVisibles.length > 0 && (
           <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
@@ -247,7 +386,7 @@ export function EntityManager() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => (
+                {filasVisibles.map((row) => (
                   <tr key={row.id}>
                     {config.fields.map((f) => (
                       <td key={f.key}>

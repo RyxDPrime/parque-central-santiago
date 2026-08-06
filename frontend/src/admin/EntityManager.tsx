@@ -12,6 +12,13 @@ function coerceValue(field: FieldConfig, raw: FormDataEntryValue | null): unknow
   if (field.type === 'checkbox') {
     return raw !== null
   }
+  // El input de fecha entrega "2026-08-06" y la base de datos exige fecha y
+  // hora completas. Se fija a medianoche UTC, que es la zona con la que se
+  // muestran las fechas en todo el sitio, para que no se corra un día.
+  if (field.type === 'date') {
+    if (raw === null || raw === '') return null
+    return `${String(raw)}T00:00:00.000Z`
+  }
   if (field.type === 'number') {
     if (raw === null || raw === '') {
       // Se omite el campo (en vez de mandar null) para que la base de datos

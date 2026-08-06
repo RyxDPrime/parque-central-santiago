@@ -135,13 +135,14 @@ export function EntityManager() {
       }
 
       if (editing) {
-        const updated = await updateEntity<Row>(config.path, editing.id, data)
-        setRows((prev) => prev.map((r) => (r.id === editing.id ? updated : r)))
+        await updateEntity<Row>(config.path, editing.id, data)
         setEditing(null)
       } else {
-        const created = await createEntity<Row>(config.path, data)
-        setRows((prev) => [...prev, created])
+        await createEntity<Row>(config.path, data)
       }
+      // Se recarga en vez de parchear la fila: al insertar o mover, el backend
+      // renumera las demás posiciones y esos valores quedarían viejos aquí.
+      setRows(await listEntity<Row>(config.path))
       setFormVersion((v) => v + 1)
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Error al guardar')
@@ -155,7 +156,8 @@ export function EntityManager() {
     if (!window.confirm('¿Eliminar este registro?')) return
     try {
       await deleteEntity(config.path, id)
-      setRows((prev) => prev.filter((r) => r.id !== id))
+      // Igual que al guardar: borrar cierra el hueco y renumera el resto.
+      setRows(await listEntity<Row>(config.path))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al eliminar')
     }

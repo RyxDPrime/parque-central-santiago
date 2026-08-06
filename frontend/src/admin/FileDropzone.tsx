@@ -1,4 +1,5 @@
 import { type DragEvent, useEffect, useRef, useState } from 'react'
+import { ImageCropper } from './ImageCropper'
 
 interface FileDropzoneProps {
   name: string
@@ -21,6 +22,7 @@ export function FileDropzone({
   const [fileName, setFileName] = useState<string | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState(false)
+  const [porRecortar, setPorRecortar] = useState<File | null>(null)
 
   const isPdf = accept?.includes('pdf')
 
@@ -32,17 +34,29 @@ export function FileDropzone({
     }
   }, [preview])
 
-  function setFiles(files: FileList | null) {
-    if (!files || files.length === 0) return
-    const file = files[0]
+  /** Deja el archivo listo en el input y actualiza la vista previa. */
+  function aplicarArchivo(file: File) {
+    const dt = new DataTransfer()
+    dt.items.add(file)
     if (inputRef.current) {
-      inputRef.current.files = files
+      inputRef.current.files = dt.files
     }
     setFileName(file.name)
     setPreview((prev) => {
       if (prev) URL.revokeObjectURL(prev)
       return file.type.startsWith('image/') ? URL.createObjectURL(file) : null
     })
+  }
+
+  function setFiles(files: FileList | null) {
+    if (!files || files.length === 0) return
+    const file = files[0]
+    // Las imágenes pasan primero por el recorte para elegir qué parte se ve.
+    if (file.type.startsWith('image/')) {
+      setPorRecortar(file)
+      return
+    }
+    aplicarArchivo(file)
   }
 
   function limpiar(event: React.MouseEvent) {
@@ -65,6 +79,7 @@ export function FileDropzone({
   const imagenPrevia = preview ?? (!isPdf ? currentFileUrl : null)
 
   return (
+    <>
     <div
       className={`file-dropzone${dragOver ? ' drag-over' : ''}${fileName ? ' has-file' : ''}`}
       onClick={() => inputRef.current?.click()}
@@ -109,5 +124,22 @@ export function FileDropzone({
         </>
       )}
     </div>
+
+    {porRecortar && (
+      <ImageCropper
+        file={porRecortar}
+        onConfirm={(recortada) => {
+          aplicarArchivo(recortada)
+          setPorRecortar(null)
+        }}
+        onCancel={() => {
+          // Se descarta la selección para no dejar en el input un archivo
+          // que el administrador no llegó a confirmar.
+          if (inputRef.current) inputRef.current.value = ''
+          setPorRecortar(null)
+        }}
+      />
+    )}
+    </>
   )
 }

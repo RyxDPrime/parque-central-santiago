@@ -63,6 +63,11 @@ export function EntityManager() {
   useEffect(() => {
     if (!config) return
     setLoading(true)
+    // Al cambiar de sección hay que soltar el registro en edición: varias
+    // entidades comparten nombres de campo (cargo, título, orden…) y los
+    // valores del anterior se colaban en el formulario de la nueva.
+    setEditing(null)
+    setFormError(null)
     setBusqueda('')
     setFiltros({})
     setOrdenCampo('')
@@ -267,6 +272,7 @@ export function EntityManager() {
                     editing && editing[field.key] ? String(editing[field.key]).split('/').pop() : null
                   }
                   currentFileUrl={editing ? ((editing[field.key] as string) ?? null) : null}
+                  aspect={field.aspect}
                 />
               )}
 

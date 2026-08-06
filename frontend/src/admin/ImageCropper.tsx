@@ -2,16 +2,21 @@ import { type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } f
 
 interface ImageCropperProps {
   file: File
-  /** Devuelve la imagen ya cuadrada; null si se cancela. */
+  /**
+   * Proporción (ancho/alto) con la que se mostrará la imagen en el sitio, para
+   * que el marco del recorte sea exactamente lo que se va a ver.
+   * Si no se indica, se respeta la proporción original de la foto.
+   */
+  aspect?: number
   onConfirm: (recortada: File) => void
   onCancel: () => void
 }
 
-// Lado del área de vista previa y del archivo resultante.
-const VISTA = 320
-const SALIDA = 800
+// Lado mayor del área de vista previa y del archivo resultante.
+const VISTA_MAX = 320
+const SALIDA_MAX = 1200
 
-export function ImageCropper({ file, onConfirm, onCancel }: ImageCropperProps) {
+export function ImageCropper({ file, aspect, onConfirm, onCancel }: ImageCropperProps) {
   const [url, setUrl] = useState<string | null>(null)
   const [natural, setNatural] = useState<{ w: number; h: number } | null>(null)
   const [zoom, setZoom] = useState(1)
@@ -25,26 +30,39 @@ export function ImageCropper({ file, onConfirm, onCancel }: ImageCropperProps) {
     return () => URL.revokeObjectURL(objectUrl)
   }, [file])
 
-  // Escala mínima para que la imagen cubra el cuadro sin dejar bordes vacíos.
-  const escalaBase = natural ? Math.max(VISTA / natural.w, VISTA / natural.h) : 1
+  // Sin proporción fija se usa la de la propia imagen: así el marco coincide
+  // con lo que se verá y "foto entera" no agrega franjas.
+  const ratio = aspect ?? (natural ? natural.w / natural.h : 1)
+
+  const vista =
+    ratio >= 1
+      ? { w: VISTA_MAX, h: Math.round(VISTA_MAX / ratio) }
+      : { w: Math.round(VISTA_MAX * ratio), h: VISTA_MAX }
+
+  const salida =
+    ratio >= 1
+      ? { w: SALIDA_MAX, h: Math.round(SALIDA_MAX / ratio) }
+      : { w: Math.round(SALIDA_MAX * ratio), h: SALIDA_MAX }
+
+  // Escala mínima para que la imagen cubra el marco sin dejar bordes vacíos.
+  const escalaBase = natural ? Math.max(vista.w / natural.w, vista.h / natural.h) : 1
   const escala = escalaBase * zoom
   const anchoMostrado = natural ? natural.w * escala : 0
   const altoMostrado = natural ? natural.h * escala : 0
 
   function limitar(x: number, y: number) {
-    const maxX = Math.max(0, (anchoMostrado - VISTA) / 2)
-    const maxY = Math.max(0, (altoMostrado - VISTA) / 2)
+    const maxX = Math.max(0, (anchoMostrado - vista.w) / 2)
+    const maxY = Math.max(0, (altoMostrado - vista.h) / 2)
     return {
       x: Math.min(maxX, Math.max(-maxX, x)),
       y: Math.min(maxY, Math.max(-maxY, y)),
     }
   }
 
-  // Al cambiar el zoom hay que reajustar, si no la imagen deja huecos.
   useEffect(() => {
     setPos((p) => limitar(p.x, p.y))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [zoom, natural])
+  }, [zoom, natural, aspect])
 
   function alPresionar(e: ReactPointerEvent<HTMLDivElement>) {
     e.currentTarget.setPointerCapture(e.pointerId)
@@ -61,21 +79,6 @@ export function ImageCropper({ file, onConfirm, onCancel }: ImageCropperProps) {
     arrastre.current = null
   }
 
-  function exportar(canvas: HTMLCanvasElement) {
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) {
-          setProcesando(false)
-          return
-        }
-        const nombre = file.name.replace(/\.[^.]+$/, '') + '.jpg'
-        onConfirm(new File([blob], nombre, { type: 'image/jpeg' }))
-      },
-      'image/jpeg',
-      0.92,
-    )
-  }
-
   function dibujar(modo: 'recorte' | 'entera') {
     if (!natural || !url) return
     setProcesando(true)
@@ -83,8 +86,8 @@ export function ImageCropper({ file, onConfirm, onCancel }: ImageCropperProps) {
     const img = new Image()
     img.onload = () => {
       const canvas = document.createElement('canvas')
-      canvas.width = SALIDA
-      canvas.height = SALIDA
+      canvas.width = salida.w
+      canvas.height = salida.h
       const ctx = canvas.getContext('2d')
       if (!ctx) {
         setProcesando(false)
@@ -93,22 +96,34 @@ export function ImageCropper({ file, onConfirm, onCancel }: ImageCropperProps) {
 
       // Fondo blanco: el JPEG no tiene transparencia y la foto entera deja franjas.
       ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, SALIDA, SALIDA)
+      ctx.fillRect(0, 0, salida.w, salida.h)
 
       if (modo === 'entera') {
-        const f = Math.min(SALIDA / natural.w, SALIDA / natural.h)
+        const f = Math.min(salida.w / natural.w, salida.h / natural.h)
         const dw = natural.w * f
         const dh = natural.h * f
-        ctx.drawImage(img, (SALIDA - dw) / 2, (SALIDA - dh) / 2, dw, dh)
+        ctx.drawImage(img, (salida.w - dw) / 2, (salida.h - dh) / 2, dw, dh)
       } else {
-        // Se traduce lo que se ve en el cuadro a coordenadas de la imagen original.
-        const ladoOrigen = VISTA / escala
-        const sx = natural.w / 2 - pos.x / escala - ladoOrigen / 2
-        const sy = natural.h / 2 - pos.y / escala - ladoOrigen / 2
-        ctx.drawImage(img, sx, sy, ladoOrigen, ladoOrigen, 0, 0, SALIDA, SALIDA)
+        // Se traduce lo que se ve en el marco a coordenadas de la imagen original.
+        const anchoOrigen = vista.w / escala
+        const altoOrigen = vista.h / escala
+        const sx = natural.w / 2 - pos.x / escala - anchoOrigen / 2
+        const sy = natural.h / 2 - pos.y / escala - altoOrigen / 2
+        ctx.drawImage(img, sx, sy, anchoOrigen, altoOrigen, 0, 0, salida.w, salida.h)
       }
 
-      exportar(canvas)
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            setProcesando(false)
+            return
+          }
+          const nombre = file.name.replace(/\.[^.]+$/, '') + '.jpg'
+          onConfirm(new File([blob], nombre, { type: 'image/jpeg' }))
+        },
+        'image/jpeg',
+        0.92,
+      )
     }
     img.onerror = () => setProcesando(false)
     img.src = url
@@ -119,13 +134,13 @@ export function ImageCropper({ file, onConfirm, onCancel }: ImageCropperProps) {
       <div className="cropper-card" onClick={(e) => e.stopPropagation()}>
         <h3>Ajusta la imagen</h3>
         <p className="cropper-sub">
-          Arrastra la foto y usa el control para acercarla. Lo que quede dentro del cuadro es lo
-          que se verá en la página.
+          El recuadro tiene la misma forma con la que se verá en la página. Arrastra la foto y usa
+          el control para acercarla.
         </p>
 
         <div
           className="cropper-vista"
-          style={{ width: VISTA, height: VISTA }}
+          style={{ width: vista.w, height: vista.h }}
           onPointerDown={alPresionar}
           onPointerMove={alMover}
           onPointerUp={alSoltar}

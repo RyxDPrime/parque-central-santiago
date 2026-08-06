@@ -9,6 +9,8 @@ interface FileDropzoneProps {
   currentFileLabel?: string | null
   /** URL del archivo ya guardado, para mostrarlo como vista previa. */
   currentFileUrl?: string | null
+  /** Proporción con la que se mostrará la imagen en el sitio. */
+  aspect?: number
 }
 
 export function FileDropzone({
@@ -17,6 +19,7 @@ export function FileDropzone({
   required,
   currentFileLabel,
   currentFileUrl,
+  aspect,
 }: FileDropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [fileName, setFileName] = useState<string | null>(null)
@@ -128,6 +131,7 @@ export function FileDropzone({
     {porRecortar && (
       <ImageCropper
         file={porRecortar}
+        aspect={aspect}
         onConfirm={(recortada) => {
           aplicarArchivo(recortada)
           setPorRecortar(null)

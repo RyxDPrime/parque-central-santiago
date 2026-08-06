@@ -4,6 +4,12 @@ export interface FieldConfig {
   type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file' | 'checkbox'
   /** Texto explicativo bajo el campo. */
   hint?: string
+  /**
+   * Proporción (ancho/alto) con la que se mostrará la imagen en el sitio. El
+   * recuadro de recorte usa esta misma forma. Si se omite, se conserva la
+   * proporción original de la foto.
+   */
+  aspect?: number
   options?: { value: string; label: string }[]
   accept?: string
   required?: boolean
@@ -33,8 +39,8 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.' },
       { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente' },
-      { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*' },
-      { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*' },
+      { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*', aspect: 1 },
+      { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*', aspect: 1 },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
@@ -48,7 +54,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa' },
       { key: 'bio', label: 'Biografía', type: 'textarea', placeholder: 'Breve reseña profesional del miembro del equipo (opcional)' },
-      { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*' },
+      { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*', aspect: 1 },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
@@ -112,7 +118,7 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'fecha', label: 'Fecha de publicación', type: 'date', required: true },
       { key: 'resumen', label: 'Resumen (opcional)', type: 'textarea', placeholder: 'Una o dos líneas que resuman la publicación. Se muestran en el listado.' },
       { key: 'contenido', label: 'Contenido', type: 'textarea', required: true, placeholder: 'Texto completo de la publicación...' },
-      { key: 'imagenUrl', label: 'Imagen (opcional)', type: 'file', accept: 'image/*' },
+      { key: 'imagenUrl', label: 'Imagen (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9 },
       {
         key: 'destacada',
         label: 'Anunciar en la página de inicio',

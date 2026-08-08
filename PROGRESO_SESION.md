@@ -34,7 +34,7 @@ Los tres servicios están en línea en Railway:
 ## El sitio público
 
 ### Inicio
-Portada con foto, accesos rápidos, sección de cifras, carrusel de programas y banner de apoyo. Muestra una **ventana emergente** cuando hay una publicación marcada como anuncio.
+Portada con foto, accesos rápidos, sección de cifras, carrusel de programas, el mismo mapa interactivo en versión reducida y banner de apoyo. Muestra una **ventana emergente** cuando hay una publicación marcada como anuncio.
 
 ### Sobre Nosotros
 - **Historia** — línea de tiempo con los dos hitos fundacionales (inauguración del 20 de febrero de 2018 y constitución del Patronato el 6 de abril de 2018) y la relación con APEDI.
@@ -49,7 +49,7 @@ Portada con foto, accesos rápidos, sección de cifras, carrusel de programas y 
 - **Instalaciones y Servicios** — las instalaciones con foto real se muestran en tarjetas con imagen; las demás con iconografía. Los servicios van en filas alternadas.
 - **Programas y Proyectos** — los 5 programas activos con ícono por categoría.
 - **Galería** — mosaico que respeta la proporción de cada foto, con ventana ampliada al hacer clic.
-- **Mapa** — vista aérea real del parque con marcadores numerados que se resaltan junto a su ficha. Los puntos salen de la base de datos y se editan desde el panel; sus coordenadas son provisionales hasta que llegue el plano oficial.
+- **Mapa** — mapa interactivo sobre OpenStreetMap (Leaflet), con marcadores anclados a coordenadas reales que se desplazan y acercan junto al mapa. Los puntos salen de la base de datos y se editan desde el panel indicando latitud y longitud; las actuales son aproximadas. Se usa OpenStreetMap en vez de Google Maps porque su API exige una clave con facturación activada.
 
 ### Reserva
 Calendario de actividades (agenda cronológica agrupada por mes) y guía de tres pasos para reservar un espacio.
@@ -109,6 +109,7 @@ Errores encontrados y resueltos durante el desarrollo:
 | Al guardar no se limpiaba el campo de foto | El nombre y la vista previa son estado interno que el reinicio del formulario no tocaba. |
 | El recorte no coincidía con lo mostrado | El recuadro siempre era cuadrado, pero el sitio volvía a recortar la imagen según cada destino. |
 | Los "sin documentos" se veían descuadrados | Una regla del título se filtraba al texto interno y lo desplazaba a la izquierda. |
+| El mapa del inicio no coincidía con el real | Tenía tres marcadores fijos escritos a mano (A, B, C) en posiciones inventadas. Ahora comparte componente y datos con la página de Mapa. |
 
 
 ---

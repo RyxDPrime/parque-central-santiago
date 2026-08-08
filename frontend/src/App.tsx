@@ -20,6 +20,7 @@ import { AdminLogin } from './admin/AdminLogin'
 import { AdminLayout } from './admin/AdminLayout'
 import { EntityManager } from './admin/EntityManager'
 import { MessagesInbox } from './admin/MessagesInbox'
+import { TextosEditor } from './admin/TextosEditor'
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/junta-directiva" replace />} />
+          <Route path="textos" element={<TextosEditor />} />
           <Route path="mensajes" element={<MessagesInbox />} />
           <Route path=":entity" element={<EntityManager />} />
         </Route>

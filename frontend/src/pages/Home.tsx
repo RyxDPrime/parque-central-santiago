@@ -3,7 +3,8 @@ import { ProgramsCarousel } from '../components/ProgramsCarousel'
 import { AnnouncementPopup } from '../components/AnnouncementPopup'
 import { ParkMap } from '../components/ParkMap'
 import { useApiData } from '../hooks/useApiData'
-import { api } from '../api/client'
+import { useTextos } from '../hooks/useTextos'
+import { api, type Cifra } from '../api/client'
 
 /**
  * Vista reducida del mapa. Toma los mismos puntos que la página de Mapa: antes
@@ -14,6 +15,54 @@ function MiniMapa() {
   const { data } = useApiData(api.getPuntosMapa)
   if (!data || data.length === 0) return null
   return <ParkMap puntos={data} alto={340} estatico />
+}
+
+/**
+ * Cifras destacadas del inicio. Antes estaban escritas dentro de la página con
+ * su imagen y su enlace; ahora se editan desde el panel.
+ */
+function CifrasDestacadas() {
+  const { data } = useApiData(api.getCifras)
+  if (!data || data.length === 0) return null
+
+  return (
+    <section id="stats" aria-label="El parque en cifras">
+      <div className="sec-label">Instalaciones</div>
+      <h2 className="sec-title" style={{ marginBottom: 40 }}>
+        El parque en cifras
+      </h2>
+
+      {data.map((cifra, i) => (
+        <div className={`stat-row ${i % 2 === 0 ? 'img-left' : 'img-right'}`} key={cifra.id}>
+          {i % 2 === 0 && <CifraImagen cifra={cifra} />}
+          <div>
+            <div className="stat-num">{cifra.numero}</div>
+            <p className="stat-desc">{cifra.descripcion}</p>
+            {cifra.enlaceTexto && cifra.enlaceUrl && (
+              <Link to={cifra.enlaceUrl} className="stat-cta">
+                {cifra.enlaceTexto} <i className="ti ti-arrow-right" />
+              </Link>
+            )}
+          </div>
+          {i % 2 === 1 && <CifraImagen cifra={cifra} />}
+        </div>
+      ))}
+    </section>
+  )
+}
+
+function CifraImagen({ cifra }: { cifra: Cifra }) {
+  if (!cifra.imagenUrl) return <div />
+  return (
+    <div className="stat-img">
+      <img src={cifra.imagenUrl} alt={cifra.etiqueta ?? cifra.numero} />
+      {cifra.etiqueta && (
+        <div className="stat-img-label">
+          <span className="img-pill">{cifra.etiqueta}</span>
+        </div>
+      )}
+    </div>
+  )
 }
 
 const quickLinks = [
@@ -56,6 +105,8 @@ const quickLinks = [
 ]
 
 export function Home() {
+  const texto = useTextos()
+
   return (
     <>
       <AnnouncementPopup />
@@ -72,12 +123,8 @@ export function Home() {
             <span />
             <span>Abierto hoy · 5:30 a.m. – 9:00 p.m.</span>
           </div>
-          <h1>El pulmón verde de Santiago</h1>
-          <p>
-            Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana,
-            administrado por el Patronato para la Administración del Parque Central de Santiago
-            desde 2018.
-          </p>
+          <h1>{texto('inicio.heroTitulo')}</h1>
+          <p>{texto('inicio.heroTexto')}</p>
           <div className="hero-btns">
             <Link to="/instalaciones-y-servicios" className="btn-primary">
               <i className="ti ti-run" /> Ver instalaciones y servicios
@@ -89,96 +136,7 @@ export function Home() {
         </div>
       </section>
 
-      <section id="stats" aria-label="El parque en cifras">
-        <div className="sec-label">Instalaciones</div>
-        <h2 className="sec-title" style={{ marginBottom: 40 }}>
-          El parque en cifras
-        </h2>
-
-        <div className="stat-row img-left">
-          <div className="stat-img">
-            <img src="/images/galeria/campo-futbol.jpg" alt="Campos de fútbol" />
-            <div className="stat-img-label">
-              <span className="img-pill">Complejo Deportivo</span>
-            </div>
-          </div>
-          <div>
-            <div className="stat-num">2 campos</div>
-            <p className="stat-desc">
-              Dos campos de fútbol reglamentarios, además de canchas de baloncesto, tenis,
-              voleibol y disc golf para toda la comunidad.
-            </p>
-            <Link to="/instalaciones-y-servicios" className="stat-cta">
-              Ver instalaciones y servicios <i className="ti ti-arrow-right" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="stat-row img-right">
-          <div>
-            <div className="stat-num">17</div>
-            <p className="stat-desc">
-              Instituciones públicas y privadas conforman la Junta Directiva del Patronato para
-              la Administración del Parque Central de Santiago.
-            </p>
-            <Link to="/junta-directiva" className="stat-cta">
-              Conoce la Junta Directiva <i className="ti ti-arrow-right" />
-            </Link>
-          </div>
-          <div className="stat-img">
-            <img src="/images/galeria/entrada-parque.jpg" alt="Entrada del parque" />
-            <div className="stat-img-label">
-              <span className="img-pill">Patronato PCS</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="stat-row two-col">
-          <div>
-            <div className="stat-img">
-              <img src="/images/galeria/gimnasio-aire-libre.jpg" alt="Áreas de picnic y kioscos" />
-              <div className="stat-img-label">
-                <span className="img-pill">Áreas de Picnic</span>
-              </div>
-            </div>
-            <div className="stat-num" style={{ fontSize: 40, marginTop: 16 }}>
-              32 kioscos
-            </div>
-            <p className="stat-desc">8 grandes y 24 pequeños para reuniones familiares.</p>
-          </div>
-          <div>
-            <div className="stat-img">
-              <img src="/images/galeria/voleibol.jpg" alt="Parqueos del parque" />
-              <div className="stat-img-label">
-                <span className="img-pill">Parqueos</span>
-              </div>
-            </div>
-            <div className="stat-num" style={{ fontSize: 40, marginTop: 16 }}>
-              450
-            </div>
-            <p className="stat-desc">Espacios de estacionamiento para los visitantes.</p>
-          </div>
-        </div>
-
-        <div className="stat-row img-right">
-          <div>
-            <div className="stat-num">2018</div>
-            <p className="stat-desc">
-              Año de inauguración del parque, resultado de casi dos décadas de gestión de la
-              Asociación para el Desarrollo, Inc. (APEDI).
-            </p>
-            <Link to="/sobre-el-parque" className="stat-cta">
-              Conoce nuestra historia <i className="ti ti-arrow-right" />
-            </Link>
-          </div>
-          <div className="stat-img">
-            <img src="/images/galeria/cancha-tenis.jpg" alt="Vista aérea del parque" />
-            <div className="stat-img-label">
-              <span className="img-pill">Desde 2018</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CifrasDestacadas />
 
       <section className="section">
         <div className="section-inner">

@@ -35,8 +35,12 @@ export function AdminLayout() {
           ))}
 
           <p className="admin-nav-title" style={{ marginTop: 16 }}>
-            Buzón
+            Textos y buzón
           </p>
+          <NavLink to="/admin/textos" className="admin-nav-link">
+            <i className="ti ti-text-caption" />
+            Textos del sitio
+          </NavLink>
           <NavLink to="/admin/mensajes" className="admin-nav-link">
             <i className="ti ti-mail" />
             Mensajes de contacto

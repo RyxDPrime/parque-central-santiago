@@ -1,26 +1,14 @@
 import { Link } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
 import { EmptyState } from '../components/DataState'
-
-const pasos = [
-  {
-    icon: 'ti-calendar-search',
-    titulo: 'Consulta disponibilidad',
-    texto: 'Revisa el calendario de actividades del parque para confirmar que la fecha que buscas esté libre.',
-  },
-  {
-    icon: 'ti-message-2',
-    titulo: 'Contáctanos',
-    texto: 'Escríbenos por teléfono, WhatsApp o el formulario de contacto indicando fecha, espacio y tipo de actividad.',
-  },
-  {
-    icon: 'ti-checkbox',
-    titulo: 'Coordinación final',
-    texto: 'El equipo del parque confirma la reserva y coordina contigo los detalles logísticos necesarios.',
-  },
-]
+import { useApiData } from '../hooks/useApiData'
+import { useTextos } from '../hooks/useTextos'
+import { api } from '../api/client'
 
 export function Reserva() {
+  const { data: pasos } = useApiData(api.getPasosReserva)
+  const texto = useTextos()
+
   return (
     <>
       <PageHero
@@ -38,29 +26,32 @@ export function Reserva() {
             </div>
             <div>
               <h3>Calendario de actividades</h3>
-              <p>
-                Todas las actividades programadas del parque están disponibles en la sección de
-                Actividades.
-              </p>
+              <p>{texto('reserva.calendarioTexto')}</p>
               <Link to="/actividades" className="btn-outline-white" style={{ marginTop: 14 }}>
                 Ver calendario de actividades <i className="ti ti-arrow-right" />
               </Link>
             </div>
           </div>
 
-          <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4, color: 'var(--green-800)' }}>
-            ¿Cómo reservar un espacio?
-          </h3>
-          <div className="steps-row">
-            {pasos.map((paso, i) => (
-              <div className="step-card" key={paso.titulo}>
-                <span className="step-num">{i + 1}</span>
-                <i className={`ti ${paso.icon}`} />
-                <h3>{paso.titulo}</h3>
-                <p>{paso.texto}</p>
+          {pasos && pasos.length > 0 && (
+            <>
+              <h3
+                style={{ fontSize: 15, fontWeight: 600, marginBottom: 4, color: 'var(--green-800)' }}
+              >
+                ¿Cómo reservar un espacio?
+              </h3>
+              <div className="steps-row">
+                {pasos.map((paso, i) => (
+                  <div className="step-card" key={paso.id}>
+                    <span className="step-num">{i + 1}</span>
+                    <i className={`ti ${paso.icono}`} />
+                    <h3>{paso.titulo}</h3>
+                    <p>{paso.texto}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
 
           <EmptyState
             icon="ti-ticket"

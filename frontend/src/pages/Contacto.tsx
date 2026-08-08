@@ -1,11 +1,13 @@
 import { type FormEvent, useState } from 'react'
 import { PageHero } from '../components/PageHero'
+import { useTextos, soloDigitos } from '../hooks/useTextos'
 import { api } from '../api/client'
 
 type SubmitStatus = { kind: 'idle' } | { kind: 'sending' } | { kind: 'success' } | { kind: 'error'; message: string }
 
 export function Contacto() {
   const [status, setStatus] = useState<SubmitStatus>({ kind: 'idle' })
+  const texto = useTextos()
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -50,36 +52,37 @@ export function Contacto() {
                   <span className="contact-row-icon">
                     <i className="ti ti-map-pin" />
                   </span>
-                  Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros
+                  {texto('contacto.direccion')}
                 </div>
-                <a className="contact-row is-link" href="mailto:asistentepcs@gmail.com">
+                <a className="contact-row is-link" href={`mailto:${texto('contacto.email')}`}>
                   <span className="contact-row-icon">
                     <i className="ti ti-mail" />
                   </span>
-                  asistentepcs@gmail.com
+                  {texto('contacto.email')}
                 </a>
-                <a className="contact-row is-link" href="tel:+18095839581">
+                <a className="contact-row is-link" href={`tel:+1${soloDigitos(texto('contacto.telefono'))}`}>
                   <span className="contact-row-icon">
                     <i className="ti ti-phone" />
                   </span>
-                  (809) 583-9581
+                  {texto('contacto.telefono')}
                 </a>
                 <a
                   className="contact-row is-link"
-                  href="https://wa.me/18495807344"
+                  href={`https://wa.me/1${soloDigitos(texto('contacto.whatsapp'))}`}
                   target="_blank"
                   rel="noopener"
                 >
                   <span className="contact-row-icon">
                     <i className="ti ti-brand-whatsapp" />
                   </span>
-                  (849) 580-7344
+                  {texto('contacto.whatsapp')}
                 </a>
                 <div className="contact-row">
                   <span className="contact-row-icon">
                     <i className="ti ti-clock" />
                   </span>
-                  Parque: 5:30 a.m. – 9:00 p.m. · Oficina: lun–vie 8:30 a.m. – 5:00 p.m.
+                  Parque: {texto('contacto.horarioParque')} · Oficina:{' '}
+                  {texto('contacto.horarioOficina')}
                 </div>
               </div>
               <a

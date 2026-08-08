@@ -143,3 +143,80 @@ model ContactMessage {
   emailEnviado Boolean  @default(false)
   createdAt    DateTime @default(now())
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Contenido de las secciones que antes estaba escrito dentro del código.
+// Cada modelo corresponde a una lista editable desde el panel.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Hitos de la historia del parque (Sobre Nosotros → Historia)
+model Hito {
+  id        Int      @id @default(autoincrement())
+  fecha     String
+  titulo    String
+  texto     String
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Normas de convivencia (Sobre Nosotros → Reglamento)
+model Norma {
+  id        Int      @id @default(autoincrement())
+  icono     String   @default("ti-info-circle")
+  titulo    String
+  texto     String
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Pasos para reservar un espacio (Reserva)
+model PasoReserva {
+  id        Int      @id @default(autoincrement())
+  icono     String   @default("ti-circle-check")
+  titulo    String
+  texto     String
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Formas de apoyar al parque (Apóyanos)
+model FormaApoyo {
+  id        Int      @id @default(autoincrement())
+  icono     String   @default("ti-heart-handshake")
+  etiqueta  String
+  titulo    String
+  texto     String
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Cifras destacadas de la página de inicio
+model Cifra {
+  id          Int      @id @default(autoincrement())
+  numero      String
+  descripcion String
+  imagenUrl   String?
+  etiqueta    String?
+  enlaceTexto String?
+  enlaceUrl   String?
+  orden       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Textos sueltos del sitio, identificados por una clave fija. No se crean ni
+// se borran desde el panel: solo se edita su valor.
+model Texto {
+  id        Int      @id @default(autoincrement())
+  clave     String   @unique
+  etiqueta  String
+  grupo     String   @default("General")
+  valor     String
+  multiline Boolean  @default(false)
+  orden     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}

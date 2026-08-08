@@ -93,3 +93,33 @@ contentRouter.get("/documentos-financieros", async (_req, res, next) => {
     next(err);
   }
 });
+
+// Contenido de secciones, editable desde el panel.
+const listasSimples = [
+  ["hitos", "hito"],
+  ["normas", "norma"],
+  ["pasos-reserva", "pasoReserva"],
+  ["formas-apoyo", "formaApoyo"],
+  ["cifras", "cifra"],
+] as const;
+
+for (const [ruta, modelo] of listasSimples) {
+  contentRouter.get(`/${ruta}`, async (_req, res, next) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data = await (prisma as any)[modelo].findMany({ orderBy: { orden: "asc" } });
+      res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
+}
+
+contentRouter.get("/textos", async (_req, res, next) => {
+  try {
+    const data = await prisma.texto.findMany({ orderBy: [{ grupo: "asc" }, { orden: "asc" }] });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});

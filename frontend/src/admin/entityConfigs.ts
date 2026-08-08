@@ -28,6 +28,38 @@ export interface EntityConfig {
   description: string
 }
 
+/**
+ * Iconos disponibles para las secciones que los usan. Se ofrecen como lista
+ * para que no haya que escribir el nombre tecnico a mano.
+ */
+export const ICONOS: { value: string; label: string }[] = [
+  { value: 'ti-info-circle', label: 'Informacion' },
+  { value: 'ti-alert-triangle', label: 'Advertencia' },
+  { value: 'ti-tree', label: 'Arbol' },
+  { value: 'ti-plant-2', label: 'Planta' },
+  { value: 'ti-feather', label: 'Ave / pluma' },
+  { value: 'ti-paw', label: 'Mascota' },
+  { value: 'ti-trash', label: 'Basura' },
+  { value: 'ti-ban', label: 'Prohibido' },
+  { value: 'ti-shield-x', label: 'Sin armas' },
+  { value: 'ti-flame-off', label: 'Sin fuego' },
+  { value: 'ti-volume', label: 'Sonido' },
+  { value: 'ti-users', label: 'Personas' },
+  { value: 'ti-heart-handshake', label: 'Convivencia' },
+  { value: 'ti-hand-heart', label: 'Voluntariado' },
+  { value: 'ti-coin', label: 'Donacion' },
+  { value: 'ti-calendar-search', label: 'Consultar fecha' },
+  { value: 'ti-calendar-event', label: 'Calendario' },
+  { value: 'ti-message-2', label: 'Mensaje' },
+  { value: 'ti-checkbox', label: 'Confirmacion' },
+  { value: 'ti-circle-check', label: 'Listo' },
+  { value: 'ti-clock', label: 'Horario' },
+  { value: 'ti-map-pin', label: 'Ubicacion' },
+  { value: 'ti-building', label: 'Edificio' },
+  { value: 'ti-run', label: 'Deporte' },
+  { value: 'ti-photo', label: 'Foto' },
+]
+
 export const entityConfigs: EntityConfig[] = [
   {
     path: 'junta-directiva',
@@ -153,6 +185,75 @@ export const entityConfigs: EntityConfig[] = [
         hint: 'El segundo número de las coordenadas de Google Maps. En Santiago es negativo.',
       },
       { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9 },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'hitos',
+    icon: 'ti-timeline-event',
+    description: 'Hitos de la historia del parque, en Sobre Nosotros → Historia.',
+    label: 'Historia',
+    titleField: 'titulo',
+    fields: [
+      { key: 'fecha', label: 'Fecha', type: 'text', required: true, placeholder: 'Ej: 20 feb 2018', hint: 'Se muestra tal como la escribas.' },
+      { key: 'titulo', label: 'Título del hito', type: 'text', required: true, placeholder: 'Ej: Inauguración del parque' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué ocurrió en esa fecha...' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'normas',
+    icon: 'ti-clipboard-list',
+    description: 'Normas de convivencia, en Sobre Nosotros → Reglamento.',
+    label: 'Reglamento',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Título de la norma', type: 'text', required: true, placeholder: 'Ej: Cuida las áreas verdes' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste la norma...' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'pasos-reserva',
+    icon: 'ti-list-numbers',
+    description: 'Pasos para reservar un espacio, en la página de Reserva.',
+    label: 'Pasos de Reserva',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Título del paso', type: 'text', required: true, placeholder: 'Ej: Consulta disponibilidad' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué debe hacer el visitante...' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'formas-apoyo',
+    icon: 'ti-heart-handshake',
+    description: 'Formas de apoyar al parque, en la página de Apóyanos.',
+    label: 'Formas de Apoyo',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Ser voluntario' },
+      { key: 'etiqueta', label: 'Etiqueta', type: 'text', required: true, placeholder: 'Ej: Voluntariado', hint: 'Palabra corta que aparece sobre el título.' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste esta forma de apoyo...' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'cifras',
+    icon: 'ti-chart-bar',
+    description: 'Cifras destacadas de la página de inicio, con su foto y enlace.',
+    label: 'Cifras del Inicio',
+    titleField: 'numero',
+    fields: [
+      { key: 'numero', label: 'Cifra', type: 'text', required: true, placeholder: 'Ej: 2 campos', hint: 'El número grande. Puede llevar texto, como "32 kioscos".' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué representa esta cifra...' },
+      { key: 'etiqueta', label: 'Etiqueta sobre la foto (opcional)', type: 'text', placeholder: 'Ej: Complejo Deportivo' },
+      { key: 'imagenUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9 },
+      { key: 'enlaceTexto', label: 'Texto del enlace (opcional)', type: 'text', placeholder: 'Ej: Ver instalaciones y servicios' },
+      { key: 'enlaceUrl', label: 'Dirección del enlace (opcional)', type: 'text', placeholder: 'Ej: /instalaciones-y-servicios', hint: 'Ruta dentro del sitio, empezando con /' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },

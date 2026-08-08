@@ -1,28 +1,12 @@
 import { Link } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
-
-const formas = [
-  {
-    icon: 'ti-hand-heart',
-    tag: 'Voluntariado',
-    titulo: 'Ser voluntario',
-    texto: 'Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias del parque.',
-  },
-  {
-    icon: 'ti-coin',
-    tag: 'Donaciones',
-    titulo: 'Hacer una donación',
-    texto: 'Tu aporte ayuda a mantener las instalaciones y los programas del parque. Próximamente habilitaremos donaciones en línea.',
-  },
-  {
-    icon: 'ti-plant-2',
-    tag: 'Reforestación',
-    titulo: 'Donar un árbol o una flor',
-    texto: 'Contribuye a la reforestación y el embellecimiento del parque dedicando un árbol o una flor.',
-  },
-]
+import { LoadingState, ErrorState } from '../components/DataState'
+import { useApiData } from '../hooks/useApiData'
+import { api } from '../api/client'
 
 export function Apoyanos() {
+  const { data: formas, loading, error } = useApiData(api.getFormasApoyo)
+
   return (
     <>
       <PageHero
@@ -34,21 +18,26 @@ export function Apoyanos() {
 
       <section className="section">
         <div className="section-inner">
-          <div className="support-grid">
-            {formas.map((forma) => (
-              <div className="support-card" key={forma.titulo}>
-                <div className="support-card-icon">
-                  <i className={`ti ${forma.icon}`} />
+          {loading && <LoadingState />}
+          {error && <ErrorState message={error} />}
+
+          {formas && formas.length > 0 && (
+            <div className="support-grid">
+              {formas.map((forma) => (
+                <div className="support-card" key={forma.id}>
+                  <div className="support-card-icon">
+                    <i className={`ti ${forma.icono}`} />
+                  </div>
+                  <span className="support-card-tag">{forma.etiqueta}</span>
+                  <h3>{forma.titulo}</h3>
+                  <p>{forma.texto}</p>
+                  <Link to="/contacto" className="btn-outline">
+                    Escríbenos <i className="ti ti-arrow-right" />
+                  </Link>
                 </div>
-                <span className="support-card-tag">{forma.tag}</span>
-                <h3>{forma.titulo}</h3>
-                <p>{forma.texto}</p>
-                <Link to="/contacto" className="btn-outline">
-                  Escríbenos <i className="ti ti-arrow-right" />
-                </Link>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

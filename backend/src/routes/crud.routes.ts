@@ -28,9 +28,14 @@ export type ModeloOrdenable =
   | "programa"
   | "galeriaItem"
   | "documentoFinanciero"
-  | "puntoMapa";
+  | "puntoMapa"
+  | "hito"
+  | "norma"
+  | "pasoReserva"
+  | "formaApoyo"
+  | "cifra";
 
-export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion";
+export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto";
 
 // Campos que cada modelo acepta desde el formulario. Sin esta lista se pasaba
 // `req.body` completo a Prisma, así que una petición podía traer campos que el
@@ -45,6 +50,13 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   galeriaItem: ["titulo", "url", "tipo", "categoria", "orden"],
   documentoFinanciero: ["titulo", "tipo", "url", "fecha", "orden"],
   puntoMapa: ["nombre", "zona", "lat", "lng", "fotoUrl", "orden"],
+  hito: ["fecha", "titulo", "texto", "orden"],
+  norma: ["icono", "titulo", "texto", "orden"],
+  pasoReserva: ["icono", "titulo", "texto", "orden"],
+  formaApoyo: ["icono", "etiqueta", "titulo", "texto", "orden"],
+  cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
+  // Los textos no se crean ni se borran: solo cambia su valor.
+  texto: ["valor"],
 };
 
 function soloCamposPermitidos(modelo: ModeloCrud, body: unknown): Record<string, unknown> {

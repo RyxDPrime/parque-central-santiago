@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
+import { useTextos, soloDigitos } from '../hooks/useTextos'
 
 export function Footer() {
+  const texto = useTextos()
   return (
     <footer>
       <div className="footer-inner">
@@ -92,28 +94,28 @@ export function Footer() {
           <div className="footer-col">
             <h4>Contacto</h4>
             <div className="contact-row">
-              <i className="ti ti-map-pin" /> Av. Bartolomé Colón esq. Padre Las Casas, Santiago
+              <i className="ti ti-map-pin" /> {texto('contacto.direccion')}
             </div>
-            <a className="contact-row is-link" href="mailto:asistentepcs@gmail.com">
-              <i className="ti ti-mail" /> asistentepcs@gmail.com
+            <a className="contact-row is-link" href={`mailto:${texto('contacto.email')}`}>
+              <i className="ti ti-mail" /> {texto('contacto.email')}
             </a>
-            <a className="contact-row is-link" href="tel:+18095839581">
-              <i className="ti ti-phone" /> (809) 583-9581
+            <a className="contact-row is-link" href={`tel:+1${soloDigitos(texto('contacto.telefono'))}`}>
+              <i className="ti ti-phone" /> {texto('contacto.telefono')}
             </a>
             <a
               className="contact-row is-link"
-              href="https://wa.me/18495807344"
+              href={`https://wa.me/1${soloDigitos(texto('contacto.whatsapp'))}`}
               target="_blank"
               rel="noopener"
             >
-              <i className="ti ti-brand-whatsapp" /> (849) 580-7344
+              <i className="ti ti-brand-whatsapp" /> {texto('contacto.whatsapp')}
             </a>
             <h4 style={{ marginTop: 16 }}>Horario</h4>
             <div className="contact-row">
-              <i className="ti ti-clock" /> Parque: 5:30 a.m. – 9:00 p.m.
+              <i className="ti ti-clock" /> Parque: {texto('contacto.horarioParque')}
             </div>
             <div className="contact-row">
-              <i className="ti ti-clock" /> Oficina: lun–vie 8:30 a.m. – 5:00 p.m.
+              <i className="ti ti-clock" /> Oficina: {texto('contacto.horarioOficina')}
             </div>
           </div>
         </div>

@@ -85,6 +85,60 @@ export interface PuntoMapa {
   orden: number;
 }
 
+export interface Hito {
+  id: number;
+  fecha: string;
+  titulo: string;
+  texto: string;
+  orden: number;
+}
+
+export interface Norma {
+  id: number;
+  icono: string;
+  titulo: string;
+  texto: string;
+  orden: number;
+}
+
+export interface PasoReserva {
+  id: number;
+  icono: string;
+  titulo: string;
+  texto: string;
+  orden: number;
+}
+
+export interface FormaApoyo {
+  id: number;
+  icono: string;
+  etiqueta: string;
+  titulo: string;
+  texto: string;
+  orden: number;
+}
+
+export interface Cifra {
+  id: number;
+  numero: string;
+  descripcion: string;
+  imagenUrl: string | null;
+  etiqueta: string | null;
+  enlaceTexto: string | null;
+  enlaceUrl: string | null;
+  orden: number;
+}
+
+export interface Texto {
+  id: number;
+  clave: string;
+  etiqueta: string;
+  grupo: string;
+  valor: string;
+  multiline: boolean;
+  orden: number;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -124,5 +178,11 @@ export const api = {
   getDocumentosFinancieros: () => get<DocumentoFinanciero[]>("/documentos-financieros"),
   getPublicaciones: () => get<Publicacion[]>("/publicaciones"),
   getPuntosMapa: () => get<PuntoMapa[]>("/puntos-mapa"),
+  getHitos: () => get<Hito[]>("/hitos"),
+  getNormas: () => get<Norma[]>("/normas"),
+  getPasosReserva: () => get<PasoReserva[]>("/pasos-reserva"),
+  getFormasApoyo: () => get<FormaApoyo[]>("/formas-apoyo"),
+  getCifras: () => get<Cifra[]>("/cifras"),
+  getTextos: () => get<Texto[]>("/textos"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

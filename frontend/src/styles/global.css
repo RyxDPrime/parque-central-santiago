@@ -664,6 +664,12 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-limpiar{background:none;border:1px solid var(--border);border-radius:var(--radius);height:38px;padding:0 14px;cursor:pointer;color:var(--text-secondary);font-family:var(--font);font-size:12.5px;display:inline-flex;align-items:center;gap:6px}
 .admin-limpiar:hover{border-color:var(--green-400);color:var(--green-600);background:#fff}
 
+/* ── ADMIN: EDITOR DE TEXTOS ── */
+.texto-fila{display:flex;align-items:flex-end;gap:14px;padding:16px 22px;border-top:1px solid var(--border)}
+.texto-fila .admin-field{flex:1;min-width:0}
+.texto-fila-acciones{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.texto-guardado{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--green-600)}
+
 /* ── ADMIN: TABLA ── */
 /* Alto acotado con scroll propio: con muchos registros no se debe recorrer
    la página entera para llegar al último. */
@@ -706,5 +712,6 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .admin-sidebar nav{overflow-y:visible}
   .admin-content{padding:24px 20px 48px}
   .admin-form-grid{grid-template-columns:1fr}
+  .texto-fila{flex-direction:column;align-items:stretch}
   .admin-page-head h1{font-size:20px}
 }

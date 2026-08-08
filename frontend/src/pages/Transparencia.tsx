@@ -1,12 +1,14 @@
 import { PageHero } from '../components/PageHero'
 import { EmptyState, LoadingState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
+import { useTextos } from '../hooks/useTextos'
 import { api } from '../api/client'
 
 const fechaFormatter = new Intl.DateTimeFormat('es-DO', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 
 export function Transparencia() {
   const { data, loading } = useApiData(api.getDocumentosFinancieros)
+  const texto = useTextos()
 
   const auditados = data?.filter((d) => d.tipo === 'auditado') ?? []
   const sinAuditar = data?.filter((d) => d.tipo === 'sin_auditar') ?? []
@@ -28,14 +30,7 @@ export function Transparencia() {
             </div>
             <div>
               <h3>Quiénes somos</h3>
-              <p>
-                El Parque Central de Santiago es administrado por el Patronato para la
-                Administración del Parque Central de Santiago, una entidad sin fines de lucro
-                constituida el 6 de abril de 2018, resultado del esfuerzo conjunto entre la
-                Asociación para el Desarrollo, Inc. (APEDI) y diecisiete instituciones públicas y
-                privadas de la región. Está registrado bajo la Ley 122-05 del 8 de abril de 2005.
-                RNC: 430-25261-1.
-              </p>
+              <p>{texto('transparencia.quienesSomos')}</p>
             </div>
           </div>
 
@@ -98,7 +93,7 @@ export function Transparencia() {
                 <div className="facility-icon-head">
                   <h3>Marco normativo</h3>
                 </div>
-                <p>Ley 122-05 del 8 de abril de 2005, que regula las asociaciones sin fines de lucro en la República Dominicana.</p>
+                <p>{texto('transparencia.marcoNormativo')}</p>
               </div>
             </div>
             <div className="facility-icon-card">
@@ -109,7 +104,7 @@ export function Transparencia() {
                 <div className="facility-icon-head">
                   <h3>Uso de donaciones</h3>
                 </div>
-                <p>El detalle sobre el uso de las donaciones recibidas se publicará en una fase posterior del proyecto.</p>
+                <p>{texto('transparencia.usoDonaciones')}</p>
               </div>
             </div>
             <div className="facility-icon-card">
@@ -120,7 +115,7 @@ export function Transparencia() {
                 <div className="facility-icon-head">
                   <h3>Código de ética</h3>
                 </div>
-                <p>El código de ética institucional se publicará en cuanto el Parque lo confirme.</p>
+                <p>{texto('transparencia.codigoEtica')}</p>
               </div>
             </div>
           </div>

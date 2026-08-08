@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useApiData } from '../hooks/useApiData'
+import { useTextos } from '../hooks/useTextos'
 import { api } from '../api/client'
 
 export function AlertBar() {
   const [visible, setVisible] = useState(true)
   const { data } = useApiData(api.getPublicaciones)
+  const texto = useTextos()
 
   if (!visible) return null
 
@@ -27,8 +29,8 @@ export function AlertBar() {
       ) : (
         <>
           <i className="ti ti-clock" />
-          El parque abre todos los días de 5:30 a.m. a 9:00 p.m. · Oficina administrativa: lun–vie
-          8:30 a.m. – 5:00 p.m.
+          El parque abre todos los días de {texto('contacto.horarioParque')} · Oficina
+          administrativa: {texto('contacto.horarioOficina')}
           <Link to="/contacto">Contáctanos →</Link>
         </>
       )}

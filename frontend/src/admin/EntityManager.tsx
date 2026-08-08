@@ -285,7 +285,9 @@ export function EntityManager() {
                   placeholder={field.placeholder}
                   min={field.nextPosition ? 1 : undefined}
                   max={field.nextPosition ? (editing ? rows.length : rows.length + 1) : undefined}
-                  step={field.nextPosition ? 1 : undefined}
+                  // Sin esto el navegador rechaza decimales, y las coordenadas
+                  // del mapa los necesitan.
+                  step={field.type === 'number' ? (field.nextPosition ? 1 : 'any') : undefined}
                   defaultValue={
                     field.type === 'date'
                       ? String(editing?.[field.key] ?? '').slice(0, 10)

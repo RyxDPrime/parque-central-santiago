@@ -1,6 +1,20 @@
 import { Link } from 'react-router-dom'
 import { ProgramsCarousel } from '../components/ProgramsCarousel'
 import { AnnouncementPopup } from '../components/AnnouncementPopup'
+import { ParkMap } from '../components/ParkMap'
+import { useApiData } from '../hooks/useApiData'
+import { api } from '../api/client'
+
+/**
+ * Vista reducida del mapa. Toma los mismos puntos que la página de Mapa: antes
+ * eran tres marcadores fijos (A, B, C) escritos a mano, que no correspondían
+ * con las instalaciones reales.
+ */
+function MiniMapa() {
+  const { data } = useApiData(api.getPuntosMapa)
+  if (!data || data.length === 0) return null
+  return <ParkMap puntos={data} alto={340} estatico />
+}
 
 const quickLinks = [
   {
@@ -260,24 +274,14 @@ export function Home() {
         </div>
       </section>
 
-      <section className="section" style={{ background: 'var(--gray-100)' }}>
+      <section className="section" id="home-map" style={{ background: 'var(--gray-100)' }}>
         <div className="section-inner">
           <div className="sec-label">Ubicación</div>
           <h2 className="sec-title">Explora el parque</h2>
           <p className="sec-sub">
             Ubica las principales instalaciones del Parque Central de Santiago en el mapa.
           </p>
-          <Link to="/mapa" className="mini-map" style={{ display: 'block' }}>
-            <div className="map-pin" style={{ top: '30%', left: '20%', background: 'var(--green-800)' }}>
-              A
-            </div>
-            <div className="map-pin" style={{ top: '55%', left: '45%', background: 'var(--accent-400)' }}>
-              B
-            </div>
-            <div className="map-pin" style={{ top: '35%', left: '72%', background: 'var(--green-400)' }}>
-              C
-            </div>
-          </Link>
+          <MiniMapa />
           <Link to="/mapa" className="btn-outline" style={{ marginTop: 20 }}>
             Ver mapa completo <i className="ti ti-arrow-right" />
           </Link>

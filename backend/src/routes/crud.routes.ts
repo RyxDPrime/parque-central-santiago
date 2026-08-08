@@ -44,7 +44,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   publicacion: ["titulo", "tipo", "resumen", "contenido", "imagenUrl", "fecha", "destacada"],
   galeriaItem: ["titulo", "url", "tipo", "categoria", "orden"],
   documentoFinanciero: ["titulo", "tipo", "url", "fecha", "orden"],
-  puntoMapa: ["nombre", "zona", "x", "y", "fotoUrl", "orden"],
+  puntoMapa: ["nombre", "zona", "lat", "lng", "fotoUrl", "orden"],
 };
 
 function soloCamposPermitidos(modelo: ModeloCrud, body: unknown): Record<string, unknown> {

@@ -7,14 +7,14 @@ const prisma = new PrismaClient();
 // el plano para que la sección se pueda usar, y se ajustan desde el panel
 // cuando el Parque entregue las ubicaciones exactas.
 const puntosMapa = [
-  { nombre: "Canchas de Baloncesto", zona: "Zona deportiva", x: 30, y: 34, fotoUrl: "/images/galeria/cancha-basketball.jpg" },
-  { nombre: "Canchas de Tenis", zona: "Zona deportiva", x: 46, y: 27, fotoUrl: "/images/galeria/cancha-tenis.jpg" },
-  { nombre: "Campos de Fútbol", zona: "Zona deportiva", x: 64, y: 32, fotoUrl: "/images/galeria/campo-futbol.jpg" },
-  { nombre: "Canchas de Voleibol", zona: "Zona deportiva", x: 22, y: 52, fotoUrl: "/images/galeria/voleibol.jpg" },
-  { nombre: "Área Infantil", zona: "Zona recreativa", x: 40, y: 58, fotoUrl: "/images/galeria/parque-infantil.jpg" },
-  { nombre: "Gimnasio al aire libre", zona: "Zona recreativa", x: 58, y: 62, fotoUrl: "/images/galeria/gimnasio-aire-libre.jpg" },
-  { nombre: "Entrada principal", zona: "Accesos", x: 14, y: 72, fotoUrl: "/images/galeria/entrada-parque.jpg" },
-  { nombre: "Área para Ferias y Eventos", zona: "Eventos", x: 74, y: 55, fotoUrl: "/images/galeria/carnaval-2025.jpg" },
+  { nombre: "Canchas de Baloncesto", zona: "Zona deportiva", lat: 19.4681, lng: -70.6968, fotoUrl: "/images/galeria/cancha-basketball.jpg" },
+  { nombre: "Canchas de Tenis", zona: "Zona deportiva", lat: 19.4686, lng: -70.6951, fotoUrl: "/images/galeria/cancha-tenis.jpg" },
+  { nombre: "Campos de Fútbol", zona: "Zona deportiva", lat: 19.4679, lng: -70.6936, fotoUrl: "/images/galeria/campo-futbol.jpg" },
+  { nombre: "Canchas de Voleibol", zona: "Zona deportiva", lat: 19.4666, lng: -70.6972, fotoUrl: "/images/galeria/voleibol.jpg" },
+  { nombre: "Área Infantil", zona: "Zona recreativa", lat: 19.4661, lng: -70.6955, fotoUrl: "/images/galeria/parque-infantil.jpg" },
+  { nombre: "Gimnasio al aire libre", zona: "Zona recreativa", lat: 19.4656, lng: -70.6941, fotoUrl: "/images/galeria/gimnasio-aire-libre.jpg" },
+  { nombre: "Entrada principal", zona: "Accesos", lat: 19.4650, lng: -70.6963, fotoUrl: "/images/galeria/entrada-parque.jpg" },
+  { nombre: "Área para Ferias y Eventos", zona: "Eventos", lat: 19.4672, lng: -70.6929, fotoUrl: "/images/galeria/carnaval-2025.jpg" },
 ];
 
 // Calendario de Actividades Programadas 2026.docx y logos instituciones/

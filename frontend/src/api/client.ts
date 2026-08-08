@@ -78,9 +78,9 @@ export interface PuntoMapa {
   id: number;
   nombre: string;
   zona: string | null;
-  /** Porcentajes sobre el plano: 0 a 100. */
-  x: number;
-  y: number;
+  /** Coordenadas geográficas del punto. */
+  lat: number;
+  lng: number;
   fotoUrl: string | null;
   orden: number;
 }

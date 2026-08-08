@@ -67,14 +67,14 @@ model Actividad {
   updatedAt   DateTime  @updatedAt
 }
 
-// Puntos señalados en el mapa del parque. Las coordenadas son porcentajes
-// sobre el plano (0 a 100), así funcionan con cualquier tamaño de pantalla.
+// Puntos señalados en el mapa del parque, con coordenadas geográficas reales
+// para ubicarlos sobre el mapa interactivo.
 model PuntoMapa {
   id        Int      @id @default(autoincrement())
   nombre    String
   zona      String?
-  x         Float    @default(50)
-  y         Float    @default(50)
+  lat       Float    @default(19.4667)
+  lng       Float    @default(-70.6953)
   fotoUrl   String?
   orden     Int      @default(0)
   createdAt DateTime @default(now())

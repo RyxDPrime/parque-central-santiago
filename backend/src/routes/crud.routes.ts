@@ -32,6 +32,33 @@ export type ModeloOrdenable =
 
 export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion";
 
+// Campos que cada modelo acepta desde el formulario. Sin esta lista se pasaba
+// `req.body` completo a Prisma, así que una petición podía traer campos que el
+// panel no muestra (por ejemplo `id` o `createdAt`) y escribirlos igual.
+const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
+  juntaDirectivo: ["institucion", "representante", "cargo", "fotoUrl", "logoUrl", "orden"],
+  personalTecnico: ["nombre", "cargo", "bio", "fotoUrl", "orden"],
+  instalacion: ["nombre", "descripcion", "cantidad", "orden"],
+  programa: ["nombre", "categoria", "descripcion", "orden"],
+  actividad: ["titulo", "descripcion", "fechaInicio", "fechaFin", "lugar", "imagenUrl"],
+  publicacion: ["titulo", "tipo", "resumen", "contenido", "imagenUrl", "fecha", "destacada"],
+  galeriaItem: ["titulo", "url", "tipo", "categoria", "orden"],
+  documentoFinanciero: ["titulo", "tipo", "url", "fecha", "orden"],
+  puntoMapa: ["nombre", "zona", "x", "y", "fotoUrl", "orden"],
+};
+
+function soloCamposPermitidos(modelo: ModeloCrud, body: unknown): Record<string, unknown> {
+  const permitidos = CAMPOS_PERMITIDOS[modelo];
+  const entrada = (body ?? {}) as Record<string, unknown>;
+  const limpio: Record<string, unknown> = {};
+  for (const campo of permitidos) {
+    if (Object.prototype.hasOwnProperty.call(entrada, campo)) {
+      limpio[campo] = entrada[campo];
+    }
+  }
+  return limpio;
+}
+
 export function crudRoutes(
   modelo: ModeloCrud,
   opciones: { reorder?: boolean } = {},
@@ -49,7 +76,7 @@ export function crudRoutes(
     try {
       const creado = await prisma.$transaction(async (tx) => {
         const m = del(tx);
-        const data = { ...req.body };
+        const data = soloCamposPermitidos(modelo, req.body);
 
         if (opciones.reorder) {
           const total = await m.count();
@@ -78,7 +105,7 @@ export function crudRoutes(
       const id = Number(req.params.id);
       const actualizado = await prisma.$transaction(async (tx) => {
         const m = del(tx);
-        const data = { ...req.body };
+        const data = soloCamposPermitidos(modelo, req.body);
 
         if (opciones.reorder && data.orden !== undefined) {
           const actual = await m.findUnique({ where: { id } });

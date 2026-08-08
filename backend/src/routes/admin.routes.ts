@@ -3,6 +3,7 @@ import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "../config/env";
+import { loginLimiter } from "../middleware/rateLimit";
 
 export const adminRouter = Router();
 
@@ -11,7 +12,7 @@ const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-adminRouter.post("/admin/login", async (req, res, next) => {
+adminRouter.post("/admin/login", loginLimiter, async (req, res, next) => {
   try {
     const { username, password } = loginSchema.parse(req.body);
 

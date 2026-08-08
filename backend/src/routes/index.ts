@@ -3,10 +3,13 @@ import { adminRouter } from "./admin.routes";
 import { contactoRouter } from "./contacto.routes";
 import { contentRouter } from "./content.routes";
 import { crudRoutes } from "./crud.routes";
+import { apiLimiter } from "../middleware/rateLimit";
 import { mensajesRouter } from "./mensajes.routes";
 import { uploadsRouter } from "./uploads.routes";
 
 export const apiRouter = Router();
+
+apiRouter.use(apiLimiter);
 
 apiRouter.get("/health", (_req, res) => {
   res.json({ ok: true });

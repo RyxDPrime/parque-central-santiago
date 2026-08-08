@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { prisma } from "../config/db";
 import { sendContactNotification } from "../config/mailer";
+import { contactoLimiter } from "../middleware/rateLimit";
 import { contactoSchema } from "../schemas/contacto.schema";
 
 export const contactoRouter = Router();
 
-contactoRouter.post("/contacto", async (req, res, next) => {
+contactoRouter.post("/contacto", contactoLimiter, async (req, res, next) => {
   try {
     const input = contactoSchema.parse(req.body);
 

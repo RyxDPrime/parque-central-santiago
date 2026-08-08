@@ -35,6 +35,6 @@ apiRouter.use("/normas", crudRoutes("norma", { reorder: true }));
 apiRouter.use("/pasos-reserva", crudRoutes("pasoReserva", { reorder: true }));
 apiRouter.use("/formas-apoyo", crudRoutes("formaApoyo", { reorder: true }));
 apiRouter.use("/cifras", crudRoutes("cifra", { reorder: true }));
-apiRouter.use("/textos", crudRoutes("texto"));
+apiRouter.use("/textos", crudRoutes("texto", { soloEditar: true }));
 apiRouter.use("/galeria", crudRoutes("galeriaItem", { reorder: true }));
 apiRouter.use("/documentos-financieros", crudRoutes("documentoFinanciero", { reorder: true }));

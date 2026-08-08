@@ -73,7 +73,9 @@ function soloCamposPermitidos(modelo: ModeloCrud, body: unknown): Record<string,
 
 export function crudRoutes(
   modelo: ModeloCrud,
-  opciones: { reorder?: boolean } = {},
+  // `soloEditar` deja unicamente la ruta de actualizar: se usa para los textos
+  // del sitio, cuyas claves son fijas y no deben poder crearse ni borrarse.
+  opciones: { reorder?: boolean; soloEditar?: boolean } = {},
 ): Router {
   const router = Router();
   const del = (cliente: ClienteTx | typeof prisma): Delegado =>
@@ -84,7 +86,8 @@ export function crudRoutes(
     return Number.isInteger(n) && n > 0 ? n : null;
   }
 
-  router.post("/", requireAuth, async (req, res, next) => {
+  if (!opciones.soloEditar) {
+    router.post("/", requireAuth, async (req, res, next) => {
     try {
       const creado = await prisma.$transaction(async (tx) => {
         const m = del(tx);
@@ -111,6 +114,8 @@ export function crudRoutes(
       next(err);
     }
   });
+
+  }
 
   router.put("/:id", requireAuth, async (req, res, next) => {
     try {
@@ -155,7 +160,8 @@ export function crudRoutes(
     }
   });
 
-  router.delete("/:id", requireAuth, async (req, res, next) => {
+  if (!opciones.soloEditar) {
+    router.delete("/:id", requireAuth, async (req, res, next) => {
     try {
       const id = Number(req.params.id);
       await prisma.$transaction(async (tx) => {
@@ -176,7 +182,8 @@ export function crudRoutes(
     } catch (err) {
       next(err);
     }
-  });
+    });
+  }
 
   return router;
 }

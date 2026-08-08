@@ -3,6 +3,20 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Fuente: levantamiento-informacion-parque-central.docx, listados de miembros pcs.docx,
+// Puntos del mapa. Las coordenadas son PROVISIONALES: quedan repartidas sobre
+// el plano para que la sección se pueda usar, y se ajustan desde el panel
+// cuando el Parque entregue las ubicaciones exactas.
+const puntosMapa = [
+  { nombre: "Canchas de Baloncesto", zona: "Zona deportiva", x: 30, y: 34, fotoUrl: "/images/galeria/cancha-basketball.jpg" },
+  { nombre: "Canchas de Tenis", zona: "Zona deportiva", x: 46, y: 27, fotoUrl: "/images/galeria/cancha-tenis.jpg" },
+  { nombre: "Campos de Fútbol", zona: "Zona deportiva", x: 64, y: 32, fotoUrl: "/images/galeria/campo-futbol.jpg" },
+  { nombre: "Canchas de Voleibol", zona: "Zona deportiva", x: 22, y: 52, fotoUrl: "/images/galeria/voleibol.jpg" },
+  { nombre: "Área Infantil", zona: "Zona recreativa", x: 40, y: 58, fotoUrl: "/images/galeria/parque-infantil.jpg" },
+  { nombre: "Gimnasio al aire libre", zona: "Zona recreativa", x: 58, y: 62, fotoUrl: "/images/galeria/gimnasio-aire-libre.jpg" },
+  { nombre: "Entrada principal", zona: "Accesos", x: 14, y: 72, fotoUrl: "/images/galeria/entrada-parque.jpg" },
+  { nombre: "Área para Ferias y Eventos", zona: "Eventos", x: 74, y: 55, fotoUrl: "/images/galeria/carnaval-2025.jpg" },
+];
+
 // Calendario de Actividades Programadas 2026.docx y logos instituciones/
 // (carpeta de Drive del Parque Central de Santiago, junio-julio 2026)
 const juntaDirectiva = [
@@ -152,6 +166,11 @@ async function main() {
         fechaFin: a.fechaFin ? new Date(a.fechaFin) : null,
       },
     });
+  }
+
+  await prisma.puntoMapa.deleteMany();
+  for (const [i, pt] of puntosMapa.entries()) {
+    await prisma.puntoMapa.create({ data: { ...pt, orden: i + 1 } });
   }
 
   await prisma.galeriaItem.deleteMany();

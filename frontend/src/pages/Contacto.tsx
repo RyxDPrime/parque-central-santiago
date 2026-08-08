@@ -52,24 +52,29 @@ export function Contacto() {
                   </span>
                   Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros
                 </div>
-                <div className="contact-row">
+                <a className="contact-row is-link" href="mailto:asistentepcs@gmail.com">
                   <span className="contact-row-icon">
                     <i className="ti ti-mail" />
                   </span>
                   asistentepcs@gmail.com
-                </div>
-                <div className="contact-row">
+                </a>
+                <a className="contact-row is-link" href="tel:+18095839581">
                   <span className="contact-row-icon">
                     <i className="ti ti-phone" />
                   </span>
                   (809) 583-9581
-                </div>
-                <div className="contact-row">
+                </a>
+                <a
+                  className="contact-row is-link"
+                  href="https://wa.me/18495807344"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <span className="contact-row-icon">
                     <i className="ti ti-brand-whatsapp" />
                   </span>
                   (849) 580-7344
-                </div>
+                </a>
                 <div className="contact-row">
                   <span className="contact-row-icon">
                     <i className="ti ti-clock" />

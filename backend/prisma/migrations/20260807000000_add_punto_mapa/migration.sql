@@ -1,0 +1,14 @@
+-- CreateTable
+CREATE TABLE "PuntoMapa" (
+    "id" SERIAL NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "zona" TEXT,
+    "x" DOUBLE PRECISION NOT NULL DEFAULT 50,
+    "y" DOUBLE PRECISION NOT NULL DEFAULT 50,
+    "fotoUrl" TEXT,
+    "orden" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PuntoMapa_pkey" PRIMARY KEY ("id")
+);

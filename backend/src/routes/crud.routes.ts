@@ -27,7 +27,8 @@ export type ModeloOrdenable =
   | "instalacion"
   | "programa"
   | "galeriaItem"
-  | "documentoFinanciero";
+  | "documentoFinanciero"
+  | "puntoMapa";
 
 export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion";
 

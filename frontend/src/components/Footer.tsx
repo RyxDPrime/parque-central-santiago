@@ -94,15 +94,20 @@ export function Footer() {
             <div className="contact-row">
               <i className="ti ti-map-pin" /> Av. Bartolomé Colón esq. Padre Las Casas, Santiago
             </div>
-            <div className="contact-row">
+            <a className="contact-row is-link" href="mailto:asistentepcs@gmail.com">
               <i className="ti ti-mail" /> asistentepcs@gmail.com
-            </div>
-            <div className="contact-row">
+            </a>
+            <a className="contact-row is-link" href="tel:+18095839581">
               <i className="ti ti-phone" /> (809) 583-9581
-            </div>
-            <div className="contact-row">
+            </a>
+            <a
+              className="contact-row is-link"
+              href="https://wa.me/18495807344"
+              target="_blank"
+              rel="noopener"
+            >
               <i className="ti ti-brand-whatsapp" /> (849) 580-7344
-            </div>
+            </a>
             <h4 style={{ marginTop: 16 }}>Horario</h4>
             <div className="contact-row">
               <i className="ti ti-clock" /> Parque: 5:30 a.m. – 9:00 p.m.

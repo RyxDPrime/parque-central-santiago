@@ -42,7 +42,7 @@ export function Reserva() {
                 Todas las actividades programadas del parque están disponibles en la sección de
                 Actividades.
               </p>
-              <Link to="/actividades" className="btn-outline" style={{ marginTop: 14 }}>
+              <Link to="/actividades" className="btn-outline-white" style={{ marginTop: 14 }}>
                 Ver calendario de actividades <i className="ti ti-arrow-right" />
               </Link>
             </div>

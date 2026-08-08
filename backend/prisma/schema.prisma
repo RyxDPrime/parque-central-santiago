@@ -67,6 +67,20 @@ model Actividad {
   updatedAt   DateTime  @updatedAt
 }
 
+// Puntos señalados en el mapa del parque. Las coordenadas son porcentajes
+// sobre el plano (0 a 100), así funcionan con cualquier tamaño de pantalla.
+model PuntoMapa {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  zona      String?
+  x         Float    @default(50)
+  y         Float    @default(50)
+  fotoUrl   String?
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Blog: artículos y noticias. Se ordenan por fecha, no por posición manual.
 model Publicacion {
   id        Int      @id @default(autoincrement())

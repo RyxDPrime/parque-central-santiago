@@ -26,5 +26,6 @@ apiRouter.use("/instalaciones", crudRoutes("instalacion", { reorder: true }));
 apiRouter.use("/programas", crudRoutes("programa", { reorder: true }));
 apiRouter.use("/actividades", crudRoutes("actividad"));
 apiRouter.use("/publicaciones", crudRoutes("publicacion"));
+apiRouter.use("/puntos-mapa", crudRoutes("puntoMapa", { reorder: true }));
 apiRouter.use("/galeria", crudRoutes("galeriaItem", { reorder: true }));
 apiRouter.use("/documentos-financieros", crudRoutes("documentoFinanciero", { reorder: true }));

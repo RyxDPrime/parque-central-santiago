@@ -74,6 +74,17 @@ export interface Publicacion {
   destacada: boolean;
 }
 
+export interface PuntoMapa {
+  id: number;
+  nombre: string;
+  zona: string | null;
+  /** Porcentajes sobre el plano: 0 a 100. */
+  x: number;
+  y: number;
+  fotoUrl: string | null;
+  orden: number;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -112,5 +123,6 @@ export const api = {
   getPersonalTecnico: () => get<PersonalTecnico[]>("/personal-tecnico"),
   getDocumentosFinancieros: () => get<DocumentoFinanciero[]>("/documentos-financieros"),
   getPublicaciones: () => get<Publicacion[]>("/publicaciones"),
+  getPuntosMapa: () => get<PuntoMapa[]>("/puntos-mapa"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

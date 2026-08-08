@@ -57,6 +57,15 @@ contentRouter.get("/galeria", async (_req, res, next) => {
   }
 });
 
+contentRouter.get("/puntos-mapa", async (_req, res, next) => {
+  try {
+    const data = await prisma.puntoMapa.findMany({ orderBy: { orden: "asc" } });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Blog: se ordena por fecha, de la más reciente a la más antigua.
 contentRouter.get("/publicaciones", async (_req, res, next) => {
   try {

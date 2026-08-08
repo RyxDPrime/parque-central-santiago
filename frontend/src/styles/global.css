@@ -216,12 +216,6 @@ ul{list-style:none}
   .about-inner{grid-template-columns:1fr}
   .prog-wrap{height:340px}
   .prog-title{font-size:26px}
-  .facility-photo-grid{grid-template-columns:1fr 1fr}
-  .facility-icon-grid{grid-template-columns:1fr}
-  .service-row,.service-row.reverse{grid-template-columns:1fr;direction:ltr}
-  .transparency-grid{grid-template-columns:1fr}
-  .transparency-intro{flex-direction:column}
-  .gallery-grid{columns:2}
 }
 
 /* ── QUICK LINKS (home) ── */
@@ -685,6 +679,26 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-table-actions button{background:#fff;border:1px solid var(--border);border-radius:var(--radius);width:32px;height:32px;cursor:pointer;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:15px;transition:border-color .18s,color .18s,background .18s}
 .admin-table-actions button:hover{border-color:var(--green-400);color:var(--green-600);background:var(--green-50)}
 .admin-table-actions button.is-danger:hover{border-color:#C0392B;color:#C0392B;background:#FBEAE3}
+
+/* En pantallas muy angostas el pie a dos columnas deja unos 86px por columna y
+   nombres como "Instalaciones y Servicios" se salen del ancho. */
+@media (max-width:480px){
+  .footer-top{grid-template-columns:1fr;gap:24px}
+}
+
+/* Estas reglas viven aqui, al final, porque sus reglas base estan mas arriba:
+   con la misma especificidad gana la ultima del archivo, asi que declararlas
+   antes hacia que el diseno de escritorio siguiera aplicandose en movil. */
+@media (max-width:900px){
+  .facility-photo-grid{grid-template-columns:1fr}
+  .facility-icon-grid{grid-template-columns:1fr}
+  .service-row,.service-row.reverse{grid-template-columns:1fr;direction:ltr}
+  .transparency-grid{grid-template-columns:1fr}
+  .transparency-intro{flex-direction:column}
+  .gallery-grid{columns:2}
+  .post-item{flex-direction:column}
+  .post-item-img{width:100%}
+}
 
 @media (max-width:900px){
   .admin-shell{flex-direction:column}

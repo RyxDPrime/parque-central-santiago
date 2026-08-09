@@ -136,6 +136,8 @@ export interface Texto {
   grupo: string;
   valor: string;
   multiline: boolean;
+  /** "valor:Etiqueta,valor:Etiqueta" — si viene, se edita con una lista. */
+  opciones: string | null;
   orden: number;
 }
 

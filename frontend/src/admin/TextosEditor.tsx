@@ -82,7 +82,18 @@ export function TextosEditor() {
                 <form className="texto-fila" key={texto.id} onSubmit={(e) => guardar(e, texto)}>
                   <div className="admin-field">
                     <label htmlFor={`texto-${texto.id}`}>{texto.etiqueta}</label>
-                    {texto.multiline ? (
+                    {texto.opciones ? (
+                      <select id={`texto-${texto.id}`} name="valor" defaultValue={texto.valor}>
+                        {texto.opciones.split(',').map((opcion) => {
+                          const [valor, etiqueta] = opcion.split(':')
+                          return (
+                            <option key={valor} value={valor}>
+                              {etiqueta ?? valor}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    ) : texto.multiline ? (
                       <textarea
                         id={`texto-${texto.id}`}
                         name="valor"

@@ -217,6 +217,9 @@ model Texto {
   grupo     String   @default("General")
   valor     String
   multiline Boolean  @default(false)
+  // Cuando tiene valor, el panel muestra una lista desplegable en vez de un
+  // campo libre. Formato: "valor:Etiqueta,valor:Etiqueta".
+  opciones  String?
   orden     Int      @default(0)
   updatedAt DateTime @updatedAt
 }

@@ -8,6 +8,11 @@ export function SobreElParque() {
   const { data: hitos, loading, error } = useApiData(api.getHitos)
   const texto = useTextos()
 
+  // El panel decide si la historia se cuenta como línea de tiempo o como un
+  // solo texto corrido.
+  const enParrafo = texto('historia.modo') === 'parrafo'
+  const parrafo = texto('historia.parrafo')
+
   return (
     <>
       <PageHero
@@ -23,19 +28,27 @@ export function SobreElParque() {
             <img src="/images/galeria/entrada-parque.jpg" alt="Entrada del Parque Central de Santiago" />
           </div>
 
-          {loading && <LoadingState />}
-          {error && <ErrorState message={error} />}
+          {enParrafo ? (
+            <article className="story-parrafo">
+              <p>{parrafo}</p>
+            </article>
+          ) : (
+            <>
+              {loading && <LoadingState />}
+              {error && <ErrorState message={error} />}
 
-          {hitos && hitos.length > 0 && (
-            <div className="story-timeline">
-              {hitos.map((hito) => (
-                <div className="story-hito" key={hito.id}>
-                  <span className="story-hito-fecha">{hito.fecha}</span>
-                  <h3>{hito.titulo}</h3>
-                  <p>{hito.texto}</p>
+              {hitos && hitos.length > 0 && (
+                <div className="story-timeline">
+                  {hitos.map((hito) => (
+                    <div className="story-hito" key={hito.id}>
+                      <span className="story-hito-fecha">{hito.fecha}</span>
+                      <h3>{hito.titulo}</h3>
+                      <p>{hito.texto}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
 
           <div className="transparency-intro" style={{ marginTop: 28 }}>

@@ -66,6 +66,18 @@ const textos = [
   { clave: "inicio.heroTitulo", etiqueta: "Título principal", grupo: "Inicio", valor: "El pulmón verde de Santiago", orden: 1 },
   { clave: "inicio.heroTexto", etiqueta: "Texto principal", grupo: "Inicio", valor: "Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana, administrado por el Patronato para la Administración del Parque Central de Santiago desde 2018.", multiline: true, orden: 2 },
 
+  { clave: "inicio.cifrasEtiqueta", etiqueta: "Cifras — etiqueta", grupo: "Títulos del inicio", valor: "Instalaciones", orden: 1 },
+  { clave: "inicio.cifrasTitulo", etiqueta: "Cifras — título", grupo: "Títulos del inicio", valor: "El parque en cifras", orden: 2 },
+  { clave: "inicio.exploraEtiqueta", etiqueta: "Accesos rápidos — etiqueta", grupo: "Títulos del inicio", valor: "Explora el parque", orden: 3 },
+  { clave: "inicio.exploraTitulo", etiqueta: "Accesos rápidos — título", grupo: "Títulos del inicio", valor: "Todo lo que necesitas saber", orden: 4 },
+  { clave: "inicio.exploraTexto", etiqueta: "Accesos rápidos — texto", grupo: "Títulos del inicio", valor: "Conoce las instalaciones, programas y la institución que administra el Parque Central de Santiago.", multiline: true, orden: 5 },
+  { clave: "inicio.quienesEtiqueta", etiqueta: "Quiénes somos — etiqueta", grupo: "Títulos del inicio", valor: "Quiénes somos", orden: 6 },
+  { clave: "inicio.quienesTitulo", etiqueta: "Quiénes somos — título", grupo: "Títulos del inicio", valor: "Una institución al servicio de Santiago", orden: 7 },
+  { clave: "inicio.quienesTexto", etiqueta: "Quiénes somos — texto", grupo: "Títulos del inicio", valor: "El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.", multiline: true, orden: 8 },
+  { clave: "inicio.mapaEtiqueta", etiqueta: "Mapa — etiqueta", grupo: "Títulos del inicio", valor: "Ubicación", orden: 9 },
+  { clave: "inicio.mapaTitulo", etiqueta: "Mapa — título", grupo: "Títulos del inicio", valor: "Explora el parque", orden: 10 },
+  { clave: "inicio.mapaTexto", etiqueta: "Mapa — texto", grupo: "Títulos del inicio", valor: "Ubica las principales instalaciones del Parque Central de Santiago en el mapa.", multiline: true, orden: 11 },
+
   { clave: "historia.apedi", etiqueta: "Relación con APEDI", grupo: "Historia", valor: "El Parque Central de Santiago mantiene una estrecha relación con la Asociación para el Desarrollo, Inc. (APEDI), institución fundadora y actual presidenta del Patronato para la Administración del Parque Central de Santiago. El parque también trabaja de manera coordinada con diversas instituciones públicas, privadas, educativas y organizaciones de la sociedad civil, promoviendo alianzas estratégicas para el desarrollo de actividades recreativas, culturales, deportivas, ambientales y comunitarias.", multiline: true, orden: 1 },
 
   { clave: "transparencia.quienesSomos", etiqueta: "Quiénes somos", grupo: "Transparencia", valor: "El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida el 6 de abril de 2018, resultado del esfuerzo conjunto entre la Asociación para el Desarrollo, Inc. (APEDI) y diecisiete instituciones públicas y privadas de la región. Está registrado bajo la Ley 122-05 del 8 de abril de 2005. RNC: 430-25261-1.", multiline: true, orden: 1 },

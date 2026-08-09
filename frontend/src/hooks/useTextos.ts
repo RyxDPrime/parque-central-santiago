@@ -15,6 +15,20 @@ const RESPALDO: Record<string, string> = {
   'inicio.heroTitulo': 'El pulmón verde de Santiago',
   'inicio.heroTexto':
     'Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana, administrado por el Patronato para la Administración del Parque Central de Santiago desde 2018.',
+  'inicio.cifrasEtiqueta': 'Instalaciones',
+  'inicio.cifrasTitulo': 'El parque en cifras',
+  'inicio.exploraEtiqueta': 'Explora el parque',
+  'inicio.exploraTitulo': 'Todo lo que necesitas saber',
+  'inicio.exploraTexto':
+    'Conoce las instalaciones, programas y la institución que administra el Parque Central de Santiago.',
+  'inicio.quienesEtiqueta': 'Quiénes somos',
+  'inicio.quienesTitulo': 'Una institución al servicio de Santiago',
+  'inicio.quienesTexto':
+    'El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.',
+  'inicio.mapaEtiqueta': 'Ubicación',
+  'inicio.mapaTitulo': 'Explora el parque',
+  'inicio.mapaTexto':
+    'Ubica las principales instalaciones del Parque Central de Santiago en el mapa.',
   'historia.apedi':
     'El Parque Central de Santiago mantiene una estrecha relación con la Asociación para el Desarrollo, Inc. (APEDI), institución fundadora y actual presidenta del Patronato.',
   'transparencia.quienesSomos':

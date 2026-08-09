@@ -23,13 +23,14 @@ function MiniMapa() {
  */
 function CifrasDestacadas() {
   const { data } = useApiData(api.getCifras)
+  const texto = useTextos()
   if (!data || data.length === 0) return null
 
   return (
     <section id="stats" aria-label="El parque en cifras">
-      <div className="sec-label">Instalaciones</div>
+      <div className="sec-label">{texto('inicio.cifrasEtiqueta')}</div>
       <h2 className="sec-title" style={{ marginBottom: 40 }}>
-        El parque en cifras
+        {texto('inicio.cifrasTitulo')}
       </h2>
 
       {data.map((cifra, i) => (
@@ -140,12 +141,9 @@ export function Home() {
 
       <section className="section">
         <div className="section-inner">
-          <div className="sec-label">Explora el parque</div>
-          <h2 className="sec-title">Todo lo que necesitas saber</h2>
-          <p className="sec-sub">
-            Conoce las instalaciones, programas y la institución que administra el Parque Central
-            de Santiago.
-          </p>
+          <div className="sec-label">{texto('inicio.exploraEtiqueta')}</div>
+          <h2 className="sec-title">{texto('inicio.exploraTitulo')}</h2>
+          <p className="sec-sub">{texto('inicio.exploraTexto')}</p>
           <div className="quick-grid">
             {quickLinks.map((item) => (
               <Link key={item.to} to={item.to} className="quick-card">
@@ -163,13 +161,9 @@ export function Home() {
       <section className="section" style={{ background: 'var(--gray-100)' }}>
         <div className="about-inner">
           <div>
-            <div className="sec-label">Quiénes somos</div>
-            <h2 className="sec-title">Una institución al servicio de Santiago</h2>
-            <p className="sec-sub">
-              El Parque Central de Santiago es administrado por un patronato sin fines de lucro,
-              nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc.
-              (APEDI) junto a instituciones públicas y privadas de la región.
-            </p>
+            <div className="sec-label">{texto('inicio.quienesEtiqueta')}</div>
+            <h2 className="sec-title">{texto('inicio.quienesTitulo')}</h2>
+            <p className="sec-sub">{texto('inicio.quienesTexto')}</p>
             <div className="about-links">
               <Link to="/sobre-el-parque" className="about-link">
                 <i className="ti ti-book" /> Historia
@@ -234,11 +228,9 @@ export function Home() {
 
       <section className="section" id="home-map" style={{ background: 'var(--gray-100)' }}>
         <div className="section-inner">
-          <div className="sec-label">Ubicación</div>
-          <h2 className="sec-title">Explora el parque</h2>
-          <p className="sec-sub">
-            Ubica las principales instalaciones del Parque Central de Santiago en el mapa.
-          </p>
+          <div className="sec-label">{texto('inicio.mapaEtiqueta')}</div>
+          <h2 className="sec-title">{texto('inicio.mapaTitulo')}</h2>
+          <p className="sec-sub">{texto('inicio.mapaTexto')}</p>
           <MiniMapa />
           <Link to="/mapa" className="btn-outline" style={{ marginTop: 20 }}>
             Ver mapa completo <i className="ti ti-arrow-right" />

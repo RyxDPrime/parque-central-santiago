@@ -42,9 +42,8 @@ const pasosReserva = [
 ];
 
 const formasApoyo = [
-  { icono: "ti-hand-heart", etiqueta: "Voluntariado", titulo: "Ser voluntario", texto: "Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias del parque." },
+  { icono: "ti-hand-heart", etiqueta: "Voluntariado", titulo: "Ser voluntario", texto: "Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias. El Parque firma las horas de servicio ambiental que exigen los centros educativos a sus estudiantes." },
   { icono: "ti-coin", etiqueta: "Donaciones", titulo: "Hacer una donación", texto: "Tu aporte ayuda a mantener las instalaciones y los programas del parque. Próximamente habilitaremos donaciones en línea." },
-  { icono: "ti-plant-2", etiqueta: "Reforestación", titulo: "Donar un árbol o una flor", texto: "Contribuye a la reforestación y el embellecimiento del parque dedicando un árbol o una flor." },
 ];
 
 const cifras = [
@@ -77,6 +76,8 @@ const textos = [
   { clave: "inicio.mapaEtiqueta", etiqueta: "Mapa — etiqueta", grupo: "Títulos del inicio", valor: "Ubicación", orden: 9 },
   { clave: "inicio.mapaTitulo", etiqueta: "Mapa — título", grupo: "Títulos del inicio", valor: "Explora el parque", orden: 10 },
   { clave: "inicio.mapaTexto", etiqueta: "Mapa — texto", grupo: "Títulos del inicio", valor: "Ubica las principales instalaciones del Parque Central de Santiago en el mapa.", multiline: true, orden: 11 },
+
+  { clave: "junta.modo", etiqueta: "Qué mostrar en las tarjetas", grupo: "Junta Directiva", valor: "logo", opciones: "logo:Logo de la institución,foto:Foto del representante", orden: 1 },
 
   { clave: "historia.modo", etiqueta: "Formato de la historia", grupo: "Historia", valor: "linea", opciones: "linea:Línea de tiempo,parrafo:Un solo texto", orden: 1 },
   {

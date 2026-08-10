@@ -49,7 +49,6 @@ export interface PersonalTecnico {
   id: number;
   nombre: string;
   cargo: string;
-  bio: string | null;
   fotoUrl: string | null;
   orden: number;
 }

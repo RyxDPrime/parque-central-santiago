@@ -1,10 +1,14 @@
 import { PageHero } from '../components/PageHero'
 import { LoadingState, ErrorState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
+import { useTextos } from '../hooks/useTextos'
 import { api } from '../api/client'
 
 export function JuntaDirectiva() {
   const { data, loading, error } = useApiData(api.getJuntaDirectiva)
+  // Mientras no haya sesión de fotos de la Junta, se muestran los logos de
+  // las instituciones. El panel puede cambiarlo cuando las fotos estén listas.
+  const mostrarFoto = useTextos()('junta.modo') === 'foto'
 
   return (
     <>
@@ -25,7 +29,7 @@ export function JuntaDirectiva() {
               {data.map((member) => (
                 <article className="leadership-card" key={member.id}>
                   <div className="leadership-photo">
-                    {member.fotoUrl ? (
+                    {mostrarFoto && member.fotoUrl ? (
                       <img src={member.fotoUrl} alt={member.representante} loading="lazy" />
                     ) : member.logoUrl ? (
                       <img
@@ -35,12 +39,12 @@ export function JuntaDirectiva() {
                         loading="lazy"
                       />
                     ) : (
-                      <i className="ti ti-user" />
+                      <i className="ti ti-building-bank" />
                     )}
 
                     {/* Con foto de la persona, el logo pasa a un sello en la
                         esquina: manda el rostro, sin perder la institución. */}
-                    {member.fotoUrl && member.logoUrl && (
+                    {mostrarFoto && member.fotoUrl && member.logoUrl && (
                       <span className="leadership-logo-badge">
                         <img src={member.logoUrl} alt={member.institucion} loading="lazy" />
                       </span>

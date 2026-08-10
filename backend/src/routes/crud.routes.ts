@@ -42,7 +42,7 @@ export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto"
 // panel no muestra (por ejemplo `id` o `createdAt`) y escribirlos igual.
 const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   juntaDirectivo: ["institucion", "representante", "cargo", "fotoUrl", "logoUrl", "orden"],
-  personalTecnico: ["nombre", "cargo", "bio", "fotoUrl", "orden"],
+  personalTecnico: ["nombre", "cargo", "fotoUrl", "orden"],
   instalacion: ["nombre", "descripcion", "cantidad", "orden"],
   programa: ["nombre", "categoria", "descripcion", "orden"],
   actividad: ["titulo", "descripcion", "fechaInicio", "fechaFin", "lugar", "imagenUrl"],

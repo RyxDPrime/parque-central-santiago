@@ -29,6 +29,7 @@ const RESPALDO: Record<string, string> = {
   'inicio.mapaTitulo': 'Explora el parque',
   'inicio.mapaTexto':
     'Ubica las principales instalaciones del Parque Central de Santiago en el mapa.',
+  'junta.modo': 'logo',
   'historia.modo': 'linea',
   'historia.parrafo':
     'El Parque Central de Santiago abrió sus puertas el 20 de febrero de 2018, tras casi dos décadas de gestiones de la Asociación para el Desarrollo, Inc. (APEDI).',

@@ -85,7 +85,6 @@ export const entityConfigs: EntityConfig[] = [
     fields: [
       { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez' },
       { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa' },
-      { key: 'bio', label: 'Biografía', type: 'textarea', placeholder: 'Breve reseña profesional del miembro del equipo (opcional)' },
       { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*', aspect: 1 },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],

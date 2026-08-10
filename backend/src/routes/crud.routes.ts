@@ -35,7 +35,7 @@ export type ModeloOrdenable =
   | "formaApoyo"
   | "cifra";
 
-export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto";
+export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto" | "encabezadoPagina";
 
 // Campos que cada modelo acepta desde el formulario. Sin esta lista se pasaba
 // `req.body` completo a Prisma, así que una petición podía traer campos que el
@@ -57,6 +57,8 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
   // Los textos no se crean ni se borran: solo cambia su valor.
   texto: ["valor"],
+  // El conjunto de encabezados es fijo: solo cambian la foto y su encuadre.
+  encabezadoPagina: ["imagenUrl", "posicion"],
 };
 
 function soloCamposPermitidos(modelo: ModeloCrud, body: unknown): Record<string, unknown> {

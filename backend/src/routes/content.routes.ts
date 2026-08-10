@@ -123,3 +123,12 @@ contentRouter.get("/textos", async (_req, res, next) => {
     next(err);
   }
 });
+
+contentRouter.get("/encabezados", async (_req, res, next) => {
+  try {
+    const data = await prisma.encabezadoPagina.findMany({ orderBy: { orden: "asc" } });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});

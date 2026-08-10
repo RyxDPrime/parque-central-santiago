@@ -222,3 +222,16 @@ model Texto {
   orden     Int      @default(0)
   updatedAt DateTime @updatedAt
 }
+
+// Foto de encabezado de cada página. El conjunto de claves es fijo: se editan
+// desde el panel pero no se crean ni se borran.
+model EncabezadoPagina {
+  id        Int      @id @default(autoincrement())
+  clave     String   @unique
+  etiqueta  String
+  imagenUrl String
+  // Encuadre vertical de la foto dentro de la franja (CSS object-position).
+  posicion  String   @default("center")
+  orden     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}

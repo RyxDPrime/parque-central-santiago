@@ -16,6 +16,7 @@ export function Transparencia() {
   return (
     <>
       <PageHero
+        pagina="transparencia"
         label="Institución"
         title="Transparencia"
         description="Quiénes somos y el marco bajo el que opera el Parque Central de Santiago."

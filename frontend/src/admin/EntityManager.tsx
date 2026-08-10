@@ -195,6 +195,7 @@ export function EntityManager() {
         </div>
       </header>
 
+      {(!config.soloEditar || editing) && (
       <form
         className={`admin-form${editing ? ' is-editing' : ''}`}
         onSubmit={handleSubmit}
@@ -330,6 +331,7 @@ export function EntityManager() {
           )}
         </div>
       </form>
+      )}
 
       <section className="admin-panel">
         <div className="admin-panel-head">
@@ -417,7 +419,11 @@ export function EntityManager() {
           <div className="admin-empty">
             <i className={`ti ${config.icon}`} />
             <h3>Todavía no hay registros</h3>
-            <p>Usa el formulario de arriba para agregar el primero.</p>
+            <p>
+              {config.soloEditar
+                ? 'Esta sección se completa automáticamente al publicar el sitio.'
+                : 'Usa el formulario de arriba para agregar el primero.'}
+            </p>
           </div>
         )}
 
@@ -472,14 +478,16 @@ export function EntityManager() {
                       <button type="button" title="Editar" onClick={() => setEditing(row)}>
                         <i className="ti ti-edit" />
                       </button>
-                      <button
-                        type="button"
-                        title="Eliminar"
-                        className="is-danger"
-                        onClick={() => handleDelete(row.id)}
-                      >
-                        <i className="ti ti-trash" />
-                      </button>
+                      {!config.soloEditar && (
+                        <button
+                          type="button"
+                          title="Eliminar"
+                          className="is-danger"
+                          onClick={() => handleDelete(row.id)}
+                        >
+                          <i className="ti ti-trash" />
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

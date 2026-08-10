@@ -54,6 +54,25 @@ const cifras = [
   { numero: "2018", descripcion: "Año de inauguración del parque, resultado de casi dos décadas de gestión de la Asociación para el Desarrollo, Inc. (APEDI).", imagenUrl: "/images/galeria/cancha-tenis.jpg", etiqueta: "Desde 2018", enlaceTexto: "Conoce nuestra historia", enlaceUrl: "/sobre-el-parque" },
 ];
 
+const encabezados = [
+  { clave: "inicio", etiqueta: "Inicio (portada)", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 1 },
+  { clave: "sobre-el-parque", etiqueta: "Historia", imagenUrl: "/images/galeria/entrada-parque.jpg", posicion: "center", orden: 2 },
+  { clave: "reglamento", etiqueta: "Reglamento", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 3 },
+  { clave: "junta-directiva", etiqueta: "Junta Directiva", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 4 },
+  { clave: "personal-tecnico", etiqueta: "Personal Tecnico", imagenUrl: "/images/galeria/entrada-parque.jpg", posicion: "center", orden: 5 },
+  { clave: "transparencia", etiqueta: "Transparencia", imagenUrl: "/images/galeria/entrada-parque.jpg", posicion: "center", orden: 6 },
+  { clave: "instalaciones-y-servicios", etiqueta: "Instalaciones y Servicios", imagenUrl: "/images/galeria/cancha-basketball.jpg", posicion: "center", orden: 7 },
+  { clave: "programas-y-proyectos", etiqueta: "Programas y Proyectos", imagenUrl: "/images/galeria/cibao-futbol-club.jpg", posicion: "center", orden: 8 },
+  { clave: "galeria", etiqueta: "Galeria", imagenUrl: "/images/galeria/parque-infantil.jpg", posicion: "center", orden: 9 },
+  { clave: "mapa", etiqueta: "Mapa del Parque", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 10 },
+  { clave: "actividades", etiqueta: "Actividades", imagenUrl: "/images/galeria/maraton-5k.jpg", posicion: "center", orden: 11 },
+  { clave: "reserva", etiqueta: "Reserva", imagenUrl: "/images/galeria/navidad-en-el-parque.jpg", posicion: "center", orden: 12 },
+  { clave: "blog", etiqueta: "Blog", imagenUrl: "/images/galeria/dia-del-yoga.jpg", posicion: "center 26%", orden: 13 },
+  { clave: "apoyanos", etiqueta: "Apoyanos", imagenUrl: "/images/galeria/ciclistas.jpg", posicion: "center", orden: 14 },
+  { clave: "contacto", etiqueta: "Contacto", imagenUrl: "/images/galeria/gimnasio-aire-libre.jpg", posicion: "center", orden: 15 },
+  { clave: "no-encontrada", etiqueta: "Pagina no encontrada", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 16 },
+];
+
 const textos = [
   { clave: "contacto.direccion", etiqueta: "Dirección", grupo: "Contacto", valor: "Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros", orden: 1 },
   { clave: "contacto.email", etiqueta: "Correo electrónico", grupo: "Contacto", valor: "asistentepcs@gmail.com", orden: 2 },
@@ -138,6 +157,19 @@ async function main() {
     creados++;
   }
   console.log(`  textos: ${creados} creados, ${textos.length - creados} ya existían`);
+
+  // Los encabezados se identifican por clave: se crean si faltan y se conserva
+  // la foto de los que ya existen.
+  let encabezadosCreados = 0;
+  for (const e of encabezados) {
+    const existe = await prisma.encabezadoPagina.findUnique({ where: { clave: e.clave } });
+    if (existe) continue;
+    await prisma.encabezadoPagina.create({ data: e });
+    encabezadosCreados++;
+  }
+  console.log(
+    `  encabezados: ${encabezadosCreados} creados, ${encabezados.length - encabezadosCreados} ya existían`,
+  );
   console.log("Listo.");
 }
 

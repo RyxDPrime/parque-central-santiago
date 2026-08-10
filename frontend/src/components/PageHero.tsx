@@ -1,23 +1,40 @@
+import { useEncabezado } from '../hooks/useEncabezado'
+
 interface PageHeroProps {
   label: string
   title: string
   description: string
-  /** Foto de fondo del parque; el texto se apoya sobre un degradado para mantener el contraste. */
+  /** Clave del encabezado en el panel, para tomar la foto desde la base. */
+  pagina?: string
+  /** Foto por defecto, si el panel todavía no tiene una para esta página. */
   image?: string
-  /** Encuadre de la foto (CSS object-position). Útil cuando lo importante queda arriba. */
+  /** Encuadre por defecto (CSS object-position). */
   imagePosition?: string
 }
 
-export function PageHero({ label, title, description, image, imagePosition }: PageHeroProps) {
+export function PageHero({
+  label,
+  title,
+  description,
+  pagina,
+  image,
+  imagePosition,
+}: PageHeroProps) {
+  const guardado = useEncabezado(pagina)
+
+  // Manda lo que el panel tenga guardado; si no hay nada, la foto por defecto.
+  const foto = guardado.imagen ?? image
+  const encuadre = guardado.imagen ? guardado.posicion : imagePosition
+
   return (
-    <header className={`page-hero${image ? ' has-image' : ''}`}>
-      {image && (
+    <header className={`page-hero${foto ? ' has-image' : ''}`}>
+      {foto && (
         <div className="page-hero-bg">
           <img
-            src={image}
+            src={foto}
             alt=""
             aria-hidden="true"
-            style={imagePosition ? { objectPosition: imagePosition } : undefined}
+            style={encuadre ? { objectPosition: encuadre } : undefined}
           />
         </div>
       )}

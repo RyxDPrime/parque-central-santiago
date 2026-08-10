@@ -4,6 +4,7 @@ import { AnnouncementPopup } from '../components/AnnouncementPopup'
 import { ParkMap } from '../components/ParkMap'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
+import { useEncabezado } from '../hooks/useEncabezado'
 import { api, type Cifra } from '../api/client'
 
 /**
@@ -107,6 +108,7 @@ const quickLinks = [
 
 export function Home() {
   const texto = useTextos()
+  const portada = useEncabezado('inicio')
 
   return (
     <>
@@ -114,9 +116,10 @@ export function Home() {
 
       <section id="home-hero">
         <img
-          src="/images/galeria/vista-aerea-parque.jpg"
+          src={portada.imagen ?? '/images/galeria/vista-aerea-parque.jpg'}
           alt="Vista aérea del Parque Central de Santiago"
           className="hero-bg"
+          style={portada.posicion ? { objectPosition: portada.posicion } : undefined}
         />
         <div className="hero-overlay" />
         <div className="hero-content">

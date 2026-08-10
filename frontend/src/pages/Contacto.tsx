@@ -36,6 +36,7 @@ export function Contacto() {
   return (
     <>
       <PageHero
+        pagina="contacto"
         label="Contacto"
         title="Contacto y Ubicación"
         description="Escríbenos, visítanos o contáctanos por teléfono y WhatsApp."

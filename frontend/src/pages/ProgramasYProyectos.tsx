@@ -19,6 +19,7 @@ export function ProgramasYProyectos() {
   return (
     <>
       <PageHero
+        pagina="programas-y-proyectos"
         label="El Parque"
         title="Programas y Proyectos"
         description="Las iniciativas y proyectos institucionales del Parque Central de Santiago."

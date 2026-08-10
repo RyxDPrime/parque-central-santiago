@@ -21,6 +21,8 @@ export interface FieldConfig {
 
 export interface EntityConfig {
   path: string
+  /** Sin alta ni borrado: el conjunto de registros es fijo. */
+  soloEditar?: boolean
   label: string
   fields: FieldConfig[]
   titleField: string
@@ -254,6 +256,31 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'enlaceTexto', label: 'Texto del enlace (opcional)', type: 'text', placeholder: 'Ej: Ver instalaciones y servicios' },
       { key: 'enlaceUrl', label: 'Dirección del enlace (opcional)', type: 'text', placeholder: 'Ej: /instalaciones-y-servicios', hint: 'Ruta dentro del sitio, empezando con /' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'encabezados',
+    icon: 'ti-photo-scan',
+    description: 'Foto de la franja superior de cada página. El conjunto es fijo: solo se cambia la imagen.',
+    label: 'Fotos de Encabezado',
+    titleField: 'etiqueta',
+    soloEditar: true,
+    fields: [
+      { key: 'etiqueta', label: 'Página', type: 'text' },
+      { key: 'imagenUrl', label: 'Foto de la franja', type: 'file', accept: 'image/*', aspect: 16 / 5 },
+      {
+        key: 'posicion',
+        label: 'Encuadre vertical',
+        type: 'select',
+        options: [
+          { value: 'center', label: 'Centrado' },
+          { value: 'center 20%', label: 'Hacia arriba' },
+          { value: 'top', label: 'Borde superior' },
+          { value: 'center 80%', label: 'Hacia abajo' },
+          { value: 'bottom', label: 'Borde inferior' },
+        ],
+        hint: 'Qué parte de la foto se ve cuando es más alta que la franja.',
+      },
     ],
   },
   {

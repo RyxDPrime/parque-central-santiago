@@ -40,6 +40,7 @@ export function InstalacionesYServicios() {
   return (
     <>
       <PageHero
+        pagina="instalaciones-y-servicios"
         label="El Parque"
         title="Instalaciones y Servicios"
         description="Las áreas y facilidades del parque, y los servicios que ofrece a la comunidad de Santiago."

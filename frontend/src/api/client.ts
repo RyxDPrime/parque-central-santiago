@@ -140,6 +140,15 @@ export interface Texto {
   orden: number;
 }
 
+export interface EncabezadoPagina {
+  id: number;
+  clave: string;
+  etiqueta: string;
+  imagenUrl: string;
+  posicion: string;
+  orden: number;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -185,5 +194,6 @@ export const api = {
   getFormasApoyo: () => get<FormaApoyo[]>("/formas-apoyo"),
   getCifras: () => get<Cifra[]>("/cifras"),
   getTextos: () => get<Texto[]>("/textos"),
+  getEncabezados: () => get<EncabezadoPagina[]>("/encabezados"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

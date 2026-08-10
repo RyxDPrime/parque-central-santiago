@@ -13,6 +13,7 @@ export function JuntaDirectiva() {
   return (
     <>
       <PageHero
+        pagina="junta-directiva"
         label="Institución"
         title="Junta Directiva"
         description="Las instituciones que conforman el Patronato para la Administración del Parque Central de Santiago."

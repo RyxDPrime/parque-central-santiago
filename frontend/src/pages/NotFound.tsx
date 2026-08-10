@@ -12,6 +12,7 @@ export function NotFound() {
   return (
     <>
       <PageHero
+        pagina="no-encontrada"
         label="Error 404"
         title="No encontramos esta página"
         description="Es posible que el enlace esté roto o que la página se haya movido."

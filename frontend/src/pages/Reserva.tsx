@@ -12,6 +12,7 @@ export function Reserva() {
   return (
     <>
       <PageHero
+        pagina="reserva"
         label="El Parque"
         title="Reserva"
         description="Calendario de actividades y reserva de espacios del Parque Central de Santiago."

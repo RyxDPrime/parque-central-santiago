@@ -16,6 +16,7 @@ export function SobreElParque() {
   return (
     <>
       <PageHero
+        pagina="sobre-el-parque"
         label="Sobre el Parque"
         title="Casi 20 años de gestión hechos realidad"
         description="La historia del Parque Central de Santiago y su relación con la Asociación para el Desarrollo, Inc. (APEDI)."

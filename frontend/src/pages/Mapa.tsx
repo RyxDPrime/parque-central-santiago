@@ -17,6 +17,7 @@ export function Mapa() {
   return (
     <>
       <PageHero
+        pagina="mapa"
         label="El Parque"
         title="Mapa del Parque"
         description="Ubica las principales instalaciones del Parque Central de Santiago."

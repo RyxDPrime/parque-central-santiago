@@ -11,6 +11,7 @@ export function Galeria() {
   return (
     <>
       <PageHero
+        pagina="galeria"
         label="El Parque"
         title="Galería multimedia"
         description="Fotografías del Parque Central de Santiago y sus espacios."

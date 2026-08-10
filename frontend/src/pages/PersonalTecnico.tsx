@@ -9,6 +9,7 @@ export function PersonalTecnico() {
   return (
     <>
       <PageHero
+        pagina="personal-tecnico"
         label="Institución"
         title="Personal Técnico"
         description="El equipo administrativo y técnico del Parque Central de Santiago."

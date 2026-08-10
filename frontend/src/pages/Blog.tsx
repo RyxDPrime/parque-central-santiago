@@ -68,6 +68,7 @@ export function Blog() {
   return (
     <>
       <PageHero
+        pagina="blog"
         label="Blog"
         title="Artículos y Noticias"
         description="Las publicaciones del Parque Central de Santiago."

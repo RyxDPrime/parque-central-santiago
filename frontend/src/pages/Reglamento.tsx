@@ -9,6 +9,7 @@ export function Reglamento() {
   return (
     <>
       <PageHero
+        pagina="reglamento"
         label="Sobre Nosotros"
         title="Reglamento General"
         description="Normas de uso del Parque Central de Santiago, para preservar un ambiente seguro, limpio y agradable para todos los visitantes."

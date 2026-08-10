@@ -10,6 +10,7 @@ export function Apoyanos() {
   return (
     <>
       <PageHero
+        pagina="apoyanos"
         label="Apóyanos"
         title="¿Quieres apoyar al parque?"
         description="Cada donación, árbol o hora de voluntariado hace posible que este espacio siga vivo para las próximas generaciones."

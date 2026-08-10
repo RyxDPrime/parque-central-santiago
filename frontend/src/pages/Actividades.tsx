@@ -38,6 +38,7 @@ export function Actividades() {
   return (
     <>
       <PageHero
+        pagina="actividades"
         label="El Parque"
         title="Actividades"
         description="La agenda de eventos y actividades del Parque Central de Santiago."

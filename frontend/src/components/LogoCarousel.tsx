@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 
 export interface LogoItem {
   id: number
@@ -26,33 +26,17 @@ interface LogoCarouselProps {
  */
 export function LogoCarousel({ logos, titulo = 'Instituciones del Patronato' }: LogoCarouselProps) {
   const pista = useRef<HTMLDivElement>(null)
-  const [alInicio, setAlInicio] = useState(true)
-  const [alFinal, setAlFinal] = useState(false)
-
-  // Se recalcula en qué extremo estamos para saber cuándo dar la vuelta.
-  useEffect(() => {
-    const el = pista.current
-    if (!el) return
-
-    function revisar() {
-      if (!el) return
-      const margen = 4 // tolerancia por redondeo de píxeles
-      setAlInicio(el.scrollLeft <= margen)
-      setAlFinal(el.scrollLeft + el.clientWidth >= el.scrollWidth - margen)
-    }
-
-    revisar()
-    el.addEventListener('scroll', revisar, { passive: true })
-    window.addEventListener('resize', revisar)
-    return () => {
-      el.removeEventListener('scroll', revisar)
-      window.removeEventListener('resize', revisar)
-    }
-  }, [logos])
-
   function desplazar(direccion: 'anterior' | 'siguiente') {
     const el = pista.current
     if (!el) return
+
+    // La posición se lee del elemento en el momento del clic, no del estado:
+    // si por cualquier motivo no llegó un evento de scroll, el estado podría
+    // estar desactualizado y las flechas dejarían de responder en los extremos.
+    const margen = 4
+    const maximo = el.scrollWidth - el.clientWidth
+    const enInicio = el.scrollLeft <= margen
+    const enFinal = el.scrollLeft >= maximo - margen
 
     // Se avanza casi una pantalla completa, dejando un logo de solapamiento
     // para no perder el hilo de dónde se venía.
@@ -60,15 +44,17 @@ export function LogoCarousel({ logos, titulo = 'Instituciones del Patronato' }: 
     const suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const comportamiento: ScrollBehavior = suave ? 'smooth' : 'auto'
 
-    if (direccion === 'siguiente') {
-      // Al final, vuelve al principio: el recorrido es circular.
-      el.scrollTo({ left: alFinal ? 0 : el.scrollLeft + salto, behavior: comportamiento })
-    } else {
-      el.scrollTo({
-        left: alInicio ? el.scrollWidth : el.scrollLeft - salto,
-        behavior: comportamiento,
-      })
-    }
+    // El recorrido es circular: en un extremo se continúa por el otro.
+    const destino =
+      direccion === 'siguiente'
+        ? enFinal
+          ? 0
+          : Math.min(el.scrollLeft + salto, maximo)
+        : enInicio
+          ? maximo
+          : Math.max(el.scrollLeft - salto, 0)
+
+    el.scrollTo({ left: destino, behavior: comportamiento })
   }
 
   if (logos.length === 0) return null

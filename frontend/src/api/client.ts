@@ -140,6 +140,14 @@ export interface Texto {
   orden: number;
 }
 
+export interface Aliado {
+  id: number;
+  nombre: string;
+  logoUrl: string | null;
+  sitioWeb: string | null;
+  orden: number;
+}
+
 export interface EncabezadoPagina {
   id: number;
   clave: string;
@@ -195,5 +203,6 @@ export const api = {
   getCifras: () => get<Cifra[]>("/cifras"),
   getTextos: () => get<Texto[]>("/textos"),
   getEncabezados: () => get<EncabezadoPagina[]>("/encabezados"),
+  getAliados: () => get<Aliado[]>("/aliados"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
 };

@@ -259,6 +259,19 @@ export const entityConfigs: EntityConfig[] = [
     ],
   },
   {
+    path: 'aliados',
+    icon: 'ti-building-arch',
+    description: 'Logos que aparecen en el carrusel de la página de Historia.',
+    label: 'Logos Institucionales',
+    titleField: 'nombre',
+    fields: [
+      { key: 'nombre', label: 'Nombre de la institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.', hint: 'Si no hay logo cargado, este nombre se muestra en su lugar.' },
+      { key: 'logoUrl', label: 'Logo', type: 'file', accept: 'image/*' },
+      { key: 'sitioWeb', label: 'Sitio web (opcional)', type: 'text', placeholder: 'Ej: https://www.ejemplo.com', hint: 'Si lo indicas, el logo se vuelve un enlace.' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
     path: 'encabezados',
     icon: 'ti-photo-scan',
     description: 'Foto de la franja superior de cada página. El conjunto es fijo: solo se cambia la imagen.',

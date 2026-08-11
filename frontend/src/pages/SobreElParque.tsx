@@ -1,4 +1,5 @@
 import { PageHero } from '../components/PageHero'
+import { LogoCarousel } from '../components/LogoCarousel'
 import { LoadingState, ErrorState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
@@ -6,6 +7,7 @@ import { api } from '../api/client'
 
 export function SobreElParque() {
   const { data: hitos, loading, error } = useApiData(api.getHitos)
+  const { data: aliados } = useApiData(api.getAliados)
   const texto = useTextos()
 
   // El panel decide si la historia se cuenta como línea de tiempo o como un
@@ -25,9 +27,14 @@ export function SobreElParque() {
 
       <section className="section">
         <div className="section-inner">
-          <div className="story-hero">
-            <img src="/images/galeria/entrada-parque.jpg" alt="Entrada del Parque Central de Santiago" />
-          </div>
+          {/* Las instituciones que conforman el Patronato, en una barra
+              desplazable. Antes era una foto del letrero con todos los logos. */}
+          {aliados && aliados.length > 0 && (
+            <div className="story-aliados">
+              <p className="story-aliados-titulo">Instituciones que conforman el Patronato</p>
+              <LogoCarousel logos={aliados} />
+            </div>
+          )}
 
           {enParrafo ? (
             <article className="story-parrafo">

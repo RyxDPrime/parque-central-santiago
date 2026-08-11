@@ -33,7 +33,8 @@ export type ModeloOrdenable =
   | "norma"
   | "pasoReserva"
   | "formaApoyo"
-  | "cifra";
+  | "cifra"
+  | "aliado";
 
 export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto" | "encabezadoPagina";
 
@@ -55,6 +56,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   pasoReserva: ["icono", "titulo", "texto", "orden"],
   formaApoyo: ["icono", "etiqueta", "titulo", "texto", "orden"],
   cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
+  aliado: ["nombre", "logoUrl", "sitioWeb", "orden"],
   // Los textos no se crean ni se borran: solo cambia su valor.
   texto: ["valor"],
   // El conjunto de encabezados es fijo: solo cambian la foto y su encuadre.

@@ -21,7 +21,14 @@ export const env = {
     // pero SMTP las espera sin espacios.
     pass: (process.env.SMTP_PASS ?? "").replace(/\s+/g, ""),
   },
-  mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
+  // El remitente tiene que ser la misma cuenta con la que se autentica el
+  // envio: Gmail reescribe el From al usuario autenticado, asi que poner otra
+  // direccion no cambia lo que ve quien recibe, solo confunde a quien configura.
+  // Por eso el valor por defecto se deriva de SMTP_USER en vez de inventar una
+  // direccion que nunca llegaria a usarse.
+  mailFrom:
+    process.env.MAIL_FROM ??
+    (process.env.SMTP_USER ? `Parque Central de Santiago <${process.env.SMTP_USER}>` : ""),
   contactToEmail: required("CONTACT_TO_EMAIL", "asistentepcs@gmail.com"),
   admin: {
     // Obligatorios: si faltan, es mejor que el servidor no arranque que quedar

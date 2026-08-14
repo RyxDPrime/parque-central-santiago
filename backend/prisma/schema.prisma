@@ -37,6 +37,7 @@ model Instalacion {
   nombre      String
   descripcion String
   cantidad    Int?
+  fotoUrl     String?
   orden       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -48,6 +49,7 @@ model Programa {
   nombre      String
   categoria   String
   descripcion String
+  fotoUrl     String?
   orden       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -216,6 +218,8 @@ model Texto {
   grupo     String   @default("General")
   valor     String
   multiline Boolean  @default(false)
+  // Descripcion breve de que cambia este texto en el sitio, para el panel.
+  ayuda     String?
   // Cuando tiene valor, el panel muestra una lista desplegable en vez de un
   // campo libre. Formato: "valor:Etiqueta,valor:Etiqueta".
   opciones  String?

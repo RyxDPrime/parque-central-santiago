@@ -44,8 +44,8 @@ export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto"
 const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   juntaDirectivo: ["institucion", "representante", "cargo", "fotoUrl", "logoUrl", "orden"],
   personalTecnico: ["nombre", "cargo", "fotoUrl", "orden"],
-  instalacion: ["nombre", "descripcion", "cantidad", "orden"],
-  programa: ["nombre", "categoria", "descripcion", "orden"],
+  instalacion: ["nombre", "descripcion", "cantidad", "fotoUrl", "orden"],
+  programa: ["nombre", "categoria", "descripcion", "fotoUrl", "orden"],
   actividad: ["titulo", "descripcion", "fechaInicio", "fechaFin", "lugar", "imagenUrl"],
   publicacion: ["titulo", "tipo", "resumen", "contenido", "imagenUrl", "fecha", "destacada"],
   galeriaItem: ["titulo", "url", "tipo", "categoria", "orden"],

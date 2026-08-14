@@ -38,7 +38,12 @@ function CifrasDestacadas() {
         <div className={`stat-row ${i % 2 === 0 ? 'img-left' : 'img-right'}`} key={cifra.id}>
           {i % 2 === 0 && <CifraImagen cifra={cifra} />}
           <div>
-            <div className="stat-num">{cifra.numero}</div>
+            {/* Algunas "cifras" son en realidad un título ("Instalaciones y
+                espacios"): a ese largo, los 56px del número no caben en la
+                columna, así que baja a tamaño de titular. */}
+            <div className={`stat-num${cifra.numero.length > 12 ? ' is-titulo' : ''}`}>
+              {cifra.numero}
+            </div>
             <p className="stat-desc">{cifra.descripcion}</p>
             {cifra.enlaceTexto && cifra.enlaceUrl && (
               <Link to={cifra.enlaceUrl} className="stat-cta">
@@ -50,6 +55,25 @@ function CifrasDestacadas() {
         </div>
       ))}
     </section>
+  )
+}
+
+/**
+ * Foto del bloque "Quiénes somos". Se guarda junto a las de encabezado para
+ * que el panel la pueda cambiar sin tocar el código, igual que las demás.
+ */
+function FotoQuienesSomos() {
+  const guardado = useEncabezado('inicio-quienes')
+  const foto = guardado.configurado
+    ? guardado.imagen
+    : '/images/galeria/vista-aerea-parque.jpg'
+  if (!foto) return null
+  return (
+    <img
+      src={foto}
+      alt="Vista del Parque Central de Santiago"
+      style={guardado.posicion ? { objectPosition: guardado.posicion } : undefined}
+    />
   )
 }
 
@@ -187,7 +211,7 @@ export function Home() {
           </div>
           <div className="about-img">
             <div className="about-img-wrap">
-              <img src="/images/galeria/carnaval-2025.jpg" alt="Vida comunitaria en el parque" />
+              <FotoQuienesSomos />
             </div>
             <div className="about-badge">
               <div className="about-badge-icon">

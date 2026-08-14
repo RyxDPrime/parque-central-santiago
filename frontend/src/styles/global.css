@@ -83,7 +83,10 @@ ul{list-style:none}
 .stat-img-label{position:absolute;bottom:16px;left:16px;right:16px;display:flex;align-items:center;justify-content:space-between}
 .img-pill{background:rgba(255,255,255,.9);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--green-900)}
 .stat-num{font-size:56px;font-weight:600;color:var(--text-primary);line-height:1}
-.stat-desc{font-size:14.5px;color:var(--text-secondary);line-height:1.7;margin-top:10px;max-width:320px}
+/* Cuando en vez de un número lleva un título, a 56px no cabe en la columna. */
+.stat-num.is-titulo{font-size:30px;line-height:1.22}
+/* pre-line: deja que el panel separe párrafos con un salto de línea. */
+.stat-desc{font-size:14.5px;color:var(--text-secondary);line-height:1.7;margin-top:10px;max-width:340px;white-space:pre-line}
 .stat-cta{display:inline-flex;align-items:center;gap:8px;color:var(--green-600);font-size:13px;font-weight:600;margin-top:14px}
 
 @media (max-width:900px){
@@ -113,7 +116,16 @@ ul{list-style:none}
 /* ── NAVEGACION MOVIL ── */
 .nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:var(--radius);width:42px;height:42px;cursor:pointer;color:var(--green-800);font-size:22px;align-items:center;justify-content:center;flex-shrink:0}
 .nav-toggle:hover{border-color:var(--green-400);background:var(--green-50)}
-.mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-top:1px solid var(--border);box-shadow:0 12px 28px rgba(0,0,0,.1);max-height:calc(100vh - 64px);overflow-y:auto;padding:12px 20px 24px;z-index:1000}
+/* Cajón lateral a pantalla completa: en móvil el menú entra desde la derecha y
+   ocupa todo el alto, en vez de desplegarse bajo la barra y empujar la página. */
+.mobile-menu{display:none;position:fixed;top:0;right:0;bottom:0;width:min(86vw,340px);background:#fff;box-shadow:-8px 0 32px rgba(0,0,0,.22);overflow-y:auto;overscroll-behavior:contain;padding:16px 18px 28px;z-index:2100;animation:mobile-menu-entra .24s ease}
+.mobile-menu-fondo{display:none;position:fixed;inset:0;background:rgba(23,51,15,.5);z-index:2000;animation:mobile-menu-fondo-entra .24s ease}
+@keyframes mobile-menu-entra{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes mobile-menu-fondo-entra{from{opacity:0}to{opacity:1}}
+.mobile-menu-cabeza{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--border)}
+.mobile-menu-logo{height:40px;width:auto}
+.mobile-menu-cerrar{width:38px;height:38px;flex-shrink:0;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--green-800);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mobile-menu-cerrar:hover{background:var(--green-50);border-color:var(--green-400);color:var(--green-600)}
 .mobile-menu-group{padding-top:12px;margin-top:10px;border-top:1px solid var(--border)}
 .mobile-menu-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);padding:0 10px;margin-bottom:6px}
 .mobile-menu-link{display:flex;align-items:center;gap:11px;padding:11px 10px;font-size:14px;color:var(--text-secondary);border-radius:var(--radius)}
@@ -257,7 +269,9 @@ ul{list-style:none}
 .agenda-month-title{font-family:var(--font);font-size:16px;font-weight:600;color:var(--green-800);text-transform:capitalize;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .agenda-timeline{position:relative;display:flex;flex-direction:column;gap:14px}
 .agenda-timeline::before{content:'';position:absolute;left:29px;top:8px;bottom:8px;width:1px;background:var(--border)}
-.agenda-item{position:relative;display:flex;gap:20px;align-items:flex-start}
+/* La fila es un <button>: se le quitan los estilos propios del control para
+   que siga leyéndose como una tarjeta de la agenda. */
+.agenda-item{position:relative;display:flex;gap:20px;align-items:flex-start;width:100%;text-align:left;background:none;border:none;padding:0;font-family:var(--font);cursor:pointer}
 .agenda-date-badge{position:relative;z-index:1;width:58px;height:58px;flex-shrink:0;border-radius:var(--radius-lg);background:var(--green-600);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
 .agenda-day{font-size:19px;font-weight:700}
 .agenda-mon{font-size:10px;text-transform:uppercase;letter-spacing:.5px;opacity:.85;margin-top:2px}
@@ -268,6 +282,23 @@ ul{list-style:none}
 .agenda-lugar{font-size:12.5px;color:var(--text-secondary);margin-bottom:4px;display:flex;align-items:center;gap:5px}
 .agenda-lugar i{color:var(--green-600)}
 .agenda-desc{font-size:13px;color:var(--text-secondary);line-height:1.65}
+.agenda-mas{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;font-weight:600;color:var(--green-600)}
+.agenda-item:hover .agenda-mas i{transform:translateX(3px)}
+.agenda-mas i{transition:transform .2s}
+
+/* ── DETALLE DE UNA ACTIVIDAD ── */
+.actividad-modal-fondo{position:fixed;inset:0;z-index:2000;background:rgba(23,51,15,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.actividad-modal{position:relative;background:#fff;border-radius:var(--radius-xl);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.actividad-modal-cerrar{position:absolute;top:12px;right:12px;z-index:1;width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:var(--green-900);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.actividad-modal-cerrar:hover{background:var(--green-50);color:var(--green-600)}
+.actividad-modal-foto{height:220px;overflow:hidden;border-radius:var(--radius-xl) var(--radius-xl) 0 0}
+.actividad-modal-foto img{width:100%;height:100%;object-fit:cover}
+.actividad-modal-cuerpo{padding:24px 26px 26px}
+.actividad-modal-cuerpo h2{font-size:20px;font-weight:600;color:var(--text-primary);margin:4px 0 10px}
+.actividad-modal-desc{font-size:14px;color:var(--text-secondary);line-height:1.75;margin-top:14px;white-space:pre-line}
+.actividad-modal-desc.is-vacio{color:var(--text-muted);font-style:italic}
+.actividad-modal-nota{display:flex;align-items:flex-start;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text-muted);line-height:1.6}
+.actividad-modal-nota i{color:var(--green-600);font-size:15px;flex-shrink:0}
 
 /* ── INSTALACIONES Y SERVICIOS ── */
 .facility-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
@@ -335,6 +366,11 @@ ul{list-style:none}
 .leadership-photo{transition:box-shadow .28s ease,background .28s ease,transform .28s ease}
 .leadership-photo img,.leadership-photo i{transition:transform .35s ease,color .28s ease}
 .leadership-card:hover .leadership-photo{background:var(--green-50);box-shadow:0 10px 26px rgba(35,74,27,.18);transform:translateY(-4px)}
+/* Marco blanco para los logos institucionales: casi todos son PNG con fondo
+   transparente y sobre el gris del marco se veían sucios. Se mantiene en el
+   hover, donde el realce lo dan el borde y la sombra. */
+.leadership-photo.is-logo{background:#fff;border:1px solid var(--border)}
+.leadership-card:hover .leadership-photo.is-logo{background:#fff;border-color:var(--green-400)}
 .leadership-card:hover .leadership-photo img,.leadership-card:hover .leadership-photo i{transform:scale(1.08)}
 .leadership-card:hover .leadership-photo i{color:var(--green-600)}
 .leadership-card h3{font-size:15px;font-weight:700;color:var(--green-800);line-height:1.35;margin-bottom:6px}
@@ -422,7 +458,10 @@ ul{list-style:none}
 
 /* ── CARRUSEL DE LOGOS ── */
 .logo-carrusel{position:relative;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);padding:18px 8px}
-.logo-carrusel-pista{display:flex;align-items:center;gap:28px;overflow-x:auto;scroll-behavior:smooth;flex:1;padding:4px 8px;scrollbar-width:none}
+/* Sin scroll-behavior:smooth global: el avance continuo escribe scrollLeft en
+   cada cuadro y el suavizado del navegador lo volvería un temblor. Las flechas
+   piden el suavizado por su cuenta, en el scrollTo. */
+.logo-carrusel-pista{display:flex;align-items:center;gap:28px;overflow-x:auto;flex:1;padding:4px 8px;scrollbar-width:none}
 .logo-carrusel-pista::-webkit-scrollbar{display:none}
 .logo-carrusel-item{flex:0 0 auto;width:140px;height:80px;display:flex;align-items:center;justify-content:center}
 .logo-carrusel-item a{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
@@ -432,7 +471,6 @@ ul{list-style:none}
 .logo-carrusel-flecha{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid var(--border);color:var(--green-800);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
 .logo-carrusel-flecha:hover{background:var(--green-50);border-color:var(--green-400);color:var(--green-600)}
 @media (prefers-reduced-motion:reduce){
-  .logo-carrusel-pista{scroll-behavior:auto}
   .logo-carrusel-item:hover img{transform:none}
 }
 
@@ -441,6 +479,7 @@ ul{list-style:none}
 .story-hero img{width:100%;height:100%;object-fit:cover}
 .story-parrafo{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 30px}
 .story-parrafo p{font-size:14.5px;color:var(--text-secondary);line-height:1.85;white-space:pre-wrap}
+.story-parrafo p+p{margin-top:16px}
 .story-timeline{position:relative;display:flex;flex-direction:column;gap:20px;padding-left:28px}
 .story-timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--green-100)}
 .story-hito{position:relative;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px}
@@ -515,6 +554,7 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .nav-links,.nav-cta{display:none}
   .nav-toggle{display:flex}
   .mobile-menu{display:block}
+  .mobile-menu-fondo{display:block}
   .nav-inner{padding:0 20px}
   .brand-logo{height:44px}
   #home-hero h1{font-size:32px}
@@ -581,6 +621,20 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-logout-btn{background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);border-radius:var(--radius);padding:9px 14px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font);transition:background .18s,border-color .18s}
 .admin-logout-btn:hover{color:#fff;border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.07)}
 .admin-content{flex:1;padding:34px 40px 60px;max-width:1600px;min-width:0}
+
+/* Barra superior y cajón: solo aparecen en móvil (ver el bloque responsive). */
+.admin-barra{display:none;align-items:center;gap:12px;position:sticky;top:0;z-index:1500;background:var(--green-900);color:#fff;padding:10px 14px;font-family:var(--font);font-size:14px;font-weight:600}
+.admin-barra-menu{width:38px;height:38px;flex-shrink:0;border:1px solid rgba(255,255,255,.22);border-radius:var(--radius);background:none;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.admin-barra-menu:hover{background:rgba(255,255,255,.1)}
+.admin-sidebar-fondo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000}
+.admin-sidebar-cerrar{display:none;position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:none;color:#fff;font-size:18px;align-items:center;justify-content:center;cursor:pointer}
+.admin-sidebar-cerrar:hover{background:rgba(255,255,255,.12)}
+
+@keyframes admin-cajon-entra{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+
+@media (prefers-reduced-motion:reduce){
+  .admin-sidebar.esta-abierto,.mobile-menu,.mobile-menu-fondo{animation:none}
+}
 
 /* ── ADMIN: ENCABEZADO DE SECCION ── */
 .admin-page-head{display:flex;align-items:center;gap:16px;margin-bottom:26px}
@@ -723,10 +777,17 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 }
 
 @media (max-width:900px){
+  /* La columna de secciones pasa a ser un cajón a pantalla completa: apilada
+     encima del contenido ocupaba toda la primera pantalla del panel. */
   .admin-shell{flex-direction:column}
-  .admin-sidebar{width:100%;height:auto;position:static}
-  .admin-sidebar nav{overflow-y:visible}
-  .admin-content{padding:24px 20px 48px}
+  .admin-barra{display:flex}
+  /* Abierto es un estado declarado, no el final de una transición: así el
+     cajón queda en su sitio aunque la animación no llegue a correr. */
+  .admin-sidebar{position:fixed;top:0;left:0;bottom:0;width:min(84vw,282px);height:100dvh;z-index:2100;transform:translateX(-100%);box-shadow:8px 0 32px rgba(0,0,0,.28)}
+  .admin-sidebar.esta-abierto{transform:translateX(0);animation:admin-cajon-entra .24s ease}
+  .admin-sidebar-cerrar{display:flex}
+  .admin-sidebar-fondo{display:block}
+  .admin-content{padding:20px 18px 48px}
   .admin-form-grid{grid-template-columns:1fr}
   .texto-fila{flex-direction:column;align-items:stretch}
   .admin-page-head h1{font-size:20px}

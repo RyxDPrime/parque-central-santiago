@@ -22,9 +22,11 @@ export function PageHero({
 }: PageHeroProps) {
   const guardado = useEncabezado(pagina)
 
-  // Manda lo que el panel tenga guardado; si no hay nada, la foto por defecto.
-  const foto = guardado.imagen ?? image
-  const encuadre = guardado.imagen ? guardado.posicion : imagePosition
+  // Manda lo que el panel tenga guardado; si esa clave no existe todavía, la
+  // foto por defecto. Si existe y quedó vacía, la franja va sin foto a
+  // propósito y se ve solo el degradado verde.
+  const foto = guardado.configurado ? guardado.imagen : image
+  const encuadre = guardado.configurado ? guardado.posicion : imagePosition
 
   return (
     <header className={`page-hero${foto ? ' has-image' : ''}`}>

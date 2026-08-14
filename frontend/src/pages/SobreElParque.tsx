@@ -38,7 +38,15 @@ export function SobreElParque() {
 
           {enParrafo ? (
             <article className="story-parrafo">
-              <p>{parrafo}</p>
+              {/* Cada bloque separado por una línea en blanco es un párrafo:
+                  el texto viene del panel y allí se escribe así. */}
+              {parrafo
+                .split(/\n\s*\n/)
+                .map((bloque) => bloque.trim())
+                .filter(Boolean)
+                .map((bloque, i) => (
+                  <p key={i}>{bloque}</p>
+                ))}
             </article>
           ) : (
             <>

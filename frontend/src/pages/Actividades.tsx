@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { PageHero } from '../components/PageHero'
+import { ActividadModal } from '../components/ActividadModal'
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
 import { api, type Actividad as ActividadData } from '../api/client'
@@ -34,6 +36,7 @@ function groupByMonth(actividades: ActividadData[]) {
 export function Actividades() {
   const { data, loading, error } = useApiData(api.getActividades)
   const groups = data ? groupByMonth(data) : []
+  const [abierta, setAbierta] = useState<ActividadData | null>(null)
 
   return (
     <>
@@ -63,7 +66,15 @@ export function Actividades() {
               <h2 className="agenda-month-title">{group.label}</h2>
               <div className="agenda-timeline">
                 {group.items.map((actividad) => (
-                  <div className="agenda-item" key={actividad.id}>
+                  // Es un botón y no un div: se abre con el teclado igual que
+                  // con el mouse, y los lectores de pantalla lo anuncian.
+                  <button
+                    type="button"
+                    className="agenda-item"
+                    key={actividad.id}
+                    onClick={() => setAbierta(actividad)}
+                    aria-label={`Ver detalles de ${actividad.titulo}`}
+                  >
                     <div className="agenda-date-badge">
                       <span className="agenda-day">{dayFormatter.format(new Date(actividad.fechaInicio))}</span>
                       <span className="agenda-mon">{monthShortFormatter.format(new Date(actividad.fechaInicio))}</span>
@@ -77,14 +88,19 @@ export function Actividades() {
                         </p>
                       )}
                       {actividad.descripcion && <p className="agenda-desc">{actividad.descripcion}</p>}
+                      <span className="agenda-mas">
+                        Ver detalles <i className="ti ti-arrow-right" />
+                      </span>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {abierta && <ActividadModal actividad={abierta} onClose={() => setAbierta(null)} />}
     </>
   )
 }

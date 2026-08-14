@@ -27,9 +27,13 @@ export function JuntaDirectiva() {
 
           {data && (
             <div className="leadership-grid">
-              {data.map((member) => (
+              {data.map((member) => {
+                // Los logos se ven sobre blanco: muchos vienen con fondo
+                // transparente y el gris del marco los ensuciaba.
+                const conLogo = !(mostrarFoto && member.fotoUrl)
+                return (
                 <article className="leadership-card" key={member.id}>
-                  <div className="leadership-photo">
+                  <div className={`leadership-photo${conLogo ? ' is-logo' : ''}`}>
                     {mostrarFoto && member.fotoUrl ? (
                       <img src={member.fotoUrl} alt={member.representante} loading="lazy" />
                     ) : member.logoUrl ? (
@@ -55,7 +59,8 @@ export function JuntaDirectiva() {
                   <p className="leadership-org">{member.institucion}</p>
                   <p className="leadership-cargo">{member.cargo}</p>
                 </article>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>

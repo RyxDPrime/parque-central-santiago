@@ -57,6 +57,16 @@ export function Navbar() {
     }
   }, [open])
 
+  // El cajón tapa la página entera, así que se cierra con Escape.
+  useEffect(() => {
+    if (!open) return
+    function alPulsar(event: KeyboardEvent) {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', alPulsar)
+    return () => document.removeEventListener('keydown', alPulsar)
+  }, [open])
+
   return (
     <nav id="navbar">
       <div className="nav-inner">
@@ -119,7 +129,27 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="mobile-menu">
+        <>
+        {/* Cubre la página mientras el cajón está abierto: se cierra al tocarlo. */}
+        <div className="mobile-menu-fondo" onClick={() => setOpen(false)} />
+
+        <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+          <div className="mobile-menu-cabeza">
+            <img
+              src="/images/brand/logo-pcs.png"
+              alt="Parque Central de Santiago"
+              className="mobile-menu-logo"
+            />
+            <button
+              type="button"
+              className="mobile-menu-cerrar"
+              onClick={() => setOpen(false)}
+              aria-label="Cerrar menú"
+            >
+              <i className="ti ti-x" />
+            </button>
+          </div>
+
           <NavLink to="/" end className="mobile-menu-link">
             <i className="ti ti-home" />
             Inicio
@@ -155,6 +185,7 @@ export function Navbar() {
             </a>
           </div>
         </div>
+        </>
       )}
     </nav>
   )

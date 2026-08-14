@@ -2,6 +2,12 @@ import { useApiData } from './useApiData'
 import { api } from '../api/client'
 
 interface Encabezado {
+  /**
+   * `true` cuando la clave existe en la base. Manda lo guardado aunque la foto
+   * esté vacía: dejarla en blanco desde el panel es una decisión (franja verde
+   * sola), no una falta de configuración.
+   */
+  configurado: boolean
   imagen?: string
   posicion?: string
 }
@@ -9,16 +15,19 @@ interface Encabezado {
 /**
  * Foto de encabezado de una página, editable desde el panel.
  *
- * Devuelve lo guardado en la base de datos; si esa clave todavía no existe o
- * el servidor no responde, quien llama usa la foto que trae por defecto, así
- * la franja nunca queda vacía.
+ * Si la clave todavía no existe o el servidor no responde, quien llama usa la
+ * foto que trae por defecto, así la franja nunca queda vacía por un error.
  */
 export function useEncabezado(clave: string | undefined): Encabezado {
   const { data } = useApiData(api.getEncabezados)
 
-  if (!clave || !data) return {}
+  if (!clave || !data) return { configurado: false }
   const encontrado = data.find((e) => e.clave === clave)
-  if (!encontrado?.imagenUrl) return {}
+  if (!encontrado) return { configurado: false }
 
-  return { imagen: encontrado.imagenUrl, posicion: encontrado.posicion }
+  return {
+    configurado: true,
+    imagen: encontrado.imagenUrl || undefined,
+    posicion: encontrado.posicion,
+  }
 }

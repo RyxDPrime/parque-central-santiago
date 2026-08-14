@@ -3,6 +3,9 @@ import { LoadingState, ErrorState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
 import { api } from '../api/client'
 
+// Fotos que venían escritas aquí antes de que las instalaciones tuvieran su
+// propio campo. Se conservan como respaldo de los registros que ya las usaban;
+// lo que se cargue desde el panel manda sobre esta lista.
 const instalacionFotos: Record<string, string> = {
   'Canchas de Baloncesto': '/images/galeria/cancha-basketball.jpg',
   'Canchas de Tenis': '/images/galeria/cancha-tenis.jpg',
@@ -30,12 +33,17 @@ const servicioFotos: Record<string, string> = {
   'Alquiler de Bicicletas – Bicicentro': '/images/galeria/ciclistas.jpg',
 }
 
+/** Foto cargada desde el panel; si no hay, la que estaba escrita por nombre. */
+function fotoDeInstalacion(inst: { nombre: string; fotoUrl: string | null }) {
+  return inst.fotoUrl || instalacionFotos[inst.nombre] || null
+}
+
 export function InstalacionesYServicios() {
   const instalaciones = useApiData(api.getInstalaciones)
   const programas = useApiData(api.getProgramas)
 
-  const conFoto = instalaciones.data?.filter((i) => instalacionFotos[i.nombre]) ?? []
-  const sinFoto = instalaciones.data?.filter((i) => !instalacionFotos[i.nombre]) ?? []
+  const conFoto = instalaciones.data?.filter((i) => fotoDeInstalacion(i)) ?? []
+  const sinFoto = instalaciones.data?.filter((i) => !fotoDeInstalacion(i)) ?? []
 
   return (
     <>
@@ -60,7 +68,7 @@ export function InstalacionesYServicios() {
               <div className="facility-photo-grid">
                 {conFoto.map((inst) => (
                   <div key={inst.id} className="facility-photo-card">
-                    <img src={instalacionFotos[inst.nombre]} alt={inst.nombre} />
+                    <img src={fotoDeInstalacion(inst)!} alt={inst.nombre} loading="lazy" />
                     <div className="facility-photo-overlay">
                       {inst.cantidad !== null && <span className="facility-photo-badge">{inst.cantidad}</span>}
                       <h3>{inst.nombre}</h3>
@@ -104,7 +112,11 @@ export function InstalacionesYServicios() {
           {programas.data?.map((programa, i) => (
             <div className={`service-row ${i % 2 === 1 ? 'reverse' : ''}`} key={programa.id}>
               <div className="service-row-img">
-                <img src={servicioFotos[programa.nombre] ?? '/images/galeria/entrada-parque.jpg'} alt={programa.nombre} />
+                <img
+                  src={programa.fotoUrl || servicioFotos[programa.nombre] || '/images/galeria/entrada-parque.jpg'}
+                  alt={programa.nombre}
+                  loading="lazy"
+                />
               </div>
               <div className="service-row-text">
                 <span className="tag">{programa.categoria}</span>

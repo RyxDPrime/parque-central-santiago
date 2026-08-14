@@ -1,3 +1,7 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Respaldos de la base y de los archivos subidos. El repositorio es publico y
+# ademas un volcado no es codigo: se guarda fuera, en el Drive del parque.
+respaldos/

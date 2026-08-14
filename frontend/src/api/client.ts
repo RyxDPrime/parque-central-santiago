@@ -1,3 +1,5 @@
+import { aAbsoluta, convertirMedios } from "./medios";
+
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 
 export interface JuntaDirectivoMember {
@@ -15,6 +17,7 @@ export interface Instalacion {
   nombre: string;
   descripcion: string;
   cantidad: number | null;
+  fotoUrl: string | null;
   orden: number;
 }
 
@@ -23,6 +26,7 @@ export interface Programa {
   nombre: string;
   categoria: string;
   descripcion: string;
+  fotoUrl: string | null;
   orden: number;
 }
 
@@ -135,6 +139,8 @@ export interface Texto {
   grupo: string;
   valor: string;
   multiline: boolean;
+  /** Descripción breve de qué cambia este texto en el sitio. */
+  ayuda: string | null;
   /** "valor:Etiqueta,valor:Etiqueta" — si viene, se edita con una lista. */
   opciones: string | null;
   orden: number;
@@ -170,7 +176,9 @@ async function get<T>(path: string): Promise<T> {
   if (!res.ok) {
     throw new Error(`No se pudo cargar la información (${res.status})`);
   }
-  return res.json() as Promise<T>;
+  // Las rutas de archivos vienen relativas desde la base; aquí se les pone el
+  // dominio del backend para que el navegador pueda pedirlas.
+  return convertirMedios(await res.json(), aAbsoluta) as T;
 }
 
 async function post<T>(path: string, body: unknown): Promise<T> {

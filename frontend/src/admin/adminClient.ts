@@ -1,3 +1,5 @@
+import { aAbsoluta, aRelativa, convertirMedios } from "../api/medios";
+
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 const TOKEN_KEY = "pcs_admin_token";
 
@@ -38,7 +40,7 @@ export async function login(username: string, password: string): Promise<void> {
 export async function listEntity<T>(entityPath: string): Promise<T[]> {
   const res = await fetch(`${API_URL}/${entityPath}`);
   if (!res.ok) throw new Error(await parseErrorMessage(res));
-  return res.json() as Promise<T[]>;
+  return convertirMedios(await res.json(), aAbsoluta) as T[];
 }
 
 export async function createEntity<T>(entityPath: string, data: unknown): Promise<T> {
@@ -48,10 +50,12 @@ export async function createEntity<T>(entityPath: string, data: unknown): Promis
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: JSON.stringify(data),
+    // Al guardar se le quita el dominio: en la base las rutas viven relativas,
+    // para que cambiar de servidor no rompa las fotos ya cargadas.
+    body: JSON.stringify(convertirMedios(data, aRelativa)),
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
-  return res.json() as Promise<T>;
+  return convertirMedios(await res.json(), aAbsoluta) as T;
 }
 
 export async function updateEntity<T>(entityPath: string, id: number, data: unknown): Promise<T> {
@@ -61,10 +65,10 @@ export async function updateEntity<T>(entityPath: string, id: number, data: unkn
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(convertirMedios(data, aRelativa)),
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
-  return res.json() as Promise<T>;
+  return convertirMedios(await res.json(), aAbsoluta) as T;
 }
 
 export async function deleteEntity(entityPath: string, id: number): Promise<void> {
@@ -112,8 +116,7 @@ export async function uploadFile(file: File): Promise<string> {
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
   const data = (await res.json()) as { url: string };
-  // El backend devuelve una ruta relativa a su propio dominio (distinto al
-  // del frontend en producción), así que se guarda la URL absoluta.
-  const backendOrigin = new URL(API_URL).origin;
-  return `${backendOrigin}${data.url}`;
+  // Se devuelve tal cual, relativa: quien la muestre le pondrá el dominio del
+  // backend, y lo que se guarda en la base queda independiente del servidor.
+  return data.url;
 }

@@ -4,6 +4,21 @@ import { useLocation } from 'react-router-dom'
 const SITE = 'Parque Central de Santiago'
 const DEFAULT_IMAGE = '/images/galeria/vista-aerea-parque.jpg'
 
+/**
+ * Dirección definitiva del sitio, la que debe quedar en los buscadores.
+ *
+ * Mientras el sitio se sirve desde otra dirección (la provisional del
+ * proveedor, o una copia de prueba), esa otra no debe indexarse: si Google la
+ * guarda, al conectar el dominio propio quedarían dos versiones compitiendo
+ * entre sí por el mismo contenido. Por eso, fuera de esta dirección se pide a
+ * los buscadores que no indexen, y el día que el dominio apunte aquí la
+ * indexación se activa sola, sin tocar el código.
+ */
+const SITIO = (import.meta.env.VITE_SITE_URL ?? 'https://parquecentralsantiago.com').replace(
+  /\/$/,
+  '',
+)
+
 interface PageMeta {
   title: string
   description: string
@@ -144,6 +159,12 @@ export function usePageMeta() {
       canonical.rel = 'canonical'
       document.head.appendChild(canonical)
     }
-    canonical.href = url
+    // La canónica apunta siempre a la dirección definitiva, aunque el sitio se
+    // esté viendo desde otra: es la que debe quedar en los buscadores.
+    canonical.href = SITIO + pathname
+
+    // Fuera de la dirección definitiva se pide no indexar, para no dejar una
+    // copia del sitio compitiendo con la buena.
+    setTag('name', 'robots', window.location.origin === SITIO ? 'index, follow' : 'noindex, nofollow')
   }, [pathname])
 }

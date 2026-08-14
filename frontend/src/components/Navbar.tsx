@@ -21,6 +21,7 @@ const menuGroups = [
     items: [
       { to: '/instalaciones-y-servicios', icon: 'ti-building', label: 'Instalaciones y Servicios' },
       { to: '/programas-y-proyectos', icon: 'ti-plant-2', label: 'Programas y Proyectos' },
+      { to: '/mision-vision-valores', icon: 'ti-target-arrow', label: 'Misión, Visión y Valores' },
       { to: '/galeria', icon: 'ti-photo', label: 'Galería' },
       { to: '/mapa', icon: 'ti-map', label: 'Mapa del Parque' },
     ],

@@ -275,6 +275,20 @@ export const entityConfigs: EntityConfig[] = [
     ],
   },
   {
+    path: 'valores',
+    icon: 'ti-target-arrow',
+    description: 'La página El Parque → Misión, Visión y Valores. Arriba, los dos párrafos; abajo, cada valor con su ícono.',
+    label: 'Misión, Visión y Valores',
+    textosGrupo: 'Misión, Visión y Valores',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Nombre del valor', type: 'text', required: true, placeholder: 'Ej: Compromiso ambiental', hint: 'Título de la tarjeta en la página.' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué significa este valor para el Parque...', hint: 'Explicación del valor, debajo del título.' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS, hint: 'Dibujo que acompaña a la tarjeta en la página.' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
     path: 'normas',
     icon: 'ti-clipboard-list',
     description: 'Tarjetas de la página Sobre Nosotros → Reglamento. Cada registro es una norma de convivencia.',

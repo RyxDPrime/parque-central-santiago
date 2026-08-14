@@ -32,6 +32,7 @@ apiRouter.use("/publicaciones", crudRoutes("publicacion"));
 apiRouter.use("/puntos-mapa", crudRoutes("puntoMapa", { reorder: true }));
 apiRouter.use("/hitos", crudRoutes("hito", { reorder: true }));
 apiRouter.use("/normas", crudRoutes("norma", { reorder: true }));
+apiRouter.use("/valores", crudRoutes("valor", { reorder: true }));
 apiRouter.use("/pasos-reserva", crudRoutes("pasoReserva", { reorder: true }));
 apiRouter.use("/formas-apoyo", crudRoutes("formaApoyo", { reorder: true }));
 apiRouter.use("/cifras", crudRoutes("cifra", { reorder: true }));

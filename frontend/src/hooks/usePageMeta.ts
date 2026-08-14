@@ -57,6 +57,12 @@ const META: Record<string, PageMeta> = {
       'Cibao Fútbol Club, Escuela de Tenis, Tirolesa y Fun Stop: los programas activos del Parque Central de Santiago.',
     image: '/images/galeria/cibao-futbol-club.jpg',
   },
+  '/mision-vision-valores': {
+    title: `Misión, Visión y Valores | ${SITE}`,
+    description:
+      'La misión, la visión y los valores del Patronato para la Administración del Parque Central de Santiago.',
+    image: DEFAULT_IMAGE,
+  },
   '/junta-directiva': {
     title: `Junta Directiva | ${SITE}`,
     description:

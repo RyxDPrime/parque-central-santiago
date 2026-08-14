@@ -96,6 +96,14 @@ export interface Hito {
   orden: number;
 }
 
+export interface Valor {
+  id: number;
+  icono: string;
+  titulo: string;
+  texto: string;
+  orden: number;
+}
+
 export interface Norma {
   id: number;
   icono: string;
@@ -206,6 +214,7 @@ export const api = {
   getPuntosMapa: () => get<PuntoMapa[]>("/puntos-mapa"),
   getHitos: () => get<Hito[]>("/hitos"),
   getNormas: () => get<Norma[]>("/normas"),
+  getValores: () => get<Valor[]>("/valores"),
   getPasosReserva: () => get<PasoReserva[]>("/pasos-reserva"),
   getFormasApoyo: () => get<FormaApoyo[]>("/formas-apoyo"),
   getCifras: () => get<Cifra[]>("/cifras"),

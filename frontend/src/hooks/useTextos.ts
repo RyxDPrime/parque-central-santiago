@@ -35,6 +35,8 @@ const RESPALDO: Record<string, string> = {
     'El Parque Central de Santiago abrió sus puertas el 20 de febrero de 2018, tras casi dos décadas de gestiones de la Asociación para el Desarrollo, Inc. (APEDI).',
   'historia.apedi':
     'El Parque Central de Santiago mantiene una estrecha relación con la Asociación para el Desarrollo, Inc. (APEDI), institución fundadora y actual presidenta del Patronato.',
+  'institucion.mision': '',
+  'institucion.vision': '',
   'transparencia.quienesSomos':
     'El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida el 6 de abril de 2018.',
   'transparencia.marcoNormativo':

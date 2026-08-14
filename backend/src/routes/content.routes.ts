@@ -98,6 +98,7 @@ contentRouter.get("/documentos-financieros", async (_req, res, next) => {
 const listasSimples = [
   ["hitos", "hito"],
   ["normas", "norma"],
+  ["valores", "valor"],
   ["pasos-reserva", "pasoReserva"],
   ["formas-apoyo", "formaApoyo"],
   ["cifras", "cifra"],

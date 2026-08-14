@@ -162,6 +162,18 @@ model Hito {
 }
 
 // Normas de convivencia (Sobre Nosotros → Reglamento)
+// Valores institucionales (Mision, Vision y Valores). La mision y la vision
+// son textos sueltos; cada valor es un registro con su icono.
+model Valor {
+  id        Int      @id @default(autoincrement())
+  icono     String   @default("ti-heart-handshake")
+  titulo    String
+  texto     String
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Norma {
   id        Int      @id @default(autoincrement())
   icono     String   @default("ti-info-circle")

@@ -30,6 +30,7 @@ export type ModeloOrdenable =
   | "documentoFinanciero"
   | "puntoMapa"
   | "hito"
+  | "valor"
   | "norma"
   | "pasoReserva"
   | "formaApoyo"
@@ -52,6 +53,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   documentoFinanciero: ["titulo", "tipo", "url", "fecha", "orden"],
   puntoMapa: ["nombre", "zona", "lat", "lng", "fotoUrl", "orden"],
   hito: ["fecha", "titulo", "texto", "orden"],
+  valor: ["icono", "titulo", "texto", "orden"],
   norma: ["icono", "titulo", "texto", "orden"],
   pasoReserva: ["icono", "titulo", "texto", "orden"],
   formaApoyo: ["icono", "etiqueta", "titulo", "texto", "orden"],

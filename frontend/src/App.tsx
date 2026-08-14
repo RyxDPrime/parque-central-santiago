@@ -5,6 +5,7 @@ import { SobreElParque } from './pages/SobreElParque'
 import { Reglamento } from './pages/Reglamento'
 import { InstalacionesYServicios } from './pages/InstalacionesYServicios'
 import { ProgramasYProyectos } from './pages/ProgramasYProyectos'
+import { MisionVisionValores } from './pages/MisionVisionValores'
 import { JuntaDirectiva } from './pages/JuntaDirectiva'
 import { PersonalTecnico } from './pages/PersonalTecnico'
 import { Actividades } from './pages/Actividades'
@@ -34,6 +35,7 @@ function App() {
           <Route path="/reglamento" element={<Reglamento />} />
           <Route path="/instalaciones-y-servicios" element={<InstalacionesYServicios />} />
           <Route path="/programas-y-proyectos" element={<ProgramasYProyectos />} />
+          <Route path="/mision-vision-valores" element={<MisionVisionValores />} />
           <Route path="/junta-directiva" element={<JuntaDirectiva />} />
           <Route path="/personal-tecnico" element={<PersonalTecnico />} />
           <Route path="/actividades" element={<Actividades />} />

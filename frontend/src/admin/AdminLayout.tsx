@@ -25,6 +25,7 @@ const divisiones = [
       'hitos',
       'aliados',
       'normas',
+      'valores',
       'junta-directiva',
       'personal-tecnico',
       'instalaciones',

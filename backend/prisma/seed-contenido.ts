@@ -71,12 +71,15 @@ const encabezados = [
   { clave: "apoyanos", etiqueta: "Apoyanos", imagenUrl: "/images/galeria/ciclistas.jpg", posicion: "center", orden: 14 },
   { clave: "contacto", etiqueta: "Contacto", imagenUrl: "/images/galeria/gimnasio-aire-libre.jpg", posicion: "center", orden: 15 },
   { clave: "no-encontrada", etiqueta: "Pagina no encontrada", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 16 },
+  { clave: "mision-vision-valores", etiqueta: "Mision, Vision y Valores", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 17 },
   // No es una franja de encabezado, pero es una foto fija de una página y se
   // administra igual, así que vive en la misma lista.
-  { clave: "inicio-quienes", etiqueta: "Inicio · Quienes somos", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 17 },
+  { clave: "inicio-quienes", etiqueta: "Inicio · Quienes somos", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 18 },
 ];
 
 const textos = [
+  { clave: "institucion.mision", etiqueta: "Misión", grupo: "Misión, Visión y Valores", valor: "", multiline: true, orden: 1, ayuda: "El párrafo de la misión, en la página Misión, Visión y Valores. Si se deja vacío, ese bloque no se muestra." },
+  { clave: "institucion.vision", etiqueta: "Visión", grupo: "Misión, Visión y Valores", valor: "", multiline: true, orden: 2, ayuda: "El párrafo de la visión, en la misma página. Si se deja vacío, ese bloque no se muestra." },
   { clave: "contacto.direccion", etiqueta: "Dirección", grupo: "Contacto", valor: "Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros", orden: 1 },
   { clave: "contacto.email", etiqueta: "Correo electrónico", grupo: "Contacto", valor: "asistentepcs@gmail.com", orden: 2 },
   { clave: "contacto.telefono", etiqueta: "Teléfono", grupo: "Contacto", valor: "(809) 583-9581", orden: 3 },

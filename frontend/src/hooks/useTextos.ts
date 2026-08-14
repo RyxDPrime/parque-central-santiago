@@ -36,7 +36,9 @@ const RESPALDO: Record<string, string> = {
   'historia.apedi':
     'El Parque Central de Santiago mantiene una estrecha relación con la Asociación para el Desarrollo, Inc. (APEDI), institución fundadora y actual presidenta del Patronato.',
   'institucion.mision': '',
+  'institucion.misionIcono': 'ti-target-arrow',
   'institucion.vision': '',
+  'institucion.visionIcono': 'ti-eye',
   'transparencia.quienesSomos':
     'El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida el 6 de abril de 2018.',
   'transparencia.marcoNormativo':

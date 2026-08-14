@@ -18,6 +18,10 @@ export function MisionVisionValores() {
 
   const mision = texto('institucion.mision').trim()
   const vision = texto('institucion.vision').trim()
+  // El ícono también se elige desde el panel; si la clave todavía no existe se
+  // usa el de siempre, para que el bloque nunca quede sin dibujo.
+  const misionIcono = texto('institucion.misionIcono').trim() || 'ti-target-arrow'
+  const visionIcono = texto('institucion.visionIcono').trim() || 'ti-eye'
   const hayValores = valores !== null && valores.length > 0
   const hayAlgo = Boolean(mision) || Boolean(vision) || hayValores
 
@@ -41,7 +45,7 @@ export function MisionVisionValores() {
               {mision && (
                 <article className="proposito-card">
                   <div className="proposito-icon">
-                    <i className="ti ti-target-arrow" />
+                    <i className={`ti ${misionIcono}`} />
                   </div>
                   <h2>Nuestra misión</h2>
                   <p>{mision}</p>
@@ -51,7 +55,7 @@ export function MisionVisionValores() {
               {vision && (
                 <article className="proposito-card">
                   <div className="proposito-icon">
-                    <i className="ti ti-eye" />
+                    <i className={`ti ${visionIcono}`} />
                   </div>
                   <h2>Nuestra visión</h2>
                   <p>{vision}</p>

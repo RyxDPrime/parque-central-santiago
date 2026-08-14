@@ -77,9 +77,32 @@ const encabezados = [
   { clave: "inicio-quienes", etiqueta: "Inicio · Quienes somos", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 18 },
 ];
 
+// Iconos que se ofrecen para la mision y la vision. Es la misma lista que usa
+// el resto del panel (ICONOS en admin/entityConfigs.ts); si alli se agrega uno
+// nuevo y se quiere aqui, hay que sumarlo tambien a esta cadena.
+const ICONOS_TEXTO = [
+  "ti-target-arrow:Diana / objetivo",
+  "ti-eye:Ojo / vision",
+  "ti-info-circle:Informacion",
+  "ti-tree:Arbol",
+  "ti-plant-2:Planta",
+  "ti-feather:Ave / pluma",
+  "ti-users:Personas",
+  "ti-heart-handshake:Convivencia",
+  "ti-hand-heart:Voluntariado",
+  "ti-coin:Donacion",
+  "ti-circle-check:Listo",
+  "ti-map-pin:Ubicacion",
+  "ti-building:Edificio",
+  "ti-run:Deporte",
+  "ti-photo:Foto",
+].join(",");
+
 const textos = [
   { clave: "institucion.mision", etiqueta: "Misión", grupo: "Misión, Visión y Valores", valor: "", multiline: true, orden: 1, ayuda: "El párrafo de la misión, en la página Misión, Visión y Valores. Si se deja vacío, ese bloque no se muestra." },
-  { clave: "institucion.vision", etiqueta: "Visión", grupo: "Misión, Visión y Valores", valor: "", multiline: true, orden: 2, ayuda: "El párrafo de la visión, en la misma página. Si se deja vacío, ese bloque no se muestra." },
+  { clave: "institucion.misionIcono", etiqueta: "Ícono de la misión", grupo: "Misión, Visión y Valores", valor: "ti-target-arrow", opciones: ICONOS_TEXTO, orden: 2, ayuda: "El dibujo dentro del círculo verde del bloque de la misión." },
+  { clave: "institucion.vision", etiqueta: "Visión", grupo: "Misión, Visión y Valores", valor: "", multiline: true, orden: 3, ayuda: "El párrafo de la visión, en la misma página. Si se deja vacío, ese bloque no se muestra." },
+  { clave: "institucion.visionIcono", etiqueta: "Ícono de la visión", grupo: "Misión, Visión y Valores", valor: "ti-eye", opciones: ICONOS_TEXTO, orden: 4, ayuda: "El dibujo dentro del círculo verde del bloque de la visión." },
   { clave: "contacto.direccion", etiqueta: "Dirección", grupo: "Contacto", valor: "Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros", orden: 1 },
   { clave: "contacto.email", etiqueta: "Correo electrónico", grupo: "Contacto", valor: "asistentepcs@gmail.com", orden: 2 },
   { clave: "contacto.telefono", etiqueta: "Teléfono", grupo: "Contacto", valor: "(809) 583-9581", orden: 3 },

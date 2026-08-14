@@ -103,6 +103,8 @@ export const textoSecciones: TextoSeccion[] = [
  * para que no haya que escribir el nombre tecnico a mano.
  */
 export const ICONOS: { value: string; label: string }[] = [
+  { value: 'ti-target-arrow', label: 'Diana / objetivo' },
+  { value: 'ti-eye', label: 'Ojo / vision' },
   { value: 'ti-info-circle', label: 'Informacion' },
   { value: 'ti-alert-triangle', label: 'Advertencia' },
   { value: 'ti-tree', label: 'Arbol' },

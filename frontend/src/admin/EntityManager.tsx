@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { createEntity, deleteEntity, listEntity, updateEntity, uploadFile } from './adminClient'
 import { entityConfigs, type FieldConfig } from './entityConfigs'
+import { TextosEditor } from './TextosEditor'
 import { FileDropzone } from './FileDropzone'
 
 type Row = Record<string, unknown> & { id: number }
@@ -143,6 +144,10 @@ export function EntityManager() {
           const file = form.get(field.key) as File | null
           if (file && file.size > 0) {
             data[field.key] = await uploadFile(file)
+          } else if (form.get(`${field.key}__quitar`)) {
+            // Se guarda cadena vacía y no null: hay columnas de foto que no
+            // aceptan null, y el sitio ya trata "" como "sin foto".
+            data[field.key] = ''
           } else if (editing) {
             data[field.key] = editing[field.key] ?? null
           }
@@ -194,6 +199,13 @@ export function EntityManager() {
           <p>{config.description}</p>
         </div>
       </header>
+
+      {/* Los textos sueltos de esta parte del sitio, si los tiene. Van antes de
+          la tabla porque suelen ser ajustes de la página entera (qué formato
+          usar, qué párrafo mostrar) y no un registro más de la lista. */}
+      {config.textosGrupo && (
+        <TextosEditor grupos={[config.textosGrupo]} embebido titulo={`Textos de ${config.label}`} />
+      )}
 
       {(!config.soloEditar || editing) && (
       <form
@@ -274,6 +286,8 @@ export function EntityManager() {
                   }
                   currentFileUrl={editing ? ((editing[field.key] as string) ?? null) : null}
                   aspect={field.aspect}
+                  // Las fotos obligatorias no se pueden vaciar; las opcionales sí.
+                  permiteQuitar={!field.required}
                 />
               )}
 

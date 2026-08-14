@@ -21,6 +21,8 @@ import { AdminLayout } from './admin/AdminLayout'
 import { EntityManager } from './admin/EntityManager'
 import { MessagesInbox } from './admin/MessagesInbox'
 import { TextosEditor } from './admin/TextosEditor'
+import { TextosSeccion } from './admin/TextosSeccion'
+import { FotoSeccion } from './admin/FotoSeccion'
 
 function App() {
   return (
@@ -48,6 +50,10 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="/admin/junta-directiva" replace />} />
+          <Route path="textos/:seccion" element={<TextosSeccion />} />
+          <Route path="foto/:clave" element={<FotoSeccion />} />
+          {/* Los textos ahora se editan por grupo, dentro de su sección. Esta
+              ruta se conserva porque quedaron enlaces guardados apuntando aquí. */}
           <Route path="textos" element={<TextosEditor />} />
           <Route path="mensajes" element={<MessagesInbox />} />
           <Route path=":entity" element={<EntityManager />} />

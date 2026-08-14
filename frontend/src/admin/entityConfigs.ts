@@ -28,7 +28,75 @@ export interface EntityConfig {
   titleField: string
   icon: string
   description: string
+  /**
+   * Grupo de "textos del sitio" que se edita dentro de esta misma pantalla.
+   * Cuando una sección tiene textos sueltos que le pertenecen, se muestran
+   * aquí en vez de en una lista aparte: se administran donde se usan.
+   */
+  textosGrupo?: string
 }
+
+/**
+ * Grupos de textos que no pertenecen a ninguna sección con tabla y por eso
+ * tienen su propia pantalla, en `/admin/textos/:slug`.
+ */
+export interface TextoSeccion {
+  slug: string
+  /** Nombre del grupo tal como está guardado en la base. */
+  grupo: string
+  label: string
+  icon: string
+  description: string
+}
+
+/**
+ * Fotos sueltas de un bloque con nombre propio. Se guardan en la misma tabla
+ * que las franjas de encabezado, pero tienen pantalla propia en
+ * `/admin/foto/:clave` porque buscarlas entre todos los banners no es práctico.
+ */
+export interface FotoSeccionConfig {
+  clave: string
+  label: string
+  icon: string
+  description: string
+  /** Proporción con la que se muestra en el sitio, para el recorte. */
+  aspect?: number
+}
+
+export const fotoSecciones: FotoSeccionConfig[] = [
+  {
+    clave: 'inicio-quienes',
+    label: 'Quiénes somos',
+    icon: 'ti-photo-heart',
+    description: 'Foto del bloque "Quiénes somos" de la página de inicio.',
+    // El recuadro del sitio es apaisado (unos 1200×340).
+    aspect: 16 / 9,
+  },
+]
+
+export const textoSecciones: TextoSeccion[] = [
+  {
+    slug: 'inicio',
+    grupo: 'Inicio',
+    label: 'Portada',
+    icon: 'ti-home',
+    description: 'Título y texto grande que se ven al abrir el sitio.',
+  },
+  {
+    slug: 'titulos-inicio',
+    grupo: 'Títulos del inicio',
+    label: 'Títulos y textos',
+    icon: 'ti-text-caption',
+    description: 'Encabezados de cada bloque de la página de inicio.',
+  },
+  {
+    slug: 'contacto',
+    grupo: 'Contacto',
+    label: 'Contacto',
+    icon: 'ti-address-book',
+    description: 'Dirección, teléfono, WhatsApp, correo y horarios. Se usan en todo el sitio.',
+  },
+]
 
 /**
  * Iconos disponibles para las secciones que los usan. Se ofrecen como lista
@@ -66,79 +134,82 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'junta-directiva',
     icon: 'ti-building-bank',
-    description: 'Instituciones que conforman el Patronato y sus representantes.',
+    description: 'Tarjetas de la página Institución → Junta Directiva. Cada registro es una institución del Patronato con su representante.',
     label: 'Junta Directiva',
+    textosGrupo: 'Junta Directiva',
     titleField: 'institucion',
     fields: [
-      { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.' },
-      { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz' },
-      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente' },
-      { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*', aspect: 1 },
-      { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*', aspect: 1 },
+      { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.', hint: 'Nombre que aparece bajo la foto, en negrita.' },
+      { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz', hint: 'La persona que representa a la institución. Es el título de la tarjeta.' },
+      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente', hint: 'Puesto dentro de la Junta. Es la última línea de la tarjeta.' },
+      { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*', aspect: 1, hint: 'Solo se usa si arriba eliges mostrar fotos en vez de logos.' },
+      { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*', aspect: 1, hint: 'Lo que se ve hoy en el recuadro de la tarjeta, sobre fondo blanco.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'personal-tecnico',
     icon: 'ti-users',
-    description: 'Equipo administrativo y técnico que trabaja en el parque.',
+    description: 'Tarjetas de la página Institución → Personal Técnico. Cada registro es una persona del equipo del parque.',
     label: 'Personal Técnico',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez' },
-      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa' },
-      { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*', aspect: 1 },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Jessica Diez', hint: 'Título de la tarjeta.' },
+      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Asistente Administrativa', hint: 'Puesto que ocupa. Se muestra debajo del nombre.' },
+      { key: 'fotoUrl', label: 'Foto', type: 'file', accept: 'image/*', aspect: 1, hint: 'Retrato de la persona. Sin foto se muestra un ícono en su lugar.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'instalaciones',
     icon: 'ti-building-stadium',
-    description: 'Áreas y facilidades disponibles dentro del parque.',
+    description: 'Primera mitad de la página El Parque → Instalaciones y Servicios. Cada registro es un área o facilidad del parque.',
     label: 'Instalaciones',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Canchas de Baloncesto' },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente esta instalación...' },
-      { key: 'cantidad', label: 'Cantidad (opcional)', type: 'number', placeholder: 'Ej: 2' },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Canchas de Baloncesto', hint: 'Título de la instalación en la página.' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente esta instalación...', hint: 'Texto que acompaña al nombre. Una o dos líneas.' },
+      { key: 'cantidad', label: 'Cantidad (opcional)', type: 'number', placeholder: 'Ej: 2', hint: 'Cuántas hay. Se muestra como un número destacado; déjalo vacío si no aplica.' },
+      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 4 / 3, hint: 'Con foto se muestra como tarjeta grande; sin foto, en la lista con ícono.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'programas',
     icon: 'ti-plant-2',
-    description: 'Programas y servicios activos que ofrece el parque.',
+    description: 'Segunda mitad de la página El Parque → Instalaciones y Servicios, y la página Programas y Proyectos. Cada registro es un servicio o programa.',
     label: 'Programas y Servicios',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club' },
-      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol' },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...' },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'Título del servicio en la página.' },
+      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol', hint: 'Etiqueta verde que aparece encima del título.' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...', hint: 'Texto que se lee junto a la foto.' },
+      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 4 / 3, hint: 'Foto grande que acompaña al servicio. Sin foto se usa una general del parque.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'actividades',
     icon: 'ti-calendar-event',
-    description: 'Agenda de eventos y actividades programadas.',
+    description: 'Agenda de la página Reserva → Actividades. Se agrupa sola por mes, y al pulsar una fila se abre su ventana de detalles.',
     label: 'Actividades',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Maratón 5K Club Banreservas' },
-      { key: 'descripcion', label: 'Descripción (opcional)', type: 'textarea', placeholder: 'Detalles del evento...' },
-      { key: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true },
-      { key: 'fechaFin', label: 'Fecha de fin (opcional)', type: 'date' },
-      { key: 'lugar', label: 'Lugar (opcional)', type: 'text', placeholder: 'Ej: Anfiteatro' },
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Maratón 5K Club Banreservas', hint: 'Nombre del evento en la agenda.' },
+      { key: 'descripcion', label: 'Descripción (opcional)', type: 'textarea', placeholder: 'Detalles del evento...', hint: 'Se ve completa en la ventana de detalles que se abre al pulsar la actividad.' },
+      { key: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true, hint: 'Decide en qué mes se agrupa la actividad y el día que sale en el recuadro verde.' },
+      { key: 'fechaFin', label: 'Fecha de fin (opcional)', type: 'date', hint: 'Solo para eventos de varios días. Se muestra como un rango de fechas.' },
+      { key: 'lugar', label: 'Lugar (opcional)', type: 'text', placeholder: 'Ej: Anfiteatro', hint: 'Dónde se realiza. Aparece con un ícono de ubicación.' },
     ],
   },
   {
     path: 'publicaciones',
     icon: 'ti-news',
-    description: 'Artículos y noticias del blog. Se ordenan por fecha, de la más reciente a la más antigua.',
+    description: 'Publicaciones de la página Blog. Se ordenan por fecha, de la más reciente a la más antigua.',
     label: 'Blog',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Jornada de reforestación en el parque' },
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Jornada de reforestación en el parque', hint: 'Titular de la publicación.' },
       {
         key: 'tipo',
         label: 'Tipo',
@@ -148,10 +219,10 @@ export const entityConfigs: EntityConfig[] = [
           { value: 'articulo', label: 'Artículo' },
         ],
       },
-      { key: 'fecha', label: 'Fecha de publicación', type: 'date', required: true },
-      { key: 'resumen', label: 'Resumen (opcional)', type: 'textarea', placeholder: 'Una o dos líneas que resuman la publicación. Se muestran en el listado.' },
-      { key: 'contenido', label: 'Contenido', type: 'textarea', required: true, placeholder: 'Texto completo de la publicación...' },
-      { key: 'imagenUrl', label: 'Imagen (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9 },
+      { key: 'fecha', label: 'Fecha de publicación', type: 'date', required: true, hint: 'Decide el orden del listado: las más recientes salen primero.' },
+      { key: 'resumen', label: 'Resumen (opcional)', type: 'textarea', placeholder: 'Una o dos líneas que resuman la publicación.', hint: 'Lo que se lee en el listado del blog, antes de abrir la publicación.' },
+      { key: 'contenido', label: 'Contenido', type: 'textarea', required: true, placeholder: 'Texto completo de la publicación...', hint: 'El cuerpo completo, que se ve al abrir la publicación.' },
+      { key: 'imagenUrl', label: 'Imagen (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9, hint: 'Foto de portada de la publicación, en el listado y al abrirla.' },
       {
         key: 'destacada',
         label: 'Anunciar en la página de inicio',
@@ -163,12 +234,12 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'puntos-mapa',
     icon: 'ti-map-pin',
-    description: 'Instalaciones señaladas sobre el mapa, en El Parque → Mapa y en la página de inicio.',
+    description: 'Marcadores del mapa. Los mismos puntos se ven en El Parque → Mapa y en el mapa pequeño de la página de inicio.',
     label: 'Puntos del Mapa',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre del punto', type: 'text', required: true, placeholder: 'Ej: Canchas de Baloncesto' },
-      { key: 'zona', label: 'Zona (opcional)', type: 'text', placeholder: 'Ej: Zona deportiva' },
+      { key: 'nombre', label: 'Nombre del punto', type: 'text', required: true, placeholder: 'Ej: Canchas de Baloncesto', hint: 'Lo que se lee al pulsar el marcador en el mapa.' },
+      { key: 'zona', label: 'Zona (opcional)', type: 'text', placeholder: 'Ej: Zona deportiva', hint: 'Área del parque a la que pertenece. Acompaña al nombre.' },
       {
         key: 'lat',
         label: 'Latitud',
@@ -185,102 +256,104 @@ export const entityConfigs: EntityConfig[] = [
         placeholder: '-70.6953',
         hint: 'El segundo número de las coordenadas de Google Maps. En Santiago es negativo.',
       },
-      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9 },
+      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9, hint: 'Se muestra dentro del globo del marcador.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'hitos',
     icon: 'ti-timeline-event',
-    description: 'Hitos de la historia del parque, en Sobre Nosotros → Historia.',
+    description: 'La historia del parque: el texto corrido, el formato y los hitos de la línea de tiempo.',
     label: 'Historia',
+    textosGrupo: 'Historia',
     titleField: 'titulo',
     fields: [
-      { key: 'fecha', label: 'Fecha', type: 'text', required: true, placeholder: 'Ej: 20 feb 2018', hint: 'Se muestra tal como la escribas.' },
-      { key: 'titulo', label: 'Título del hito', type: 'text', required: true, placeholder: 'Ej: Inauguración del parque' },
-      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué ocurrió en esa fecha...' },
+      { key: 'fecha', label: 'Fecha', type: 'text', required: true, placeholder: 'Ej: 20 feb 2018', hint: 'Etiqueta verde del hito. Se muestra tal como la escribas: 2005, Feb 2009, 20 feb 2018.' },
+      { key: 'titulo', label: 'Título del hito', type: 'text', required: true, placeholder: 'Ej: Inauguración del parque', hint: 'Qué pasó. Es el título del punto en la línea de tiempo.' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué ocurrió en esa fecha...', hint: 'El detalle del hito. Solo se ve si la historia está en formato de línea de tiempo.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'normas',
     icon: 'ti-clipboard-list',
-    description: 'Normas de convivencia, en Sobre Nosotros → Reglamento.',
+    description: 'Tarjetas de la página Sobre Nosotros → Reglamento. Cada registro es una norma de convivencia.',
     label: 'Reglamento',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título de la norma', type: 'text', required: true, placeholder: 'Ej: Cuida las áreas verdes' },
-      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste la norma...' },
-      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS },
+      { key: 'titulo', label: 'Título de la norma', type: 'text', required: true, placeholder: 'Ej: Cuida las áreas verdes', hint: 'Título de la tarjeta en el reglamento.' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste la norma...', hint: 'Explicación de la norma, debajo del título.' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS, hint: 'Dibujo que acompaña a la tarjeta en la página.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'pasos-reserva',
     icon: 'ti-list-numbers',
-    description: 'Pasos para reservar un espacio, en la página de Reserva.',
-    label: 'Pasos de Reserva',
+    description: 'La página de Reserva: los pasos para reservar un espacio y el texto del calendario.',
+    label: 'Reserva',
+    textosGrupo: 'Reserva',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título del paso', type: 'text', required: true, placeholder: 'Ej: Consulta disponibilidad' },
-      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué debe hacer el visitante...' },
-      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS },
+      { key: 'titulo', label: 'Título del paso', type: 'text', required: true, placeholder: 'Ej: Consulta disponibilidad', hint: 'Título del paso. El número lo pone la página sola, según la posición.' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué debe hacer el visitante...', hint: 'Qué tiene que hacer el visitante en este paso.' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS, hint: 'Dibujo que acompaña a la tarjeta en la página.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'formas-apoyo',
     icon: 'ti-heart-handshake',
-    description: 'Formas de apoyar al parque, en la página de Apóyanos.',
+    description: 'Tarjetas de la página Apóyanos. Cada registro es una forma de colaborar con el parque.',
     label: 'Formas de Apoyo',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Ser voluntario' },
-      { key: 'etiqueta', label: 'Etiqueta', type: 'text', required: true, placeholder: 'Ej: Voluntariado', hint: 'Palabra corta que aparece sobre el título.' },
-      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste esta forma de apoyo...' },
-      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS },
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Ser voluntario', hint: 'Título de la tarjeta en Apóyanos.' },
+      { key: 'etiqueta', label: 'Etiqueta', type: 'text', required: true, placeholder: 'Ej: Voluntariado', hint: 'Palabra corta que aparece sobre el título, como una etiqueta.' },
+      { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste esta forma de apoyo...', hint: 'Explicación de cómo colaborar de esta forma.' },
+      { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS, hint: 'Dibujo que acompaña a la tarjeta en la página.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'cifras',
     icon: 'ti-chart-bar',
-    description: 'Cifras destacadas de la página de inicio, con su foto y enlace.',
+    description: 'Bloques grandes con foto de la página de inicio, debajo del título principal. Se alternan solos a izquierda y derecha.',
     label: 'Cifras del Inicio',
     titleField: 'numero',
     fields: [
-      { key: 'numero', label: 'Cifra', type: 'text', required: true, placeholder: 'Ej: 2 campos', hint: 'El número grande. Puede llevar texto, como "32 kioscos".' },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué representa esta cifra...' },
-      { key: 'etiqueta', label: 'Etiqueta sobre la foto (opcional)', type: 'text', placeholder: 'Ej: Complejo Deportivo' },
-      { key: 'imagenUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9 },
-      { key: 'enlaceTexto', label: 'Texto del enlace (opcional)', type: 'text', placeholder: 'Ej: Ver instalaciones y servicios' },
-      { key: 'enlaceUrl', label: 'Dirección del enlace (opcional)', type: 'text', placeholder: 'Ej: /instalaciones-y-servicios', hint: 'Ruta dentro del sitio, empezando con /' },
+      { key: 'numero', label: 'Cifra', type: 'text', required: true, placeholder: 'Ej: 2 campos', hint: 'El texto grande del bloque. Puede ser un número (450), un número con palabra (32 kioscos) o un título (Instalaciones y espacios): si es largo se achica solo.' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Qué representa esta cifra...', hint: 'Texto que se lee debajo. Deja una línea en blanco para separar párrafos.' },
+      { key: 'etiqueta', label: 'Etiqueta sobre la foto (opcional)', type: 'text', placeholder: 'Ej: Complejo Deportivo', hint: 'Pastilla blanca que se ve sobre la esquina de la foto.' },
+      { key: 'imagenUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9, hint: 'Foto grande del bloque, al lado del texto.' },
+      { key: 'enlaceTexto', label: 'Texto del enlace (opcional)', type: 'text', placeholder: 'Ej: Ver instalaciones y servicios', hint: 'Botón verde al pie del bloque. Déjalo vacío si no quieres botón.' },
+      { key: 'enlaceUrl', label: 'Dirección del enlace (opcional)', type: 'text', placeholder: 'Ej: /instalaciones-y-servicios', hint: 'A dónde lleva el botón. Ruta dentro del sitio, empezando con /' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'aliados',
     icon: 'ti-building-arch',
-    description: 'Logos que aparecen en el carrusel de la página de Historia.',
+    description: 'Carrusel de logos de la página Sobre Nosotros → Historia. Avanza solo, y también con las flechas.',
     label: 'Logos Institucionales',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre de la institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.', hint: 'Si no hay logo cargado, este nombre se muestra en su lugar.' },
-      { key: 'logoUrl', label: 'Logo', type: 'file', accept: 'image/*' },
-      { key: 'sitioWeb', label: 'Sitio web (opcional)', type: 'text', placeholder: 'Ej: https://www.ejemplo.com', hint: 'Si lo indicas, el logo se vuelve un enlace.' },
+      { key: 'nombre', label: 'Nombre de la institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.', hint: 'Se muestra dentro del carrusel cuando la institución todavía no tiene logo cargado.' },
+      { key: 'logoUrl', label: 'Logo', type: 'file', accept: 'image/*', hint: 'Imagen que gira en el carrusel. Mejor con fondo transparente o blanco.' },
+      { key: 'sitioWeb', label: 'Sitio web (opcional)', type: 'text', placeholder: 'Ej: https://www.ejemplo.com', hint: 'Si lo indicas, el logo se vuelve un enlace que abre esa página.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'encabezados',
     icon: 'ti-photo-scan',
-    description: 'Foto de la franja superior de cada página. El conjunto es fijo: solo se cambia la imagen.',
+    description: 'La franja verde con foto que encabeza cada página. La lista es fija: no se crean ni se borran registros, solo se cambia la foto de cada uno.',
     label: 'Fotos de Encabezado',
     titleField: 'etiqueta',
     soloEditar: true,
     fields: [
-      { key: 'etiqueta', label: 'Página', type: 'text' },
-      { key: 'imagenUrl', label: 'Foto de la franja', type: 'file', accept: 'image/*', aspect: 16 / 5 },
+      { key: 'etiqueta', label: 'Página', type: 'text', hint: 'A qué página del sitio corresponde esta franja.' },
+      { key: 'imagenUrl', label: 'Foto de la franja', type: 'file', accept: 'image/*', aspect: 16 / 5, hint: 'Con "Dejar sin foto" la franja queda solo con el fondo verde.' },
       {
         key: 'posicion',
         label: 'Encuadre vertical',
@@ -299,12 +372,12 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'galeria',
     icon: 'ti-photo',
-    description: 'Fotografías y videos que se muestran en la galería pública.',
+    description: 'Fotos de la página El Parque → Galería.',
     label: 'Galería',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título (opcional)', type: 'text', placeholder: 'Ej: Campo de fútbol' },
-      { key: 'url', label: 'Foto', type: 'file', accept: 'image/*', required: true },
+      { key: 'titulo', label: 'Título (opcional)', type: 'text', placeholder: 'Ej: Campo de fútbol', hint: 'Pie de foto. Se ve al pasar el mouse por encima.' },
+      { key: 'url', label: 'Foto', type: 'file', accept: 'image/*', required: true, hint: 'La imagen que se agrega a la galería.' },
       {
         key: 'tipo',
         label: 'Tipo',
@@ -314,18 +387,19 @@ export const entityConfigs: EntityConfig[] = [
           { value: 'video', label: 'Video' },
         ],
       },
-      { key: 'categoria', label: 'Categoría (opcional)', type: 'text', placeholder: 'Ej: Instalaciones, Eventos, Programas...' },
+      { key: 'categoria', label: 'Categoría (opcional)', type: 'text', placeholder: 'Ej: Instalaciones, Eventos, Programas...', hint: 'Agrupa la foto para poder filtrarla en la galería.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {
     path: 'documentos-financieros',
     icon: 'ti-file-invoice',
-    description: 'Estados financieros auditados y sin auditar del Patronato.',
-    label: 'Estados Financieros',
+    description: 'La página de Transparencia: sus textos institucionales y los estados financieros publicados.',
+    label: 'Transparencia',
+    textosGrupo: 'Transparencia',
     titleField: 'titulo',
     fields: [
-      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Estados Financieros 2026' },
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Estados Financieros 2026', hint: 'Nombre con el que se lista el documento.' },
       {
         key: 'tipo',
         label: 'Tipo',
@@ -335,8 +409,8 @@ export const entityConfigs: EntityConfig[] = [
           { value: 'sin_auditar', label: 'Sin auditar' },
         ],
       },
-      { key: 'url', label: 'Documento (PDF)', type: 'file', accept: 'application/pdf', required: true },
-      { key: 'fecha', label: 'Fecha (opcional)', type: 'date' },
+      { key: 'url', label: 'Documento (PDF)', type: 'file', accept: 'application/pdf', required: true, hint: 'El archivo que se descarga al pulsar el documento.' },
+      { key: 'fecha', label: 'Fecha (opcional)', type: 'date', hint: 'Fecha del documento. Se muestra junto al título.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },

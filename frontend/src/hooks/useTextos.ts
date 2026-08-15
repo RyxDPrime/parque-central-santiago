@@ -14,7 +14,7 @@ const RESPALDO: Record<string, string> = {
   'contacto.horarioOficina': 'lun–vie 8:30 a.m. – 5:00 p.m.',
   'inicio.heroTitulo': 'El pulmón verde de Santiago',
   'inicio.heroTexto':
-    'Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana, administrado por el Patronato para la Administración del Parque Central de Santiago desde 2018.',
+    'Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana, administrado por el Patronato para la Administración del Parque Central de Santiago.',
   'inicio.cifrasEtiqueta': 'Instalaciones',
   'inicio.cifrasTitulo': 'El parque en cifras',
   'inicio.exploraEtiqueta': 'Explora el parque',
@@ -24,7 +24,7 @@ const RESPALDO: Record<string, string> = {
   'inicio.quienesEtiqueta': 'Quiénes somos',
   'inicio.quienesTitulo': 'Una institución al servicio de Santiago',
   'inicio.quienesTexto':
-    'El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.',
+    'El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido de más de 25 años de gestión de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.',
   'inicio.mapaEtiqueta': 'Ubicación',
   'inicio.mapaTitulo': 'Explora el parque',
   'inicio.mapaTexto':
@@ -40,7 +40,7 @@ const RESPALDO: Record<string, string> = {
   'institucion.vision': '',
   'institucion.visionIcono': 'ti-eye',
   'transparencia.quienesSomos':
-    'El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida el 6 de abril de 2018.',
+    'El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida en 2001, resultado del esfuerzo conjunto entre la Asociación para el Desarrollo, Inc. (APEDI) y diecinueve instituciones públicas y privadas de la región. Está registrado bajo la Ley 122-05 del 8 de abril de 2005. RNC: 430-25261-1.',
   'transparencia.marcoNormativo':
     'Ley 122-05 del 8 de abril de 2005, que regula las asociaciones sin fines de lucro en la República Dominicana.',
   'transparencia.usoDonaciones':

@@ -37,7 +37,7 @@ const META: Record<string, PageMeta> = {
   '/sobre-el-parque': {
     title: `Historia | ${SITE}`,
     description:
-      'Casi 20 años de gestión hechos realidad: cómo se fundó el Parque Central de Santiago y su relación con APEDI.',
+      'Más de 25 años de gestión hechos realidad: cómo se fundó el Parque Central de Santiago y su relación con APEDI.',
     image: '/images/galeria/entrada-parque.jpg',
   },
   '/reglamento': {

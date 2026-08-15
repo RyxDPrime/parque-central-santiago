@@ -33,7 +33,7 @@ export function Footer() {
             </div>
             <p>
               El pulmón verde de Santiago de los Caballeros, al servicio de la recreación, el
-              deporte y la comunidad desde 2018.
+              deporte y la comunidad.
             </p>
             <div className="footer-social">
               <a

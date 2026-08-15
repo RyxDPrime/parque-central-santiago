@@ -48,7 +48,7 @@ const formasApoyo = [
 
 const cifras = [
   { numero: "2 campos", descripcion: "Dos campos de fútbol reglamentarios, además de canchas de baloncesto, tenis, voleibol y disc golf para toda la comunidad.", imagenUrl: "/images/galeria/campo-futbol.jpg", etiqueta: "Complejo Deportivo", enlaceTexto: "Ver instalaciones y servicios", enlaceUrl: "/instalaciones-y-servicios" },
-  { numero: "17", descripcion: "Instituciones públicas y privadas conforman la Junta Directiva del Patronato para la Administración del Parque Central de Santiago.", imagenUrl: "/images/galeria/entrada-parque.jpg", etiqueta: "Patronato PCS", enlaceTexto: "Conoce la Junta Directiva", enlaceUrl: "/junta-directiva" },
+  { numero: "19", descripcion: "Instituciones públicas y privadas conforman la Junta Directiva del Patronato para la Administración del Parque Central de Santiago.", imagenUrl: "/images/galeria/entrada-parque.jpg", etiqueta: "Patronato PCS", enlaceTexto: "Conoce la Junta Directiva", enlaceUrl: "/junta-directiva" },
   { numero: "32 kioscos", descripcion: "8 grandes y 24 pequeños para reuniones familiares.", imagenUrl: "/images/galeria/gimnasio-aire-libre.jpg", etiqueta: "Áreas de Picnic", enlaceTexto: null, enlaceUrl: null },
   { numero: "450", descripcion: "Espacios de estacionamiento para los visitantes.", imagenUrl: "/images/galeria/voleibol.jpg", etiqueta: "Parqueos", enlaceTexto: null, enlaceUrl: null },
   { numero: "2018", descripcion: "Año de inauguración del parque, resultado de casi dos décadas de gestión de la Asociación para el Desarrollo, Inc. (APEDI).", imagenUrl: "/images/galeria/cancha-tenis.jpg", etiqueta: "Desde 2018", enlaceTexto: "Conoce nuestra historia", enlaceUrl: "/sobre-el-parque" },
@@ -111,7 +111,7 @@ const textos = [
   { clave: "contacto.horarioOficina", etiqueta: "Horario de oficina", grupo: "Contacto", valor: "lun–vie 8:30 a.m. – 5:00 p.m.", orden: 6 },
 
   { clave: "inicio.heroTitulo", etiqueta: "Título principal", grupo: "Inicio", valor: "El pulmón verde de Santiago", orden: 1 },
-  { clave: "inicio.heroTexto", etiqueta: "Texto principal", grupo: "Inicio", valor: "Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana, administrado por el Patronato para la Administración del Parque Central de Santiago desde 2018.", multiline: true, orden: 2 },
+  { clave: "inicio.heroTexto", etiqueta: "Texto principal", grupo: "Inicio", valor: "Un espacio para la recreación, el deporte, la cultura y la convivencia ciudadana, administrado por el Patronato para la Administración del Parque Central de Santiago.", multiline: true, orden: 2 },
 
   { clave: "inicio.cifrasEtiqueta", etiqueta: "Cifras — etiqueta", grupo: "Títulos del inicio", valor: "Instalaciones", orden: 1 },
   { clave: "inicio.cifrasTitulo", etiqueta: "Cifras — título", grupo: "Títulos del inicio", valor: "El parque en cifras", orden: 2 },
@@ -120,7 +120,7 @@ const textos = [
   { clave: "inicio.exploraTexto", etiqueta: "Accesos rápidos — texto", grupo: "Títulos del inicio", valor: "Conoce las instalaciones, programas y la institución que administra el Parque Central de Santiago.", multiline: true, orden: 5 },
   { clave: "inicio.quienesEtiqueta", etiqueta: "Quiénes somos — etiqueta", grupo: "Títulos del inicio", valor: "Quiénes somos", orden: 6 },
   { clave: "inicio.quienesTitulo", etiqueta: "Quiénes somos — título", grupo: "Títulos del inicio", valor: "Una institución al servicio de Santiago", orden: 7 },
-  { clave: "inicio.quienesTexto", etiqueta: "Quiénes somos — texto", grupo: "Títulos del inicio", valor: "El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido del esfuerzo de casi veinte años de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.", multiline: true, orden: 8 },
+  { clave: "inicio.quienesTexto", etiqueta: "Quiénes somos — texto", grupo: "Títulos del inicio", valor: "El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido de más de 25 años de gestión de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.", multiline: true, orden: 8 },
   { clave: "inicio.mapaEtiqueta", etiqueta: "Mapa — etiqueta", grupo: "Títulos del inicio", valor: "Ubicación", orden: 9 },
   { clave: "inicio.mapaTitulo", etiqueta: "Mapa — título", grupo: "Títulos del inicio", valor: "Explora el parque", orden: 10 },
   { clave: "inicio.mapaTexto", etiqueta: "Mapa — texto", grupo: "Títulos del inicio", valor: "Ubica las principales instalaciones del Parque Central de Santiago en el mapa.", multiline: true, orden: 11 },
@@ -141,7 +141,7 @@ const textos = [
   },
   { clave: "historia.apedi", etiqueta: "Relación con APEDI", grupo: "Historia", orden: 3, valor: "El Parque Central de Santiago mantiene una estrecha relación con la Asociación para el Desarrollo, Inc. (APEDI), institución fundadora y actual presidenta del Patronato para la Administración del Parque Central de Santiago. El parque también trabaja de manera coordinada con diversas instituciones públicas, privadas, educativas y organizaciones de la sociedad civil, promoviendo alianzas estratégicas para el desarrollo de actividades recreativas, culturales, deportivas, ambientales y comunitarias.", multiline: true },
 
-  { clave: "transparencia.quienesSomos", etiqueta: "Quiénes somos", grupo: "Transparencia", valor: "El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida el 6 de abril de 2018, resultado del esfuerzo conjunto entre la Asociación para el Desarrollo, Inc. (APEDI) y diecisiete instituciones públicas y privadas de la región. Está registrado bajo la Ley 122-05 del 8 de abril de 2005. RNC: 430-25261-1.", multiline: true, orden: 1 },
+  { clave: "transparencia.quienesSomos", etiqueta: "Quiénes somos", grupo: "Transparencia", valor: "El Parque Central de Santiago es administrado por el Patronato para la Administración del Parque Central de Santiago, una entidad sin fines de lucro constituida en 2001, resultado del esfuerzo conjunto entre la Asociación para el Desarrollo, Inc. (APEDI) y diecinueve instituciones públicas y privadas de la región. Está registrado bajo la Ley 122-05 del 8 de abril de 2005. RNC: 430-25261-1.", multiline: true, orden: 1 },
   { clave: "transparencia.marcoNormativo", etiqueta: "Marco normativo", grupo: "Transparencia", valor: "Ley 122-05 del 8 de abril de 2005, que regula las asociaciones sin fines de lucro en la República Dominicana.", multiline: true, orden: 2 },
   { clave: "transparencia.usoDonaciones", etiqueta: "Uso de donaciones", grupo: "Transparencia", valor: "El detalle sobre el uso de las donaciones recibidas se publicará en una fase posterior del proyecto.", multiline: true, orden: 3 },
   { clave: "transparencia.codigoEtica", etiqueta: "Código de ética", grupo: "Transparencia", valor: "El código de ética institucional se publicará en cuanto el Parque lo confirme.", multiline: true, orden: 4 },

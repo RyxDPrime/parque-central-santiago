@@ -11,7 +11,11 @@ function required(name: string, fallback?: string): string {
 export const env = {
   port: Number(process.env.PORT ?? 4000),
   nodeEnv: process.env.NODE_ENV ?? "development",
-  corsOrigin: process.env.CORS_ORIGIN ?? "*",
+  // Se le quita la barra final: el navegador manda el origen sin ella
+  // ("https://sitio.com"), así que copiar la dirección desde el navegador
+  // —donde sí aparece— dejaba fuera al frontend entero sin ninguna pista:
+  // la API responde bien y aun así el sitio no puede leerla.
+  corsOrigin: (process.env.CORS_ORIGIN ?? "*").trim().replace(/\/+$/, ""),
   smtp: {
     host: process.env.SMTP_HOST ?? "",
     port: Number(process.env.SMTP_PORT ?? 587),

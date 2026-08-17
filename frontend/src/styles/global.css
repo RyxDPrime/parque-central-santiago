@@ -91,6 +91,11 @@ ul{list-style:none}
 
 @media (max-width:900px){
   .stat-row.img-left,.stat-row.img-right,.stat-row.two-col{grid-template-columns:1fr}
+  /* En pantalla ancha las filas alternan la foto a un lado y al otro, así que
+     en el código unas veces va antes del texto y otras después. Al caer a una
+     sola columna eso dejaba párrafos encima de la foto que no les toca: se
+     fuerza a que la foto vaya siempre primero, con su texto debajo. */
+  .stat-row.img-right .stat-img{order:-1}
 }
 
 /* ── NAVBAR ── */

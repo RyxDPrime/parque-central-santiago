@@ -109,7 +109,7 @@ const META: Record<string, PageMeta> = {
   '/apoyanos': {
     title: `Apóyanos | ${SITE}`,
     description:
-      'Voluntariado, donaciones y reforestación: formas de apoyar al Parque Central de Santiago.',
+      'Voluntariado y donaciones: formas de apoyar al Parque Central de Santiago.',
     image: '/images/galeria/ciclistas.jpg',
   },
   '/contacto': {

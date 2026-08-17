@@ -279,9 +279,6 @@ export function Home() {
           <Link to="/apoyanos" className="btn-outline-white">
             <i className="ti ti-run" /> Ser voluntario
           </Link>
-          <Link to="/apoyanos" className="btn-outline-white">
-            <i className="ti ti-plant" /> Donar un árbol
-          </Link>
         </div>
       </section>
     </>

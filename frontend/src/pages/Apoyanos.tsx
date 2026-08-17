@@ -13,7 +13,7 @@ export function Apoyanos() {
         pagina="apoyanos"
         label="Apóyanos"
         title="¿Quieres apoyar al parque?"
-        description="Cada donación, árbol o hora de voluntariado hace posible que este espacio siga vivo para las próximas generaciones."
+        description="Cada donación y cada hora de voluntariado hacen posible que este espacio siga vivo para las próximas generaciones."
         image="/images/galeria/ciclistas.jpg"
       />
 

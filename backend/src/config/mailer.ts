@@ -1,5 +1,14 @@
+import dns from "node:dns";
 import nodemailer from "nodemailer";
 import { env } from "./env";
+
+// Se resuelve primero por IPv4.
+//
+// El servidor de correo responde tanto en IPv6 como en IPv4, y Node prefiere
+// IPv6; pero la maquina donde corre el sitio no tiene salida por IPv6, asi que
+// el envio moria en "ENETUNREACH" antes siquiera de autenticarse. El sintoma
+// enganna: parece un problema de usuario y clave, y no lo es.
+dns.setDefaultResultOrder("ipv4first");
 
 export const transporter = nodemailer.createTransport({
   host: env.smtp.host,

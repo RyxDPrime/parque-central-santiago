@@ -42,7 +42,7 @@ const pasosReserva = [
 ];
 
 const formasApoyo = [
-  { icono: "ti-hand-heart", etiqueta: "Voluntariado", titulo: "Ser voluntario", texto: "Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias. El Parque firma las horas de servicio ambiental que exigen los centros educativos a sus estudiantes." },
+  { icono: "ti-friends", etiqueta: "Voluntariado", titulo: "Ser voluntario", texto: "Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias. El Parque firma las horas de servicio ambiental que exigen los centros educativos a sus estudiantes." },
   { icono: "ti-coin", etiqueta: "Donaciones", titulo: "Hacer una donación", texto: "Tu aporte ayuda a mantener las instalaciones y los programas del parque. Próximamente habilitaremos donaciones en línea." },
 ];
 
@@ -89,7 +89,7 @@ const ICONOS_TEXTO = [
   "ti-feather:Ave / pluma",
   "ti-users:Personas",
   "ti-heart-handshake:Convivencia",
-  "ti-hand-heart:Voluntariado",
+  "ti-friends:Voluntariado",
   "ti-coin:Donacion",
   "ti-circle-check:Listo",
   "ti-map-pin:Ubicacion",

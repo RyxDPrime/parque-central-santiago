@@ -16,23 +16,14 @@ export const env = {
   // —donde sí aparece— dejaba fuera al frontend entero sin ninguna pista:
   // la API responde bien y aun así el sitio no puede leerla.
   corsOrigin: (process.env.CORS_ORIGIN ?? "*").trim().replace(/\/+$/, ""),
-  smtp: {
-    host: process.env.SMTP_HOST ?? "",
-    port: Number(process.env.SMTP_PORT ?? 587),
-    secure: process.env.SMTP_SECURE === "true",
-    user: process.env.SMTP_USER ?? "",
-    // Google muestra las contraseñas de aplicación con espacios para lectura humana,
-    // pero SMTP las espera sin espacios.
-    pass: (process.env.SMTP_PASS ?? "").replace(/\s+/g, ""),
-  },
-  // El remitente tiene que ser la misma cuenta con la que se autentica el
-  // envio: Gmail reescribe el From al usuario autenticado, asi que poner otra
-  // direccion no cambia lo que ve quien recibe, solo confunde a quien configura.
-  // Por eso el valor por defecto se deriva de SMTP_USER en vez de inventar una
-  // direccion que nunca llegaria a usarse.
-  mailFrom:
-    process.env.MAIL_FROM ??
-    (process.env.SMTP_USER ? `Parque Central de Santiago <${process.env.SMTP_USER}>` : ""),
+  // Correo saliente. Se envia por HTTPS y no por SMTP: el servidor donde vive
+  // el sitio tiene bloqueada la salida SMTP y ninguna credencial la sortea.
+  // Sin la clave, los mensajes se siguen guardando en el panel pero no se
+  // notifican por correo.
+  brevoApiKey: process.env.BREVO_API_KEY ?? "",
+  // Quien figura como remitente. Mientras no haya un dominio propio verificado,
+  // el proveedor reescribe la direccion; el nombre si se respeta.
+  mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
   contactToEmail: required("CONTACT_TO_EMAIL", "asistentepcs@gmail.com"),
   admin: {
     // Obligatorios: si faltan, es mejor que el servidor no arranque que quedar

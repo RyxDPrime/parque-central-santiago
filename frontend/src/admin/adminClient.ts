@@ -120,3 +120,42 @@ export async function uploadFile(file: File): Promise<string> {
   // backend, y lo que se guarda en la base queda independiente del servidor.
   return data.url;
 }
+
+export interface Sugerencia {
+  id: number;
+  tipo: string;
+  nombre: string;
+  email: string;
+  telefono: string | null;
+  mensaje: string;
+  leida: boolean;
+  emailEnviado: boolean;
+  createdAt: string;
+}
+
+export async function listSugerencias(): Promise<Sugerencia[]> {
+  const res = await fetch(`${API_URL}/sugerencias`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<Sugerencia[]>;
+}
+
+/** Marca o desmarca como leida. Es lo unico editable de una sugerencia. */
+export async function marcarSugerenciaLeida(id: number, leida: boolean): Promise<Sugerencia> {
+  const res = await fetch(`${API_URL}/sugerencias/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ leida }),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<Sugerencia>;
+}
+
+export async function deleteSugerencia(id: number): Promise<void> {
+  const res = await fetch(`${API_URL}/sugerencias/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+}

@@ -39,6 +39,7 @@ const soloLinks = [
   { to: '/transparencia', icon: 'ti-file-invoice', label: 'Transparencia' },
   { to: '/blog', icon: 'ti-article', label: 'Blog' },
   { to: '/apoyanos', icon: 'ti-heart-handshake', label: 'Apóyanos' },
+  { to: '/sugerencias', icon: 'ti-bulb', label: 'Sugerencias' },
 ]
 
 export function Navbar() {

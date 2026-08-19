@@ -19,7 +19,7 @@ function unaSolaLinea(valor: string): string {
   return limpio.replace(/\s{2,}/g, " ").trim();
 }
 
-const unaLinea = (max: number) => z.string().trim().max(max).transform(unaSolaLinea);
+export const unaLinea = (max: number) => z.string().trim().max(max).transform(unaSolaLinea);
 
 export const contactoSchema = z.object({
   nombre: unaLinea(120).pipe(z.string().min(2, "El nombre es muy corto")),

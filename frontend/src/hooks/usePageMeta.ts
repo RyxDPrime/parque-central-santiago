@@ -112,6 +112,12 @@ const META: Record<string, PageMeta> = {
       'Voluntariado y donaciones: formas de apoyar al Parque Central de Santiago.',
     image: '/images/galeria/ciclistas.jpg',
   },
+  '/sugerencias': {
+    title: `Sugerencias | ${SITE}`,
+    description:
+      'Comparte tus sugerencias, felicitaciones o quejas sobre el Parque Central de Santiago. Leemos cada mensaje.',
+    image: DEFAULT_IMAGE,
+  },
   '/contacto': {
     title: `Contacto | ${SITE}`,
     description:

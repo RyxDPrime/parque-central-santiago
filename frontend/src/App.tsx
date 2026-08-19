@@ -16,11 +16,13 @@ import { Transparencia } from './pages/Transparencia'
 import { Blog } from './pages/Blog'
 import { Apoyanos } from './pages/Apoyanos'
 import { Contacto } from './pages/Contacto'
+import { Sugerencias } from './pages/Sugerencias'
 import { NotFound } from './pages/NotFound'
 import { AdminLogin } from './admin/AdminLogin'
 import { AdminLayout } from './admin/AdminLayout'
 import { EntityManager } from './admin/EntityManager'
 import { MessagesInbox } from './admin/MessagesInbox'
+import { SugerenciasInbox } from './admin/SugerenciasInbox'
 import { TextosEditor } from './admin/TextosEditor'
 import { TextosSeccion } from './admin/TextosSeccion'
 import { FotoSeccion } from './admin/FotoSeccion'
@@ -46,6 +48,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/apoyanos" element={<Apoyanos />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/sugerencias" element={<Sugerencias />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
@@ -58,6 +61,7 @@ function App() {
               ruta se conserva porque quedaron enlaces guardados apuntando aquí. */}
           <Route path="textos" element={<TextosEditor />} />
           <Route path="mensajes" element={<MessagesInbox />} />
+          <Route path="sugerencias" element={<SugerenciasInbox />} />
           <Route path=":entity" element={<EntityManager />} />
         </Route>
       </Routes>

@@ -817,3 +817,41 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .texto-fila{flex-direction:column;align-items:stretch}
   .admin-page-head h1{font-size:20px}
 }
+
+/* ── SUGERENCIAS Y COMUNICACIONES ── */
+/* Una sola columna estrecha y centrada: la pantalla no compite con el
+   formulario, que es lo unico que hay que hacer aqui. */
+.sugerencia-inner{max-width:720px;margin:0 auto;padding:0 24px}
+.sugerencia-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px 34px;box-shadow:0 4px 24px rgba(23,51,15,.06)}
+
+.sugerencia-tipos{border:none;padding:0;margin:0 0 24px}
+.sugerencia-tipos legend{font-size:14px;font-weight:600;color:var(--text-primary);padding:0;margin-bottom:12px}
+.sugerencia-tipos-fila{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sugerencia-tipo{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border:1px solid var(--border);border-radius:var(--radius-lg);background:#fff;cursor:pointer;font-family:var(--font);font-size:12.5px;font-weight:500;color:var(--text-secondary);transition:border-color .18s,background .18s,color .18s,transform .18s}
+.sugerencia-tipo i{font-size:24px;color:var(--green-400);transition:color .18s}
+.sugerencia-tipo:hover{border-color:var(--green-400);background:var(--green-50);transform:translateY(-2px)}
+.sugerencia-tipo.esta-elegido{border-color:var(--green-600);background:var(--green-600);color:#fff}
+.sugerencia-tipo.esta-elegido i{color:#fff}
+.sugerencia-tipo-ayuda{margin-top:10px;font-size:13px;color:var(--text-muted);min-height:20px}
+
+.sugerencia-campos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sugerencia-campos .form-group:first-child{grid-column:1/-1}
+.sugerencia-card .opcional{font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-left:6px}
+.sugerencia-enviar{width:100%;justify-content:center;padding:14px;font-size:15px;margin-top:6px}
+.sugerencia-nota{margin-top:14px;text-align:center;font-size:12px;color:var(--text-muted)}
+
+/* Al enviar, el formulario se reemplaza por el acuse: no queda duda de que
+   el mensaje salio. */
+.sugerencia-gracias{background:#fff;border:1px solid var(--green-200);border-radius:var(--radius-xl);padding:52px 34px;text-align:center;box-shadow:0 4px 24px rgba(23,51,15,.06)}
+.sugerencia-gracias-icono{width:74px;height:74px;margin:0 auto 20px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center}
+.sugerencia-gracias-icono i{font-size:40px;color:var(--green-600)}
+.sugerencia-gracias h2{font-size:23px;font-weight:600;color:var(--green-800);margin-bottom:12px}
+.sugerencia-gracias p{font-size:14.5px;color:var(--text-secondary);line-height:1.75;max-width:44ch;margin:0 auto 26px}
+
+@media (max-width:640px){
+  .sugerencia-inner{padding:0 16px}
+  .sugerencia-card{padding:24px 20px}
+  .sugerencia-tipos-fila{grid-template-columns:1fr 1fr}
+  .sugerencia-campos{grid-template-columns:1fr}
+  .sugerencia-gracias{padding:40px 22px}
+}

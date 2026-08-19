@@ -134,6 +134,23 @@ model DocumentoFinanciero {
 }
 
 // Mensajes del formulario de Contacto y ubicación
+// Sugerencias y comunicaciones que envian los visitantes desde el sitio.
+// Van aparte de los mensajes de contacto porque se atienden distinto: el
+// contacto suele ser una consulta puntual y esto es retroalimentacion, que el
+// Parque revisa en conjunto.
+model Sugerencia {
+  id           Int      @id @default(autoincrement())
+  // sugerencia | felicitacion | queja | otro
+  tipo         String   @default("sugerencia")
+  nombre       String
+  email        String
+  telefono     String?
+  mensaje      String
+  leida        Boolean  @default(false)
+  emailEnviado Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
 model ContactMessage {
   id           Int      @id @default(autoincrement())
   nombre       String

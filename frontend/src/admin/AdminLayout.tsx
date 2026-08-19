@@ -178,6 +178,10 @@ export function AdminLayout() {
             <i className="ti ti-mail" />
             Mensajes de contacto
           </NavLink>
+          <NavLink to="/admin/sugerencias" className="admin-nav-link">
+            <i className="ti ti-bulb" />
+            Sugerencias
+          </NavLink>
         </nav>
 
         <div className="admin-sidebar-footer">

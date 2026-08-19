@@ -71,6 +71,7 @@ const encabezados = [
   { clave: "apoyanos", etiqueta: "Apoyanos", imagenUrl: "/images/galeria/ciclistas.jpg", posicion: "center", orden: 14 },
   { clave: "contacto", etiqueta: "Contacto", imagenUrl: "/images/galeria/gimnasio-aire-libre.jpg", posicion: "center", orden: 15 },
   { clave: "no-encontrada", etiqueta: "Pagina no encontrada", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 16 },
+  { clave: "sugerencias", etiqueta: "Sugerencias", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 19 },
   { clave: "mision-vision-valores", etiqueta: "Mision, Vision y Valores", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 17 },
   // No es una franja de encabezado, pero es una foto fija de una página y se
   // administra igual, así que vive en la misma lista.

@@ -5,6 +5,7 @@ import { contentRouter } from "./content.routes";
 import { crudRoutes } from "./crud.routes";
 import { apiLimiter } from "../middleware/rateLimit";
 import { mensajesRouter } from "./mensajes.routes";
+import { sugerenciasRouter } from "./sugerencias.routes";
 import { uploadsRouter } from "./uploads.routes";
 
 export const apiRouter = Router();
@@ -20,6 +21,7 @@ apiRouter.use(contactoRouter);
 apiRouter.use(adminRouter);
 apiRouter.use(uploadsRouter);
 apiRouter.use(mensajesRouter);
+apiRouter.use(sugerenciasRouter);
 
 // Crear / editar / borrar (protegido) para las secciones administrables del panel.
 // Todas llevan posición reordenable salvo Actividades, que se ordena por fecha.

@@ -171,6 +171,23 @@ export interface EncabezadoPagina {
   orden: number;
 }
 
+export type TipoSugerencia = "sugerencia" | "felicitacion" | "queja" | "otro";
+
+export interface SugerenciaInput {
+  tipo: TipoSugerencia;
+  nombre: string;
+  email: string;
+  telefono?: string;
+  mensaje: string;
+}
+
+export interface Sugerencia extends SugerenciaInput {
+  id: number;
+  leida: boolean;
+  emailEnviado: boolean;
+  createdAt: string;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -222,4 +239,5 @@ export const api = {
   getEncabezados: () => get<EncabezadoPagina[]>("/encabezados"),
   getAliados: () => get<Aliado[]>("/aliados"),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
+  enviarSugerencia: (data: SugerenciaInput) => post<{ ok: boolean }>("/sugerencias", data),
 };

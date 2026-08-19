@@ -118,6 +118,14 @@ ul{list-style:none}
 .nav-cta{display:flex;align-items:center;gap:12px}
 .nav-cta a{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:4px}
 .nav-cta a:hover{color:var(--green-600)}
+
+/* Entre el escritorio ancho y el movil, el menu ya no deja sitio al correo de
+   la barra: se sale de la pantalla y aparece una barra de desplazamiento
+   horizontal. Se oculta ahi, que ademas es informacion repetida —esta en el pie
+   y en Contacto—, y se conserva el boton, que si es una accion. */
+@media (max-width:1340px){
+  .nav-cta a:not(.btn-primary){display:none}
+}
 .nav-cta a.btn-primary,.nav-cta a.btn-primary:hover{color:#fff}
 
 /* ── NAVEGACION MOVIL ── */

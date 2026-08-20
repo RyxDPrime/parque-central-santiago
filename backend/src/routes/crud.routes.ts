@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { prisma } from "../config/db";
-import { requireAuth } from "../middleware/auth";
+import { requireAuth, requirePermiso } from "../middleware/auth";
+import type { Permiso } from "../config/permisos";
 
 // Fábrica genérica de rutas crear/editar/borrar para un modelo de Prisma.
 // Las secciones administrables comparten la misma forma básica (una tabla con
@@ -81,9 +82,13 @@ export function crudRoutes(
   modelo: ModeloCrud,
   // `soloEditar` deja unicamente la ruta de actualizar: se usa para los textos
   // del sitio, cuyas claves son fijas y no deben poder crearse ni borrarse.
-  opciones: { reorder?: boolean; soloEditar?: boolean } = {},
+  // `permiso` es el que hace falta para escribir; leer sigue siendo publico.
+  opciones: { reorder?: boolean; soloEditar?: boolean; permiso?: Permiso } = {},
 ): Router {
   const router = Router();
+  // En linea y no en un arreglo: pasarlos juntos hace que TypeScript pierda
+  // el tipo de req/res en el manejador final.
+  const permiso = requirePermiso(opciones.permiso ?? "contenido");
   const del = (cliente: ClienteTx | typeof prisma): Delegado =>
     (cliente as Record<string, Delegado>)[modelo];
 
@@ -93,7 +98,7 @@ export function crudRoutes(
   }
 
   if (!opciones.soloEditar) {
-    router.post("/", requireAuth, async (req, res, next) => {
+    router.post("/", requireAuth, permiso, async (req, res, next) => {
     try {
       const creado = await prisma.$transaction(async (tx) => {
         const m = del(tx);
@@ -123,7 +128,7 @@ export function crudRoutes(
 
   }
 
-  router.put("/:id", requireAuth, async (req, res, next) => {
+  router.put("/:id", requireAuth, permiso, async (req, res, next) => {
     try {
       const id = Number(req.params.id);
       const actualizado = await prisma.$transaction(async (tx) => {
@@ -167,7 +172,7 @@ export function crudRoutes(
   });
 
   if (!opciones.soloEditar) {
-    router.delete("/:id", requireAuth, async (req, res, next) => {
+    router.delete("/:id", requireAuth, permiso, async (req, res, next) => {
     try {
       const id = Number(req.params.id);
       await prisma.$transaction(async (tx) => {

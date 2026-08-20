@@ -863,3 +863,38 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .sugerencia-campos{grid-template-columns:1fr}
   .sugerencia-gracias{padding:40px 22px}
 }
+
+/* ── USUARIOS DEL PANEL ── */
+/* Quien entro, encima del boton de salir: con varias personas usando el panel,
+   saber con que cuenta estas deja de ser obvio. */
+.admin-quien{padding:10px 12px;margin-bottom:10px;border-radius:var(--radius);background:rgba(255,255,255,.08);display:flex;flex-direction:column;gap:2px;line-height:1.3}
+.admin-quien strong{font-size:13px;font-weight:600;color:#fff}
+.admin-quien span{font-size:11px;color:rgba(255,255,255,.6)}
+
+/* Las tres descripciones de rol juntas: al elegir uno conviene ver que implica
+   sin tener que recordarlo. */
+.roles-ayuda{margin-top:10px;padding:12px 14px;background:var(--gray-100);border-radius:var(--radius);display:flex;flex-direction:column;gap:6px}
+.roles-ayuda p{font-size:12.5px;color:var(--text-secondary);line-height:1.55;max-width:none}
+.roles-ayuda strong{color:var(--green-800)}
+
+.admin-tabla-scroll{overflow-x:auto}
+.admin-tabla{width:100%;border-collapse:collapse;min-width:720px}
+.admin-tabla th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);padding:10px 12px;border-bottom:1px solid var(--border-fuerte,var(--border))}
+.admin-tabla td{padding:12px;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--text-secondary);vertical-align:middle}
+.admin-tabla tr:last-child td{border-bottom:none}
+.admin-tabla td:first-child{font-weight:600;color:var(--text-primary)}
+.tabla-sub{font-size:11.5px;font-weight:400;color:var(--text-muted);margin-top:2px}
+/* Dado de baja: se atenua entero, pero se sigue leyendo. */
+.admin-tabla tr.esta-inactivo td{opacity:.55}
+
+.admin-tabla-acciones{display:flex;gap:6px;justify-content:flex-end}
+.admin-tabla-acciones button{width:32px;height:32px;border-radius:var(--radius);border:1px solid var(--border);background:#fff;color:var(--text-secondary);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .18s,color .18s,background .18s}
+.admin-tabla-acciones button:hover:not(:disabled){border-color:var(--green-400);color:var(--green-600);background:var(--green-50)}
+/* Deshabilitado y no oculto: se ve que la accion existe y por que no aplica. */
+.admin-tabla-acciones button:disabled{opacity:.35;cursor:not-allowed}
+
+.admin-warning.is-ok{background:var(--green-50);border-color:var(--green-200);color:var(--green-800)}
+
+@media (max-width:640px){
+  .admin-tabla{min-width:620px}
+}

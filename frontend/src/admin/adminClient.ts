@@ -13,6 +13,7 @@ export function setToken(token: string): void {
 
 export function clearToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem("pcs_admin_sesion");
 }
 
 export function isLoggedIn(): boolean {
@@ -24,7 +25,31 @@ async function parseErrorMessage(res: Response): Promise<string> {
   return payload?.error ?? `Error (${res.status})`;
 }
 
-export async function login(username: string, password: string): Promise<void> {
+export interface Sesion {
+  id: number;
+  nombre: string;
+  usuario: string;
+  rol: string;
+  permisos: string[];
+}
+
+const SESION_KEY = "pcs_admin_sesion";
+
+export function getSesion(): Sesion | null {
+  const guardada = localStorage.getItem(SESION_KEY);
+  if (!guardada) return null;
+  try {
+    return JSON.parse(guardada) as Sesion;
+  } catch {
+    return null;
+  }
+}
+
+function setSesion(sesion: Sesion): void {
+  localStorage.setItem(SESION_KEY, JSON.stringify(sesion));
+}
+
+export async function login(username: string, password: string): Promise<Sesion> {
   const res = await fetch(`${API_URL}/admin/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -33,8 +58,99 @@ export async function login(username: string, password: string): Promise<void> {
   if (!res.ok) {
     throw new Error(await parseErrorMessage(res));
   }
-  const data = (await res.json()) as { token: string };
+  const data = (await res.json()) as { token: string; usuario: Sesion };
   setToken(data.token);
+  setSesion(data.usuario);
+  return data.usuario;
+}
+
+/**
+ * Vuelve a preguntarle al servidor quien soy.
+ *
+ * Lo guardado en el navegador puede haber quedado viejo: si a alguien le
+ * cambian el rol o le dan de baja, el panel debe enterarse sin esperar a que
+ * cierre sesion.
+ */
+export async function refrescarSesion(): Promise<Sesion | null> {
+  const res = await fetch(`${API_URL}/admin/yo`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) {
+    clearToken();
+    return null;
+  }
+  const sesion = (await res.json()) as Sesion;
+  setSesion(sesion);
+  return sesion;
+}
+
+export function puede(permiso: string): boolean {
+  return getSesion()?.permisos?.includes(permiso) ?? false;
+}
+
+export async function cambiarClave(actual: string, nueva: string): Promise<void> {
+  const res = await fetch(`${API_URL}/admin/cambiar-clave`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ actual, nueva }),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+}
+
+export interface UsuarioPanel {
+  id: number;
+  nombre: string;
+  usuario: string;
+  email: string | null;
+  rol: string;
+  activo: boolean;
+  ultimoAcceso: string | null;
+  createdAt: string;
+}
+
+export async function listUsuarios(): Promise<UsuarioPanel[]> {
+  const res = await fetch(`${API_URL}/usuarios`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<UsuarioPanel[]>;
+}
+
+export async function crearUsuario(datos: {
+  nombre: string;
+  usuario: string;
+  email?: string;
+  password: string;
+  rol: string;
+}): Promise<UsuarioPanel> {
+  const res = await fetch(`${API_URL}/usuarios`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify(datos),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<UsuarioPanel>;
+}
+
+export async function actualizarUsuario(
+  id: number,
+  datos: Partial<{ nombre: string; email: string; rol: string; activo: boolean; password: string }>,
+): Promise<UsuarioPanel> {
+  const res = await fetch(`${API_URL}/usuarios/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify(datos),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<UsuarioPanel>;
+}
+
+export async function eliminarUsuario(id: number): Promise<void> {
+  const res = await fetch(`${API_URL}/usuarios/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
 }
 
 export async function listEntity<T>(entityPath: string): Promise<T[]> {

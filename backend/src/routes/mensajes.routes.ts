@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { prisma } from "../config/db";
-import { requireAuth } from "../middleware/auth";
+import { requireAuth, requirePermiso } from "../middleware/auth";
 
 // Bandeja de mensajes del formulario de contacto. Es solo lectura (más borrar):
 // los mensajes los crea el visitante desde la web pública, no el panel.
@@ -8,7 +8,7 @@ import { requireAuth } from "../middleware/auth";
 // y en ese caso el mensaje quedaría únicamente guardado en la base de datos.
 export const mensajesRouter = Router();
 
-mensajesRouter.get("/mensajes", requireAuth, async (_req, res, next) => {
+mensajesRouter.get("/mensajes", requireAuth, requirePermiso("comunicaciones"), async (_req, res, next) => {
   try {
     const mensajes = await prisma.contactMessage.findMany({
       orderBy: { createdAt: "desc" },
@@ -19,7 +19,7 @@ mensajesRouter.get("/mensajes", requireAuth, async (_req, res, next) => {
   }
 });
 
-mensajesRouter.delete("/mensajes/:id", requireAuth, async (req, res, next) => {
+mensajesRouter.delete("/mensajes/:id", requireAuth, requirePermiso("comunicaciones"), async (req, res, next) => {
   try {
     await prisma.contactMessage.delete({ where: { id: Number(req.params.id) } });
     res.status(204).send();

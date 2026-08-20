@@ -7,6 +7,7 @@ import { apiLimiter } from "../middleware/rateLimit";
 import { mensajesRouter } from "./mensajes.routes";
 import { sugerenciasRouter } from "./sugerencias.routes";
 import { uploadsRouter } from "./uploads.routes";
+import { usuariosRouter } from "./usuarios.routes";
 
 export const apiRouter = Router();
 
@@ -22,6 +23,7 @@ apiRouter.use(adminRouter);
 apiRouter.use(uploadsRouter);
 apiRouter.use(mensajesRouter);
 apiRouter.use(sugerenciasRouter);
+apiRouter.use(usuariosRouter);
 
 // Crear / editar / borrar (protegido) para las secciones administrables del panel.
 // Todas llevan posición reordenable salvo Actividades, que se ordena por fecha.
@@ -29,8 +31,8 @@ apiRouter.use("/junta-directiva", crudRoutes("juntaDirectivo", { reorder: true }
 apiRouter.use("/personal-tecnico", crudRoutes("personalTecnico", { reorder: true }));
 apiRouter.use("/instalaciones", crudRoutes("instalacion", { reorder: true }));
 apiRouter.use("/programas", crudRoutes("programa", { reorder: true }));
-apiRouter.use("/actividades", crudRoutes("actividad"));
-apiRouter.use("/publicaciones", crudRoutes("publicacion"));
+apiRouter.use("/actividades", crudRoutes("actividad", { permiso: "comunicaciones" }));
+apiRouter.use("/publicaciones", crudRoutes("publicacion", { permiso: "comunicaciones" }));
 apiRouter.use("/puntos-mapa", crudRoutes("puntoMapa", { reorder: true }));
 apiRouter.use("/hitos", crudRoutes("hito", { reorder: true }));
 apiRouter.use("/normas", crudRoutes("norma", { reorder: true }));
@@ -41,5 +43,5 @@ apiRouter.use("/cifras", crudRoutes("cifra", { reorder: true }));
 apiRouter.use("/aliados", crudRoutes("aliado", { reorder: true }));
 apiRouter.use("/textos", crudRoutes("texto", { soloEditar: true }));
 apiRouter.use("/encabezados", crudRoutes("encabezadoPagina", { soloEditar: true }));
-apiRouter.use("/galeria", crudRoutes("galeriaItem", { reorder: true }));
+apiRouter.use("/galeria", crudRoutes("galeriaItem", { reorder: true, permiso: "comunicaciones" }));
 apiRouter.use("/documentos-financieros", crudRoutes("documentoFinanciero", { reorder: true }));

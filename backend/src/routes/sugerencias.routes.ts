@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { prisma } from "../config/db";
-import { requireAuth } from "../middleware/auth";
+import { requireAuth, requirePermiso } from "../middleware/auth";
 import { sendSugerenciaNotification } from "../config/mailer";
 import { contactoLimiter } from "../middleware/rateLimit";
 import { sugerenciaSchema } from "../schemas/sugerencia.schema";
@@ -31,7 +31,7 @@ sugerenciasRouter.post("/sugerencias", contactoLimiter, async (req, res, next) =
 });
 
 // Bandeja del panel: leer, marcar como leida y borrar. No se crean desde aqui.
-sugerenciasRouter.get("/sugerencias", requireAuth, async (_req, res, next) => {
+sugerenciasRouter.get("/sugerencias", requireAuth, requirePermiso("comunicaciones"), async (_req, res, next) => {
   try {
     res.json(await prisma.sugerencia.findMany({ orderBy: { createdAt: "desc" } }));
   } catch (err) {
@@ -39,7 +39,7 @@ sugerenciasRouter.get("/sugerencias", requireAuth, async (_req, res, next) => {
   }
 });
 
-sugerenciasRouter.patch("/sugerencias/:id", requireAuth, async (req, res, next) => {
+sugerenciasRouter.patch("/sugerencias/:id", requireAuth, requirePermiso("comunicaciones"), async (req, res, next) => {
   try {
     const actualizada = await prisma.sugerencia.update({
       where: { id: Number(req.params.id) },
@@ -51,7 +51,7 @@ sugerenciasRouter.patch("/sugerencias/:id", requireAuth, async (req, res, next) 
   }
 });
 
-sugerenciasRouter.delete("/sugerencias/:id", requireAuth, async (req, res, next) => {
+sugerenciasRouter.delete("/sugerencias/:id", requireAuth, requirePermiso("comunicaciones"), async (req, res, next) => {
   try {
     await prisma.sugerencia.delete({ where: { id: Number(req.params.id) } });
     res.status(204).send();

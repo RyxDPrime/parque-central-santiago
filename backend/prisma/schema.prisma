@@ -138,6 +138,26 @@ model DocumentoFinanciero {
 // Van aparte de los mensajes de contacto porque se atienden distinto: el
 // contacto suele ser una consulta puntual y esto es retroalimentacion, que el
 // Parque revisa en conjunto.
+// Personas con acceso al panel. Antes era una sola credencial compartida por
+// todo el equipo, asi que no quedaba registro de quien cambiaba que.
+model Usuario {
+  id           Int       @id @default(autoincrement())
+  nombre       String
+  // Con lo que inicia sesion. Se guarda en minusculas para que no dependa de
+  // como lo escriban al entrar.
+  usuario      String    @unique
+  email        String?
+  passwordHash String
+  // admin | editor | comunicaciones
+  rol          String    @default("editor")
+  // Se desactiva en vez de borrar cuando alguien deja el equipo: asi se
+  // conserva el registro de lo que hizo.
+  activo       Boolean   @default(true)
+  ultimoAcceso DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
 model Sugerencia {
   id           Int      @id @default(autoincrement())
   // sugerencia | felicitacion | queja | otro

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { clearToken, isLoggedIn } from './adminClient'
+import { clearToken, getSesion, isLoggedIn, refrescarSesion, type Sesion } from './adminClient'
 import { entityConfigs, fotoSecciones, textoSecciones } from './entityConfigs'
+import { NOMBRE_ROL, permisoDeSeccion, type Rol } from './permisos'
 
 /**
  * Divisiones del menú lateral, en el orden en que se muestran.
@@ -55,7 +56,11 @@ interface Enlace {
  * Secciones agrupadas. Lo que no esté nombrado arriba no se pierde: se añade al
  * final de "Todo el sitio", para que una sección nueva no quede fuera del menú.
  */
-function agrupar(): { titulo: string; enlaces: Enlace[] }[] {
+function agrupar(permisos: string[]): { titulo: string; enlaces: Enlace[] }[] {
+  // La ruta de una seccion dice que permiso exige; si el rol no lo tiene, ni
+  // se muestra. El servidor la rechaza igual, esto solo evita ofrecerla.
+  const visible = (ruta: string) =>
+    permisos.includes(permisoDeSeccion(ruta.replace(/^(textos|foto)\//, "")))
   const buscar = (ruta: string): Enlace | undefined => {
     const texto = textoSecciones.find((t) => `textos/${t.slug}` === ruta)
     if (texto) return { ruta, label: texto.label, icon: texto.icon }
@@ -68,13 +73,13 @@ function agrupar(): { titulo: string; enlaces: Enlace[] }[] {
   const nombradas = new Set(divisiones.flatMap((d) => d.rutas))
   const grupos = divisiones.map((division) => ({
     titulo: division.titulo,
-    enlaces: division.rutas.map(buscar).filter((e) => e !== undefined),
+    enlaces: division.rutas.filter(visible).map(buscar).filter((e) => e !== undefined),
   }))
 
   // Las secciones con tabla que nadie ubicó. Los grupos de texto no hace falta
   // recogerlos así: los que pertenecen a una sección se editan dentro de ella.
   const sueltas = entityConfigs
-    .filter((e) => !nombradas.has(e.path))
+    .filter((e) => !nombradas.has(e.path) && visible(e.path))
     .map((e) => ({ ruta: e.path, label: e.label, icon: e.icon }))
   grupos[grupos.length - 1].enlaces.push(...sueltas)
 
@@ -87,6 +92,19 @@ export function AdminLayout() {
   // En móvil la columna de secciones es un cajón: ocupa toda la pantalla y se
   // abre desde la barra superior, en vez de quedar apilada encima del contenido.
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const [sesion, setSesion] = useState<Sesion | null>(getSesion())
+
+  // Se le vuelve a preguntar al servidor quien soy: lo guardado en el navegador
+  // puede estar viejo si le cambiaron el rol o le dieron de baja.
+  useEffect(() => {
+    refrescarSesion().then((s) => {
+      if (!s) {
+        navigate('/admin/login')
+        return
+      }
+      setSesion(s)
+    })
+  }, [])
 
   // Al entrar a una sección el cajón sobra: tapa justo lo que se fue a ver.
   useEffect(() => {
@@ -157,7 +175,7 @@ export function AdminLayout() {
         </Link>
 
         <nav>
-          {agrupar().map((grupo, i) => (
+          {agrupar(sesion?.permisos ?? []).map((grupo, i) => (
             <div key={grupo.titulo}>
               <p className="admin-nav-title" style={i > 0 ? { marginTop: 16 } : undefined}>
                 {grupo.titulo}
@@ -171,20 +189,42 @@ export function AdminLayout() {
             </div>
           ))}
 
-          <p className="admin-nav-title" style={{ marginTop: 16 }}>
-            Buzón
-          </p>
-          <NavLink to="/admin/mensajes" className="admin-nav-link">
-            <i className="ti ti-mail" />
-            Mensajes de contacto
-          </NavLink>
-          <NavLink to="/admin/sugerencias" className="admin-nav-link">
-            <i className="ti ti-bulb" />
-            Sugerencias
-          </NavLink>
+          {sesion?.permisos.includes('comunicaciones') && (
+            <>
+              <p className="admin-nav-title" style={{ marginTop: 16 }}>
+                Buzón
+              </p>
+              <NavLink to="/admin/mensajes" className="admin-nav-link">
+                <i className="ti ti-mail" />
+                Mensajes de contacto
+              </NavLink>
+              <NavLink to="/admin/sugerencias" className="admin-nav-link">
+                <i className="ti ti-bulb" />
+                Sugerencias
+              </NavLink>
+            </>
+          )}
+
+          {sesion?.permisos.includes('usuarios') && (
+            <>
+              <p className="admin-nav-title" style={{ marginTop: 16 }}>
+                Administración
+              </p>
+              <NavLink to="/admin/usuarios" className="admin-nav-link">
+                <i className="ti ti-users-group" />
+                Usuarios del panel
+              </NavLink>
+            </>
+          )}
         </nav>
 
         <div className="admin-sidebar-footer">
+          {sesion && (
+            <div className="admin-quien">
+              <strong>{sesion.nombre}</strong>
+              <span>{NOMBRE_ROL[sesion.rol as Rol] ?? sesion.rol}</span>
+            </div>
+          )}
           <Link to="/" className="admin-sidebar-link">
             <i className="ti ti-external-link" /> Ver el sitio público
           </Link>

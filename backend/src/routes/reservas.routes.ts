@@ -4,6 +4,7 @@ import { requireAuth, requirePermiso } from "../middleware/auth";
 import { sendAcuseSolicitud, sendSolicitudReservaNotification } from "../config/mailer";
 import { contactoLimiter } from "../middleware/rateLimit";
 import { ESTADOS_SOLICITUD, solicitudReservaSchema } from "../schemas/reserva.schema";
+import { HUECOS, PLANTILLAS, enviarRespuestaSolicitud } from "../config/plantillas";
 
 export const reservasRouter = Router();
 
@@ -113,6 +114,18 @@ reservasRouter.get(
   },
 );
 
+/**
+ * Decidir una solicitud.
+ *
+ * Aprobar o rechazar le escribe a quien la pidió, con la plantilla que el
+ * Parque tenga guardada para esa decisión. El correo va DESPUÉS de guardar el
+ * estado y su fallo no tumba la operación: si el proveedor de correo está
+ * caído, la decisión igual queda registrada, y la bandeja muestra que la
+ * persona no fue notificada en vez de darlo por hecho.
+ *
+ * Cancelar no manda nada: suele hacerse de acuerdo con la persona, que ya está
+ * enterada.
+ */
 reservasRouter.patch(
   "/solicitudes-reserva/:id",
   requireAuth,
@@ -124,22 +137,71 @@ reservasRouter.patch(
         res.status(400).json({ error: "Estado inválido" });
         return;
       }
+      const motivo = typeof req.body?.motivo === "string" ? req.body.motivo.slice(0, 500) : null;
+      // Permite decidir sin avisar, para el caso en que ya se habló con la
+      // persona por teléfono y un correo automático sobraría.
+      const avisar = req.body?.avisar !== false;
 
-      const actualizada = await prisma.solicitudReserva.update({
+      let actualizada = await prisma.solicitudReserva.update({
         where: { id: Number(req.params.id) },
         data: {
           estado,
-          motivo: typeof req.body?.motivo === "string" ? req.body.motivo.slice(0, 500) : null,
+          motivo,
           notaInterna:
             typeof req.body?.notaInterna === "string" ? req.body.notaInterna.slice(0, 1000) : undefined,
+          respuestaEnviada: false,
+          respuestaError: null,
         },
       });
+
+      const clave =
+        estado === "aprobada" ? PLANTILLAS.aprobada : estado === "rechazada" ? PLANTILLAS.rechazada : null;
+
+      if (clave && avisar) {
+        try {
+          await enviarRespuestaSolicitud(clave, actualizada);
+          actualizada = await prisma.solicitudReserva.update({
+            where: { id: actualizada.id },
+            data: { respuestaEnviada: true },
+          });
+        } catch (mailErr) {
+          const detalle = mailErr instanceof Error ? mailErr.message : "Error al enviar";
+          console.error("No se pudo enviar la respuesta de la solicitud:", mailErr);
+          actualizada = await prisma.solicitudReserva.update({
+            where: { id: actualizada.id },
+            data: { respuestaError: detalle.slice(0, 300) },
+          });
+        }
+      }
+
       res.json(actualizada);
     } catch (err) {
       next(err);
     }
   },
 );
+
+// ── Plantillas de respuesta ──
+
+// Solo con sesión: no son secretas, pero tampoco tienen por qué estar en la web.
+reservasRouter.get(
+  "/plantillas-correo",
+  requireAuth,
+  requirePermiso("comunicaciones"),
+  async (_req, res, next) => {
+    try {
+      res.json(await prisma.plantillaCorreo.findMany({ orderBy: { orden: "asc" } }));
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+// Los huecos disponibles salen del servidor para que el panel muestre siempre
+// los que de verdad existen, y no una lista copiada que se quede vieja.
+reservasRouter.get("/plantillas-huecos", requireAuth, (_req, res) => {
+  res.json(HUECOS);
+});
 
 reservasRouter.delete(
   "/solicitudes-reserva/:id",

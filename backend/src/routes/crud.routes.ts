@@ -40,7 +40,13 @@ export type ModeloOrdenable =
   | "espacioReservable"
   | "tipoActividad";
 
-export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto" | "encabezadoPagina";
+export type ModeloCrud =
+  | ModeloOrdenable
+  | "actividad"
+  | "publicacion"
+  | "texto"
+  | "encabezadoPagina"
+  | "plantillaCorreo";
 
 // Campos que cada modelo acepta desde el formulario. Sin esta lista se pasaba
 // `req.body` completo a Prisma, así que una petición podía traer campos que el
@@ -62,6 +68,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   formaApoyo: ["icono", "etiqueta", "titulo", "texto", "orden"],
   espacioReservable: ["nombre", "descripcion", "cantidad", "capacidad", "requierePago", "activo", "orden"],
   tipoActividad: ["nombre", "permitido", "nota", "orden"],
+  plantillaCorreo: ["asunto", "cuerpo"],
   cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
   aliado: ["nombre", "logoUrl", "sitioWeb", "orden"],
   // Los textos no se crean ni se borran: solo cambia su valor.

@@ -998,14 +998,9 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .solicitud-datos dt{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px}
 .solicitud-datos dd{margin:0;font-size:13.5px;color:var(--text-primary);font-weight:500;text-transform:capitalize}
 
-.solicitud-motivo{display:flex;gap:8px;align-items:flex-start;margin:0 0 14px;padding:11px 14px;border-radius:var(--radius);background:#FCEFEC;font-size:13px;line-height:1.55;color:#7A2B1E;max-width:none}
-.solicitud-motivo i{font-size:16px;flex-shrink:0;margin-top:1px}
 
 /* El estado no manda correos. Se dice en cada tarjeta, no una vez arriba: es
    justo debajo de los botones donde alguien da por hecho lo contrario. */
-.solicitud-recordatorio{display:flex;gap:7px;align-items:flex-start;margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted);max-width:none}
-.solicitud-recordatorio i{font-size:14px;flex-shrink:0;margin-top:1px}
-.solicitud-recordatorio strong{color:var(--text-secondary)}
 
 .admin-chip.is-no{background:#FCEFEC;color:#A33B2A}
 .admin-chip.is-off{background:var(--gray-100,#F5F5F2);color:var(--text-muted)}
@@ -1018,6 +1013,74 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 @media (max-width:640px){
   .solicitud-datos{grid-template-columns:1fr 1fr}
 }
-/* La que se acaba de decidir, resaltada un momento: es la confirmación de que
-   el cambio se guardó, en vez de ver la tarjeta desaparecer sin más. */
-.inbox-item.recien-decidida{border-color:var(--green-400,#7FA96C);box-shadow:0 0 0 3px rgba(47,97,35,.09)}
+
+/* ── LISTA DE SOLICITUDES ── */
+/* Una fila por solicitud, no una tarjeta: el trabajo de esta lista es dejar
+   barrer veinte en unos segundos. El detalle vive en la ventana. */
+.solicitud-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.solicitud-fila{display:flex;align-items:center;gap:16px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius);background:#fff;transition:border-color .18s,box-shadow .18s}
+.solicitud-fila:hover{border-color:var(--green-400,#7FA96C)}
+/* Las pendientes llevan un filo verde: son las que piden una decision. */
+.solicitud-fila.esta-pendiente{border-left:3px solid var(--green-600)}
+.solicitud-fila.recien-decidida{border-color:var(--green-400,#7FA96C);box-shadow:0 0 0 3px rgba(47,97,35,.09)}
+
+.solicitud-fila-texto{flex:1;min-width:0}
+.solicitud-fila-texto h3{font-size:14.5px;font-weight:600;color:var(--text-primary);margin:0 0 3px}
+.solicitud-fila-texto h3 small{font-weight:400;color:var(--text-muted);font-size:13px}
+.solicitud-fila-texto p{margin:0;font-size:13px;color:var(--text-secondary);max-width:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:capitalize}
+
+.solicitud-fila-lado{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+/* ── VENTANA DE DETALLE ── */
+.modal-fondo{position:fixed;inset:0;z-index:200;background:rgba(23,51,15,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;backdrop-filter:blur(2px)}
+.modal-caja{width:100%;max-width:640px;background:#fff;border-radius:var(--radius-lg,14px);box-shadow:0 18px 50px rgba(23,51,15,.28);overflow:hidden}
+
+.modal-cabecera{display:flex;align-items:flex-start;gap:16px;padding:20px 22px;border-bottom:1px solid var(--border)}
+.modal-cabecera h2{font-size:18px;font-weight:600;color:var(--green-800);margin:0 0 3px}
+.modal-cabecera p{margin:0;font-size:12.5px;color:var(--text-muted);max-width:none}
+.modal-cerrar{width:32px;height:32px;flex-shrink:0;margin-left:auto;border-radius:var(--radius);border:1px solid var(--border);background:#fff;color:var(--text-secondary);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s}
+.modal-cerrar:hover{background:var(--gray-100,#F5F5F2);color:var(--text-primary)}
+
+.modal-cuerpo{padding:20px 22px}
+.modal-estado{margin-bottom:16px}
+.modal-subtitulo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin:0 0 8px}
+.modal-cuerpo .solicitud-datos{margin-top:0;margin-bottom:18px}
+.modal-descripcion{font-size:13.5px;line-height:1.7;color:var(--text-secondary);margin:0 0 18px;max-width:none;white-space:pre-wrap}
+
+.modal-alerta{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius);background:#FCEFEC;font-size:13px;line-height:1.55;color:#7A2B1E;margin:0;max-width:none}
+.modal-alerta i{font-size:17px;flex-shrink:0;margin-top:1px}
+.modal-ok{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--green-800);margin:0;max-width:none}
+
+/* La decision, separada por un fondo: lo de arriba se lee, esto se hace. */
+.modal-decision{padding:20px 22px;border-top:1px solid var(--border);background:var(--gray-100,#F5F5F2)}
+.modal-decision .admin-field-hint code{font-size:11.5px;background:#fff;padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+
+.modal-avisar{display:flex;gap:11px;align-items:flex-start;margin:14px 0 16px;cursor:pointer}
+.modal-avisar input{width:17px;height:17px;flex-shrink:0;margin-top:2px;accent-color:var(--green-600);cursor:pointer}
+.modal-avisar span{font-size:13.5px;line-height:1.5;color:var(--text-secondary)}
+.modal-avisar small{display:block;font-size:12px;color:var(--text-muted);margin-top:2px}
+
+.modal-acciones{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+
+/* ── PLANTILLAS DE RESPUESTA ── */
+.plantilla-descripcion{font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 18px;max-width:none}
+.plantilla-ayuda-intro{font-size:13px;line-height:1.65;color:var(--text-secondary);margin:0 0 14px;max-width:none}
+.plantilla-huecos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+/* Se pulsa para insertarlo donde este el cursor: escribir {{tipoActividad}} a
+   mano es justo donde aparecen las erratas que dejan el hueco sin rellenar. */
+.plantilla-hueco{text-align:left;padding:9px 12px;border-radius:var(--radius);border:1px solid var(--border);background:#fff;cursor:pointer;transition:border-color .18s,background .18s}
+.plantilla-hueco:hover{border-color:var(--green-400,#7FA96C);background:var(--green-50,#F2F7EE)}
+.plantilla-hueco code{display:block;font-size:12.5px;color:var(--green-800);font-weight:600}
+.plantilla-hueco small{display:block;font-size:11.5px;color:var(--text-muted);margin-top:2px;line-height:1.4}
+
+.plantilla-cuerpo{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;font-size:13px;line-height:1.65}
+
+@media (max-width:760px){
+  .solicitud-fila{flex-direction:column;align-items:stretch;gap:11px}
+  .solicitud-fila-texto p{white-space:normal}
+  .solicitud-fila-lado{justify-content:space-between}
+  .modal-fondo{padding:0}
+  .modal-caja{max-width:none;min-height:100%;border-radius:0}
+  .modal-acciones{flex-direction:column;align-items:stretch}
+  .modal-acciones > *{justify-content:center}
+}

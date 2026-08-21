@@ -204,9 +204,19 @@ export function AdminLayout() {
                 <i className="ti ti-bulb" />
                 Sugerencias
               </NavLink>
+
+              {/* Las reservas se separan del buzón a propósito: el buzón se lee,
+                  esto se decide, y son dos trabajos distintos. */}
+              <p className="admin-nav-title" style={{ marginTop: 16 }}>
+                Reservas
+              </p>
               <NavLink to="/admin/solicitudes" className="admin-nav-link">
                 <i className="ti ti-calendar-plus" />
-                Solicitudes de reserva
+                Solicitudes
+              </NavLink>
+              <NavLink to="/admin/plantillas" className="admin-nav-link">
+                <i className="ti ti-mail-cog" />
+                Plantillas de respuesta
               </NavLink>
             </>
           )}

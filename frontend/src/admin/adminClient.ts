@@ -297,6 +297,9 @@ export interface SolicitudReserva {
   motivo: string | null;
   notaInterna: string | null;
   emailEnviado: boolean;
+  /** Si al decidirla se le pudo escribir a quien la pidio. */
+  respuestaEnviada: boolean;
+  respuestaError: string | null;
   createdAt: string;
 }
 
@@ -308,16 +311,23 @@ export async function listSolicitudes(): Promise<SolicitudReserva[]> {
   return res.json() as Promise<SolicitudReserva[]>;
 }
 
-/** Aprobar, rechazar o cancelar. El motivo es lo que se le explica a la persona. */
+/**
+ * Aprobar, rechazar o cancelar.
+ *
+ * Aprobar y rechazar le escriben a quien solicito con la plantilla guardada; el
+ * motivo entra en ese correo. Con `avisar` en false se decide sin mandar nada,
+ * para cuando ya se hablo con la persona por telefono.
+ */
 export async function cambiarEstadoSolicitud(
   id: number,
   estado: string,
   motivo?: string,
+  avisar = true,
 ): Promise<SolicitudReserva> {
   const res = await fetch(`${API_URL}/solicitudes-reserva/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
-    body: JSON.stringify({ estado, motivo }),
+    body: JSON.stringify({ estado, motivo, avisar }),
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
   return res.json() as Promise<SolicitudReserva>;
@@ -329,4 +339,53 @@ export async function eliminarSolicitud(id: number): Promise<void> {
     headers: { Authorization: `Bearer ${getToken()}` },
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
+}
+
+// ── PLANTILLAS DE RESPUESTA ──
+
+export interface PlantillaCorreo {
+  id: number;
+  clave: string;
+  nombre: string;
+  descripcion: string;
+  asunto: string;
+  cuerpo: string;
+  orden: number;
+  updatedAt: string;
+}
+
+/** Un hueco que se puede escribir en la plantilla, como {{espacio}}. */
+export interface HuecoPlantilla {
+  clave: string;
+  descripcion: string;
+}
+
+export async function listPlantillas(): Promise<PlantillaCorreo[]> {
+  const res = await fetch(`${API_URL}/plantillas-correo`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<PlantillaCorreo[]>;
+}
+
+/** Los huecos los dice el servidor, para que la ayuda del panel no se quede vieja. */
+export async function listHuecos(): Promise<HuecoPlantilla[]> {
+  const res = await fetch(`${API_URL}/plantillas-huecos`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<HuecoPlantilla[]>;
+}
+
+export async function guardarPlantilla(
+  id: number,
+  datos: { asunto: string; cuerpo: string },
+): Promise<PlantillaCorreo> {
+  const res = await fetch(`${API_URL}/plantillas-correo/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify(datos),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<PlantillaCorreo>;
 }

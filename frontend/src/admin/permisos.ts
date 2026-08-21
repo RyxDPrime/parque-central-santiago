@@ -31,6 +31,7 @@ export const SECCIONES_COMUNICACIONES = new Set([
   'mensajes',
   'sugerencias',
   'solicitudes',
+  'plantillas',
 ])
 
 /** Qué permiso hace falta para una sección del panel. */

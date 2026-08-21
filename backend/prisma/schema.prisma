@@ -347,8 +347,30 @@ model SolicitudReserva {
   motivo         String?
   notaInterna    String?
   emailEnviado   Boolean  @default(false)
+  // Si al decidirla se le pudo escribir a quien la pidio. Se guarda aparte del
+  // estado: una solicitud puede quedar aprobada y el correo fallar, y entonces
+  // hay que verlo en la bandeja en vez de darlo por hecho.
+  respuestaEnviada Boolean @default(false)
+  respuestaError   String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   @@index([fecha])
+}
+
+// Los correos que el sistema manda al decidir una solicitud, editables desde el
+// panel. Van en la base y no en el codigo porque el texto es del Parque: cambiar
+// como se le habla a la gente no deberia requerir un despliegue.
+//
+// El conjunto de claves es fijo: se editan, no se crean ni se borran. Si faltara
+// la plantilla de una decision, esa decision se quedaria sin correo.
+model PlantillaCorreo {
+  id          Int      @id @default(autoincrement())
+  clave       String   @unique
+  nombre      String
+  descripcion String
+  asunto      String
+  cuerpo      String
+  orden       Int      @default(0)
+  updatedAt   DateTime @updatedAt
 }

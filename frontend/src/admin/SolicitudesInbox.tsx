@@ -23,7 +23,9 @@ function fechaLarga(iso: string): string {
 
 /** Se guarda en dígitos; se lee mejor con los guiones puestos. */
 function cedulaConGuiones(valor: string): string {
-  return /^\d{11}$/.test(valor) ? `${valor.slice(0, 3)}-${valor.slice(3, 10)}-${valor.slice(10)}` : valor
+  return /^\d{11}$/.test(valor)
+    ? `${valor.slice(0, 3)}-${valor.slice(3, 10)}-${valor.slice(10)}`
+    : valor
 }
 
 const ESTADOS: Record<string, { etiqueta: string; clase: string; icono: string }> = {
@@ -34,15 +36,28 @@ const ESTADOS: Record<string, { etiqueta: string; clase: string; icono: string }
 }
 
 /**
+ * Una línea, para leer la lista de un vistazo. Lo que hace falta para saber si
+ * una solicitud te interesa antes de abrirla: qué espacio, cuándo y para qué.
+ */
+function resumen(s: SolicitudReserva): string {
+  return [
+    s.espacio,
+    `${fechaLarga(s.fecha)}, ${s.horaInicio}–${s.horaFin}`,
+    `${s.personas} ${s.personas === 1 ? 'persona' : 'personas'}`,
+    s.tipoActividad,
+  ].join(' · ')
+}
+
+/**
  * Bandeja de solicitudes de reserva.
  *
- * Cada solicitud tiene un estado visible, y esa es la pieza que hace que
- * cualquiera del equipo sepa en qué va un caso sin preguntarle a nadie. Las
- * pendientes se muestran primero: son las únicas que piden una decisión.
+ * La lista es deliberadamente corta —nombre, resumen y estado— porque su
+ * trabajo es dejar barrer veinte solicitudes en unos segundos. Todo el detalle,
+ * y la decisión, viven en la ventana que abre "Ver detalle": decidir con doce
+ * datos delante es distinto de decidir con un botón al final de una tarjeta.
  *
- * Aprobar o rechazar aquí NO le escribe todavía a quien solicitó; el correo de
- * respuesta se manda desde el botón de responder. Se dice explícitamente en la
- * pantalla para que nadie dé por hecho que la persona ya se enteró.
+ * Aprobar y rechazar SÍ le escriben a quien solicitó, con la plantilla que el
+ * Parque tenga guardada en Plantillas de respuesta.
  */
 export function SolicitudesInbox() {
   const [items, setItems] = useState<SolicitudReserva[]>([])
@@ -55,6 +70,13 @@ export function SolicitudesInbox() {
   // claro si se guardó: la confirmación es verla con su nuevo estado.
   const [recienDecididas, setRecienDecididas] = useState<number[]>([])
 
+  const [abiertaId, setAbiertaId] = useState<number | null>(null)
+  const [motivo, setMotivo] = useState('')
+  const [avisar, setAvisar] = useState(true)
+  const [decidiendo, setDecidiendo] = useState(false)
+
+  const abierta = items.find((x) => x.id === abiertaId) ?? null
+
   useEffect(() => {
     listSolicitudes()
       .then((d) => {
@@ -65,22 +87,52 @@ export function SolicitudesInbox() {
       .finally(() => setCargando(false))
   }, [])
 
-  async function cambiar(s: SolicitudReserva, estado: string) {
-    let motivo: string | undefined
-    if (estado === 'rechazada') {
-      const escrito = window.prompt(
-        'Motivo del rechazo (queda guardado y sirve para redactarle la respuesta):',
-        s.motivo ?? '',
-      )
-      if (escrito === null) return
-      motivo = escrito
+  // Con la ventana abierta, el fondo no debe correr detrás de ella.
+  useEffect(() => {
+    document.body.style.overflow = abiertaId ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
     }
+  }, [abiertaId])
+
+  useEffect(() => {
+    if (!abiertaId) return
+    function alPulsar(e: KeyboardEvent) {
+      if (e.key === 'Escape') cerrar()
+    }
+    document.addEventListener('keydown', alPulsar)
+    return () => document.removeEventListener('keydown', alPulsar)
+  }, [abiertaId])
+
+  function abrir(s: SolicitudReserva) {
+    setAbiertaId(s.id)
+    setMotivo(s.motivo ?? '')
+    setAvisar(true)
+    setError(null)
+  }
+
+  function cerrar() {
+    setAbiertaId(null)
+    setMotivo('')
+  }
+
+  async function decidir(s: SolicitudReserva, estado: string) {
+    if (estado === 'rechazada' && !motivo.trim()) {
+      setError('Escribe el motivo: es lo que la persona va a leer en el correo.')
+      return
+    }
+    setDecidiendo(true)
+    setError(null)
     try {
-      const actualizada = await cambiarEstadoSolicitud(s.id, estado, motivo)
+      const actualizada = await cambiarEstadoSolicitud(s.id, estado, motivo.trim(), avisar)
       setItems((prev) => prev.map((x) => (x.id === s.id ? actualizada : x)))
       setRecienDecididas((prev) => (prev.includes(s.id) ? prev : [...prev, s.id]))
+      // Si el correo falló, la ventana se queda abierta: es donde se ve el aviso.
+      if (!actualizada.respuestaError) cerrar()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Error al guardar')
+    } finally {
+      setDecidiendo(false)
     }
   }
 
@@ -89,12 +141,14 @@ export function SolicitudesInbox() {
     try {
       await eliminarSolicitud(id)
       setItems((prev) => prev.filter((x) => x.id !== id))
+      cerrar()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Error al eliminar')
     }
   }
 
   const pendientes = items.filter((x) => x.estado === 'pendiente').length
+  const sinAvisar = items.filter((x) => x.respuestaError).length
 
   const visibles = useMemo(() => {
     let r = items
@@ -140,6 +194,15 @@ export function SolicitudesInbox() {
           {pendientes === 1
             ? 'Hay 1 solicitud esperando respuesta.'
             : `Hay ${pendientes} solicitudes esperando respuesta.`}
+        </p>
+      )}
+
+      {sinAvisar > 0 && (
+        <p className="admin-warning">
+          <i className="ti ti-mail-off" />
+          {sinAvisar === 1
+            ? 'Hay 1 solicitud decidida cuyo correo no salió. Ábrela y escríbele a mano.'
+            : `Hay ${sinAvisar} solicitudes decididas cuyo correo no salió. Ábrelas y escríbeles a mano.`}
         </p>
       )}
 
@@ -199,9 +262,9 @@ export function SolicitudesInbox() {
         )}
 
         {cargando && <p className="admin-panel-msg">Cargando…</p>}
-        {error && <p className="admin-panel-msg is-error">{error}</p>}
+        {error && !abierta && <p className="admin-panel-msg is-error">{error}</p>}
 
-        {!cargando && !error && items.length === 0 && (
+        {!cargando && items.length === 0 && (
           <div className="admin-empty">
             <i className="ti ti-calendar-off" />
             <h3>Todavía no hay solicitudes</h3>
@@ -209,7 +272,7 @@ export function SolicitudesInbox() {
           </div>
         )}
 
-        {!cargando && !error && items.length > 0 && visibles.length === 0 && (
+        {!cargando && items.length > 0 && visibles.length === 0 && (
           <div className="admin-empty">
             <i className="ti ti-search-off" />
             <h3>Ninguna coincide</h3>
@@ -217,131 +280,235 @@ export function SolicitudesInbox() {
           </div>
         )}
 
-        {!cargando && !error && visibles.length > 0 && (
-          <ul className="inbox-list">
+        {!cargando && visibles.length > 0 && (
+          <ul className="solicitud-lista">
             {visibles.map((s) => {
               const estado = ESTADOS[s.estado] ?? ESTADOS.pendiente
               return (
                 <li
-                  className={`inbox-item solicitud${s.estado === 'pendiente' ? ' sin-leer' : ''}${
+                  className={`solicitud-fila${s.estado === 'pendiente' ? ' esta-pendiente' : ''}${
                     recienDecididas.includes(s.id) ? ' recien-decidida' : ''
                   }`}
                   key={s.id}
                 >
-                  <div className="inbox-item-head">
-                    <div>
-                      <h3>
-                        <i className="ti ti-map-pin" /> {s.espacio}
-                      </h3>
-                      <p className="inbox-from">
-                        {s.nombre} · <a href={`mailto:${s.email}`}>{s.email}</a> · {s.telefono}
-                      </p>
-                    </div>
-                    <div className="inbox-item-meta">
-                      <span className={`admin-chip ${estado.clase}`}>
-                        <i className={`ti ${estado.icono}`} /> {estado.etiqueta}
-                        {recienDecididas.includes(s.id) && ' ahora'}
-                      </span>
-                      <span className="inbox-date">
-                        Pedida el {fechaHora.format(new Date(s.createdAt))}
-                      </span>
-                    </div>
+                  <div className="solicitud-fila-texto">
+                    <h3>
+                      {s.nombre}
+                      {s.institucion && <small> · {s.institucion}</small>}
+                    </h3>
+                    <p>{resumen(s)}</p>
                   </div>
 
-                  <dl className="solicitud-datos">
-                    <div>
-                      <dt>Cuándo</dt>
-                      <dd>
-                        {fechaLarga(s.fecha)}, {s.horaInicio} a {s.horaFin}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>Actividad</dt>
-                      <dd>{s.tipoActividad}</dd>
-                    </div>
-                    <div>
-                      <dt>Personas</dt>
-                      <dd>{s.personas}</dd>
-                    </div>
-                    <div>
-                      <dt>Cédula</dt>
-                      <dd>{cedulaConGuiones(s.cedula)}</dd>
-                    </div>
-                    {s.institucion && (
-                      <div>
-                        <dt>Institución</dt>
-                        <dd>{s.institucion}</dd>
-                      </div>
+                  <div className="solicitud-fila-lado">
+                    <span className={`admin-chip ${estado.clase}`}>
+                      <i className={`ti ${estado.icono}`} /> {estado.etiqueta}
+                    </span>
+                    {s.respuestaError && (
+                      <span className="admin-chip is-no" title={s.respuestaError}>
+                        <i className="ti ti-mail-off" /> Sin avisar
+                      </span>
                     )}
-                    {s.requerimientos && (
-                      <div>
-                        <dt>Requiere</dt>
-                        <dd>{s.requerimientos}</dd>
-                      </div>
-                    )}
-                  </dl>
-
-                  <p className="inbox-body">{s.descripcion}</p>
-
-                  {s.motivo && (
-                    <p className="solicitud-motivo">
-                      <i className="ti ti-message-circle" /> Motivo registrado: {s.motivo}
-                    </p>
-                  )}
-
-                  <div className="inbox-actions">
-                    {s.estado !== 'aprobada' && (
-                      <button
-                        type="button"
-                        className="btn-outline es-aprobar"
-                        onClick={() => cambiar(s, 'aprobada')}
-                      >
-                        <i className="ti ti-check" /> Aprobar
-                      </button>
-                    )}
-                    {s.estado !== 'rechazada' && (
-                      <button
-                        type="button"
-                        className="btn-outline es-rechazar"
-                        onClick={() => cambiar(s, 'rechazada')}
-                      >
-                        <i className="ti ti-x" /> Rechazar
-                      </button>
-                    )}
-                    {s.estado === 'aprobada' && (
-                      <button
-                        type="button"
-                        className="btn-outline"
-                        onClick={() => cambiar(s, 'cancelada')}
-                      >
-                        <i className="ti ti-ban" /> Cancelar
-                      </button>
-                    )}
-                    <a
-                      className="btn-outline"
-                      href={`mailto:${s.email}?subject=${encodeURIComponent(
-                        `Tu solicitud de reserva - ${s.espacio}`,
-                      )}`}
-                    >
-                      <i className="ti ti-corner-up-left" /> Responderle
-                    </a>
-                    <button type="button" className="inbox-delete" onClick={() => borrar(s.id)}>
-                      <i className="ti ti-trash" /> Eliminar
+                    <button type="button" className="btn-outline" onClick={() => abrir(s)}>
+                      <i className="ti ti-eye" /> Ver detalle
                     </button>
                   </div>
-
-                  {/* Marcar el estado no le avisa a nadie. Decirlo evita que una
-                      solicitud quede aprobada en el panel y la persona sin saberlo. */}
-                  <p className="solicitud-recordatorio">
-                    <i className="ti ti-info-circle" /> Cambiar el estado no le escribe a la
-                    persona. Usa <strong>Responderle</strong> para avisarle.
-                  </p>
                 </li>
               )
             })}
           </ul>
         )}
       </section>
+
+      {/* ── Ventana de detalle ── */}
+      {abierta && (
+        <div
+          className="modal-fondo"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) cerrar()
+          }}
+        >
+          <div className="modal-caja" role="dialog" aria-modal="true" aria-label="Detalle de la solicitud">
+            <header className="modal-cabecera">
+              <div>
+                <h2>{abierta.nombre}</h2>
+                <p>
+                  Solicitud recibida el {fechaHora.format(new Date(abierta.createdAt))}
+                </p>
+              </div>
+              <button type="button" className="modal-cerrar" onClick={cerrar} aria-label="Cerrar">
+                <i className="ti ti-x" />
+              </button>
+            </header>
+
+            <div className="modal-cuerpo">
+              <span
+                className={`admin-chip ${(ESTADOS[abierta.estado] ?? ESTADOS.pendiente).clase} modal-estado`}
+              >
+                <i className={`ti ${(ESTADOS[abierta.estado] ?? ESTADOS.pendiente).icono}`} />
+                {(ESTADOS[abierta.estado] ?? ESTADOS.pendiente).etiqueta}
+              </span>
+
+              <h3 className="modal-subtitulo">Qué pide</h3>
+              <dl className="solicitud-datos">
+                <div>
+                  <dt>Espacio</dt>
+                  <dd>{abierta.espacio}</dd>
+                </div>
+                <div>
+                  <dt>Actividad</dt>
+                  <dd>{abierta.tipoActividad}</dd>
+                </div>
+                <div>
+                  <dt>Fecha</dt>
+                  <dd>{fechaLarga(abierta.fecha)}</dd>
+                </div>
+                <div>
+                  <dt>Horario</dt>
+                  <dd>
+                    {abierta.horaInicio} a {abierta.horaFin}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Personas</dt>
+                  <dd>{abierta.personas}</dd>
+                </div>
+                {abierta.requerimientos && (
+                  <div>
+                    <dt>Requiere</dt>
+                    <dd>{abierta.requerimientos}</dd>
+                  </div>
+                )}
+              </dl>
+
+              <h3 className="modal-subtitulo">Qué van a hacer</h3>
+              <p className="modal-descripcion">{abierta.descripcion}</p>
+
+              <h3 className="modal-subtitulo">Quién solicita</h3>
+              <dl className="solicitud-datos">
+                <div>
+                  <dt>Nombre</dt>
+                  <dd>{abierta.nombre}</dd>
+                </div>
+                <div>
+                  <dt>Cédula</dt>
+                  <dd>{cedulaConGuiones(abierta.cedula)}</dd>
+                </div>
+                <div>
+                  <dt>Correo</dt>
+                  <dd>
+                    <a href={`mailto:${abierta.email}`}>{abierta.email}</a>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Teléfono</dt>
+                  <dd>{abierta.telefono}</dd>
+                </div>
+                {abierta.institucion && (
+                  <div>
+                    <dt>Institución</dt>
+                    <dd>{abierta.institucion}</dd>
+                  </div>
+                )}
+              </dl>
+
+              {abierta.respuestaError && (
+                <p className="modal-alerta">
+                  <i className="ti ti-mail-off" />
+                  <span>
+                    La decisión quedó guardada, pero el correo no salió: {abierta.respuestaError}.
+                    Escríbele a mano desde <strong>{abierta.email}</strong>.
+                  </span>
+                </p>
+              )}
+              {abierta.respuestaEnviada && (
+                <p className="modal-ok">
+                  <i className="ti ti-mail-check" /> Se le avisó por correo.
+                </p>
+              )}
+            </div>
+
+            <div className="modal-decision">
+              <h3 className="modal-subtitulo">Responder</h3>
+              <div className="admin-field admin-field-wide">
+                <label htmlFor="motivo-solicitud">Mensaje para la persona</label>
+                <textarea
+                  id="motivo-solicitud"
+                  rows={3}
+                  value={motivo}
+                  onChange={(e) => setMotivo(e.target.value)}
+                  placeholder="Al aprobar: cuál kiosco le tocó, cómo pagar. Al rechazar: por qué no procede."
+                />
+                <small className="admin-field-hint">
+                  Esto entra en el correo, donde la plantilla tenga el hueco{' '}
+                  <code>{'{{motivo}}'}</code>. Al rechazar es obligatorio; al aprobar puede quedar
+                  vacío y la línea desaparece sola.
+                </small>
+              </div>
+
+              <label className="modal-avisar">
+                <input
+                  type="checkbox"
+                  checked={avisar}
+                  onChange={(e) => setAvisar(e.target.checked)}
+                />
+                <span>
+                  Avisarle por correo con la plantilla guardada.
+                  <small>Desmárcalo si ya hablaste con la persona y el correo sobra.</small>
+                </span>
+              </label>
+
+              {error && (
+                <p className="form-feedback error">
+                  <i className="ti ti-alert-circle" /> {error}
+                </p>
+              )}
+
+              <div className="modal-acciones">
+                {abierta.estado !== 'aprobada' && (
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    disabled={decidiendo}
+                    onClick={() => decidir(abierta, 'aprobada')}
+                  >
+                    <i className="ti ti-check" /> {decidiendo ? 'Guardando…' : 'Aprobar'}
+                  </button>
+                )}
+                {abierta.estado !== 'rechazada' && (
+                  <button
+                    type="button"
+                    className="btn-outline es-rechazar"
+                    disabled={decidiendo}
+                    onClick={() => decidir(abierta, 'rechazada')}
+                  >
+                    <i className="ti ti-x" /> Rechazar
+                  </button>
+                )}
+                {abierta.estado === 'aprobada' && (
+                  <button
+                    type="button"
+                    className="btn-outline"
+                    disabled={decidiendo}
+                    onClick={() => decidir(abierta, 'cancelada')}
+                  >
+                    <i className="ti ti-ban" /> Cancelar reserva
+                  </button>
+                )}
+                <a className="btn-outline" href={`mailto:${abierta.email}`}>
+                  <i className="ti ti-corner-up-left" /> Escribirle aparte
+                </a>
+                <button
+                  type="button"
+                  className="inbox-delete"
+                  onClick={() => borrar(abierta.id)}
+                >
+                  <i className="ti ti-trash" /> Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

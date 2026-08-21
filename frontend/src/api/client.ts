@@ -188,6 +188,51 @@ export interface Sugerencia extends SugerenciaInput {
   createdAt: string;
 }
 
+export interface EspacioReservable {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  cantidad: number | null;
+  capacidad: number | null;
+  requierePago: boolean;
+  activo: boolean;
+  orden: number;
+}
+
+export interface TipoActividad {
+  id: number;
+  nombre: string;
+  permitido: boolean;
+  nota: string | null;
+  orden: number;
+}
+
+/** Lo ya apartado. Sin datos de quién reservó: eso es asunto del Parque. */
+export interface ReservaOcupada {
+  id: number;
+  espacio: string;
+  fecha: string;
+  horaInicio: string;
+  horaFin: string;
+}
+
+export interface SolicitudReservaInput {
+  nombre: string;
+  cedula: string;
+  email: string;
+  telefono: string;
+  institucion?: string;
+  espacio: string;
+  tipoActividad: string;
+  fecha: string;
+  horaInicio: string;
+  horaFin: string;
+  personas: number;
+  requerimientos: string;
+  descripcion: string;
+  acepta: true;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -238,6 +283,11 @@ export const api = {
   getTextos: () => get<Texto[]>("/textos"),
   getEncabezados: () => get<EncabezadoPagina[]>("/encabezados"),
   getAliados: () => get<Aliado[]>("/aliados"),
+  getEspaciosReservables: () => get<EspacioReservable[]>("/espacios-reservables"),
+  getTiposActividad: () => get<TipoActividad[]>("/tipos-actividad"),
+  getReservasOcupadas: () => get<ReservaOcupada[]>("/reservas-ocupadas"),
+  enviarSolicitudReserva: (data: SolicitudReservaInput) =>
+    post<{ ok: boolean; id: number }>("/solicitudes-reserva", data),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
   enviarSugerencia: (data: SugerenciaInput) => post<{ ok: boolean }>("/sugerencias", data),
 };

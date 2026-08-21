@@ -23,6 +23,7 @@ import { AdminLayout } from './admin/AdminLayout'
 import { EntityManager } from './admin/EntityManager'
 import { MessagesInbox } from './admin/MessagesInbox'
 import { SugerenciasInbox } from './admin/SugerenciasInbox'
+import { SolicitudesInbox } from './admin/SolicitudesInbox'
 import { UsuariosPanel } from './admin/UsuariosPanel'
 import { TextosEditor } from './admin/TextosEditor'
 import { TextosSeccion } from './admin/TextosSeccion'
@@ -63,6 +64,7 @@ function App() {
           <Route path="textos" element={<TextosEditor />} />
           <Route path="mensajes" element={<MessagesInbox />} />
           <Route path="sugerencias" element={<SugerenciasInbox />} />
+          <Route path="solicitudes" element={<SolicitudesInbox />} />
           <Route path="usuarios" element={<UsuariosPanel />} />
           <Route path=":entity" element={<EntityManager />} />
         </Route>

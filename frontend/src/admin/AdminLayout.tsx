@@ -35,6 +35,8 @@ const divisiones = [
       'puntos-mapa',
       'actividades',
       'pasos-reserva',
+      'espacios-reservables',
+      'tipos-actividad',
       'documentos-financieros',
       'publicaciones',
       'formas-apoyo',
@@ -201,6 +203,10 @@ export function AdminLayout() {
               <NavLink to="/admin/sugerencias" className="admin-nav-link">
                 <i className="ti ti-bulb" />
                 Sugerencias
+              </NavLink>
+              <NavLink to="/admin/solicitudes" className="admin-nav-link">
+                <i className="ti ti-calendar-plus" />
+                Solicitudes de reserva
               </NavLink>
             </>
           )}

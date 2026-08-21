@@ -288,3 +288,67 @@ model EncabezadoPagina {
   orden     Int      @default(0)
   updatedAt DateTime @updatedAt
 }
+
+// ── RESERVA DE ESPACIOS ──
+
+// Los espacios que el Parque acepta prestar. Es una lista aparte de
+// Instalaciones a propósito: hay veintiuna instalaciones pero nadie reserva una
+// ciclovía. Qué se presta lo decide el Parque desde el panel.
+model EspacioReservable {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  descripcion  String
+  // Cuántos hay del mismo tipo (ocho kioscos grandes). Cuál le toca a quién lo
+  // asigna el Parque al aprobar; aquí solo se pide "un kiosco grande".
+  cantidad     Int?
+  capacidad    Int?
+  // Si se cobra, se le advierte antes de enviar, no después de aprobarle.
+  requierePago Boolean  @default(false)
+  activo       Boolean  @default(true)
+  orden        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// La lista cerrada de actividades: el filtro que resuelve la preocupación de
+// que "cualquiera reserve para lo que quiera". Lo que no está aquí no se puede
+// pedir, y las no permitidas se publican para que nadie pierda el viaje.
+model TipoActividad {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  permitido Boolean  @default(true)
+  nota      String?
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Una solicitud, no una reserva. Nada queda apartado hasta que el Parque la
+// aprueba; el estado es lo que distingue una cosa de la otra.
+model SolicitudReserva {
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  cedula         String
+  email          String
+  telefono       String
+  institucion    String?
+  espacio        String
+  tipoActividad  String
+  // Guardada como "2026-09-14" y no como fecha con hora: el Parque la lee tal
+  // cual se escribió, sin que un cambio de zona horaria la corra un día.
+  fecha          String
+  horaInicio     String
+  horaFin        String
+  personas       Int
+  requerimientos String   @default("")
+  descripcion    String
+  // pendiente | aprobada | rechazada | cancelada
+  estado         String   @default("pendiente")
+  motivo         String?
+  notaInterna    String?
+  emailEnviado   Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([fecha])
+}

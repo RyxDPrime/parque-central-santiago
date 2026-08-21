@@ -5,6 +5,7 @@ import { contentRouter } from "./content.routes";
 import { crudRoutes } from "./crud.routes";
 import { apiLimiter } from "../middleware/rateLimit";
 import { mensajesRouter } from "./mensajes.routes";
+import { reservasRouter } from "./reservas.routes";
 import { sugerenciasRouter } from "./sugerencias.routes";
 import { uploadsRouter } from "./uploads.routes";
 import { usuariosRouter } from "./usuarios.routes";
@@ -23,6 +24,7 @@ apiRouter.use(adminRouter);
 apiRouter.use(uploadsRouter);
 apiRouter.use(mensajesRouter);
 apiRouter.use(sugerenciasRouter);
+apiRouter.use(reservasRouter);
 apiRouter.use(usuariosRouter);
 
 // Crear / editar / borrar (protegido) para las secciones administrables del panel.
@@ -39,6 +41,8 @@ apiRouter.use("/normas", crudRoutes("norma", { reorder: true }));
 apiRouter.use("/valores", crudRoutes("valor", { reorder: true }));
 apiRouter.use("/pasos-reserva", crudRoutes("pasoReserva", { reorder: true }));
 apiRouter.use("/formas-apoyo", crudRoutes("formaApoyo", { reorder: true }));
+apiRouter.use("/espacios-reservables", crudRoutes("espacioReservable", { reorder: true }));
+apiRouter.use("/tipos-actividad", crudRoutes("tipoActividad", { reorder: true }));
 apiRouter.use("/cifras", crudRoutes("cifra", { reorder: true }));
 apiRouter.use("/aliados", crudRoutes("aliado", { reorder: true }));
 apiRouter.use("/textos", crudRoutes("texto", { soloEditar: true }));

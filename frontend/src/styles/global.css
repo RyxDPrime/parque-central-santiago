@@ -898,3 +898,123 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 @media (max-width:640px){
   .admin-tabla{min-width:620px}
 }
+
+/* ── RESERVA DE ESPACIOS ── */
+.reserva-inner{max-width:860px;margin:0 auto;padding:0 20px}
+
+/* El aviso de que esto no aparta nada. Va arriba del todo y no se puede cerrar:
+   es la parte que evita que alguien se presente el domingo sin reserva. */
+.reserva-aviso{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;margin-bottom:22px;border-radius:var(--radius-lg,14px);background:#FFF8E6;border:1px solid #EBD9A6}
+.reserva-aviso > i{font-size:22px;color:#9A7B18;flex-shrink:0;margin-top:1px}
+.reserva-aviso strong{display:block;font-size:14.5px;color:#6B550F;margin-bottom:3px}
+.reserva-aviso p{font-size:13.5px;line-height:1.6;color:#6B550F;margin:0;max-width:none}
+
+/* Normas: plegado, como el acordeón de la biblioteca. Cerrado por defecto para
+   que el formulario no quede empujado abajo, pero visible antes que él. */
+.reserva-normas{border:1px solid var(--border);border-radius:var(--radius-lg,14px);margin-bottom:26px;overflow:hidden;background:#fff}
+.reserva-normas-boton{width:100%;display:flex;align-items:center;gap:12px;padding:16px 18px;background:none;border:none;cursor:pointer;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--green-800);text-align:left;transition:background .18s}
+.reserva-normas-boton:hover{background:var(--green-50,#F2F7EE)}
+.reserva-normas-boton > i:first-child{font-size:19px;color:var(--green-600)}
+.reserva-normas-boton span{flex:1}
+.reserva-normas-flecha{font-size:17px;color:var(--text-muted)}
+.reserva-normas-cuerpo{padding:4px 18px 20px;border-top:1px solid var(--border)}
+.reserva-normas-bloque{padding-top:18px}
+.reserva-normas-bloque h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--green-600);margin-bottom:9px}
+.reserva-normas-intro{font-size:13.5px;line-height:1.65;color:var(--text-secondary);max-width:none;margin:0}
+
+.reserva-pasos{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.reserva-pasos li{font-size:13.5px;line-height:1.65;color:var(--text-secondary)}
+.reserva-pasos strong{color:var(--text-primary)}
+
+/* Lo no permitido, en rojo y con equis: se lee de un vistazo y evita que alguien
+   llene doce campos para que le digan que no. */
+.reserva-no-permitidos{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.reserva-no-permitidos li{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.55;color:var(--text-secondary)}
+.reserva-no-permitidos i{font-size:15px;color:#A33B2A;flex-shrink:0;margin-top:2px}
+.reserva-no-permitidos small{color:var(--text-muted)}
+
+.reserva-horario{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 8px;max-width:none}
+.reserva-horario span{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--text-secondary)}
+.reserva-horario i{color:var(--green-600);font-size:16px}
+
+/* ── El formulario ── */
+.reserva-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg,14px);padding:26px 24px;box-shadow:0 2px 14px rgba(23,51,15,.05)}
+.reserva-grupo{border:none;padding:0;margin:0 0 26px}
+.reserva-grupo legend{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--green-800);margin-bottom:14px;padding:0}
+/* Los pasos numerados dan la misma sensación que el formulario de la biblioteca:
+   se ve cuánto falta antes de empezar. */
+.reserva-grupo-num{width:26px;height:26px;border-radius:50%;background:var(--green-600);color:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+
+.reserva-campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.form-group-ancho{grid-column:1/-1}
+
+.reserva-ayuda{display:block;margin-top:6px;font-size:12.5px;line-height:1.5;color:var(--text-muted)}
+.reserva-ayuda.es-alerta{color:#9A7B18}
+.reserva-ayuda.es-alerta i{margin-right:4px}
+
+.reserva-nota-pago{display:flex;gap:11px;align-items:flex-start;margin:16px 0 0;padding:13px 15px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);font-size:13px;line-height:1.6;color:var(--text-secondary);max-width:none}
+.reserva-nota-pago i{font-size:18px;color:var(--accent-400,#A38579);flex-shrink:0;margin-top:1px}
+
+/* Lo ocupado ese día: el equivalente al calendario que la biblioteca incrusta,
+   recortado al día que se acaba de elegir. */
+.reserva-ocupacion{margin-top:16px;padding:14px 16px;border-radius:var(--radius);background:var(--green-50,#F2F7EE);border:1px solid var(--green-200,#D7E7CB)}
+.reserva-ocupacion h4{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--green-800);margin:0 0 8px;text-transform:capitalize}
+.reserva-ocupacion h4 i{font-size:16px}
+.reserva-ocupacion-libre{font-size:13px;line-height:1.6;color:var(--text-secondary);margin:0;max-width:none}
+.reserva-ocupacion-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.reserva-ocupacion-lista li{display:flex;justify-content:space-between;gap:14px;font-size:13px;color:var(--text-secondary);padding:6px 0;border-bottom:1px solid var(--green-200,#D7E7CB)}
+.reserva-ocupacion-lista li:last-child{border-bottom:none}
+.reserva-ocupacion-lista strong{color:var(--text-primary);font-weight:600}
+
+.reserva-extras{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.reserva-extra{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:inherit;font-size:13px;color:var(--text-secondary);cursor:pointer;transition:border-color .18s,background .18s,color .18s}
+.reserva-extra:hover{border-color:var(--green-400,#7FA96C)}
+.reserva-extra i{font-size:14px}
+.reserva-extra.esta-elegido{background:var(--green-600);border-color:var(--green-600);color:#fff}
+
+/* La casilla de condiciones: enmarcada, para que no se pase por alto entre el
+   textarea y el botón. */
+.reserva-acepta{display:flex;gap:12px;align-items:flex-start;padding:15px 16px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);border:1px solid var(--border);cursor:pointer;margin-bottom:18px}
+.reserva-acepta input{width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--green-600);cursor:pointer}
+.reserva-acepta span{font-size:13.5px;line-height:1.6;color:var(--text-secondary)}
+
+.reserva-enviar{width:100%;justify-content:center}
+.reserva-nota{margin:14px 0 0;text-align:center;font-size:12.5px;color:var(--text-muted);max-width:none}
+
+.reserva-gracias-aviso{display:flex;gap:10px;align-items:flex-start;justify-content:center;text-align:left;margin:4px auto 20px;padding:12px 15px;max-width:460px;border-radius:var(--radius);background:#FFF8E6;font-size:13px;line-height:1.6;color:#6B550F}
+.reserva-gracias-aviso i{font-size:17px;flex-shrink:0;margin-top:1px}
+
+@media (max-width:640px){
+  .reserva-inner{padding:0 16px}
+  .reserva-form{padding:20px 16px}
+  .reserva-campos{grid-template-columns:1fr}
+  .reserva-aviso{flex-direction:column;gap:8px}
+}
+
+/* ── BANDEJA DE SOLICITUDES DE RESERVA ── */
+/* Los datos duros de la solicitud, en rejilla: lo que hay que mirar para
+   decidir se lee de un vistazo, sin buscarlo dentro de un párrafo. */
+.solicitud-datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 20px;margin:12px 0 14px;padding:13px 15px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2)}
+.solicitud-datos dt{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px}
+.solicitud-datos dd{margin:0;font-size:13.5px;color:var(--text-primary);font-weight:500;text-transform:capitalize}
+
+.solicitud-motivo{display:flex;gap:8px;align-items:flex-start;margin:0 0 14px;padding:11px 14px;border-radius:var(--radius);background:#FCEFEC;font-size:13px;line-height:1.55;color:#7A2B1E;max-width:none}
+.solicitud-motivo i{font-size:16px;flex-shrink:0;margin-top:1px}
+
+/* El estado no manda correos. Se dice en cada tarjeta, no una vez arriba: es
+   justo debajo de los botones donde alguien da por hecho lo contrario. */
+.solicitud-recordatorio{display:flex;gap:7px;align-items:flex-start;margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted);max-width:none}
+.solicitud-recordatorio i{font-size:14px;flex-shrink:0;margin-top:1px}
+.solicitud-recordatorio strong{color:var(--text-secondary)}
+
+.admin-chip.is-no{background:#FCEFEC;color:#A33B2A}
+.admin-chip.is-off{background:var(--gray-100,#F5F5F2);color:var(--text-muted)}
+
+.btn-outline.es-aprobar{border-color:var(--green-400,#7FA96C);color:var(--green-800)}
+.btn-outline.es-aprobar:hover{background:var(--green-600);border-color:var(--green-600);color:#fff}
+.btn-outline.es-rechazar{border-color:#E0B6AE;color:#A33B2A}
+.btn-outline.es-rechazar:hover{background:#A33B2A;border-color:#A33B2A;color:#fff}
+
+@media (max-width:640px){
+  .solicitud-datos{grid-template-columns:1fr 1fr}
+}

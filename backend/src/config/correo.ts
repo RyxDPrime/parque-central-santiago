@@ -19,6 +19,12 @@ export interface CorreoSalida {
   texto: string;
   /** A quién le responde el destinatario al pulsar "Responder". */
   responderA?: { email: string; nombre?: string };
+  /**
+   * A quién se le manda. Por omisión, al Parque: casi todo lo que sale de aquí
+   * es un aviso interno. Se indica solo cuando el destinatario es el visitante,
+   * como en el acuse de una solicitud de reserva.
+   */
+  para?: { email: string; nombre?: string };
 }
 
 /** Separa "Nombre <correo>" en sus dos partes. */
@@ -32,7 +38,7 @@ export function hayCorreoConfigurado(): boolean {
   return Boolean(env.brevoApiKey && env.mailFrom && env.contactToEmail);
 }
 
-export async function enviarCorreo({ asunto, texto, responderA }: CorreoSalida): Promise<void> {
+export async function enviarCorreo({ asunto, texto, responderA, para }: CorreoSalida): Promise<void> {
   if (!hayCorreoConfigurado()) {
     throw new Error("Falta configurar el correo: BREVO_API_KEY, MAIL_FROM o CONTACT_TO_EMAIL");
   }
@@ -46,7 +52,7 @@ export async function enviarCorreo({ asunto, texto, responderA }: CorreoSalida):
     },
     body: JSON.stringify({
       sender: partirRemitente(env.mailFrom),
-      to: [{ email: env.contactToEmail }],
+      to: [para ? { email: para.email, name: para.nombre } : { email: env.contactToEmail }],
       replyTo: responderA,
       subject: asunto,
       textContent: texto,

@@ -275,3 +275,58 @@ export async function deleteSugerencia(id: number): Promise<void> {
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
 }
+
+// ── SOLICITUDES DE RESERVA ──
+
+export interface SolicitudReserva {
+  id: number;
+  nombre: string;
+  cedula: string;
+  email: string;
+  telefono: string;
+  institucion: string | null;
+  espacio: string;
+  tipoActividad: string;
+  fecha: string;
+  horaInicio: string;
+  horaFin: string;
+  personas: number;
+  requerimientos: string;
+  descripcion: string;
+  estado: string;
+  motivo: string | null;
+  notaInterna: string | null;
+  emailEnviado: boolean;
+  createdAt: string;
+}
+
+export async function listSolicitudes(): Promise<SolicitudReserva[]> {
+  const res = await fetch(`${API_URL}/solicitudes-reserva`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<SolicitudReserva[]>;
+}
+
+/** Aprobar, rechazar o cancelar. El motivo es lo que se le explica a la persona. */
+export async function cambiarEstadoSolicitud(
+  id: number,
+  estado: string,
+  motivo?: string,
+): Promise<SolicitudReserva> {
+  const res = await fetch(`${API_URL}/solicitudes-reserva/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ estado, motivo }),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<SolicitudReserva>;
+}
+
+export async function eliminarSolicitud(id: number): Promise<void> {
+  const res = await fetch(`${API_URL}/solicitudes-reserva/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+}

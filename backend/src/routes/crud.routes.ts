@@ -36,7 +36,9 @@ export type ModeloOrdenable =
   | "pasoReserva"
   | "formaApoyo"
   | "cifra"
-  | "aliado";
+  | "aliado"
+  | "espacioReservable"
+  | "tipoActividad";
 
 export type ModeloCrud = ModeloOrdenable | "actividad" | "publicacion" | "texto" | "encabezadoPagina";
 
@@ -58,6 +60,8 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   norma: ["icono", "titulo", "texto", "orden"],
   pasoReserva: ["icono", "titulo", "texto", "orden"],
   formaApoyo: ["icono", "etiqueta", "titulo", "texto", "orden"],
+  espacioReservable: ["nombre", "descripcion", "cantidad", "capacidad", "requierePago", "activo", "orden"],
+  tipoActividad: ["nombre", "permitido", "nota", "orden"],
   cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
   aliado: ["nombre", "logoUrl", "sitioWeb", "orden"],
   // Los textos no se crean ni se borran: solo cambia su valor.

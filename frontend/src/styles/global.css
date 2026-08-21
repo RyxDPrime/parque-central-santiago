@@ -1018,3 +1018,6 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 @media (max-width:640px){
   .solicitud-datos{grid-template-columns:1fr 1fr}
 }
+/* La que se acaba de decidir, resaltada un momento: es la confirmación de que
+   el cambio se guardó, en vez de ver la tarjeta desaparecer sin más. */
+.inbox-item.recien-decidida{border-color:var(--green-400,#7FA96C);box-shadow:0 0 0 3px rgba(47,97,35,.09)}

@@ -21,6 +21,11 @@ function fechaLarga(iso: string): string {
   return f.toLocaleDateString('es-DO', { weekday: 'long', day: 'numeric', month: 'long' })
 }
 
+/** Se guarda en dígitos; se lee mejor con los guiones puestos. */
+function cedulaConGuiones(valor: string): string {
+  return /^\d{11}$/.test(valor) ? `${valor.slice(0, 3)}-${valor.slice(3, 10)}-${valor.slice(10)}` : valor
+}
+
 const ESTADOS: Record<string, { etiqueta: string; clase: string; icono: string }> = {
   pendiente: { etiqueta: 'Pendiente', clase: 'is-warn', icono: 'ti-clock' },
   aprobada: { etiqueta: 'Aprobada', clase: 'is-ok', icono: 'ti-check' },
@@ -45,6 +50,10 @@ export function SolicitudesInbox() {
   const [error, setError] = useState<string | null>(null)
   const [busqueda, setBusqueda] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('pendiente')
+  // Lo que se acaba de decidir se queda a la vista aunque deje de cumplir el
+  // filtro. Si no, aprobar una solicitud la hace desaparecer sin más y no queda
+  // claro si se guardó: la confirmación es verla con su nuevo estado.
+  const [recienDecididas, setRecienDecididas] = useState<number[]>([])
 
   useEffect(() => {
     listSolicitudes()
@@ -69,6 +78,7 @@ export function SolicitudesInbox() {
     try {
       const actualizada = await cambiarEstadoSolicitud(s.id, estado, motivo)
       setItems((prev) => prev.map((x) => (x.id === s.id ? actualizada : x)))
+      setRecienDecididas((prev) => (prev.includes(s.id) ? prev : [...prev, s.id]))
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Error al guardar')
     }
@@ -96,14 +106,16 @@ export function SolicitudesInbox() {
         ),
       )
     }
-    if (filtroEstado) r = r.filter((x) => x.estado === filtroEstado)
+    if (filtroEstado) {
+      r = r.filter((x) => x.estado === filtroEstado || recienDecididas.includes(x.id))
+    }
     // Las pendientes arriba: son las que esperan que alguien haga algo.
     return [...r].sort((a, b) => {
       if (a.estado === 'pendiente' && b.estado !== 'pendiente') return -1
       if (b.estado === 'pendiente' && a.estado !== 'pendiente') return 1
       return a.fecha.localeCompare(b.fecha)
     })
-  }, [items, busqueda, filtroEstado])
+  }, [items, busqueda, filtroEstado, recienDecididas])
 
   const hayFiltros = Boolean(busqueda.trim()) || Boolean(filtroEstado)
 
@@ -154,7 +166,13 @@ export function SolicitudesInbox() {
 
             <label className="admin-toolbar-campo">
               <span>Estado</span>
-              <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
+              <select
+                value={filtroEstado}
+                onChange={(e) => {
+                  setFiltroEstado(e.target.value)
+                  setRecienDecididas([])
+                }}
+              >
                 <option value="">Todas</option>
                 {Object.entries(ESTADOS).map(([valor, e]) => (
                   <option key={valor} value={valor}>
@@ -171,6 +189,7 @@ export function SolicitudesInbox() {
                 onClick={() => {
                   setBusqueda('')
                   setFiltroEstado('')
+                  setRecienDecididas([])
                 }}
               >
                 <i className="ti ti-x" /> Limpiar
@@ -204,7 +223,9 @@ export function SolicitudesInbox() {
               const estado = ESTADOS[s.estado] ?? ESTADOS.pendiente
               return (
                 <li
-                  className={`inbox-item solicitud${s.estado === 'pendiente' ? ' sin-leer' : ''}`}
+                  className={`inbox-item solicitud${s.estado === 'pendiente' ? ' sin-leer' : ''}${
+                    recienDecididas.includes(s.id) ? ' recien-decidida' : ''
+                  }`}
                   key={s.id}
                 >
                   <div className="inbox-item-head">
@@ -219,6 +240,7 @@ export function SolicitudesInbox() {
                     <div className="inbox-item-meta">
                       <span className={`admin-chip ${estado.clase}`}>
                         <i className={`ti ${estado.icono}`} /> {estado.etiqueta}
+                        {recienDecididas.includes(s.id) && ' ahora'}
                       </span>
                       <span className="inbox-date">
                         Pedida el {fechaHora.format(new Date(s.createdAt))}
@@ -243,7 +265,7 @@ export function SolicitudesInbox() {
                     </div>
                     <div>
                       <dt>Cédula</dt>
-                      <dd>{s.cedula}</dd>
+                      <dd>{cedulaConGuiones(s.cedula)}</dd>
                     </div>
                     {s.institucion && (
                       <div>

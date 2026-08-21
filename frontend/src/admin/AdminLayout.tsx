@@ -35,8 +35,6 @@ const divisiones = [
       'puntos-mapa',
       'actividades',
       'pasos-reserva',
-      'espacios-reservables',
-      'tipos-actividad',
       'documentos-financieros',
       'publicaciones',
       'formas-apoyo',
@@ -47,6 +45,13 @@ const divisiones = [
     rutas: ['textos/contacto', 'encabezados'],
   },
 ]
+
+/**
+ * Secciones que viven en un grupo escrito a mano más abajo, no en `divisiones`.
+ * Se declaran aquí para que el recogedor de secciones sin ubicar no las mande
+ * al final de "Todo el sitio" creyendo que a nadie se le asignó un sitio.
+ */
+const CON_GRUPO_PROPIO = ['espacios-reservables', 'tipos-actividad']
 
 interface Enlace {
   ruta: string
@@ -72,7 +77,7 @@ function agrupar(permisos: string[]): { titulo: string; enlaces: Enlace[] }[] {
     return entidad && { ruta, label: entidad.label, icon: entidad.icon }
   }
 
-  const nombradas = new Set(divisiones.flatMap((d) => d.rutas))
+  const nombradas = new Set([...divisiones.flatMap((d) => d.rutas), ...CON_GRUPO_PROPIO])
   const grupos = divisiones.map((division) => ({
     titulo: division.titulo,
     enlaces: division.rutas.filter(visible).map(buscar).filter((e) => e !== undefined),
@@ -218,6 +223,18 @@ export function AdminLayout() {
                 <i className="ti ti-mail-cog" />
                 Plantillas de respuesta
               </NavLink>
+              {sesion?.permisos.includes('contenido') && (
+                <>
+                  <NavLink to="/admin/tipos-actividad" className="admin-nav-link">
+                    <i className="ti ti-list-check" />
+                    Tipos de actividad
+                  </NavLink>
+                  <NavLink to="/admin/espacios-reservables" className="admin-nav-link">
+                    <i className="ti ti-map-pin-check" />
+                    Espacios reservables
+                  </NavLink>
+                </>
+              )}
             </>
           )}
 

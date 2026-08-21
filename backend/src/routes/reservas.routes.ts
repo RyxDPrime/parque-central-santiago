@@ -74,6 +74,32 @@ reservasRouter.post("/solicitudes-reserva", contactoLimiter, async (req, res, ne
     const { acepta, ...datos } = solicitudReservaSchema.parse(req.body);
     void acepta;
 
+    // El desplegable del formulario solo esconde lo que no se permite; esto es
+    // lo que de verdad lo impide. Sin esta comprobacion, una peticion directa a
+    // la API con tipoActividad: "Misa" entraria igual, y la lista cerrada seria
+    // una apariencia. Se consulta contra la base y no contra una lista escrita
+    // aqui, para que lo que el Parque cambie en el panel valga de inmediato.
+    const [tipo, espacio] = await Promise.all([
+      prisma.tipoActividad.findFirst({ where: { nombre: datos.tipoActividad } }),
+      prisma.espacioReservable.findFirst({ where: { nombre: datos.espacio } }),
+    ]);
+
+    if (!tipo || !tipo.permitido) {
+      res.status(400).json({
+        error: !tipo
+          ? "Ese tipo de actividad no esta en la lista. Elige uno del desplegable."
+          : `El Parque no permite esa actividad: ${tipo.nombre}.`,
+      });
+      return;
+    }
+
+    if (!espacio || !espacio.activo) {
+      res.status(400).json({
+        error: "Ese espacio no esta disponible para reservar. Elige uno del desplegable.",
+      });
+      return;
+    }
+
     const guardada = await prisma.solicitudReserva.create({ data: datos });
 
     try {

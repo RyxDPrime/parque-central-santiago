@@ -233,6 +233,19 @@ export interface SolicitudReservaInput {
   acepta: true;
 }
 
+export type TipoAporte = 'dinero' | 'patrocinio' | 'voluntariado';
+
+export interface AporteInput {
+  tipo: TipoAporte;
+  nombre: string;
+  email: string;
+  telefono: string;
+  institucion?: string;
+  monto?: number;
+  frecuencia?: 'unica' | 'mensual';
+  mensaje: string;
+}
+
 export interface ContactoInput {
   nombre: string;
   email: string;
@@ -288,6 +301,7 @@ export const api = {
   getReservasOcupadas: () => get<ReservaOcupada[]>("/reservas-ocupadas"),
   enviarSolicitudReserva: (data: SolicitudReservaInput) =>
     post<{ ok: boolean; id: number }>("/solicitudes-reserva", data),
+  enviarAporte: (data: AporteInput) => post<{ ok: boolean; id: number }>("/aportes", data),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
   enviarSugerencia: (data: SugerenciaInput) => post<{ ok: boolean }>("/sugerencias", data),
 };

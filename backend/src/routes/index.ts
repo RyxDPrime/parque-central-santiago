@@ -5,6 +5,7 @@ import { contentRouter } from "./content.routes";
 import { crudRoutes } from "./crud.routes";
 import { apiLimiter } from "../middleware/rateLimit";
 import { mensajesRouter } from "./mensajes.routes";
+import { aportesRouter } from "./aportes.routes";
 import { reservasRouter } from "./reservas.routes";
 import { sugerenciasRouter } from "./sugerencias.routes";
 import { uploadsRouter } from "./uploads.routes";
@@ -25,6 +26,7 @@ apiRouter.use(uploadsRouter);
 apiRouter.use(mensajesRouter);
 apiRouter.use(sugerenciasRouter);
 apiRouter.use(reservasRouter);
+apiRouter.use(aportesRouter);
 apiRouter.use(usuariosRouter);
 
 // Crear / editar / borrar (protegido) para las secciones administrables del panel.

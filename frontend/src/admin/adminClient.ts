@@ -374,13 +374,17 @@ export async function listPlantillas(): Promise<PlantillaCorreo[]> {
   return res.json() as Promise<PlantillaCorreo[]>;
 }
 
-/** Los huecos los dice el servidor, para que la ayuda del panel no se quede vieja. */
-export async function listHuecos(): Promise<HuecoPlantilla[]> {
+/**
+ * Los huecos los dice el servidor, para que la ayuda del panel no se quede
+ * vieja. Vienen agrupados por familia —reserva, aporte— porque {{espacio}} no
+ * significa nada dentro de un correo de donacion.
+ */
+export async function listHuecos(): Promise<Record<string, HuecoPlantilla[]>> {
   const res = await fetch(`${API_URL}/plantillas-huecos`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
-  return res.json() as Promise<HuecoPlantilla[]>;
+  return res.json() as Promise<Record<string, HuecoPlantilla[]>>;
 }
 
 export async function guardarPlantilla(
@@ -394,4 +398,61 @@ export async function guardarPlantilla(
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
   return res.json() as Promise<PlantillaCorreo>;
+}
+
+// ── APORTES (DONACIONES) ──
+
+export interface Aporte {
+  id: number;
+  tipo: string;
+  nombre: string;
+  email: string;
+  telefono: string;
+  institucion: string | null;
+  monto: number | null;
+  frecuencia: string | null;
+  mensaje: string;
+  estado: string;
+  notaInterna: string | null;
+  emailEnviado: boolean;
+  respuestaEnviada: boolean;
+  respuestaError: string | null;
+  createdAt: string;
+}
+
+export async function listAportes(): Promise<Aporte[]> {
+  const res = await fetch(`${API_URL}/aportes`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<Aporte[]>;
+}
+
+/**
+ * Atender o descartar un aporte.
+ *
+ * Atenderlo le escribe a la persona con la plantilla guardada, y `respuesta`
+ * entra en ese correo. Descartar no manda nada.
+ */
+export async function cambiarEstadoAporte(
+  id: number,
+  estado: string,
+  respuesta?: string,
+  avisar = true,
+): Promise<Aporte> {
+  const res = await fetch(`${API_URL}/aportes/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ estado, respuesta, avisar }),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<Aporte>;
+}
+
+export async function eliminarAporte(id: number): Promise<void> {
+  const res = await fetch(`${API_URL}/aportes/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
 }

@@ -4,7 +4,7 @@ import { requireAuth, requirePermiso } from "../middleware/auth";
 import { sendAcuseSolicitud, sendSolicitudReservaNotification } from "../config/mailer";
 import { contactoLimiter } from "../middleware/rateLimit";
 import { ESTADOS_SOLICITUD, solicitudReservaSchema } from "../schemas/reserva.schema";
-import { HUECOS, PLANTILLAS, enviarRespuestaSolicitud } from "../config/plantillas";
+import { HUECOS_POR_FAMILIA, PLANTILLAS, enviarRespuestaSolicitud } from "../config/plantillas";
 
 export const reservasRouter = Router();
 
@@ -201,7 +201,11 @@ reservasRouter.patch(
       });
 
       const clave =
-        estado === "aprobada" ? PLANTILLAS.aprobada : estado === "rechazada" ? PLANTILLAS.rechazada : null;
+        estado === "aprobada"
+          ? PLANTILLAS.reservaAprobada
+          : estado === "rechazada"
+            ? PLANTILLAS.reservaRechazada
+            : null;
 
       if (clave && avisar) {
         try {
@@ -243,10 +247,11 @@ reservasRouter.get(
   },
 );
 
-// Los huecos disponibles salen del servidor para que el panel muestre siempre
-// los que de verdad existen, y no una lista copiada que se quede vieja.
+// Los huecos salen del servidor para que el panel muestre siempre los que de
+// verdad existen, y no una lista copiada que se quede vieja. Van agrupados por
+// familia porque {{espacio}} no significa nada dentro de un correo de donacion.
 reservasRouter.get("/plantillas-huecos", requireAuth, (_req, res) => {
-  res.json(HUECOS);
+  res.json(HUECOS_POR_FAMILIA);
 });
 
 reservasRouter.delete(

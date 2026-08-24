@@ -235,6 +235,20 @@ export function AdminLayout() {
                   </NavLink>
                 </>
               )}
+
+              <p className="admin-nav-title" style={{ marginTop: 16 }}>
+                Donaciones
+              </p>
+              <NavLink to="/admin/aportes" className="admin-nav-link">
+                <i className="ti ti-heart-handshake" />
+                Aportes recibidos
+              </NavLink>
+              {sesion?.permisos.includes('contenido') && (
+                <NavLink to="/admin/textos/donaciones" className="admin-nav-link">
+                  <i className="ti ti-building-bank" />
+                  Textos y datos bancarios
+                </NavLink>
+              )}
             </>
           )}
 

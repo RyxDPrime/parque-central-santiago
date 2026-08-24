@@ -89,6 +89,7 @@ export function Footer() {
             <Link to="/reserva">Reserva</Link>
             <Link to="/blog">Blog</Link>
             <Link to="/apoyanos">Apóyanos</Link>
+            <Link to="/donaciones">Donaciones</Link>
           </div>
 
           <div className="footer-col">

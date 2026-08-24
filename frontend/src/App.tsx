@@ -15,6 +15,7 @@ import { Mapa } from './pages/Mapa'
 import { Transparencia } from './pages/Transparencia'
 import { Blog } from './pages/Blog'
 import { Apoyanos } from './pages/Apoyanos'
+import { Donaciones } from './pages/Donaciones'
 import { Contacto } from './pages/Contacto'
 import { Sugerencias } from './pages/Sugerencias'
 import { NotFound } from './pages/NotFound'
@@ -24,6 +25,7 @@ import { EntityManager } from './admin/EntityManager'
 import { MessagesInbox } from './admin/MessagesInbox'
 import { SugerenciasInbox } from './admin/SugerenciasInbox'
 import { SolicitudesInbox } from './admin/SolicitudesInbox'
+import { AportesInbox } from './admin/AportesInbox'
 import { PlantillasPanel } from './admin/PlantillasPanel'
 import { UsuariosPanel } from './admin/UsuariosPanel'
 import { TextosEditor } from './admin/TextosEditor'
@@ -50,6 +52,7 @@ function App() {
           <Route path="/transparencia" element={<Transparencia />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/apoyanos" element={<Apoyanos />} />
+          <Route path="/donaciones" element={<Donaciones />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/sugerencias" element={<Sugerencias />} />
           <Route path="*" element={<NotFound />} />
@@ -67,6 +70,7 @@ function App() {
           <Route path="sugerencias" element={<SugerenciasInbox />} />
           <Route path="solicitudes" element={<SolicitudesInbox />} />
           <Route path="plantillas" element={<PlantillasPanel />} />
+          <Route path="aportes" element={<AportesInbox />} />
           <Route path="usuarios" element={<UsuariosPanel />} />
           <Route path=":entity" element={<EntityManager />} />
         </Route>

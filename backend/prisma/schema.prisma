@@ -374,3 +374,34 @@ model PlantillaCorreo {
   orden       Int      @default(0)
   updatedAt   DateTime @updatedAt
 }
+
+// ── DONACIONES ──
+
+// Una intención de aportar, no un aporte cobrado. El sitio no cobra nada: la
+// persona dice qué quiere dar y el Parque la contacta para coordinarlo. Cuando
+// haya pasarela de pago, esto sigue sirviendo igual para lo que no es tarjeta.
+model Aporte {
+  id          Int      @id @default(autoincrement())
+  // dinero | patrocinio | voluntariado
+  tipo        String
+  nombre      String
+  email       String
+  telefono    String
+  institucion String?
+  // Solo para aportes en dinero, y opcional: obligar a poner una cifra antes de
+  // hablar con nadie espanta a quien todavía está decidiendo cuánto puede dar.
+  monto       Int?
+  // unica | mensual
+  frecuencia  String?
+  mensaje     String
+  // pendiente | atendida | descartada
+  estado      String   @default("pendiente")
+  notaInterna String?
+  emailEnviado     Boolean @default(false)
+  respuestaEnviada Boolean @default(false)
+  respuestaError   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([estado])
+}

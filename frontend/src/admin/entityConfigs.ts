@@ -97,6 +97,14 @@ export const textoSecciones: TextoSeccion[] = [
     description: 'Encabezados de cada bloque de la página de inicio.',
   },
   {
+    slug: 'donaciones',
+    grupo: 'Donaciones',
+    label: 'Textos y datos bancarios',
+    icon: 'ti-building-bank',
+    description:
+      'Lo que se lee en la página de Donaciones, incluidos los datos de la cuenta del Patronato. Mientras el banco o el número de cuenta estén en blanco, el bloque de transferencia no aparece en el sitio: es preferible que no esté a que esté equivocado.',
+  },
+  {
     slug: 'contacto',
     grupo: 'Contacto',
     label: 'Contacto',

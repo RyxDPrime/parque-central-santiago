@@ -165,3 +165,96 @@ export async function sendAcuseSolicitud(s: SolicitudMailInput): Promise<void> {
     para: { email: s.email, nombre: s.nombre },
   });
 }
+
+// ── APORTES Y DONACIONES ──
+
+interface AporteMailInput {
+  tipo: string;
+  nombre: string;
+  email: string;
+  telefono: string;
+  institucion?: string;
+  monto?: number;
+  frecuencia?: string;
+  mensaje: string;
+}
+
+const ETIQUETA_APORTE: Record<string, string> = {
+  dinero: "Donacion en dinero",
+  patrocinio: "Patrocinio institucional",
+  voluntariado: "Voluntariado",
+};
+
+/** "25000" -> "RD$ 25,000". */
+export function pesos(monto: number): string {
+  return `RD$ ${monto.toLocaleString("es-DO")}`;
+}
+
+function detalleAporte(a: AporteMailInput): string[] {
+  return [
+    `Tipo: ${ETIQUETA_APORTE[a.tipo] ?? a.tipo}`,
+    `Nombre: ${a.nombre}`,
+    `Email: ${a.email}`,
+    `Telefono: ${a.telefono}`,
+    a.institucion ? `Institucion: ${a.institucion}` : null,
+    a.monto ? `Monto que plantea: ${pesos(a.monto)}` : null,
+    a.frecuencia ? `Frecuencia: ${a.frecuencia === "mensual" ? "Mensual" : "Una sola vez"}` : null,
+  ].filter((linea): linea is string => linea !== null);
+}
+
+/** Aviso al Parque de que alguien quiere aportar. */
+export async function sendAporteNotification(a: AporteMailInput): Promise<void> {
+  const etiqueta = ETIQUETA_APORTE[a.tipo] ?? "Aporte";
+  const lineas = [
+    "Alguien quiere aportar al Parque, desde la pagina de Donaciones.",
+    "",
+    ...detalleAporte(a),
+    "",
+    "LO QUE ESCRIBIO",
+    a.mensaje,
+    "",
+    "Nadie ha pagado nada: esto es una intencion de aportar. Hay que contactar",
+    "a la persona para coordinarlo. Queda en la bandeja del panel.",
+  ];
+
+  await enviarCorreo({
+    asunto: `${etiqueta} - ${a.nombre}${a.institucion ? ` (${a.institucion})` : ""}`,
+    texto: lineas.join("\n"),
+    responderA: { email: a.email, nombre: a.nombre },
+  });
+}
+
+/**
+ * Acuse a quien quiere aportar.
+ *
+ * Dice dos cosas que evitan malentendidos: que no se le cobro nada, y que
+ * alguien del Parque le va a escribir. Sin lo primero, alguien puede creer que
+ * ya dono; sin lo segundo, que su mensaje se perdio.
+ */
+export async function sendAcuseAporte(a: AporteMailInput): Promise<void> {
+  const lineas = [
+    `Hola ${a.nombre.trim().split(/\s+/)[0]},`,
+    "",
+    "Gracias por querer aportar al Parque Central de Santiago. Recibimos tu",
+    "mensaje y alguien del equipo te va a escribir para coordinarlo.",
+    "",
+    "ESTO ES LO QUE NOS DIJISTE",
+    ...detalleAporte(a).slice(0, 1),
+    a.monto ? `Monto que planteas: ${pesos(a.monto)}` : "",
+    "",
+    "NO SE TE HA COBRADO NADA",
+    "El sitio no cobra. Cualquier aporte se coordina directamente contigo, y",
+    "eres tu quien decide como y cuando hacerlo.",
+    "",
+    "Si prefieres hablar con alguien: 809-583-9581, o por WhatsApp al",
+    "849-580-7344.",
+    "",
+    "Parque Central de Santiago",
+  ].filter((linea) => linea !== "");
+
+  await enviarCorreo({
+    asunto: "Recibimos tu mensaje - Parque Central de Santiago",
+    texto: lineas.join("\n"),
+    para: { email: a.email, nombre: a.nombre },
+  });
+}

@@ -1064,7 +1064,12 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 
 /* ── PLANTILLAS DE RESPUESTA ── */
 .plantilla-descripcion{font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 18px;max-width:none}
-.plantilla-ayuda-intro{font-size:13px;line-height:1.65;color:var(--text-secondary);margin:0 0 14px;max-width:none}
+.plantilla-ayuda{margin:4px 0 20px;padding:15px 16px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);border:1px solid var(--border)}
+.plantilla-ayuda h3{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin:0 0 8px}
+/* Deja claro de que familia son estos huecos: los de reserva y los de
+   donacion no son intercambiables. */
+.plantilla-familia{text-transform:none;letter-spacing:0;font-size:11px;font-weight:600;color:var(--green-800);background:var(--green-50,#F2F7EE);border-radius:999px;padding:2px 9px}
+.plantilla-ayuda-intro{font-size:12.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 12px;max-width:none}
 .plantilla-huecos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
 /* Se pulsa para insertarlo donde este el cursor: escribir {{tipoActividad}} a
    mano es justo donde aparecen las erratas que dejan el hueco sin rellenar. */
@@ -1155,4 +1160,76 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .reserva-campos,
   .reserva-campos.es-cuando{grid-template-columns:1fr}
   .reserva-campos .form-group-medio{max-width:none}
+}
+
+/* ── PÁGINA DE DONACIONES ── */
+.donacion-inner{max-width:800px;margin:0 auto;padding:0 20px}
+
+.donacion-porque{margin-bottom:26px}
+.donacion-intro{font-size:16px;line-height:1.75;color:var(--text-secondary);max-width:none;margin:0 0 14px}
+.donacion-destino{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius);background:var(--green-50,#F2F7EE);border:1px solid var(--green-200,#D7E7CB);font-size:13.5px;line-height:1.65;color:var(--green-900,#17330F);margin:0;max-width:none}
+.donacion-destino i{font-size:20px;color:var(--green-600);flex-shrink:0;margin-top:1px}
+
+.donacion-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg,14px);padding:26px 24px;box-shadow:0 2px 14px rgba(23,51,15,.05)}
+
+.donacion-tipos{border:none;padding:0;margin:0 0 22px}
+.donacion-tipos legend{font-size:15px;font-weight:600;color:var(--green-800);margin-bottom:12px;padding:0}
+.donacion-tipos-fila{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+/* Botones grandes en vez de un desplegable: la decisión de CÓMO apoyar es la
+   que cambia el resto del formulario, así que se ve entera de un golpe. */
+.donacion-tipo{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:var(--radius);border:1px solid var(--border);background:#fff;font-family:inherit;font-size:13px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:border-color .18s,background .18s,color .18s}
+.donacion-tipo i{font-size:24px;color:var(--green-600);transition:color .18s}
+.donacion-tipo:hover{border-color:var(--green-400,#8DB355)}
+.donacion-tipo.esta-elegido{background:var(--green-600);border-color:var(--green-600);color:#fff}
+.donacion-tipo.esta-elegido i{color:#fff}
+.donacion-tipo-ayuda{margin:10px 0 0;font-size:13px;line-height:1.6;color:var(--text-muted);max-width:none}
+
+.donacion-monto{padding:18px 18px 16px;margin-bottom:22px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2)}
+.donacion-monto-titulo{display:block;font-size:13.5px;font-weight:600;color:var(--text-primary);margin-bottom:11px}
+.donacion-montos-fila{display:flex;flex-wrap:wrap;gap:8px}
+.donacion-monto-btn{padding:10px 16px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:inherit;font-size:13.5px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:border-color .18s,background .18s,color .18s}
+.donacion-monto-btn:hover{border-color:var(--green-400,#8DB355)}
+.donacion-monto-btn.esta-elegido{background:var(--green-600);border-color:var(--green-600);color:#fff}
+.donacion-monto-otro{width:130px;height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:inherit;font-size:13.5px;color:var(--text-primary)}
+.donacion-monto-otro:focus{outline:none;border-color:var(--green-400,#8DB355);box-shadow:0 0 0 3px rgba(141,179,85,.18)}
+
+.donacion-frecuencia{display:flex;gap:8px;margin-top:12px}
+.donacion-frec{padding:8px 15px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:inherit;font-size:12.5px;color:var(--text-secondary);cursor:pointer;transition:border-color .18s,background .18s,color .18s}
+.donacion-frec.esta-elegido{background:var(--green-800);border-color:var(--green-800);color:#fff}
+.donacion-monto-nota{margin:12px 0 0;font-size:12px;line-height:1.55;color:var(--text-muted);max-width:none}
+
+.donacion-campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.donacion-enviar{width:100%;justify-content:center;margin-top:4px}
+/* Lo único que hay que dejar clarísimo antes de pulsar: esto no cobra. */
+.donacion-nota{display:flex;gap:8px;align-items:center;justify-content:center;margin:14px 0 0;font-size:12.5px;color:var(--text-muted);max-width:none;text-align:center}
+.donacion-nota i{font-size:15px;flex-shrink:0}
+
+/* ── Transferencia directa ── */
+.donacion-banco{margin-top:26px;padding:24px;border-radius:var(--radius-lg,14px);border:1px solid var(--border);background:#fff}
+.donacion-banco h2{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:600;color:var(--green-800);margin:0 0 8px}
+.donacion-banco h2 i{font-size:22px;color:var(--green-600)}
+.donacion-banco-intro{font-size:13.5px;line-height:1.65;color:var(--text-secondary);margin:0 0 16px;max-width:none}
+.donacion-banco-datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 22px;margin:0 0 16px;padding:16px 18px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2)}
+.donacion-banco-datos dt{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:3px}
+.donacion-banco-datos dd{margin:0;font-size:14px;color:var(--text-primary);font-weight:500}
+/* El número de cuenta se copia a mano: tabular para que no baile al leerlo. */
+.donacion-banco-datos dd.es-cuenta{font-variant-numeric:tabular-nums;letter-spacing:.03em;font-size:15px;font-weight:600}
+.donacion-banco-nota{font-size:13px;line-height:1.65;color:var(--text-secondary);margin:0;max-width:none}
+
+.donacion-transparencia{display:flex;gap:16px;align-items:flex-start;margin-top:26px;padding:22px 24px;border-radius:var(--radius-lg,14px);background:var(--green-50,#F2F7EE);border:1px solid var(--green-200,#D7E7CB)}
+.donacion-transparencia > i{font-size:26px;color:var(--green-600);flex-shrink:0;margin-top:2px}
+.donacion-transparencia h3{font-size:15px;font-weight:600;color:var(--green-800);margin:0 0 6px}
+.donacion-transparencia p{font-size:13.5px;line-height:1.65;color:var(--text-secondary);margin:0 0 14px;max-width:none}
+
+/* El ícono del tipo, en la fila de la bandeja del panel. */
+.aporte-icono{color:var(--green-600);font-size:16px;margin-right:2px}
+
+@media (max-width:640px){
+  .donacion-inner{padding:0 16px}
+  .donacion-card,.donacion-banco{padding:20px 16px}
+  .donacion-campos{grid-template-columns:1fr}
+  .donacion-tipos-fila{grid-template-columns:1fr}
+  .donacion-tipo{flex-direction:row;justify-content:flex-start;gap:12px;padding:13px 15px}
+  .donacion-monto-otro{width:100%}
+  .donacion-transparencia{flex-direction:column;gap:10px}
 }

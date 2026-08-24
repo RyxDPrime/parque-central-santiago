@@ -32,8 +32,8 @@ export function Apoyanos() {
                   <span className="support-card-tag">{forma.etiqueta}</span>
                   <h3>{forma.titulo}</h3>
                   <p>{forma.texto}</p>
-                  <Link to="/contacto" className="btn-outline">
-                    Escríbenos <i className="ti ti-arrow-right" />
+                  <Link to="/donaciones" className="btn-outline">
+                    Quiero apoyar <i className="ti ti-arrow-right" />
                   </Link>
                 </div>
               ))}

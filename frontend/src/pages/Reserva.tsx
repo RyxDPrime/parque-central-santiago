@@ -376,7 +376,7 @@ export function Reserva() {
                   </small>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group form-group-medio">
                   <label htmlFor="r-personas">Cantidad de personas</label>
                   <input
                     id="r-personas"
@@ -414,7 +414,7 @@ export function Reserva() {
               <legend>
                 <span className="reserva-grupo-num">3</span> Cuándo
               </legend>
-              <div className="reserva-campos">
+              <div className="reserva-campos es-cuando">
                 <div className="form-group">
                   <label htmlFor="r-fecha">Fecha</label>
                   <input

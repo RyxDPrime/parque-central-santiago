@@ -154,7 +154,13 @@ export async function eliminarUsuario(id: number): Promise<void> {
 }
 
 export async function listEntity<T>(entityPath: string): Promise<T[]> {
-  const res = await fetch(`${API_URL}/${entityPath}`);
+  // Se manda la sesion aunque casi todas estas rutas sean publicas: alguna
+  // —como el listado de espacios que incluye los dados de baja— solo existe
+  // para el panel y responde 401 sin ella. Las publicas la ignoran.
+  const token = getToken();
+  const res = await fetch(`${API_URL}/${entityPath}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
   return convertirMedios(await res.json(), aAbsoluta) as T[];
 }

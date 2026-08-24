@@ -72,7 +72,7 @@ export function EntityManager() {
     setBusqueda('')
     setFiltros({})
     setOrdenCampo('')
-    listEntity<Row>(config.path)
+    listEntity<Row>(config.listPath ?? config.path)
       .then((data) => {
         setRows(data)
         setError(null)
@@ -164,7 +164,7 @@ export function EntityManager() {
       }
       // Se recarga en vez de parchear la fila: al insertar o mover, el backend
       // renumera las demás posiciones y esos valores quedarían viejos aquí.
-      setRows(await listEntity<Row>(config.path))
+      setRows(await listEntity<Row>(config.listPath ?? config.path))
       setFormVersion((v) => v + 1)
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Error al guardar')
@@ -179,7 +179,7 @@ export function EntityManager() {
     try {
       await deleteEntity(config.path, id)
       // Igual que al guardar: borrar cierra el hueco y renumera el resto.
-      setRows(await listEntity<Row>(config.path))
+      setRows(await listEntity<Row>(config.listPath ?? config.path))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al eliminar')
     }

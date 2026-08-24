@@ -21,6 +21,13 @@ export interface FieldConfig {
 
 export interface EntityConfig {
   path: string
+  /**
+   * Ruta para LEER la lista, cuando no sirve la misma que para escribir. Se usa
+   * donde la ruta pública esconde registros que el panel sí tiene que ver, como
+   * los espacios dados de baja: sin esto, desactivar uno lo haría desaparecer
+   * de la pantalla desde la que se vuelve a activar.
+   */
+  listPath?: string
   /** Sin alta ni borrado: el conjunto de registros es fijo. */
   soloEditar?: boolean
   label: string
@@ -320,6 +327,7 @@ export const entityConfigs: EntityConfig[] = [
   },
   {
     path: 'espacios-reservables',
+    listPath: 'espacios-reservables-todos',
     icon: 'ti-map-pin-check',
     description: 'Los espacios que el Parque acepta prestar. Es una lista aparte de Instalaciones a propósito: hay veintiuna instalaciones, pero nadie reserva una ciclovía. Lo que esté aquí es lo que aparece en el formulario de Reserva.',
     label: 'Espacios reservables',

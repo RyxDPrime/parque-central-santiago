@@ -1084,3 +1084,75 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .modal-acciones{flex-direction:column;align-items:stretch}
   .modal-acciones > *{justify-content:center}
 }
+
+/* ── CAMPOS DE LOS FORMULARIOS PÚBLICOS ── */
+/* Existían solo para .form-row, que usa Contacto. Sugerencias y Reserva usan
+   .form-group y se estaban viendo con los campos crudos del navegador: borde
+   inset, sin padding y en Arial, dentro de una página en Poppins. */
+.form-group{display:flex;flex-direction:column;gap:6px;min-width:0}
+.form-group label{font-size:12.5px;font-weight:500;color:var(--text-secondary)}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:11px 13px;
+  font-size:13.5px;
+  font-family:var(--font);
+  color:var(--text-primary);
+  background:#fff;
+  transition:border-color .18s,box-shadow .18s;
+  /* Sin esto, un campo largo estira su columna de la rejilla y descuadra la fila. */
+  min-width:0;
+}
+.form-group textarea{resize:vertical;min-height:110px;line-height:1.6}
+.form-group input::placeholder,
+.form-group textarea::placeholder{color:var(--text-muted)}
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover{border-color:#CFCFC7}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+  outline:none;
+  border-color:var(--green-400);
+  box-shadow:0 0 0 3px rgba(141,179,85,.18);
+}
+
+/* La flecha del navegador no combina con nada; se dibuja una. */
+.form-group select{
+  appearance:none;
+  padding-right:36px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888780' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+}
+/* Los de fecha y hora traen su propio icono; se tiñe para que no destaque. */
+.form-group input[type="date"]::-webkit-calendar-picker-indicator,
+.form-group input[type="time"]::-webkit-calendar-picker-indicator{
+  opacity:.45;cursor:pointer;
+}
+.form-group input[type="date"]:hover::-webkit-calendar-picker-indicator,
+.form-group input[type="time"]:hover::-webkit-calendar-picker-indicator{opacity:.8}
+/* Misma altura exacta para todo lo de una sola línea. Sin esto cada tipo de
+   campo la calcula a su manera —un input de fecha salía 3px más alto que el
+   select de al lado— y la fila "Cuándo" se veía desalineada. */
+.form-group input:not([type="checkbox"]):not([type="radio"]),
+.form-group select{height:44px;padding-top:0;padding-bottom:0}
+
+/* ── REJILLA DEL FORMULARIO DE RESERVA ── */
+/* Dos columnas fijas en vez de auto-fit: con tres, el grupo de datos personales
+   dejaba a "Teléfono" solo en una fila con dos huecos al lado. */
+.reserva-campos{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* Fecha, entrada y salida sí piden tres: son cortos y se leen como una unidad. */
+.reserva-campos.es-cuando{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* Un número de dos cifras no necesita media pantalla. */
+.reserva-campos .form-group-medio{max-width:220px}
+
+@media (max-width:640px){
+  .reserva-campos,
+  .reserva-campos.es-cuando{grid-template-columns:1fr}
+  .reserva-campos .form-group-medio{max-width:none}
+}

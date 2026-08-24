@@ -25,6 +25,26 @@ reservasRouter.get("/espacios-reservables", async (_req, res, next) => {
   }
 });
 
+/**
+ * El mismo listado, pero con los dados de baja incluidos, para el panel.
+ *
+ * Hace falta una ruta aparte porque si el panel usara la de arriba, desmarcar
+ * "disponible para solicitar" haría desaparecer el espacio de la única pantalla
+ * desde la que se puede volver a activar: dar de baja equivaldría a perderlo.
+ */
+reservasRouter.get(
+  "/espacios-reservables-todos",
+  requireAuth,
+  requirePermiso("contenido"),
+  async (_req, res, next) => {
+    try {
+      res.json(await prisma.espacioReservable.findMany({ orderBy: { orden: "asc" } }));
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 // Van los permitidos y los no permitidos: los primeros llenan la lista del
 // formulario, los segundos se publican al lado para que quien iba a pedir algo
 // que no procede se entere antes y no después.

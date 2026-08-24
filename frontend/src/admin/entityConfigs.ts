@@ -334,6 +334,31 @@ export const entityConfigs: EntityConfig[] = [
     ],
   },
   {
+    path: 'cuentas-bancarias',
+    listPath: 'cuentas-bancarias-todas',
+    icon: 'ti-building-bank',
+    description: 'Las cuentas donde el Parque puede recibir transferencias. Pueden ser varias: una por banco, o una en pesos y otra en dólares. Las que estén aquí y marcadas como disponibles son las que se muestran en la página de Donaciones. Revisa el número dos veces antes de guardar: un dígito mal manda el dinero de alguien a otra parte.',
+    label: 'Cuentas bancarias',
+    titleField: 'banco',
+    fields: [
+      { key: 'banco', label: 'Banco', type: 'text', required: true, placeholder: 'Ej: Banco Popular Dominicano', hint: 'Nombre del banco, como aparece al hacer la transferencia.' },
+      { key: 'tipoCuenta', label: 'Tipo de cuenta', type: 'select', required: true, options: [
+        { value: 'Cuenta de ahorros', label: 'Cuenta de ahorros' },
+        { value: 'Cuenta corriente', label: 'Cuenta corriente' },
+      ], hint: 'Lo que hay que elegir en la app del banco al transferir.' },
+      { key: 'numero', label: 'Número de cuenta', type: 'text', required: true, placeholder: '000-0000000-0', hint: 'El dato más delicado de todo el sitio. Cópialo del estado de cuenta, no de memoria.' },
+      { key: 'titular', label: 'A nombre de', type: 'text', required: true, placeholder: 'Patronato para la Administración del Parque Central de Santiago', hint: 'Titular de la cuenta, tal como debe escribirse en la transferencia.' },
+      { key: 'rnc', label: 'RNC', type: 'text', placeholder: '430-25261-1', hint: 'Para quien necesite comprobante fiscal. Opcional.' },
+      { key: 'moneda', label: 'Moneda', type: 'select', options: [
+        { value: 'DOP', label: 'Pesos dominicanos (RD$)' },
+        { value: 'USD', label: 'Dólares (US$)' },
+      ], hint: 'Se muestra junto a la cuenta para que nadie transfiera en la moneda equivocada.' },
+      { key: 'nota', label: 'Aclaración', type: 'text', placeholder: 'Ej: solo para donaciones institucionales', hint: 'Opcional. Se muestra debajo de la cuenta, en letra pequeña.' },
+      { key: 'activa', label: 'Se muestra en el sitio', type: 'checkbox', hint: 'Desmarcada, deja de aparecer en la página de Donaciones sin tener que borrarla.' },
+      { key: 'orden', label: 'Posición en la tabla', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
     path: 'espacios-reservables',
     listPath: 'espacios-reservables-todos',
     icon: 'ti-map-pin-check',

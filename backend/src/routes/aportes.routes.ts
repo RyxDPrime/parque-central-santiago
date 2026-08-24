@@ -36,6 +36,35 @@ aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
   }
 });
 
+// ── Cuentas bancarias ──
+
+// Solo las activas: cerrar una cuenta en el panel debe sacarla del sitio sin
+// obligar a borrarla, que es como se pierde el historial de a donde entro que.
+aportesRouter.get("/cuentas-bancarias", async (_req, res, next) => {
+  try {
+    res.json(
+      await prisma.cuentaBancaria.findMany({ where: { activa: true }, orderBy: { orden: "asc" } }),
+    );
+  } catch (err) {
+    next(err);
+  }
+});
+
+// El mismo listado con las cerradas incluidas, para el panel: si no, cerrar una
+// la haria desaparecer de la unica pantalla desde la que se puede reabrir.
+aportesRouter.get(
+  "/cuentas-bancarias-todas",
+  requireAuth,
+  requirePermiso("contenido"),
+  async (_req, res, next) => {
+    try {
+      res.json(await prisma.cuentaBancaria.findMany({ orderBy: { orden: "asc" } }));
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 // ── Panel ──
 
 aportesRouter.get(

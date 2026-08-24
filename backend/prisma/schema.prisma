@@ -405,3 +405,24 @@ model Aporte {
 
   @@index([estado])
 }
+
+// Las cuentas donde el Parque puede recibir transferencias. Es una tabla y no
+// unos textos sueltos porque puede haber varias: una por banco, o una en pesos
+// y otra en dolares. Si no se llega a usar pasarela de pago, esta es la via.
+model CuentaBancaria {
+  id         Int      @id @default(autoincrement())
+  banco      String
+  tipoCuenta String
+  numero     String
+  titular    String
+  // Para quien necesite comprobante fiscal. Suele ser el mismo del Patronato,
+  // pero se guarda por cuenta por si alguna estuviera a otro nombre.
+  rnc        String?
+  // DOP | USD
+  moneda     String   @default("DOP")
+  nota       String?
+  activa     Boolean  @default(true)
+  orden      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

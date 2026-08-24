@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
+import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
 import { api, type TipoAporte } from '../api/client'
 
@@ -12,9 +13,11 @@ import { api, type TipoAporte } from '../api/client'
  * dice qué quiere dar y el Parque la contacta. Eso se dice con todas sus letras
  * en la página y en el correo de acuse, porque alguien podría creer que ya donó.
  *
- * Los datos bancarios salen del panel y el bloque NO se muestra mientras estén
- * en blanco. Es deliberado: una cuenta equivocada en una página de donaciones
- * manda el dinero de un ciudadano a otra parte.
+ * Las cuentas bancarias son una tabla que el Parque administra: pueden ser
+ * varias —una por banco, o una en pesos y otra en dólares— y el bloque no
+ * aparece mientras no haya ninguna. Es deliberado: una cuenta equivocada en una
+ * página de donaciones manda el dinero de un ciudadano a otra parte, así que
+ * antes de mostrar algo dudoso, no se muestra nada.
  */
 
 const TIPOS: { valor: TipoAporte; etiqueta: string; icono: string; ayuda: string }[] = [
@@ -49,6 +52,7 @@ type Estado =
 
 export function Donaciones() {
   const texto = useTextos()
+  const { data: cuentas } = useApiData(api.getCuentasBancarias)
   const [tipo, setTipo] = useState<TipoAporte>('dinero')
   const [monto, setMonto] = useState('')
   const [frecuencia, setFrecuencia] = useState<'unica' | 'mensual'>('unica')
@@ -57,11 +61,7 @@ export function Donaciones() {
   const elegido = TIPOS.find((t) => t.valor === tipo)!
   const esDinero = tipo === 'dinero'
 
-  // El bloque de transferencia solo existe si hay banco Y número de cuenta.
-  // Medio dato bancario no sirve para transferir y sí para confundir.
-  const banco = texto('donaciones.banco').trim()
-  const cuenta = texto('donaciones.cuenta').trim()
-  const hayDatosBancarios = Boolean(banco) && Boolean(cuenta)
+  const hayCuentas = cuentas !== null && cuentas.length > 0
 
   async function enviar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -296,43 +296,49 @@ export function Donaciones() {
           </form>
 
           {/* ── Transferencia directa ── */}
-          {hayDatosBancarios && (
+          {hayCuentas && (
             <div className="donacion-banco">
               <h2>
                 <i className="ti ti-building-bank" /> Transferencia directa
               </h2>
               <p className="donacion-banco-intro">
-                Si prefieres transferir sin esperar a que te contactemos, estos son los datos de la
-                cuenta del Patronato.
+                Si prefieres transferir sin esperar a que te contactemos, estas son las cuentas del
+                Patronato.
               </p>
-              <dl className="donacion-banco-datos">
-                <div>
-                  <dt>Banco</dt>
-                  <dd>{banco}</dd>
-                </div>
-                {texto('donaciones.tipoCuenta') && (
-                  <div>
-                    <dt>Tipo de cuenta</dt>
-                    <dd>{texto('donaciones.tipoCuenta')}</dd>
-                  </div>
-                )}
-                <div>
-                  <dt>Número de cuenta</dt>
-                  <dd className="es-cuenta">{cuenta}</dd>
-                </div>
-                {texto('donaciones.titular') && (
-                  <div>
-                    <dt>A nombre de</dt>
-                    <dd>{texto('donaciones.titular')}</dd>
-                  </div>
-                )}
-                {texto('donaciones.rnc') && (
-                  <div>
-                    <dt>RNC</dt>
-                    <dd>{texto('donaciones.rnc')}</dd>
-                  </div>
-                )}
-              </dl>
+
+              {/* La tabla se desplaza dentro de su recuadro. Partir un número de
+                  cuenta en dos líneas para que quepa es peor que desplazarlo. */}
+              <div className="donacion-tabla-scroll">
+                <table className="donacion-tabla">
+                  <thead>
+                    <tr>
+                      <th>Banco</th>
+                      <th>Tipo</th>
+                      <th>Número de cuenta</th>
+                      <th>A nombre de</th>
+                      <th>RNC</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cuentas!.map((c) => (
+                      <tr key={c.id}>
+                        <td>
+                          {c.banco}
+                          {c.moneda === 'USD' && <span className="donacion-moneda">US$</span>}
+                        </td>
+                        <td>{c.tipoCuenta}</td>
+                        <td className="es-cuenta">
+                          {c.numero}
+                          {c.nota && <small>{c.nota}</small>}
+                        </td>
+                        <td>{c.titular}</td>
+                        <td>{c.rnc || '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
               {texto('donaciones.notaTransferencia') && (
                 <p className="donacion-banco-nota">{texto('donaciones.notaTransferencia')}</p>
               )}

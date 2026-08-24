@@ -233,6 +233,19 @@ export interface SolicitudReservaInput {
   acepta: true;
 }
 
+export interface CuentaBancaria {
+  id: number;
+  banco: string;
+  tipoCuenta: string;
+  numero: string;
+  titular: string;
+  rnc: string | null;
+  moneda: string;
+  nota: string | null;
+  activa: boolean;
+  orden: number;
+}
+
 export type TipoAporte = 'dinero' | 'patrocinio' | 'voluntariado';
 
 export interface AporteInput {
@@ -301,6 +314,7 @@ export const api = {
   getReservasOcupadas: () => get<ReservaOcupada[]>("/reservas-ocupadas"),
   enviarSolicitudReserva: (data: SolicitudReservaInput) =>
     post<{ ok: boolean; id: number }>("/solicitudes-reserva", data),
+  getCuentasBancarias: () => get<CuentaBancaria[]>("/cuentas-bancarias"),
   enviarAporte: (data: AporteInput) => post<{ ok: boolean; id: number }>("/aportes", data),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
   enviarSugerencia: (data: SugerenciaInput) => post<{ ok: boolean }>("/sugerencias", data),

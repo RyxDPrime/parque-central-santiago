@@ -48,6 +48,7 @@ apiRouter.use("/tipos-actividad", crudRoutes("tipoActividad", { reorder: true })
 // Solo editar: el conjunto de plantillas es fijo. Si faltara la de una
 // decision, esa decision se quedaria sin correo.
 apiRouter.use("/plantillas-correo", crudRoutes("plantillaCorreo", { soloEditar: true, permiso: "comunicaciones" }));
+apiRouter.use("/cuentas-bancarias", crudRoutes("cuentaBancaria", { reorder: true }));
 apiRouter.use("/cifras", crudRoutes("cifra", { reorder: true }));
 apiRouter.use("/aliados", crudRoutes("aliado", { reorder: true }));
 apiRouter.use("/textos", crudRoutes("texto", { soloEditar: true }));

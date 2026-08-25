@@ -465,7 +465,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
-| 25 ago 2026 | Una institución de la Junta se puede registrar sin representante designado. Sección 2 ampliada a una subsección por página. |
+| 25 ago 2026 | Una institución de la Junta se puede registrar sin representante designado, y ya se ve así en el sitio. Sección 2 ampliada a una subsección por página. |
 | 24 ago 2026 | Las cuentas bancarias pasan de textos sueltos a tabla administrable, con varias cuentas y monedas. |
 | 24 ago 2026 | Página de Donaciones, con su bandeja y su plantilla de respuesta. |
 | 23 ago 2026 | La lista cerrada de tipos de actividad se aplica también en el servidor. |

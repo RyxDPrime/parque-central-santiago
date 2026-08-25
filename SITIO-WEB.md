@@ -30,7 +30,7 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 |---|---|
 | Instalaciones | 21 |
 | Aliados y patrocinadores | 19 |
-| Junta Directiva | 17 cargadas, de 19 entidades |
+| Junta Directiva | 19 |
 | Galería | 15 |
 | Hitos de la historia | 14 |
 | Actividades | 13 |
@@ -130,7 +130,7 @@ Una tarjeta por institución. La tarjeta tiene dos modos, que se eligen desde el
 
 **Institución sin representante designado.** Una entidad se puede registrar aunque todavía no se sepa a quién va a designar: en ese caso la tarjeta pone la institución como título y añade, en letra discreta, *"Representante por designar"*. Se hizo así porque el Parque envía las entidades antes que los nombres, y exigir la persona obligaba a inventarse un nombre para poder guardar la entidad.
 
-**Estado:** hay 17 instituciones cargadas y el Patronato tiene 19. Las dos que faltan se pueden agregar ya, con el nombre de la institución solamente.
+**Estado:** las 19 entidades están cargadas. Las dos diputaciones figuran sin representante designado, porque el Parque envió las instituciones pero todavía no los nombres.
 
 **Qué se administra:** Secciones del sitio → Junta Directiva.
 
@@ -438,10 +438,10 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 | **Cuentas bancarias** | Sin ellas la página de Donaciones no muestra cómo transferir | **Alta** |
 | **Confirmar tipos de actividad** | La lista de 13 es un borrador nuestro, y el sistema ya la aplica | **Alta** |
 | **Cuáles espacios se cobran** | Los 12 están marcados con costo por suposición nuestra | **Alta** |
+| Nombres de los dos diputados | Sus tarjetas dicen "Representante por designar" hasta que lleguen | Media |
 | Fotografías pendientes | Canchas, kioscos, entrada, inauguración, vista aérea y 7 instalaciones nuevas | Media |
 | Reescribir los pasos de reserva | Dicen que hay que llamar; describen el proceso anterior al formulario | Media |
 | Revisar el hito de 2018 | Dice "Constitución del Patronato" y el sitio ya afirma que existe desde 2001 | Media |
-| Las 2 instituciones que faltan | Ya se pueden cargar con el nombre solamente, sin representante | Media |
 | Qué actividades no se permiten, en el Reglamento | Hoy esa regla no está escrita en ninguna de las 12 normas | Media |
 
 ### 6.2 Bloqueado por trámites
@@ -465,7 +465,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
-| 25 ago 2026 | Una institución de la Junta se puede registrar sin representante designado, y ya se ve así en el sitio. Sección 2 ampliada a una subsección por página. |
+| 25 ago 2026 | Las dos diputaciones se agregan a la Junta: 19 entidades completas. Una institución puede registrarse sin representante designado. Sección 2 ampliada a una subsección por página. |
 | 24 ago 2026 | Las cuentas bancarias pasan de textos sueltos a tabla administrable, con varias cuentas y monedas. |
 | 24 ago 2026 | Página de Donaciones, con su bandeja y su plantilla de respuesta. |
 | 23 ago 2026 | La lista cerrada de tipos de actividad se aplica también en el servidor. |

@@ -71,6 +71,10 @@ export function JuntaDirectiva() {
                   ) : (
                     <>
                       <h3>{member.institucion}</h3>
+                      {/* Sin representante, el cargo describe a la institución
+                          —la circunscripción de una diputación, por ejemplo— y
+                          pasa a ocupar la línea que llevaría el nombre. */}
+                      {member.cargo && <p className="leadership-org">{member.cargo}</p>}
                       <p className="leadership-cargo es-pendiente">Representante por designar</p>
                     </>
                   )}

@@ -11,8 +11,11 @@ datasource db {
 model JuntaDirectivo {
   id            Int      @id @default(autoincrement())
   institucion   String
-  representante String
-  cargo         String
+  // Opcionales: el Parque manda las instituciones antes de saber a quien van a
+  // designar, y obligar a poner un nombre significaba inventarse una persona
+  // para poder registrar la entidad.
+  representante String?
+  cargo         String?
   logoUrl       String?
   fotoUrl       String?
   orden         Int      @default(0)

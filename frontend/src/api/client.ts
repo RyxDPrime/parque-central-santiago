@@ -5,8 +5,9 @@ const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
 export interface JuntaDirectivoMember {
   id: number;
   institucion: string;
-  representante: string;
-  cargo: string;
+  /** Vacios mientras la institucion no haya designado a nadie. */
+  representante: string | null;
+  cargo: string | null;
   logoUrl: string | null;
   fotoUrl: string | null;
   orden: number;

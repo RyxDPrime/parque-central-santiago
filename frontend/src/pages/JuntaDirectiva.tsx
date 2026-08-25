@@ -55,9 +55,21 @@ export function JuntaDirectiva() {
                       </span>
                     )}
                   </div>
-                  <h3>{member.representante}</h3>
-                  <p className="leadership-org">{member.institucion}</p>
-                  <p className="leadership-cargo">{member.cargo}</p>
+                  {/* Sin representante designado, la institución pasa a ser el
+                      título: la entidad ya forma parte del Patronato aunque
+                      todavía no se sepa quién la representa. */}
+                  {member.representante ? (
+                    <>
+                      <h3>{member.representante}</h3>
+                      <p className="leadership-org">{member.institucion}</p>
+                      {member.cargo && <p className="leadership-cargo">{member.cargo}</p>}
+                    </>
+                  ) : (
+                    <>
+                      <h3>{member.institucion}</h3>
+                      <p className="leadership-cargo es-pendiente">Representante por designar</p>
+                    </>
+                  )}
                 </article>
                 )
               })}

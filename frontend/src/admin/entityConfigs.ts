@@ -152,14 +152,14 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'junta-directiva',
     icon: 'ti-building-bank',
-    description: 'Tarjetas de la página Institución → Junta Directiva. Cada registro es una institución del Patronato con su representante.',
+    description: 'Tarjetas de la página Institución → Junta Directiva. Cada registro es una institución del Patronato. El representante y su cargo son opcionales: una entidad se puede registrar aunque todavía no se sepa a quién va a designar.',
     label: 'Junta Directiva',
     textosGrupo: 'Junta Directiva',
     titleField: 'institucion',
     fields: [
       { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.', hint: 'Nombre que aparece bajo la foto, en negrita.' },
-      { key: 'representante', label: 'Representante', type: 'text', required: true, placeholder: 'Ej: Juan Carlos Ortiz', hint: 'La persona que representa a la institución. Es el título de la tarjeta.' },
-      { key: 'cargo', label: 'Cargo', type: 'text', required: true, placeholder: 'Ej: Presidente', hint: 'Puesto dentro de la Junta. Es la última línea de la tarjeta.' },
+      { key: 'representante', label: 'Representante', type: 'text', placeholder: 'Ej: Juan Carlos Ortiz', hint: 'Opcional. Si todavía no se sabe quién representa a la institución, déjalo vacío: la tarjeta muestra la institución como título y avisa que está por designar.' },
+      { key: 'cargo', label: 'Cargo', type: 'text', placeholder: 'Ej: Presidente', hint: 'Opcional. Puesto dentro de la Junta; si no hay representante, déjalo vacío también.' },
       { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*', aspect: 1, hint: 'Solo se usa si arriba eliges mostrar fotos en vez de logos.' },
       { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*', aspect: 1, hint: 'Lo que se ve hoy en el recuadro de la tarjeta, sobre fondo blanco.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },

@@ -1242,3 +1242,6 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .donacion-monto-otro{width:100%}
   .donacion-transparencia{flex-direction:column;gap:10px}
 }
+/* Institucion sin representante designado: se dice, en letra discreta, en vez
+   de dejar la tarjeta con un hueco donde deberia ir un nombre. */
+.leadership-cargo.es-pendiente{font-style:italic;color:var(--text-muted);font-weight:400}

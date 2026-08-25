@@ -35,7 +35,11 @@ export function JuntaDirectiva() {
                 <article className="leadership-card" key={member.id}>
                   <div className={`leadership-photo${conLogo ? ' is-logo' : ''}`}>
                     {mostrarFoto && member.fotoUrl ? (
-                      <img src={member.fotoUrl} alt={member.representante} loading="lazy" />
+                      <img
+                        src={member.fotoUrl}
+                        alt={member.representante ?? member.institucion}
+                        loading="lazy"
+                      />
                     ) : member.logoUrl ? (
                       <img
                         className="leadership-photo-logo"

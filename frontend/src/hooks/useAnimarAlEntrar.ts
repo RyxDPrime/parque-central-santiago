@@ -11,9 +11,13 @@ import { useLayoutEffect } from 'react'
  *    algo fallara, la página se ve completa en vez de quedarse en blanco, que
  *    es como fallan las animaciones de aparición mal hechas.
  *
- * 2. **Quien pide menos movimiento no recibe ninguno.** El sistema operativo
- *    permite pedir que se reduzcan las animaciones, y hay personas a las que
- *    el desplazamiento les produce mareo. En ese caso ni se activa.
+ * 2. **Quien pide menos movimiento recibe solo el fundido.** El sistema
+ *    operativo permite pedir que se reduzcan las animaciones —Windows lo hace
+ *    solo al desactivar los efectos visuales—, y hay personas a las que el
+ *    desplazamiento les produce mareo. Lo que marea es el deslizamiento, no
+ *    que algo aparezca, así que en ese caso se quita el movimiento y se deja
+ *    el fundido. Vive en el CSS y no aquí, para que cambiar el ajuste del
+ *    sistema surta efecto sin recargar.
  *
  * 3. **La dirección no se escribe aquí.** Cada pieza dice de dónde entra desde
  *    el CSS, con dos variables. Así los bloques de la portada, que alternan la
@@ -83,13 +87,24 @@ const ESTILO = `
   opacity: 1;
   transform: none;
 }
+
+/* Quien pidió menos movimiento ve aparecer las secciones, pero sin que se
+   desplacen ni se escalonen: lo que produce mareo es el recorrido, no que algo
+   surja. Va en una consulta de medios y no en un corte del JavaScript para que
+   cambiar el ajuste del sistema se note sin recargar la página. */
+@media (prefers-reduced-motion: reduce) {
+  :where(.js-anima) :is(${ANIMABLES}) {
+    transform: none;
+    transition-duration: .35s;
+    transition-delay: 0s;
+  }
+}
 `
 
 export function useAnimarAlEntrar(): void {
   useLayoutEffect(() => {
     // Sin soporte del navegador, todo se queda visible y no pasa nada.
     if (typeof IntersectionObserver === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const estilo = document.createElement('style')
     estilo.dataset.anima = ''
@@ -99,8 +114,12 @@ export function useAnimarAlEntrar(): void {
     const raiz = document.documentElement
     raiz.classList.add('js-anima')
 
+    // Si el navegador nunca contesta, hay que deshacerlo todo: ver mas abajo.
+    let contesto = false
+
     const observador = new IntersectionObserver(
       (entradas) => {
+        contesto = true
         for (const entrada of entradas) {
           if (!entrada.isIntersecting) continue
           entrada.target.classList.add('es-visible')
@@ -133,6 +152,22 @@ export function useAnimarAlEntrar(): void {
     }
     registrar()
 
+    /**
+     * Red de seguridad.
+     *
+     * Todo esto se apoya en que el navegador avise cuando una pieza entra en
+     * pantalla. Si no avisa —pasa en vistas que no se dibujan, y bastaria un
+     * navegador raro o una pestana en segundo plano al cargar— las piezas se
+     * quedarian escondidas para siempre y el sitio se veria vacio.
+     *
+     * Asi que se le da un margen para contestar, y si no lo hace se retira el
+     * efecto entero y la pagina aparece completa. Perder la animacion es un
+     * detalle; perder el contenido, no.
+     */
+    const vigilante = window.setTimeout(() => {
+      if (!contesto) raiz.classList.remove('js-anima')
+    }, 1200)
+
     // Casi todo el contenido llega de la API después de dibujar la página, así
     // que hay que volver a mirar cuando aparecen elementos nuevos. Se agrupa en
     // un temporizador corto para no recorrer el documento en cada cambio.
@@ -144,6 +179,7 @@ export function useAnimarAlEntrar(): void {
     cambios.observe(document.body, { childList: true, subtree: true })
 
     return () => {
+      window.clearTimeout(vigilante)
       window.clearTimeout(pendiente)
       cambios.disconnect()
       observador.disconnect()

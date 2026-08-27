@@ -69,7 +69,7 @@ La página de inicio. Es la más compuesta del sitio y la que más piezas admini
 3. **El parque en cifras** — cinco bloques grandes con foto que se alternan solos a izquierda y derecha. Cada uno es un dato del parque con su imagen.
 4. **Quiénes somos** — bloque con foto propia y texto institucional.
 5. **Mapa del parque** — vista reducida del mapa interactivo, con enlace a la página completa.
-6. **Aliados y patrocinadores** — carrusel animado con 19 logos, que avanza solo y se puede mover con flechas. Las instituciones que todavía no tienen logo aparecen con su nombre en texto, para no dejar un hueco.
+6. **Programas y proyectos** — pase de diapositivas con los programas.
 7. **¿Quieres apoyar al parque?** — cierre con enlace a Apóyanos.
 
 **Qué se administra**
@@ -80,7 +80,6 @@ La página de inicio. Es la más compuesta del sitio y la que más piezas admini
 | Etiquetas y títulos de cada bloque | Página de inicio → Títulos y textos (11 textos) |
 | Los cinco bloques con foto | Página de inicio → Cifras |
 | Foto de "Quiénes somos" | Página de inicio → Foto de Quiénes somos |
-| Los logos del carrusel | Secciones del sitio → Aliados |
 | Los puntos del mapa | Secciones del sitio → Mapa |
 | Foto de la franja principal | Todo el sitio → Fotos de encabezado |
 
@@ -94,11 +93,13 @@ La historia de la institución. Titulada *"Más de 25 años de gestión hechos r
 
 - La historia completa en **14 hitos**, presentados como línea de tiempo.
 - Un bloque sobre la relación con **APEDI**, institución fundadora y actual presidenta del Patronato.
-- El carrusel de aliados al pie.
+- El **carrusel de aliados y patrocinadores** al pie: 19 logos que avanzan solos en bucle continuo, con flechas para moverlo a mano y pausa al pasar el ratón por encima. Las instituciones que todavía no tienen logo aparecen con su nombre en texto, para no dejar un hueco.
+
+**Detalle:** el carrusel se detiene si el equipo de quien visita tiene configurado que se reduzcan las animaciones —en Windows basta con tener apagados los efectos visuales—. Las flechas siguen funcionando.
 
 **Detalle que conviene conocer:** la historia se puede mostrar de dos maneras —línea de tiempo o un solo párrafo corrido— y se cambia desde el panel con un desplegable, sin tocar los hitos. Si se elige párrafo, los 14 hitos siguen guardados; simplemente no se muestran.
 
-**Qué se administra:** Secciones del sitio → Historia (los hitos y los tres textos: formato, relación con APEDI, e historia en un solo texto).
+**Qué se administra:** Secciones del sitio → Historia (los hitos y los tres textos: formato, relación con APEDI, e historia en un solo texto). Los logos del carrusel, en Secciones del sitio → Aliados.
 
 ---
 

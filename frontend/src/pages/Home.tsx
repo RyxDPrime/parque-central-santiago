@@ -37,7 +37,7 @@ function CifrasDestacadas() {
       {data.map((cifra, i) => (
         <div className={`stat-row ${i % 2 === 0 ? 'img-left' : 'img-right'}`} key={cifra.id}>
           {i % 2 === 0 && <CifraImagen cifra={cifra} />}
-          <div>
+          <div className="stat-texto">
             {/* Algunas "cifras" son en realidad un título ("Instalaciones y
                 espacios"): a ese largo, los 56px del número no caben en la
                 columna, así que baja a tamaño de titular. */}

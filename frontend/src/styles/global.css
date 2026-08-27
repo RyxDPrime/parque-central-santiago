@@ -1245,3 +1245,80 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 /* Institucion sin representante designado: se dice, en letra discreta, en vez
    de dejar la tarjeta con un hueco donde deberia ir un nombre. */
 .leadership-cargo.es-pendiente{font-style:italic;color:var(--text-muted);font-weight:400}
+
+/* ── DE DONDE ENTRA CADA PIEZA ── */
+/* El estado inicial y la transicion los inyecta useAnimarAlEntrar. Aqui solo se
+   dice la direccion y el desfase, con dos variables:
+     --anima-x / --anima-y  desplazamiento de partida
+     --anima-espera         cuanto tarda en arrancar
+   Por defecto todo sube desde abajo; lo de aqui son las excepciones. */
+
+/* Los bloques de la portada entran desde el lado donde esta su foto: la imagen
+   viene de su borde y el texto del contrario, como si la fila se abriera. La
+   direccion sale de img-left/img-right, que ya alterna sola. */
+.js-anima .stat-row.img-left .stat-img{--anima-x:-44px;--anima-y:0}
+.js-anima .stat-row.img-left .stat-texto{--anima-x:44px;--anima-y:0}
+.js-anima .stat-row.img-right .stat-img{--anima-x:44px;--anima-y:0}
+.js-anima .stat-row.img-right .stat-texto{--anima-x:-44px;--anima-y:0}
+/* El texto entra un pelo despues que su foto: primero se ve que hay algo, y
+   luego que dice. */
+.js-anima .stat-row .stat-texto{--anima-espera:.1s}
+
+/* El encabezado de una seccion llega como una sola cosa, en tres tiempos. */
+.js-anima .sec-label{--anima-y:16px}
+.js-anima .sec-title{--anima-y:20px;--anima-espera:.07s}
+.js-anima .sec-sub{--anima-y:20px;--anima-espera:.13s}
+
+/* Las tarjetas de una rejilla entran en cascada, no todas de golpe. Se corta en
+   la sexta: mas alla el ultimo tardaria tanto que pareceria que no carga. */
+.js-anima .quick-grid > *:nth-child(2),
+.js-anima .leadership-grid > *:nth-child(2),
+.js-anima .facility-icon-grid > *:nth-child(2),
+.js-anima .facility-photo-grid > *:nth-child(2),
+.js-anima .program-card-grid > *:nth-child(2),
+.js-anima .staff-card-grid > *:nth-child(2),
+.js-anima .support-grid > *:nth-child(2),
+.js-anima .proposito-grid > *:nth-child(2),
+.js-anima .transparency-grid > *:nth-child(2),
+.js-anima .gallery-grid > *:nth-child(2),
+.js-anima .map-grid > *:nth-child(2),
+.js-anima .steps-row > *:nth-child(2){--anima-espera:.07s}
+
+.js-anima .quick-grid > *:nth-child(3),
+.js-anima .leadership-grid > *:nth-child(3),
+.js-anima .facility-icon-grid > *:nth-child(3),
+.js-anima .facility-photo-grid > *:nth-child(3),
+.js-anima .program-card-grid > *:nth-child(3),
+.js-anima .staff-card-grid > *:nth-child(3),
+.js-anima .support-grid > *:nth-child(3),
+.js-anima .proposito-grid > *:nth-child(3),
+.js-anima .transparency-grid > *:nth-child(3),
+.js-anima .gallery-grid > *:nth-child(3),
+.js-anima .map-grid > *:nth-child(3),
+.js-anima .steps-row > *:nth-child(3){--anima-espera:.14s}
+
+.js-anima .quick-grid > *:nth-child(4),
+.js-anima .leadership-grid > *:nth-child(4),
+.js-anima .facility-icon-grid > *:nth-child(4),
+.js-anima .facility-photo-grid > *:nth-child(4),
+.js-anima .program-card-grid > *:nth-child(4),
+.js-anima .staff-card-grid > *:nth-child(4),
+.js-anima .support-grid > *:nth-child(4),
+.js-anima .gallery-grid > *:nth-child(4),
+.js-anima .map-grid > *:nth-child(4){--anima-espera:.21s}
+
+.js-anima .leadership-grid > *:nth-child(n+5),
+.js-anima .facility-icon-grid > *:nth-child(n+5),
+.js-anima .facility-photo-grid > *:nth-child(n+5),
+.js-anima .program-card-grid > *:nth-child(n+5),
+.js-anima .staff-card-grid > *:nth-child(n+5),
+.js-anima .gallery-grid > *:nth-child(n+5),
+.js-anima .map-grid > *:nth-child(n+5){--anima-espera:.28s}
+
+/* La linea de tiempo de la historia y la agenda entran desde la izquierda,
+   siguiendo el hilo vertical que ya las une. */
+.js-anima .story-hito{--anima-x:-30px;--anima-y:0}
+.js-anima .agenda-item{--anima-x:-24px;--anima-y:0}
+
+/* Las entradas del blog, una lista larga: un desplazamiento corto basta. */
+.js-anima .post-item{--anima-y:18px}

@@ -5,9 +5,11 @@ import { ScrollToTop } from './ScrollToTop'
 import { ScrollTopButton } from './ScrollTopButton'
 import { AlertBar } from './AlertBar'
 import { usePageMeta } from '../hooks/usePageMeta'
+import { useAnimarAlEntrar } from '../hooks/useAnimarAlEntrar'
 
 export function Layout() {
   usePageMeta()
+  useAnimarAlEntrar()
 
   return (
     <div className="page">

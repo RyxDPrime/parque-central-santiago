@@ -324,9 +324,6 @@ Formulario para que los visitantes escriban al Parque. Cuatro tipos, elegidos co
 - Mientras el sitio no esté en su dominio final se marca como **"no indexar"**, para que Google no registre la dirección de pruebas.
 - Si una sección no tiene contenido cargado, muestra un aviso en su lugar; **nunca queda en blanco**.
 - Las fotos se guardan sin el dominio delante, así que **mudar el sitio de servidor no rompe ninguna imagen**.
-- **Las secciones aparecen al desplazarse**, en vez de estar ahí de golpe. Los bloques con foto de la portada entran desde el lado donde está su foto, y las tarjetas de una rejilla llegan en cascada.
-- Quien tenga configurado en su equipo que se reduzcan las animaciones —en Windows basta con tener apagados los efectos visuales— ve las secciones **aparecer con un fundido, pero sin desplazamiento**. Lo que produce mareo es el recorrido, no que algo surja.
-- Si el navegador no llegara a avisar cuándo entra cada pieza en pantalla, el efecto **se retira solo** y la página se muestra completa. Perder la animación es un detalle; perder el contenido, no.
 
 ---
 
@@ -468,7 +465,6 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
-| 25 ago 2026 | Las secciones aparecen al entrar en pantalla, con la dirección que corresponde a cada bloque. |
 | 25 ago 2026 | Las dos diputaciones se agregan a la Junta: 19 entidades completas. Una institución puede registrarse sin representante designado. Sección 2 ampliada a una subsección por página. |
 | 24 ago 2026 | Las cuentas bancarias pasan de textos sueltos a tabla administrable, con varias cuentas y monedas. |
 | 24 ago 2026 | Página de Donaciones, con su bandeja y su plantilla de respuesta. |

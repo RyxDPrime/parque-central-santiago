@@ -1,7 +1,7 @@
 # El sitio web, sección por sección
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · Última actualización: 25 de agosto de 2026
+Ureña Limited Partners · Última actualización: 28 de agosto de 2026
 
 Todo lo que hay construido y en línea: qué contiene cada página, qué se administra desde el panel, qué formularios recibe el Parque y qué queda pendiente.
 
@@ -131,6 +131,8 @@ Una tarjeta por institución. La tarjeta tiene dos modos, que se eligen desde el
 
 **Institución sin representante designado.** Una entidad se puede registrar aunque todavía no se sepa a quién va a designar: en ese caso la tarjeta pone la institución como título y añade, en letra discreta, *"Representante por designar"*. Se hizo así porque el Parque envía las entidades antes que los nombres, y exigir la persona obligaba a inventarse un nombre para poder guardar la entidad.
 
+**Detalle:** las tarjetas ocupan cuatro columnas y la foto llena casi todo su recuadro. Antes eran cinco columnas con un margen interior pensado para logos con transparencia, y como lo que hay cargado son fotografías de personas, ese margen les comía un tercio del espacio.
+
 **Estado:** las 19 entidades están cargadas. Las dos diputaciones figuran sin representante designado, porque el Parque envió las instituciones pero todavía no los nombres.
 
 **Qué se administra:** Secciones del sitio → Junta Directiva.
@@ -196,9 +198,15 @@ Mapa interactivo sobre OpenStreetMap, con **8 puntos** ubicados. Cada punto tien
 
 ### 2.11 Actividades — `/actividades`
 
-El calendario de eventos del parque, con **13 actividades**.
+El calendario de eventos del parque, agrupado por mes.
 
 **Detalle:** al pulsar una actividad se abre una ventana con el detalle completo —fechas de inicio y fin, lugar, imagen y descripción—, en vez de mandar a otra página. Las actividades se ordenan solas por fecha; no hay que colocarlas a mano.
+
+**Los meses cumplidos se retiran solos.** Cuando termina un mes, su bloque entero desaparece del sitio: en agosto ya no se ve julio. Dentro del mes en curso se siguen viendo todas las actividades, incluidas las de días pasados, porque a mitad de mes la gente todavía pregunta por lo que hubo la semana anterior.
+
+Una actividad a caballo entre dos meses —del 31 de julio al 2 de agosto, por ejemplo— mantiene visible el bloque de julio hasta que de verdad termina.
+
+> **Nada se borra.** Esto solo cambia lo que se muestra en el sitio. En el panel siguen todas las actividades, y el Parque conserva el registro de lo que hizo. Si alguna hay que eliminarla de verdad, se hace a mano desde ahí.
 
 **Qué se administra:** Secciones del sitio → Actividades.
 
@@ -466,6 +474,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
+| 28 ago 2026 | Las fotos de la Junta Directiva se ven un 68% más grandes, y las actividades de meses ya cumplidos dejan de mostrarse. |
 | 25 ago 2026 | Las dos diputaciones se agregan a la Junta: 19 entidades completas. Una institución puede registrarse sin representante designado. Sección 2 ampliada a una subsección por página. |
 | 24 ago 2026 | Las cuentas bancarias pasan de textos sueltos a tabla administrable, con varias cuentas y monedas. |
 | 24 ago 2026 | Página de Donaciones, con su bandeja y su plantilla de respuesta. |

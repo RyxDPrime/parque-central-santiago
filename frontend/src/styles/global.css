@@ -365,7 +365,7 @@ ul{list-style:none}
 .document-card-download{color:var(--green-600);font-size:16px}
 
 /* ── JUNTA DIRECTIVA — galeria de liderazgo (grid limpio, sin bordes) ── */
-.leadership-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:36px 28px;margin-top:32px;background:#fff}
+.leadership-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px 28px;margin-top:32px;background:#fff}
 .leadership-card{text-align:left}
 .leadership-photo{position:relative;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .leadership-logo-badge{position:absolute;right:8px;bottom:8px;width:38%;max-width:64px;aspect-ratio:1;background:rgba(255,255,255,.94);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;padding:6px;z-index:1}
@@ -373,7 +373,7 @@ ul{list-style:none}
    recortaria el logo: se sube la especificidad para conservar contain. */
 .leadership-photo .leadership-logo-badge img{width:100%;height:100%;object-fit:contain}
 .leadership-photo img{width:100%;height:100%;object-fit:cover}
-.leadership-photo img.leadership-photo-logo{object-fit:contain;padding:18%}
+.leadership-photo img.leadership-photo-logo{object-fit:contain;padding:8%}
 .leadership-photo i{font-size:44px;color:var(--green-400)}
 /* La foto se agranda dentro de su marco al pasar el mouse por encima. El marco
    también reacciona, porque con el ícono de respaldo (sin foto cargada) el

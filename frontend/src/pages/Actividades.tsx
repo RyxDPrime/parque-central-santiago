@@ -17,6 +17,31 @@ function formatRango(actividad: ActividadData): string {
   return `${inicio} – ${fin}`
 }
 
+/**
+ * Hoy, en la hora del Parque.
+ *
+ * No se usa la del visitante ni la del servidor: la agenda es de Santiago, y
+ * quien la mire desde Madrid no debería ver julio desaparecer medio día antes
+ * que quien la mire desde aquí.
+ *
+ * Devuelve "2026-08-27", que se compara como texto sin sorpresas.
+ */
+const diaFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/Santo_Domingo',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
+
+function hoyEnElParque(): string {
+  return diaFormatter.format(new Date())
+}
+
+/** "2026-07-31" a partir de una fecha guardada. */
+function diaDe(fecha: string): string {
+  return new Date(fecha).toISOString().slice(0, 10)
+}
+
 function groupByMonth(actividades: ActividadData[]) {
   const groups = new Map<string, ActividadData[]>()
   for (const actividad of actividades) {
@@ -33,9 +58,36 @@ function groupByMonth(actividades: ActividadData[]) {
   }))
 }
 
+/**
+ * Fuera los meses que ya pasaron.
+ *
+ * Un mes desaparece entero cuando termina, no actividad por actividad: dentro
+ * del mes en curso se siguen viendo todas, incluidas las de días pasados,
+ * porque a mitad de mes la gente todavía pregunta por lo que hubo la semana
+ * anterior.
+ *
+ * La excepción son las actividades a caballo entre dos meses. Una que va del
+ * 31 de julio al 2 de agosto mantiene vivo el grupo de julio, pero solo hasta
+ * que de verdad acaba: se compara por día y no por mes, o julio se quedaría
+ * colgado el agosto entero por un evento que terminó el día 2.
+ *
+ * Esto solo cambia lo que se muestra. En el panel siguen todas, y el Parque
+ * conserva el registro de lo que hizo.
+ */
+function soloVigentes(grupos: ReturnType<typeof groupByMonth>) {
+  const hoy = hoyEnElParque()
+  const mesEnCurso = hoy.slice(0, 7)
+
+  return grupos.filter((grupo) => {
+    const mesDelGrupo = diaDe(grupo.items[0].fechaInicio).slice(0, 7)
+    if (mesDelGrupo >= mesEnCurso) return true
+    return grupo.items.some((a) => diaDe(a.fechaFin ?? a.fechaInicio) >= hoy)
+  })
+}
+
 export function Actividades() {
   const { data, loading, error } = useApiData(api.getActividades)
-  const groups = data ? groupByMonth(data) : []
+  const groups = data ? soloVigentes(groupByMonth(data)) : []
   const [abierta, setAbierta] = useState<ActividadData | null>(null)
 
   return (
@@ -53,11 +105,13 @@ export function Actividades() {
           {loading && <LoadingState />}
           {error && <ErrorState message={error} />}
 
-          {data && data.length === 0 && (
+          {/* Tambien cuando hay actividades pero todas ya pasaron: sin esto la
+              pagina se quedaria en blanco y pareceria rota. */}
+          {data && groups.length === 0 && (
             <EmptyState
               icon="ti-calendar-event"
               title="Agenda en preparación"
-              description="El calendario de actividades 2026 se publicará próximamente. Síguenos en redes sociales para no perderte los próximos eventos."
+              description="No hay actividades programadas por ahora. El calendario se actualiza cada mes; síguenos en redes sociales para no perderte los próximos eventos."
             />
           )}
 

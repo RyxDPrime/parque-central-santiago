@@ -131,6 +131,8 @@ Una tarjeta por institución. La tarjeta tiene dos modos, que se eligen desde el
 
 **Institución sin representante designado.** Una entidad se puede registrar aunque todavía no se sepa a quién va a designar: en ese caso la tarjeta pone la institución como título y añade, en letra discreta, *"Representante por designar"*. Se hizo así porque el Parque envía las entidades antes que los nombres, y exigir la persona obligaba a inventarse un nombre para poder guardar la entidad.
 
+**Al pasar el ratón por encima, la tarjeta entera crece** —foto, nombre, institución y cargo—, y vuelve a su tamaño al retirarlo. En pantallas táctiles no se aplica: ahí no existe el "quitar el dedo de encima", y la tarjeta se quedaría agrandada sin manera de devolverla.
+
 **Detalle:** las tarjetas ocupan cuatro columnas y la foto llena casi todo su recuadro. Antes eran cinco columnas con un margen interior pensado para logos con transparencia, y como lo que hay cargado son fotografías de personas, ese margen les comía un tercio del espacio.
 
 **Estado:** las 19 entidades están cargadas. Las dos diputaciones figuran sin representante designado, porque el Parque envió las instituciones pero todavía no los nombres.
@@ -141,7 +143,7 @@ Una tarjeta por institución. La tarjeta tiene dos modos, que se eligen desde el
 
 ### 2.5 Personal técnico — `/personal-tecnico`
 
-El equipo que trabaja en el parque. Seis registros, cada uno con foto y cargo.
+El equipo que trabaja en el parque. Seis registros, cada uno con foto y cargo. Como en la Junta, la tarjeta completa crece al pasar el ratón por encima.
 
 **Qué se administra:** Secciones del sitio → Personal Técnico.
 
@@ -474,6 +476,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
+| 28 ago 2026 | Al pasar el ratón, la tarjeta completa de la Junta y del Personal Técnico crece y vuelve a su tamaño. |
 | 28 ago 2026 | Las fotos de la Junta Directiva se ven un 68% más grandes, y las actividades de meses ya cumplidos dejan de mostrarse. |
 | 25 ago 2026 | Las dos diputaciones se agregan a la Junta: 19 entidades completas. Una institución puede registrarse sin representante designado. Sección 2 ampliada a una subsección por página. |
 | 24 ago 2026 | Las cuentas bancarias pasan de textos sueltos a tabla administrable, con varias cuentas y monedas. |

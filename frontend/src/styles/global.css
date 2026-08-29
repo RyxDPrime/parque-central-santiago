@@ -378,15 +378,14 @@ ul{list-style:none}
 /* La foto se agranda dentro de su marco al pasar el mouse por encima. El marco
    también reacciona, porque con el ícono de respaldo (sin foto cargada) el
    zoom por sí solo mueve apenas 4px y no se percibe. */
-.leadership-photo{transition:box-shadow .28s ease,background .28s ease,transform .28s ease}
-.leadership-photo img,.leadership-photo i{transition:transform .35s ease,color .28s ease}
-.leadership-card:hover .leadership-photo{background:var(--green-50);box-shadow:0 10px 26px rgba(35,74,27,.18);transform:translateY(-4px)}
+.leadership-photo{transition:box-shadow .28s ease,background .28s ease}
+.leadership-photo i{transition:color .28s ease}
+.leadership-card:hover .leadership-photo{background:var(--green-50);box-shadow:0 10px 26px rgba(35,74,27,.18)}
 /* Marco blanco para los logos institucionales: casi todos son PNG con fondo
    transparente y sobre el gris del marco se veían sucios. Se mantiene en el
    hover, donde el realce lo dan el borde y la sombra. */
 .leadership-photo.is-logo{background:#fff;border:1px solid var(--border)}
 .leadership-card:hover .leadership-photo.is-logo{background:#fff;border-color:var(--green-400)}
-.leadership-card:hover .leadership-photo img,.leadership-card:hover .leadership-photo i{transform:scale(1.08)}
 .leadership-card:hover .leadership-photo i{color:var(--green-600)}
 .leadership-card h3{font-size:15px;font-weight:700;color:var(--green-800);line-height:1.35;margin-bottom:6px}
 .leadership-org{font-size:12.5px;font-weight:600;color:var(--text-primary);line-height:1.5;margin-bottom:2px}
@@ -394,12 +393,6 @@ ul{list-style:none}
 
 /* Con "reducir movimiento" se quitan el zoom y el desplazamiento, pero se
    conserva el realce de color y sombra para que el hover siga notándose. */
-@media (prefers-reduced-motion:reduce){
-  .leadership-photo,.leadership-photo img,.leadership-photo i{transition:none}
-  .leadership-card:hover .leadership-photo{transform:none}
-  .leadership-card:hover .leadership-photo img,.leadership-card:hover .leadership-photo i{transform:none}
-}
-
 @media (max-width:1200px){
   .leadership-grid{grid-template-columns:repeat(3,1fr);gap:32px 24px}
 }
@@ -1245,3 +1238,43 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 /* Institucion sin representante designado: se dice, en letra discreta, en vez
    de dejar la tarjeta con un hueco donde deberia ir un nombre. */
 .leadership-cargo.es-pendiente{font-style:italic;color:var(--text-muted);font-weight:400}
+
+/* ── LA TARJETA CRECE AL PASAR EL RATON ── */
+/* Crece la tarjeta entera —foto, nombre, institucion y cargo— y no solo la
+   foto: lo que se esta señalando es la persona, no su retrato.
+   Solo donde hay un puntero de verdad. En una pantalla tactil no existe el
+   "quitar el raton de encima", asi que la tarjeta se quedaria agrandada
+   despues de tocarla, sin manera de devolverla. */
+@media (hover: hover) {
+  .leadership-card,
+  .staff-card {
+    position: relative;
+    z-index: 1;
+    transition: transform .3s cubic-bezier(.22, .61, .36, 1), border-color .2s, box-shadow .3s ease;
+  }
+  /* 1.05 y no mas: el hueco entre tarjetas es de 20 a 28 pixeles, y a partir
+     de ahi una tarjeta crecida se metaria encima de su vecina. */
+  .leadership-card:hover,
+  .staff-card:hover {
+    transform: scale(1.05);
+    /* Por encima de las demas mientras esta crecida, o las de al lado le
+       recortarian los bordes. */
+    z-index: 3;
+  }
+  .staff-card:hover {
+    box-shadow: 0 12px 30px rgba(35, 74, 27, .14);
+  }
+}
+
+/* Quien pidió menos movimiento sigue viendo crecer la tarjeta, pero de una vez
+   y sin recorrido. Es un gesto que pide la persona y dura lo que dura el
+   puntero encima, no algo que ocurra solo: lo que sobra es el deslizamiento.
+
+   Va despues del bloque de arriba y no antes, porque a igual peso manda la
+   ultima regla, y alli el "transition" completo la anulaba. */
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .leadership-card,
+  .staff-card {
+    transition-duration: .01s;
+  }
+}

@@ -1266,15 +1266,21 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   }
 }
 
-/* Quien pidió menos movimiento sigue viendo crecer la tarjeta, pero de una vez
-   y sin recorrido. Es un gesto que pide la persona y dura lo que dura el
-   puntero encima, no algo que ocurra solo: lo que sobra es el deslizamiento.
+/* Quien pidió menos movimiento también ve crecer la tarjeta, solo que más
+   rápido. Se probó en diez milésimas —prácticamente un salto— y se veía brusco:
+   el ojo necesita un instante para entender que algo cambió de tamaño, o parece
+   un parpadeo en vez de un movimiento.
+
+   Con 0,18 segundos hay recorrido suficiente para leerlo y sigue siendo casi la
+   mitad que el general. Se conserva la diferencia porque el ajuste pide menos
+   movimiento, no ninguno: esto es un gesto que la persona provoca y que dura lo
+   que dura el puntero encima.
 
    Va despues del bloque de arriba y no antes, porque a igual peso manda la
    ultima regla, y alli el "transition" completo la anulaba. */
 @media (hover: hover) and (prefers-reduced-motion: reduce) {
   .leadership-card,
   .staff-card {
-    transition-duration: .01s;
+    transition-duration: .18s;
   }
 }

@@ -131,7 +131,7 @@ Una tarjeta por institución. La tarjeta tiene dos modos, que se eligen desde el
 
 **Institución sin representante designado.** Una entidad se puede registrar aunque todavía no se sepa a quién va a designar: en ese caso la tarjeta pone la institución como título y añade, en letra discreta, *"Representante por designar"*. Se hizo así porque el Parque envía las entidades antes que los nombres, y exigir la persona obligaba a inventarse un nombre para poder guardar la entidad.
 
-**Al pasar el ratón por encima, la tarjeta entera crece** —foto, nombre, institución y cargo—, y vuelve a su tamaño al retirarlo. En pantallas táctiles no se aplica: ahí no existe el "quitar el dedo de encima", y la tarjeta se quedaría agrandada sin manera de devolverla.
+**Al pasar el ratón por encima, la tarjeta entera crece** —foto, nombre, institución y cargo—, con un movimiento breve, y vuelve a su tamaño al retirarlo. En pantallas táctiles no se aplica: ahí no existe el "quitar el dedo de encima", y la tarjeta se quedaría agrandada sin manera de devolverla.
 
 **Detalle:** las tarjetas ocupan cuatro columnas y la foto llena casi todo su recuadro. Antes eran cinco columnas con un margen interior pensado para logos con transparencia, y como lo que hay cargado son fotografías de personas, ese margen les comía un tercio del espacio.
 

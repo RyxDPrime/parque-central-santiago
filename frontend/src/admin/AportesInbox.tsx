@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  cambiarEstadoAporte,
+  decidirAporte,
   eliminarAporte,
   listAportes,
+  listMotivosRechazo,
   type Aporte,
+  type MotivoRechazo,
 } from './adminClient'
 
 const fechaHora = new Intl.DateTimeFormat('es-DO', {
@@ -21,10 +23,14 @@ const TIPOS: Record<string, { etiqueta: string; icono: string }> = {
 }
 
 const ESTADOS: Record<string, { etiqueta: string; clase: string; icono: string }> = {
-  pendiente: { etiqueta: 'Sin atender', clase: 'is-warn', icono: 'ti-clock' },
-  atendida: { etiqueta: 'Atendida', clase: 'is-ok', icono: 'ti-check' },
-  descartada: { etiqueta: 'Descartada', clase: 'is-off', icono: 'ti-ban' },
+  pendiente: { etiqueta: 'Sin revisar', clase: 'is-warn', icono: 'ti-clock' },
+  aceptada: { etiqueta: 'Aceptado', clase: 'is-ok', icono: 'ti-check' },
+  rechazada: { etiqueta: 'No aceptado', clase: 'is-no', icono: 'ti-x' },
 }
+
+const fechaDecision = new Intl.DateTimeFormat('es-DO', {
+  day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: '2-digit',
+})
 
 function pesos(monto: number): string {
   return `RD$ ${monto.toLocaleString('es-DO')}`
@@ -46,12 +52,16 @@ function resumen(a: Aporte): string {
 /**
  * Bandeja de quienes quieren aportar al Parque.
  *
- * Nadie ha pagado nada: son intenciones, y lo que sigue es que una persona del
- * Parque contacte a quien escribió. Por eso el estado no es "cobrado" sino
- * "atendida": lo que se registra es si alguien se ocupó, no si entró dinero.
+ * Nadie ha pagado nada todavía: son intenciones, y lo que sigue es que alguien
+ * del Parque revise y decida.
  *
- * Atender le escribe a la persona con la plantilla de Donaciones. Descartar no
- * manda nada, para lo que ya se resolvió por teléfono o no procede.
+ * Aceptar o no aceptar un aporte es una decisión que hay que poder sostener: el
+ * Parque está obligado a conocer el origen de lo que recibe. Por eso el rechazo
+ * exige elegir un motivo de una lista, y queda registrado quién decidió y
+ * cuándo. "Alguien lo rechazó" no es una explicación.
+ *
+ * El motivo es INTERNO y no viaja en ningún correo. Lo que recibe la persona es
+ * el texto que el equipo redacta aparte.
  */
 export function AportesInbox() {
   const [items, setItems] = useState<Aporte[]>([])
@@ -64,12 +74,15 @@ export function AportesInbox() {
 
   const [abiertoId, setAbiertoId] = useState<number | null>(null)
   const [respuesta, setRespuesta] = useState('')
+  const [motivo, setMotivo] = useState('')
   const [avisar, setAvisar] = useState(true)
+  const [motivos, setMotivos] = useState<MotivoRechazo[]>([])
   const [guardando, setGuardando] = useState(false)
 
   const abierto = items.find((x) => x.id === abiertoId) ?? null
 
   useEffect(() => {
+    listMotivosRechazo().then(setMotivos).catch(() => setMotivos([]))
     listAportes()
       .then((d) => {
         setItems(d)
@@ -98,6 +111,7 @@ export function AportesInbox() {
   function abrir(a: Aporte) {
     setAbiertoId(a.id)
     setRespuesta('')
+    setMotivo(a.motivoRechazo ?? '')
     setAvisar(true)
     setError(null)
   }
@@ -105,17 +119,29 @@ export function AportesInbox() {
   function cerrar() {
     setAbiertoId(null)
     setRespuesta('')
+    setMotivo('')
   }
 
   async function decidir(a: Aporte, estado: string) {
-    if (estado === 'atendida' && avisar && !respuesta.trim()) {
-      setError('Escribe la respuesta: es lo que la persona va a leer en el correo.')
+    // Rechazar exige motivo. Una negativa sin razon registrada no se puede
+    // explicar despues ni contrastar con la decision de un caso parecido.
+    if (estado === 'rechazada' && !motivo) {
+      setError('Elige el motivo del rechazo: queda como constancia de la decisión.')
+      return
+    }
+    if (avisar && !respuesta.trim()) {
+      setError('Escribe el mensaje para la persona: es lo que va a leer en el correo.')
       return
     }
     setGuardando(true)
     setError(null)
     try {
-      const actualizado = await cambiarEstadoAporte(a.id, estado, respuesta.trim(), avisar)
+      const actualizado = await decidirAporte(a.id, {
+        estado,
+        motivoRechazo: estado === 'rechazada' ? motivo : undefined,
+        respuesta: respuesta.trim(),
+        avisar,
+      })
       setItems((prev) => prev.map((x) => (x.id === a.id ? actualizado : x)))
       setRecienTocados((prev) => (prev.includes(a.id) ? prev : [...prev, a.id]))
       if (!actualizado.respuestaError) cerrar()
@@ -178,8 +204,8 @@ export function AportesInbox() {
         <p className="admin-warning">
           <i className="ti ti-clock" />
           {pendientes === 1
-            ? 'Hay 1 persona esperando que la contacten.'
-            : `Hay ${pendientes} personas esperando que las contacten.`}
+            ? 'Hay 1 aporte sin revisar.'
+            : `Hay ${pendientes} aportes sin revisar.`}
         </p>
       )}
 
@@ -187,8 +213,8 @@ export function AportesInbox() {
         <p className="admin-warning">
           <i className="ti ti-mail-off" />
           {sinAvisar === 1
-            ? 'Hay 1 aporte atendido cuyo correo no salió. Ábrelo y escríbele a mano.'
-            : `Hay ${sinAvisar} aportes atendidos cuyo correo no salió. Ábrelos y escríbeles a mano.`}
+            ? 'Hay 1 aporte decidido cuyo correo no salió. Ábrelo y escríbele a mano.'
+            : `Hay ${sinAvisar} aportes decididos cuyo correo no salió. Ábrelos y escríbeles a mano.`}
         </p>
       )}
 
@@ -374,6 +400,50 @@ export function AportesInbox() {
               <h3 className="modal-subtitulo">Lo que escribió</h3>
               <p className="modal-descripcion">{abierto.mensaje}</p>
 
+              {(abierto.origenFondos || abierto.documento) && (
+                <>
+                  <h3 className="modal-subtitulo">De dónde salen los fondos</h3>
+                  <dl className="solicitud-datos">
+                    {abierto.donanteTipo && (
+                      <div>
+                        <dt>Declara ser</dt>
+                        <dd>
+                          {abierto.donanteTipo === 'empresa' ? 'Empresa o institución' : 'Persona'}
+                        </dd>
+                      </div>
+                    )}
+                    {abierto.documento && (
+                      <div>
+                        <dt>{abierto.donanteTipo === 'empresa' ? 'RNC' : 'Cédula'}</dt>
+                        <dd>{abierto.documento}</dd>
+                      </div>
+                    )}
+                    {abierto.origenFondos && (
+                      <div>
+                        <dt>Origen</dt>
+                        <dd>{abierto.origenFondos}</dd>
+                      </div>
+                    )}
+                    <div>
+                      <dt>Declaró origen lícito</dt>
+                      <dd>{abierto.declaraLicito ? 'Sí' : 'No'}</dd>
+                    </div>
+                  </dl>
+                  {/* No descalifica a nadie: pide mirar con más detenimiento. */}
+                  {abierto.esPep && (
+                    <p className="modal-alerta">
+                      <i className="ti ti-alert-triangle" />
+                      <span>
+                        Declaró ocupar o haber ocupado un{' '}
+                        <strong>cargo público de alto nivel</strong>, o ser familiar cercano de
+                        alguien que lo ocupa. No impide aceptar el aporte, pero pide revisarlo con
+                        más detenimiento.
+                      </span>
+                    </p>
+                  )}
+                </>
+              )}
+
               <h3 className="modal-subtitulo">Cómo contactarle</h3>
               <dl className="solicitud-datos">
                 <div>
@@ -387,6 +457,23 @@ export function AportesInbox() {
                   <dd>{abierto.telefono}</dd>
                 </div>
               </dl>
+
+              {abierto.decididaEn && (
+                <p className="modal-constancia">
+                  <i className="ti ti-writing-sign" />
+                  <span>
+                    {abierto.estado === 'aceptada' ? 'Aceptado' : 'No aceptado'} por{' '}
+                    <strong>{abierto.decididaPor ?? 'alguien del equipo'}</strong> el{' '}
+                    {fechaDecision.format(new Date(abierto.decididaEn))}.
+                    {abierto.motivoRechazo && (
+                      <>
+                        {' '}
+                        Motivo registrado: <strong>{abierto.motivoRechazo}</strong>.
+                      </>
+                    )}
+                  </span>
+                </p>
+              )}
 
               {abierto.respuestaError && (
                 <p className="modal-alerta">
@@ -439,25 +526,48 @@ export function AportesInbox() {
                 </p>
               )}
 
+              {/* El motivo solo hace falta para negarse, pero se muestra
+                  siempre: verlo antes de decidir ayuda a pensar la decisión. */}
+              <div className="admin-field admin-field-wide">
+                <label htmlFor="motivo-rechazo">Si no se acepta, ¿por qué?</label>
+                <select
+                  id="motivo-rechazo"
+                  value={motivo}
+                  onChange={(e) => setMotivo(e.target.value)}
+                >
+                  <option value="">Elige el motivo</option>
+                  {motivos.map((m) => (
+                    <option key={m.id} value={m.nombre}>
+                      {m.nombre}
+                    </option>
+                  ))}
+                </select>
+                <small className="admin-field-hint">
+                  Queda como constancia interna de la decisión.{' '}
+                  <strong>No se le manda a la persona</strong>: lo que ella lee es el mensaje de
+                  arriba.
+                </small>
+              </div>
+
               <div className="modal-acciones">
-                {abierto.estado !== 'atendida' && (
+                {abierto.estado !== 'aceptada' && (
                   <button
                     type="button"
                     className="btn-primary"
                     disabled={guardando}
-                    onClick={() => decidir(abierto, 'atendida')}
+                    onClick={() => decidir(abierto, 'aceptada')}
                   >
-                    <i className="ti ti-check" /> {guardando ? 'Guardando…' : 'Marcar atendida'}
+                    <i className="ti ti-check" /> {guardando ? 'Guardando…' : 'Aceptar el aporte'}
                   </button>
                 )}
-                {abierto.estado !== 'descartada' && (
+                {abierto.estado !== 'rechazada' && (
                   <button
                     type="button"
-                    className="btn-outline"
+                    className="btn-outline es-rechazar"
                     disabled={guardando}
-                    onClick={() => decidir(abierto, 'descartada')}
+                    onClick={() => decidir(abierto, 'rechazada')}
                   >
-                    <i className="ti ti-ban" /> Descartar
+                    <i className="ti ti-x" /> No aceptar
                   </button>
                 )}
                 <a className="btn-outline" href={`mailto:${abierto.email}`}>

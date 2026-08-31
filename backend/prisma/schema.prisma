@@ -397,8 +397,28 @@ model Aporte {
   // unica | mensual
   frecuencia  String?
   mensaje     String
-  // pendiente | atendida | descartada
+
+  // ── Origen de los fondos ──
+  // Un aporte no se puede aceptar sin saber de dónde viene. Estos campos solo
+  // se piden por encima del umbral que fije el Parque: pedirle la cédula y su
+  // actividad económica a quien dona quinientos pesos espanta la donación y no
+  // aporta nada a la revisión.
+  donanteTipo   String?  // persona | empresa
+  documento     String?  // cédula o RNC
+  origenFondos  String?
+  // Persona expuesta políticamente. Es una pregunta estándar en la revisión de
+  // aportes; marcarla no descalifica a nadie, solo pide mirar con más cuidado.
+  esPep         Boolean  @default(false)
+  declaraLicito Boolean  @default(false)
+
+  // ── La decisión ──
+  // pendiente | aceptada | rechazada
   estado      String   @default("pendiente")
+  // Se guarda quién decidió y cuándo: una decisión sobre aceptar dinero tiene
+  // que poder explicarse después, y "alguien lo rechazó" no es una explicación.
+  motivoRechazo String?
+  decididaPor   String?
+  decididaEn    DateTime?
   notaInterna String?
   emailEnviado     Boolean @default(false)
   respuestaEnviada Boolean @default(false)
@@ -428,4 +448,32 @@ model CuentaBancaria {
   orden      Int      @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+// Los motivos por los que el Parque puede rechazar un aporte. Es una lista y no
+// un texto libre para que dos personas del equipo rechacen lo mismo por la
+// misma razón, y para poder contar después cuántos se rechazaron por cada una.
+//
+// Nunca se le manda al donante: lo que se escribe aquí es la constancia
+// interna de la decisión.
+model MotivoRechazo {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  nota      String?
+  activo    Boolean  @default(true)
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// De dónde salen los fondos que se ofrecen. Lo elige quien dona, de una lista
+// cerrada que maneja el Parque, y es lo que permite revisar la procedencia sin
+// depender de lo que cada quien decida escribir.
+model OrigenFondos {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  activo    Boolean  @default(true)
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

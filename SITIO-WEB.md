@@ -1,7 +1,7 @@
 # El sitio web, sección por sección
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · Última actualización: 28 de agosto de 2026
+Ureña Limited Partners · Última actualización: 31 de agosto de 2026
 
 Todo lo que hay construido y en línea: qué contiene cada página, qué se administra desde el panel, qué formularios recibe el Parque y qué queda pendiente.
 
@@ -21,7 +21,7 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 | Fotos de encabezado editables | 19 |
 | Formularios que recibe el Parque | 4 |
 | Bandejas en el panel | 4 |
-| Plantillas de correo editables | 3 |
+| Plantillas de correo editables | 4 |
 | Roles de usuario | 3 |
 
 ### Contenido cargado hoy
@@ -46,6 +46,8 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 | Documentos financieros | 2 |
 | Formas de apoyo | 2 |
 | Publicaciones del blog | 1 |
+| Orígenes de fondos | 9 — borrador nuestro |
+| Motivos de rechazo | 8 — borrador nuestro |
 | **Cuentas bancarias** | **0 — pendiente del Parque** |
 
 ---
@@ -264,8 +266,9 @@ Recoge intenciones de aportar. El sitio no cobra: la persona dice qué quiere da
 | Institución | Opcional | **Obligatoria** | Opcional |
 | Pregunta final | "Cuéntanos" | "¿Qué te interesaría patrocinar?" | "¿En qué te gustaría ayudar?" |
 
-3. **Tabla de cuentas bancarias** — admite varias cuentas, en pesos o en dólares, y se desplaza dentro de su recuadro sin mover la página.
-4. **Bloque de transparencia**, con enlace a la sección correspondiente.
+3. **Declaración del origen de los fondos**, a partir del monto que fije el Parque. Pide documento de identidad o RNC, de dónde salen los fondos —elegido de una lista cerrada—, si la persona ocupa un cargo público de alto nivel, y una declaración de que el dinero es lícito. Los patrocinios institucionales lo declaran siempre, sin importar el monto.
+4. **Tabla de cuentas bancarias** — admite varias cuentas, en pesos o en dólares, y se desplaza dentro de su recuadro sin mover la página.
+5. **Bloque de transparencia**, con enlace a la sección correspondiente.
 
 **Detalles**
 
@@ -349,7 +352,7 @@ Se entra en `/admin` con usuario y contraseña. El menú está dividido en siete
 | **Todo el sitio** | Datos de contacto y las 19 fotos de encabezado |
 | **Buzón** | Mensajes de contacto y sugerencias |
 | **Reservas** | Solicitudes, plantillas de respuesta, tipos de actividad y espacios reservables |
-| **Donaciones** | Aportes recibidos, cuentas bancarias y textos de la página |
+| **Donaciones** | Aportes recibidos, cuentas bancarias, orígenes de fondos, motivos de rechazo y textos de la página |
 | **Administración** | Usuarios del panel |
 
 ### 3.1 Cómo funciona una sección
@@ -401,7 +404,13 @@ La lista muestra una línea por solicitud —nombre y un resumen de qué espacio
 
 ### 4.2 Aportes y donaciones
 
-Mismo funcionamiento. El estado es **"atendida"**, no "cobrado": lo que se registra es si alguien se ocupó, no si entró dinero, porque el sitio no cobra.
+Mismo funcionamiento, con una diferencia importante: aquí no se "atiende" un mensaje, **se acepta o no se acepta un aporte**. El Parque está obligado a conocer el origen de lo que recibe, así que esa decisión tiene que poder sostenerse.
+
+- **No aceptar exige elegir un motivo** de una lista que mantiene el Parque, para que dos personas del equipo rechacen lo mismo por la misma razón y se pueda contar después cuántos se rechazaron por cada una.
+- Queda registrado **quién decidió y cuándo**. "Alguien lo rechazó" no es una explicación.
+- Si quien aportó declaró ocupar un cargo público de alto nivel, la ficha lo advierte. No impide aceptar: pide revisarlo con más detenimiento.
+
+> **El motivo del rechazo es interno y nunca sale en un correo.** Lo que recibe la persona es un texto neutro que el equipo redacta aparte. Explicarle a alguien por qué se sospecha de su dinero no le corresponde a un correo automático.
 
 ### 4.3 Los correos
 
@@ -414,7 +423,8 @@ El sitio manda correo por una API sobre HTTPS y no por SMTP, porque el servidor 
 | Llega un aporte | Al Parque y a quien escribe | Fijo |
 | Se aprueba una reserva | A quien solicitó | **Plantilla editable** |
 | Se rechaza una reserva | A quien solicitó | **Plantilla editable** |
-| Se atiende un aporte | A quien escribió | **Plantilla editable** |
+| Se acepta un aporte | A quien aportó | **Plantilla editable** |
+| No se acepta un aporte | A quien aportó | **Plantilla editable**, sin el motivo interno |
 
 Las tres plantillas se editan en el panel. El texto lleva huecos —`{{espacio}}`, `{{fecha}}`, `{{monto}}`, `{{motivo}}`— que el sistema cambia por los datos reales de cada caso. Se insertan pulsándolos, no escribiéndolos a mano, y si uno queda vacío se borra con su línea, para que nadie reciba un correo que diga "Motivo:" y nada detrás.
 
@@ -448,6 +458,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 |---|---|---|
 | **Cuentas bancarias** | Sin ellas la página de Donaciones no muestra cómo transferir | **Alta** |
 | **Confirmar tipos de actividad** | La lista de 13 es un borrador nuestro, y el sistema ya la aplica | **Alta** |
+| **Revisar con su asesor legal el umbral y las listas de donaciones** | Desde qué monto hay que declarar el origen (hoy RD$ 25,000), qué orígenes se admiten y qué motivos de rechazo son válidos. Todo es borrador nuestro | **Alta** |
 | **Cuáles espacios se cobran** | Los 12 están marcados con costo por suposición nuestra | **Alta** |
 | Nombres de los dos diputados | Sus tarjetas dicen "Representante por designar" hasta que lleguen | Media |
 | Fotografías pendientes | Canchas, kioscos, entrada, inauguración, vista aérea y 7 instalaciones nuevas | Media |
@@ -476,6 +487,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
+| 31 ago 2026 | Los aportes se aceptan o se rechazan con motivo, autor y fecha, y por encima de un monto hay que declarar el origen de los fondos. |
 | 28 ago 2026 | Al pasar el ratón, la tarjeta completa de la Junta y del Personal Técnico crece y vuelve a su tamaño. |
 | 28 ago 2026 | Las fotos de la Junta Directiva se ven un 68% más grandes, y las actividades de meses ya cumplidos dejan de mostrarse. |
 | 25 ago 2026 | Las dos diputaciones se agregan a la Junta: 19 entidades completas. Una institución puede registrarse sin representante designado. Sección 2 ampliada a una subsección por página. |

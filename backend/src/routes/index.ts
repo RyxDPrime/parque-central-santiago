@@ -49,6 +49,8 @@ apiRouter.use("/tipos-actividad", crudRoutes("tipoActividad", { reorder: true })
 // decision, esa decision se quedaria sin correo.
 apiRouter.use("/plantillas-correo", crudRoutes("plantillaCorreo", { soloEditar: true, permiso: "comunicaciones" }));
 apiRouter.use("/cuentas-bancarias", crudRoutes("cuentaBancaria", { reorder: true }));
+apiRouter.use("/motivos-rechazo", crudRoutes("motivoRechazo", { reorder: true, permiso: "comunicaciones" }));
+apiRouter.use("/origenes-fondos", crudRoutes("origenFondos", { reorder: true }));
 apiRouter.use("/cifras", crudRoutes("cifra", { reorder: true }));
 apiRouter.use("/aliados", crudRoutes("aliado", { reorder: true }));
 apiRouter.use("/textos", crudRoutes("texto", { soloEditar: true }));

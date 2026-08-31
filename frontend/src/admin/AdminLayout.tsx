@@ -51,7 +51,13 @@ const divisiones = [
  * Se declaran aquí para que el recogedor de secciones sin ubicar no las mande
  * al final de "Todo el sitio" creyendo que a nadie se le asignó un sitio.
  */
-const CON_GRUPO_PROPIO = ['espacios-reservables', 'tipos-actividad', 'cuentas-bancarias']
+const CON_GRUPO_PROPIO = [
+  'espacios-reservables',
+  'tipos-actividad',
+  'cuentas-bancarias',
+  'origenes-fondos',
+  'motivos-rechazo',
+]
 
 interface Enlace {
   ruta: string
@@ -248,6 +254,14 @@ export function AdminLayout() {
                   <NavLink to="/admin/cuentas-bancarias" className="admin-nav-link">
                     <i className="ti ti-building-bank" />
                     Cuentas bancarias
+                  </NavLink>
+                  <NavLink to="/admin/origenes-fondos" className="admin-nav-link">
+                    <i className="ti ti-report-money" />
+                    Orígenes de fondos
+                  </NavLink>
+                  <NavLink to="/admin/motivos-rechazo" className="admin-nav-link">
+                    <i className="ti ti-file-alert" />
+                    Motivos de rechazo
                   </NavLink>
                   <NavLink to="/admin/textos/donaciones" className="admin-nav-link">
                     <i className="ti ti-text-caption" />

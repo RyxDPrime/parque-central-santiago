@@ -1284,3 +1284,24 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
     transition-duration: .18s;
   }
 }
+
+/* ── ORIGEN DE LOS FONDOS ── */
+.donacion-origen{border:1px solid var(--green-200,#D7E7CB);border-radius:var(--radius);padding:18px 18px 16px;margin-bottom:22px;background:var(--green-50,#F2F7EE)}
+.donacion-origen legend{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--green-800);padding:0 8px;margin-left:-8px}
+.donacion-origen legend i{font-size:18px;color:var(--green-600)}
+.donacion-origen-aviso{font-size:12.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 14px;max-width:none}
+.donacion-origen-tipo{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.donacion-origen .donacion-campos{margin-bottom:14px}
+
+.donacion-casilla{display:flex;gap:11px;align-items:flex-start;margin-top:12px;cursor:pointer}
+.donacion-casilla input{width:17px;height:17px;flex-shrink:0;margin-top:2px;accent-color:var(--green-600);cursor:pointer}
+.donacion-casilla span{font-size:13px;line-height:1.55;color:var(--text-secondary)}
+.donacion-casilla small{display:block;font-size:11.5px;color:var(--text-muted);margin-top:3px;line-height:1.5}
+/* La declaracion de licitud no es una casilla mas: sin ella no se envia. */
+.donacion-casilla.es-obligatoria{padding:12px 14px;margin-top:14px;border-radius:var(--radius);background:#fff;border:1px solid var(--border)}
+.donacion-casilla.es-obligatoria span{color:var(--text-primary);font-weight:500}
+
+/* La constancia de quien decidio y cuando, en la bandeja. */
+.modal-constancia{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 14px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);font-size:12.5px;line-height:1.6;color:var(--text-secondary);max-width:none}
+.modal-constancia i{font-size:16px;flex-shrink:0;margin-top:1px;color:var(--text-muted)}
+.modal-constancia strong{color:var(--text-primary)}

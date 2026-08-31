@@ -19,7 +19,8 @@ import { enviarCorreo } from "./correo";
 export const PLANTILLAS = {
   reservaAprobada: "reserva.aprobada",
   reservaRechazada: "reserva.rechazada",
-  aporteRespuesta: "aporte.respuesta",
+  aporteAceptado: "aporte.aceptado",
+  aporteRechazado: "aporte.rechazado",
 } as const;
 
 export interface Hueco {

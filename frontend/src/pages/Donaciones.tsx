@@ -53,15 +53,28 @@ type Estado =
 export function Donaciones() {
   const texto = useTextos()
   const { data: cuentas } = useApiData(api.getCuentasBancarias)
+  const { data: origenes } = useApiData(api.getOrigenesFondos)
   const [tipo, setTipo] = useState<TipoAporte>('dinero')
   const [monto, setMonto] = useState('')
   const [frecuencia, setFrecuencia] = useState<'unica' | 'mensual'>('unica')
+  const [donanteTipo, setDonanteTipo] = useState<'persona' | 'empresa'>('persona')
   const [estado, setEstado] = useState<Estado>({ tipo: 'listo' })
 
   const elegido = TIPOS.find((t) => t.valor === tipo)!
   const esDinero = tipo === 'dinero'
 
   const hayCuentas = cuentas !== null && cuentas.length > 0
+
+  /**
+   * A partir de qué monto hay que declarar de dónde salen los fondos. Lo fija
+   * el Parque desde el panel; en cero se le pide a todo el mundo.
+   *
+   * Un patrocinio institucional declara siempre: por definición viene de una
+   * empresa y suele ser la cifra grande. El servidor comprueba lo mismo, así
+   * que esconder los campos aquí solo evita pedirlos de más.
+   */
+  const umbral = Number(texto('donaciones.umbral').replace(/\D/g, '')) || 0
+  const debeDeclarar = tipo === 'patrocinio' || (esDinero && Number(monto || 0) >= umbral)
 
   async function enviar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -79,6 +92,15 @@ export function Donaciones() {
         monto: esDinero && monto ? Number(monto) : undefined,
         frecuencia: esDinero ? frecuencia : undefined,
         mensaje: String(datos.get('mensaje') ?? ''),
+        ...(debeDeclarar
+          ? {
+              donanteTipo,
+              documento: String(datos.get('documento') ?? ''),
+              origenFondos: String(datos.get('origenFondos') ?? ''),
+              esPep: datos.get('esPep') === 'on',
+              declaraLicito: datos.get('declaraLicito') === 'on',
+            }
+          : {}),
       })
       formulario.reset()
       setMonto('')
@@ -253,6 +275,80 @@ export function Donaciones() {
                 />
               </div>
             </div>
+
+            {/* ── De dónde salen los fondos ── */}
+            {debeDeclarar && (
+              <fieldset className="donacion-origen">
+                <legend>
+                  <i className="ti ti-shield-check" /> De dónde salen los fondos
+                </legend>
+                {texto('donaciones.avisoDeclaracion') && (
+                  <p className="donacion-origen-aviso">{texto('donaciones.avisoDeclaracion')}</p>
+                )}
+
+                <div className="donacion-origen-tipo">
+                  {(['persona', 'empresa'] as const).map((t) => (
+                    <button
+                      type="button"
+                      key={t}
+                      className={`donacion-frec${donanteTipo === t ? ' esta-elegido' : ''}`}
+                      onClick={() => setDonanteTipo(t)}
+                      aria-pressed={donanteTipo === t}
+                    >
+                      {t === 'persona' ? 'Soy una persona' : 'Somos una empresa o institución'}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="donacion-campos">
+                  <div className="form-group">
+                    <label htmlFor="d-documento">
+                      {donanteTipo === 'persona' ? 'Cédula' : 'RNC'}
+                    </label>
+                    <input
+                      id="d-documento"
+                      name="documento"
+                      type="text"
+                      required
+                      inputMode="numeric"
+                      placeholder={donanteTipo === 'persona' ? '000-0000000-0' : '000-00000-0'}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="d-origen">Origen de los fondos</label>
+                    <select id="d-origen" name="origenFondos" required defaultValue="">
+                      <option value="">Elige una opción</option>
+                      {(origenes ?? []).map((o) => (
+                        <option key={o.id} value={o.nombre}>
+                          {o.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <label className="donacion-casilla">
+                  <input type="checkbox" name="esPep" />
+                  <span>
+                    Ocupo o he ocupado un cargo público de alto nivel, o soy familiar cercano de
+                    alguien que lo ocupa.
+                    <small>
+                      Marcarlo no impide donar. Solo pide que el Parque revise el aporte con más
+                      detenimiento, como está obligado a hacer.
+                    </small>
+                  </span>
+                </label>
+
+                <label className="donacion-casilla es-obligatoria">
+                  <input type="checkbox" name="declaraLicito" required />
+                  <span>
+                    Declaro que los fondos que ofrezco provienen de actividades lícitas y que la
+                    información que doy aquí es verdadera.
+                  </span>
+                </label>
+              </fieldset>
+            )}
 
             <div className="form-group">
               <label htmlFor="d-mensaje">

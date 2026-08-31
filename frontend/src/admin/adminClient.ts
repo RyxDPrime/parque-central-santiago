@@ -412,7 +412,17 @@ export interface Aporte {
   monto: number | null;
   frecuencia: string | null;
   mensaje: string;
+  // Origen de los fondos, cuando el aporte supero el umbral
+  donanteTipo: string | null;
+  documento: string | null;
+  origenFondos: string | null;
+  esPep: boolean;
+  declaraLicito: boolean;
+  // La decision y su constancia
   estado: string;
+  motivoRechazo: string | null;
+  decididaPor: string | null;
+  decididaEn: string | null;
   notaInterna: string | null;
   emailEnviado: boolean;
   respuestaEnviada: boolean;
@@ -428,22 +438,43 @@ export async function listAportes(): Promise<Aporte[]> {
   return res.json() as Promise<Aporte[]>;
 }
 
+export interface MotivoRechazo {
+  id: number;
+  nombre: string;
+  nota: string | null;
+  activo: boolean;
+  orden: number;
+}
+
+/** Los motivos por los que se puede rechazar. No son publicos. */
+export async function listMotivosRechazo(): Promise<MotivoRechazo[]> {
+  const res = await fetch(`${API_URL}/motivos-rechazo`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  return res.json() as Promise<MotivoRechazo[]>;
+}
+
 /**
- * Atender o descartar un aporte.
+ * Aceptar o rechazar un aporte.
  *
- * Atenderlo le escribe a la persona con la plantilla guardada, y `respuesta`
- * entra en ese correo. Descartar no manda nada.
+ * `motivoRechazo` es obligatorio al rechazar, sale de la lista y es INTERNO:
+ * nunca viaja en el correo. Lo que la persona lee es `respuesta`.
  */
-export async function cambiarEstadoAporte(
+export async function decidirAporte(
   id: number,
-  estado: string,
-  respuesta?: string,
-  avisar = true,
+  datos: {
+    estado: string;
+    motivoRechazo?: string;
+    respuesta?: string;
+    notaInterna?: string;
+    avisar?: boolean;
+  },
 ): Promise<Aporte> {
   const res = await fetch(`${API_URL}/aportes/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
-    body: JSON.stringify({ estado, respuesta, avisar }),
+    body: JSON.stringify(datos),
   });
   if (!res.ok) throw new Error(await parseErrorMessage(res));
   return res.json() as Promise<Aporte>;

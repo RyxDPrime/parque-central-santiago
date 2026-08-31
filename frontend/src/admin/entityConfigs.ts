@@ -359,6 +359,31 @@ export const entityConfigs: EntityConfig[] = [
     ],
   },
   {
+    path: 'origenes-fondos',
+    icon: 'ti-report-money',
+    description: 'De dónde puede salir el dinero que se ofrece. Quien dona elige una de estas opciones, y es lo que permite revisar la procedencia sin depender de lo que cada quien decida escribir. Solo se le pide por encima del monto que fijes en los textos de Donaciones.',
+    label: 'Orígenes de fondos',
+    titleField: 'nombre',
+    fields: [
+      { key: 'nombre', label: 'Origen', type: 'text', required: true, placeholder: 'Ej: Actividad comercial o empresarial', hint: 'Como aparece en la lista desplegable del formulario.' },
+      { key: 'activo', label: 'Se puede elegir', type: 'checkbox', hint: 'Desmarcado, deja de aparecer sin tener que borrarlo.' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'motivos-rechazo',
+    icon: 'ti-file-alert',
+    description: 'Por qué el Parque puede no aceptar un aporte. Al rechazar hay que elegir uno de estos, para que dos personas del equipo rechacen lo mismo por la misma razón y se pueda contar después cuántos se rechazaron por cada una. NUNCA se le muestra a quien donó: es la constancia interna de la decisión.',
+    label: 'Motivos de rechazo',
+    titleField: 'nombre',
+    fields: [
+      { key: 'nombre', label: 'Motivo', type: 'text', required: true, placeholder: 'Ej: No se pudo verificar el origen de los fondos', hint: 'Lo que verá el equipo al decidir. No sale en ningún correo.' },
+      { key: 'nota', label: 'Aclaración', type: 'text', placeholder: 'Cuándo usar este motivo', hint: 'Opcional. Ayuda a que todo el equipo lo use igual.' },
+      { key: 'activo', label: 'Se puede elegir', type: 'checkbox', hint: 'Desmarcado, deja de ofrecerse sin perder los rechazos que ya lo usaron.' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
     path: 'espacios-reservables',
     listPath: 'espacios-reservables-todos',
     icon: 'ti-map-pin-check',

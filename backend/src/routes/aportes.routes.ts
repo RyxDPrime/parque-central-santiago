@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { prisma } from "../config/db";
-import { requireAuth, requirePermiso } from "../middleware/auth";
+import { requireAuth, requirePermiso, type AuthedRequest } from "../middleware/auth";
 import { sendAcuseAporte, sendAporteNotification } from "../config/mailer";
 import { contactoLimiter } from "../middleware/rateLimit";
-import { ESTADOS_APORTE, aporteSchema } from "../schemas/aporte.schema";
+import { aporteSchema, decisionAporteSchema } from "../schemas/aporte.schema";
 import { PLANTILLAS, enviarPlantilla, valoresAporte } from "../config/plantillas";
 
 export const aportesRouter = Router();
@@ -15,9 +15,51 @@ export const aportesRouter = Router();
  * una persona del Parque. Se guarda siempre, aunque los correos fallen, porque
  * la bandeja del panel es la copia que no depende de un servicio externo.
  */
+/**
+ * El umbral a partir del cual hay que declarar el origen de los fondos.
+ *
+ * Sale del panel y no del codigo porque es una decision del Parque y de su
+ * asesor legal, no nuestra. En cero, se le pide a todo el mundo.
+ */
+async function umbralDeclaracion(): Promise<number> {
+  const texto = await prisma.texto.findUnique({ where: { clave: "donaciones.umbral" } });
+  const valor = Number((texto?.valor ?? "").replace(/\D/g, ""));
+  return Number.isFinite(valor) && valor > 0 ? valor : 0;
+}
+
 aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
   try {
     const datos = aporteSchema.parse(req.body);
+
+    // Un patrocinio institucional siempre declara, sin importar el monto: por
+    // definicion viene de una empresa y suele ser la cifra grande.
+    const umbral = await umbralDeclaracion();
+    const debeDeclarar =
+      datos.tipo === "patrocinio" || (datos.tipo === "dinero" && (datos.monto ?? 0) >= umbral);
+
+    if (debeDeclarar) {
+      if (!datos.donanteTipo || !datos.documento || !datos.origenFondos) {
+        res.status(400).json({
+          error: "Para un aporte de este tipo hace falta declarar quién eres y de dónde salen los fondos.",
+        });
+        return;
+      }
+      if (!datos.declaraLicito) {
+        res.status(400).json({ error: "Debes declarar que los fondos son de origen lícito." });
+        return;
+      }
+      // El origen se elige de una lista cerrada. Igual que con los tipos de
+      // actividad de las reservas: el desplegable propone, esto es lo que
+      // impide que llegue cualquier cosa escrita a mano.
+      const origen = await prisma.origenFondos.findFirst({
+        where: { nombre: datos.origenFondos, activo: true },
+      });
+      if (!origen) {
+        res.status(400).json({ error: "Ese origen de fondos no está en la lista. Elige uno del desplegable." });
+        return;
+      }
+    }
+
     const guardado = await prisma.aporte.create({ data: datos });
 
     try {
@@ -35,6 +77,30 @@ aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
     next(err);
   }
 });
+
+// Los origenes que se pueden elegir. Publica: la necesita el formulario.
+aportesRouter.get("/origenes-fondos", async (_req, res, next) => {
+  try {
+    res.json(await prisma.origenFondos.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }));
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Los motivos de rechazo NO son publicos: son la constancia interna de por que
+// el Parque dijo que no, y no tienen por que estar a la vista de nadie mas.
+aportesRouter.get(
+  "/motivos-rechazo",
+  requireAuth,
+  requirePermiso("comunicaciones"),
+  async (_req, res, next) => {
+    try {
+      res.json(await prisma.motivoRechazo.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }));
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 // ── Cuentas bancarias ──
 
@@ -81,44 +147,69 @@ aportesRouter.get(
 );
 
 /**
- * Marcar un aporte como atendido o descartado.
+ * Aceptar o rechazar un aporte.
  *
- * Al atenderlo se le escribe a la persona con la plantilla guardada, y lo que
- * se ponga en `respuesta` entra en ese correo. Descartar no manda nada: se usa
- * para lo que no procede o para lo que ya se resolvió por teléfono.
+ * Es una decisión, no un trámite: queda con motivo, con autor y con fecha,
+ * porque tiene que poder explicarse después. Un aporte rechazado sin razón
+ * registrada no se puede sostener ante nadie ni contrastar con el criterio que
+ * se usó en un caso parecido.
+ *
+ * El motivo del rechazo es INTERNO y no viaja en ningún correo. Lo que recibe
+ * quien aportó es un texto neutro que el Parque redacta aparte: explicarle a
+ * alguien por qué se sospecha de su dinero no le corresponde a un correo
+ * automático.
  */
 aportesRouter.patch(
   "/aportes/:id",
   requireAuth,
   requirePermiso("comunicaciones"),
-  async (req, res, next) => {
+  async (req: AuthedRequest, res, next) => {
     try {
-      const estado = String(req.body?.estado ?? "");
-      if (!ESTADOS_APORTE.includes(estado as (typeof ESTADOS_APORTE)[number])) {
-        res.status(400).json({ error: "Estado inválido" });
-        return;
-      }
-      const respuesta =
-        typeof req.body?.respuesta === "string" ? req.body.respuesta.slice(0, 2000) : "";
-      const avisar = req.body?.avisar !== false && estado === "atendida";
+      const { estado, motivoRechazo, respuesta, notaInterna, avisar } =
+        decisionAporteSchema.parse(req.body);
 
+      // El motivo sale de la lista que mantiene el Parque, no de texto libre:
+      // así dos personas rechazan lo mismo por la misma razón, y se puede
+      // contar después cuántos se rechazaron por cada una.
+      if (estado === "rechazada") {
+        const motivo = await prisma.motivoRechazo.findFirst({
+          where: { nombre: motivoRechazo, activo: true },
+        });
+        if (!motivo) {
+          res.status(400).json({ error: "Ese motivo de rechazo no está en la lista." });
+          return;
+        }
+      }
+
+      const decidida = estado !== "pendiente";
       let actualizado = await prisma.aporte.update({
         where: { id: Number(req.params.id) },
         data: {
           estado,
-          notaInterna:
-            typeof req.body?.notaInterna === "string"
-              ? req.body.notaInterna.slice(0, 1000)
-              : undefined,
+          motivoRechazo: estado === "rechazada" ? motivoRechazo : null,
+          // Quién y cuándo. Sin esto, la constancia dice "alguien lo rechazó",
+          // que no es una explicación.
+          decididaPor: decidida ? (req.usuario?.usuario ?? null) : null,
+          decididaEn: decidida ? new Date() : null,
+          notaInterna,
           respuestaEnviada: false,
           respuestaError: null,
         },
       });
 
-      if (avisar) {
+      const clave =
+        estado === "aceptada"
+          ? PLANTILLAS.aporteAceptado
+          : estado === "rechazada"
+            ? PLANTILLAS.aporteRechazado
+            : null;
+
+      if (clave && avisar !== false) {
         try {
           await enviarPlantilla(
-            PLANTILLAS.aporteRespuesta,
+            clave,
+            // `respuesta` es lo que el equipo redacta para la persona. El
+            // motivo interno no se pasa: no está entre los huecos disponibles.
             valoresAporte({ ...actualizado, respuesta }),
             { email: actualizado.email, nombre: actualizado.nombre },
           );

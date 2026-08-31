@@ -16,8 +16,8 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 | Qué | Cuánto |
 |---|---|
 | Páginas públicas | 18 |
-| Secciones administrables con tabla | 20 |
-| Textos sueltos editables | 35, en 9 grupos |
+| Secciones administrables con tabla | 22 |
+| Textos sueltos editables | 37, en 9 grupos |
 | Fotos de encabezado editables | 19 |
 | Formularios que recibe el Parque | 4 |
 | Bandejas en el panel | 4 |
@@ -28,7 +28,7 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 
 | Sección | Registros |
 |---|---|
-| Instalaciones | 21 |
+| Instalaciones | 20 |
 | Aliados y patrocinadores | 19 |
 | Junta Directiva | 19 |
 | Galería | 15 |
@@ -48,6 +48,7 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 | Publicaciones del blog | 1 |
 | Formas de aportar | 4 (3 disponibles, tarjeta anunciada) |
 | Motivos de rechazo | 8 — borrador nuestro |
+| Plantillas de correo | 4 |
 | **Cuentas bancarias** | **0 — pendiente del Parque** |
 
 ---
@@ -167,7 +168,7 @@ Titulada *"Reglamento General"*, con un apartado para reglamentos por área y po
 
 **Qué contiene**
 
-- Las **21 instalaciones**, cada una con foto, descripción y cantidad cuando aplica: 8 kioscos grandes, 24 kioscos pequeños, 450 parqueos, 2 campos de fútbol, 2 hangares.
+- Las **20 instalaciones**, cada una con foto, descripción y cantidad cuando aplica: 8 kioscos grandes, 24 kioscos pequeños, 450 parqueos, 2 campos de fútbol, 2 hangares.
 - Debajo, los **servicios** que ofrece el parque.
 
 **Qué se administra:** Secciones del sitio → Instalaciones. Las fotos se suben desde el panel, con recorte incluido.

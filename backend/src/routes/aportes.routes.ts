@@ -38,9 +38,9 @@ aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
       datos.tipo === "patrocinio" || (datos.tipo === "dinero" && (datos.monto ?? 0) >= umbral);
 
     if (debeDeclarar) {
-      if (!datos.donanteTipo || !datos.documento || !datos.origenFondos) {
+      if (!datos.donanteTipo || !datos.documento) {
         res.status(400).json({
-          error: "Para un aporte de este tipo hace falta declarar quién eres y de dónde salen los fondos.",
+          error: "Para un aporte de este tipo hace falta que digas quién eres.",
         });
         return;
       }
@@ -48,14 +48,21 @@ aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
         res.status(400).json({ error: "Debes declarar que los fondos son de origen lícito." });
         return;
       }
-      // El origen se elige de una lista cerrada. Igual que con los tipos de
-      // actividad de las reservas: el desplegable propone, esto es lo que
-      // impide que llegue cualquier cosa escrita a mano.
-      const origen = await prisma.origenFondos.findFirst({
-        where: { nombre: datos.origenFondos, activo: true },
+    }
+
+    // El método de pago se elige de una lista cerrada, y solo entre los que
+    // estén disponibles: si no, alguien podría anunciar que va a pagar con
+    // tarjeta antes de que exista la pasarela.
+    if (datos.tipo !== "voluntariado") {
+      if (!datos.metodoPago) {
+        res.status(400).json({ error: "Indica cómo harías el aporte." });
+        return;
+      }
+      const metodo = await prisma.metodoPago.findFirst({
+        where: { nombre: datos.metodoPago, activo: true, disponible: true },
       });
-      if (!origen) {
-        res.status(400).json({ error: "Ese origen de fondos no está en la lista. Elige uno del desplegable." });
+      if (!metodo) {
+        res.status(400).json({ error: "Esa forma de aportar no está disponible. Elige una de la lista." });
         return;
       }
     }
@@ -78,10 +85,11 @@ aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
   }
 });
 
-// Los origenes que se pueden elegir. Publica: la necesita el formulario.
-aportesRouter.get("/origenes-fondos", async (_req, res, next) => {
+// Las formas de aportar. Publica: la necesita el formulario. Van tambien las
+// que no estan disponibles todavia, para poder anunciarlas sin dejar elegirlas.
+aportesRouter.get("/metodos-pago", async (_req, res, next) => {
   try {
-    res.json(await prisma.origenFondos.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }));
+    res.json(await prisma.metodoPago.findMany({ where: { activo: true }, orderBy: { orden: "asc" } }));
   } catch (err) {
     next(err);
   }

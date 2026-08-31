@@ -41,7 +41,7 @@ export type ModeloOrdenable =
   | "tipoActividad"
   | "cuentaBancaria"
   | "motivoRechazo"
-  | "origenFondos";
+  | "metodoPago";
 
 export type ModeloCrud =
   | ModeloOrdenable
@@ -73,7 +73,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   tipoActividad: ["nombre", "permitido", "nota", "orden"],
   cuentaBancaria: ["banco", "tipoCuenta", "numero", "titular", "rnc", "moneda", "nota", "activa", "orden"],
   motivoRechazo: ["nombre", "nota", "activo", "orden"],
-  origenFondos: ["nombre", "activo", "orden"],
+  metodoPago: ["nombre", "nota", "activo", "disponible", "orden"],
   plantillaCorreo: ["asunto", "cuerpo"],
   cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
   aliado: ["nombre", "logoUrl", "sitioWeb", "orden"],

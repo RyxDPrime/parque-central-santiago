@@ -41,12 +41,16 @@ export const aporteSchema = z
       .min(10, "Cuéntanos un poco más")
       .max(2000, "El mensaje es muy largo"),
 
-    // ── Origen de los fondos ──
-    // Solo se piden por encima del umbral que fije el Parque. La comprobacion
-    // de si hacian falta esta en la ruta, que es donde se conoce ese umbral.
+    // Como piensa hacerlo efectivo. Se pide siempre que haya dinero de por
+    // medio, sin importar el monto: es lo que el equipo necesita para saber
+    // que gestion le toca.
+    metodoPago: unaLinea(80).optional(),
+
+    // ── Quien aporta ──
+    // Solo por encima del umbral que fije el Parque. La comprobacion de si
+    // hacian falta esta en la ruta, que es donde se conoce ese umbral.
     donanteTipo: z.enum(TIPOS_DONANTE).optional(),
     documento: unaLinea(30).optional(),
-    origenFondos: unaLinea(150).optional(),
     esPep: z.coerce.boolean().optional(),
     declaraLicito: z.coerce.boolean().optional(),
   })

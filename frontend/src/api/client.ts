@@ -247,10 +247,13 @@ export interface CuentaBancaria {
   orden: number;
 }
 
-export interface OrigenFondos {
+export interface MetodoPago {
   id: number;
   nombre: string;
+  nota: string | null;
   activo: boolean;
+  /** En falso se muestra pero no se puede elegir: todavia no esta habilitado. */
+  disponible: boolean;
   orden: number;
 }
 
@@ -268,7 +271,7 @@ export interface AporteInput {
   /** Origen de los fondos. Solo va cuando el aporte supera el umbral. */
   donanteTipo?: 'persona' | 'empresa';
   documento?: string;
-  origenFondos?: string;
+  metodoPago?: string;
   esPep?: boolean;
   declaraLicito?: boolean;
 }
@@ -329,7 +332,7 @@ export const api = {
   enviarSolicitudReserva: (data: SolicitudReservaInput) =>
     post<{ ok: boolean; id: number }>("/solicitudes-reserva", data),
   getCuentasBancarias: () => get<CuentaBancaria[]>("/cuentas-bancarias"),
-  getOrigenesFondos: () => get<OrigenFondos[]>("/origenes-fondos"),
+  getMetodosPago: () => get<MetodoPago[]>("/metodos-pago"),
   enviarAporte: (data: AporteInput) => post<{ ok: boolean; id: number }>("/aportes", data),
   enviarContacto: (data: ContactoInput) => post<{ ok: boolean }>("/contacto", data),
   enviarSugerencia: (data: SugerenciaInput) => post<{ ok: boolean }>("/sugerencias", data),

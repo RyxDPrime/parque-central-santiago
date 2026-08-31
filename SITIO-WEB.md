@@ -1,7 +1,7 @@
 # El sitio web, sección por sección
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · Última actualización: 31 de agosto de 2026
+Ureña Limited Partners · Última actualización: 1 de septiembre de 2026
 
 Todo lo que hay construido y en línea: qué contiene cada página, qué se administra desde el panel, qué formularios recibe el Parque y qué queda pendiente.
 
@@ -46,7 +46,7 @@ El sitio tiene dieciocho páginas públicas y un panel administrativo desde el q
 | Documentos financieros | 2 |
 | Formas de apoyo | 2 |
 | Publicaciones del blog | 1 |
-| Orígenes de fondos | 9 — borrador nuestro |
+| Formas de aportar | 4 (3 disponibles, tarjeta anunciada) |
 | Motivos de rechazo | 8 — borrador nuestro |
 | **Cuentas bancarias** | **0 — pendiente del Parque** |
 
@@ -266,9 +266,10 @@ Recoge intenciones de aportar. El sitio no cobra: la persona dice qué quiere da
 | Institución | Opcional | **Obligatoria** | Opcional |
 | Pregunta final | "Cuéntanos" | "¿Qué te interesaría patrocinar?" | "¿En qué te gustaría ayudar?" |
 
-3. **Declaración del origen de los fondos**, a partir del monto que fije el Parque. Pide documento de identidad o RNC, de dónde salen los fondos —elegido de una lista cerrada—, si la persona ocupa un cargo público de alto nivel, y una declaración de que el dinero es lícito. Los patrocinios institucionales lo declaran siempre, sin importar el monto.
-4. **Tabla de cuentas bancarias** — admite varias cuentas, en pesos o en dólares, y se desplaza dentro de su recuadro sin mover la página.
-5. **Bloque de transparencia**, con enlace a la sección correspondiente.
+3. **Cómo se haría efectivo** — transferencia, efectivo en la administración o cheque, elegido de una lista que mantiene el Parque. El pago con tarjeta aparece anunciado como *próximamente* y no se puede elegir hasta que se habilite. Se pregunta siempre que haya dinero de por medio; en voluntariado no aparece.
+4. **Quién aporta**, a partir del monto que fije el Parque: documento de identidad o RNC, si la persona ocupa un cargo público de alto nivel, y una declaración de que el dinero es lícito. Los patrocinios institucionales lo declaran siempre, sin importar el monto.
+5. **Tabla de cuentas bancarias** — admite varias cuentas, en pesos o en dólares, y se desplaza dentro de su recuadro sin mover la página.
+6. **Bloque de transparencia**, con enlace a la sección correspondiente.
 
 **Detalles**
 
@@ -352,7 +353,7 @@ Se entra en `/admin` con usuario y contraseña. El menú está dividido en siete
 | **Todo el sitio** | Datos de contacto y las 19 fotos de encabezado |
 | **Buzón** | Mensajes de contacto y sugerencias |
 | **Reservas** | Solicitudes, plantillas de respuesta, tipos de actividad y espacios reservables |
-| **Donaciones** | Aportes recibidos, cuentas bancarias, orígenes de fondos, motivos de rechazo y textos de la página |
+| **Donaciones** | Aportes recibidos, cuentas bancarias, formas de aportar, motivos de rechazo y textos de la página |
 | **Administración** | Usuarios del panel |
 
 ### 3.1 Cómo funciona una sección
@@ -458,7 +459,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 |---|---|---|
 | **Cuentas bancarias** | Sin ellas la página de Donaciones no muestra cómo transferir | **Alta** |
 | **Confirmar tipos de actividad** | La lista de 13 es un borrador nuestro, y el sistema ya la aplica | **Alta** |
-| **Revisar con su asesor legal el umbral y las listas de donaciones** | Desde qué monto hay que declarar el origen (hoy RD$ 25,000), qué orígenes se admiten y qué motivos de rechazo son válidos. Todo es borrador nuestro | **Alta** |
+| **Revisar con su asesor legal el umbral y los motivos de rechazo** | Desde qué monto hay que identificar a quien aporta (hoy RD$ 25,000) y qué motivos de rechazo son válidos. Ambos son borrador nuestro | **Alta** |
 | **Cuáles espacios se cobran** | Los 12 están marcados con costo por suposición nuestra | **Alta** |
 | Nombres de los dos diputados | Sus tarjetas dicen "Representante por designar" hasta que lleguen | Media |
 | Fotografías pendientes | Canchas, kioscos, entrada, inauguración, vista aérea y 7 instalaciones nuevas | Media |
@@ -487,6 +488,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 
 | Fecha | Qué cambió |
 |---|---|
+| 1 sep 2026 | El formulario pregunta cómo se haría el aporte —transferencia, efectivo, cheque— y se retira la pregunta del origen de los fondos. |
 | 31 ago 2026 | Los aportes se aceptan o se rechazan con motivo, autor y fecha, y por encima de un monto hay que declarar el origen de los fondos. |
 | 28 ago 2026 | Al pasar el ratón, la tarjeta completa de la Junta y del Personal Técnico crece y vuelve a su tamaño. |
 | 28 ago 2026 | Las fotos de la Junta Directiva se ven un 68% más grandes, y las actividades de meses ya cumplidos dejan de mostrarse. |

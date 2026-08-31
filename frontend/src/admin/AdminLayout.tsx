@@ -55,7 +55,7 @@ const CON_GRUPO_PROPIO = [
   'espacios-reservables',
   'tipos-actividad',
   'cuentas-bancarias',
-  'origenes-fondos',
+  'metodos-pago',
   'motivos-rechazo',
 ]
 
@@ -255,9 +255,9 @@ export function AdminLayout() {
                     <i className="ti ti-building-bank" />
                     Cuentas bancarias
                   </NavLink>
-                  <NavLink to="/admin/origenes-fondos" className="admin-nav-link">
-                    <i className="ti ti-report-money" />
-                    Orígenes de fondos
+                  <NavLink to="/admin/metodos-pago" className="admin-nav-link">
+                    <i className="ti ti-cash" />
+                    Formas de aportar
                   </NavLink>
                   <NavLink to="/admin/motivos-rechazo" className="admin-nav-link">
                     <i className="ti ti-file-alert" />

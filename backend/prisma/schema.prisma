@@ -405,7 +405,9 @@ model Aporte {
   // aporta nada a la revisión.
   donanteTipo   String?  // persona | empresa
   documento     String?  // cédula o RNC
-  origenFondos  String?
+  // Cómo piensa hacer efectivo el aporte. No es dato de cumplimiento: es lo
+  // que el equipo necesita saber para coordinar, y cambia a quién le toca.
+  metodoPago    String?
   // Persona expuesta políticamente. Es una pregunta estándar en la revisión de
   // aportes; marcarla no descalifica a nadie, solo pide mirar con más cuidado.
   esPep         Boolean  @default(false)
@@ -466,13 +468,19 @@ model MotivoRechazo {
   updatedAt DateTime @updatedAt
 }
 
-// De dónde salen los fondos que se ofrecen. Lo elige quien dona, de una lista
-// cerrada que maneja el Parque, y es lo que permite revisar la procedencia sin
-// depender de lo que cada quien decida escribir.
-model OrigenFondos {
+// Las formas de hacer efectivo un aporte. Se muestran en el formulario para
+// que el Parque sepa de antemano si le va a llegar una transferencia, alguien a
+// la oficina o un cheque, que son tres gestiones distintas.
+model MetodoPago {
   id        Int      @id @default(autoincrement())
   nombre    String
+  nota      String?
+  // Aparece en el formulario.
   activo    Boolean  @default(true)
+  // Se puede elegir ya. En falso sigue a la vista pero anunciado como que
+  // todavia no esta: sirve para el pago con tarjeta, que se enciende el dia
+  // que el Parque se afilie a la pasarela, sin tocar codigo.
+  disponible Boolean @default(true)
   orden     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

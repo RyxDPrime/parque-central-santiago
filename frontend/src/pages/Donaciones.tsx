@@ -53,11 +53,12 @@ type Estado =
 export function Donaciones() {
   const texto = useTextos()
   const { data: cuentas } = useApiData(api.getCuentasBancarias)
-  const { data: origenes } = useApiData(api.getOrigenesFondos)
+  const { data: metodos } = useApiData(api.getMetodosPago)
   const [tipo, setTipo] = useState<TipoAporte>('dinero')
   const [monto, setMonto] = useState('')
   const [frecuencia, setFrecuencia] = useState<'unica' | 'mensual'>('unica')
   const [donanteTipo, setDonanteTipo] = useState<'persona' | 'empresa'>('persona')
+  const [metodoPago, setMetodoPago] = useState('')
   const [estado, setEstado] = useState<Estado>({ tipo: 'listo' })
 
   const elegido = TIPOS.find((t) => t.valor === tipo)!
@@ -92,11 +93,11 @@ export function Donaciones() {
         monto: esDinero && monto ? Number(monto) : undefined,
         frecuencia: esDinero ? frecuencia : undefined,
         mensaje: String(datos.get('mensaje') ?? ''),
+        ...(tipo !== 'voluntariado' ? { metodoPago } : {}),
         ...(debeDeclarar
           ? {
               donanteTipo,
               documento: String(datos.get('documento') ?? ''),
-              origenFondos: String(datos.get('origenFondos') ?? ''),
               esPep: datos.get('esPep') === 'on',
               declaraLicito: datos.get('declaraLicito') === 'on',
             }
@@ -104,6 +105,7 @@ export function Donaciones() {
       })
       formulario.reset()
       setMonto('')
+      setMetodoPago('')
       setEstado({ tipo: 'enviado' })
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (error) {
@@ -276,11 +278,44 @@ export function Donaciones() {
               </div>
             </div>
 
-            {/* ── De dónde salen los fondos ── */}
+            {/* ── Cómo se haría efectivo ── */}
+            {tipo !== 'voluntariado' && (
+              <fieldset className="donacion-metodo">
+                <legend>¿Cómo lo harías?</legend>
+                <div className="donacion-metodos-fila">
+                  {(metodos ?? []).map((m) => (
+                    <button
+                      type="button"
+                      key={m.id}
+                      className={`donacion-metodo-btn${metodoPago === m.nombre ? ' esta-elegido' : ''}${
+                        m.disponible ? '' : ' no-disponible'
+                      }`}
+                      // Los que todavía no están habilitados se ven, para que se
+                      // sepa que vienen, pero no se pueden elegir.
+                      disabled={!m.disponible}
+                      onClick={() => setMetodoPago(m.nombre)}
+                      aria-pressed={metodoPago === m.nombre}
+                    >
+                      <span className="donacion-metodo-nombre">
+                        {m.nombre}
+                        {!m.disponible && <em> · próximamente</em>}
+                      </span>
+                      {m.nota && <small>{m.nota}</small>}
+                    </button>
+                  ))}
+                </div>
+                <p className="donacion-metodo-nota">
+                  Elegirlo no compromete a nada: nos dice qué gestión preparar cuando te
+                  contactemos.
+                </p>
+              </fieldset>
+            )}
+
+            {/* ── Quién aporta ── */}
             {debeDeclarar && (
               <fieldset className="donacion-origen">
                 <legend>
-                  <i className="ti ti-shield-check" /> De dónde salen los fondos
+                  <i className="ti ti-shield-check" /> Quién aporta
                 </legend>
                 {texto('donaciones.avisoDeclaracion') && (
                   <p className="donacion-origen-aviso">{texto('donaciones.avisoDeclaracion')}</p>
@@ -313,18 +348,6 @@ export function Donaciones() {
                       inputMode="numeric"
                       placeholder={donanteTipo === 'persona' ? '000-0000000-0' : '000-00000-0'}
                     />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="d-origen">Origen de los fondos</label>
-                    <select id="d-origen" name="origenFondos" required defaultValue="">
-                      <option value="">Elige una opción</option>
-                      {(origenes ?? []).map((o) => (
-                        <option key={o.id} value={o.nombre}>
-                          {o.nombre}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 </div>
 

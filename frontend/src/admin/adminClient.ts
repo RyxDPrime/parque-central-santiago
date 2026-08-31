@@ -415,7 +415,7 @@ export interface Aporte {
   // Origen de los fondos, cuando el aporte supero el umbral
   donanteTipo: string | null;
   documento: string | null;
-  origenFondos: string | null;
+  metodoPago: string | null;
   esPep: boolean;
   declaraLicito: boolean;
   // La decision y su constancia

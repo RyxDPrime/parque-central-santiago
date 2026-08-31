@@ -43,6 +43,7 @@ function resumen(a: Aporte): string {
     tipo,
     a.monto ? pesos(a.monto) : null,
     a.frecuencia === 'mensual' ? 'cada mes' : a.frecuencia === 'unica' ? 'una vez' : null,
+    a.metodoPago,
     a.institucion,
   ]
     .filter(Boolean)
@@ -389,6 +390,12 @@ export function AportesInbox() {
                     <dd>{abierto.frecuencia === 'mensual' ? 'Cada mes' : 'Una sola vez'}</dd>
                   </div>
                 )}
+                {abierto.metodoPago && (
+                  <div>
+                    <dt>Cómo lo haría</dt>
+                    <dd>{abierto.metodoPago}</dd>
+                  </div>
+                )}
                 {abierto.institucion && (
                   <div>
                     <dt>Institución</dt>
@@ -400,9 +407,9 @@ export function AportesInbox() {
               <h3 className="modal-subtitulo">Lo que escribió</h3>
               <p className="modal-descripcion">{abierto.mensaje}</p>
 
-              {(abierto.origenFondos || abierto.documento) && (
+              {abierto.documento && (
                 <>
-                  <h3 className="modal-subtitulo">De dónde salen los fondos</h3>
+                  <h3 className="modal-subtitulo">Quién aporta</h3>
                   <dl className="solicitud-datos">
                     {abierto.donanteTipo && (
                       <div>
@@ -416,12 +423,6 @@ export function AportesInbox() {
                       <div>
                         <dt>{abierto.donanteTipo === 'empresa' ? 'RNC' : 'Cédula'}</dt>
                         <dd>{abierto.documento}</dd>
-                      </div>
-                    )}
-                    {abierto.origenFondos && (
-                      <div>
-                        <dt>Origen</dt>
-                        <dd>{abierto.origenFondos}</dd>
                       </div>
                     )}
                     <div>

@@ -10,24 +10,28 @@
 //   node scripts/limpiar-uploads.mjs --borrar   # lo borra
 //
 // Necesita DATABASE_URL, y que UPLOADS_DIR apunte a la misma carpeta que usa
-// el servidor. En Railway se ejecuta con `railway run`, para que el volumen y
-// la base sean los de verdad y no los de la máquina de quien lo lanza.
+// el servidor. En Railway se ejecuta con `railway ssh --service backend`, para
+// que el volumen y la base sean los de verdad y no los de la máquina de quien
+// lo lanza; con `railway run` leería una carpeta local que no es el volumen.
 //
 // Qué se considera "referenciado": cualquier columna de texto de cualquier
 // tabla cuyo valor mencione /uploads/. Se busca así, y no por una lista de
 // columnas escrita aquí, porque esa lista se quedaría vieja en cuanto alguien
 // añada un modelo con foto — y quedarse vieja, en un script que borra, es
 // borrar archivos que sí se usaban.
+//
+// Las cuentas viven en scripts/lib/uploads.mjs, que es lo que cubren los tests.
 import { PrismaClient } from '@prisma/client'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { nombresReferenciados, soloArchivos, sobrantes } from './lib/uploads.mjs'
 
 const prisma = new PrismaClient()
 const borrar = process.argv.includes('--borrar')
 const carpeta = path.resolve(process.cwd(), process.env.UPLOADS_DIR ?? 'uploads')
 
-/** Los nombres de archivo que alguna fila menciona hoy. */
-async function referenciados() {
+/** Todos los valores de texto de la base que mencionan una ruta de /uploads/. */
+async function valoresConRutas() {
   const columnas = await prisma.$queryRaw`
     SELECT table_name, column_name
     FROM information_schema.columns
@@ -35,23 +39,17 @@ async function referenciados() {
       AND data_type IN ('text', 'character varying')
   `
 
-  const nombres = new Set()
+  const valores = []
   for (const { table_name: tabla, column_name: columna } of columnas) {
     const filas = await prisma.$queryRawUnsafe(
       `SELECT DISTINCT "${columna}" AS valor FROM "${tabla}" WHERE "${columna}" LIKE '%/uploads/%'`,
     )
-    for (const { valor } of filas) {
-      // Una misma columna puede traer varias rutas si el texto las lleva
-      // dentro (por ejemplo el cuerpo de una publicación del blog).
-      for (const ruta of valor.match(/\/uploads\/[^\s"'<>)]+/g) ?? []) {
-        nombres.add(path.basename(ruta))
-      }
-    }
+    for (const { valor } of filas) valores.push(valor)
   }
-  return nombres
+  return valores
 }
 
-const enUso = await referenciados()
+const enUso = nombresReferenciados(await valoresConRutas())
 
 let entradas
 try {
@@ -61,22 +59,17 @@ try {
   process.exit(1)
 }
 
-// Solo archivos. El volumen trae un directorio `lost+found` que crea el propio
-// sistema de archivos: no lo referencia nadie, asi que sin este filtro salia
-// como sobrante y se intentaba borrar, cosa que ademas falla por ser directorio
-// y deja la limpieza a medias.
-const archivos = entradas.filter((e) => e.isFile()).map((e) => e.name)
+const archivos = soloArchivos(entradas)
+const sobra = sobrantes(archivos, enUso)
 
-const sobran = archivos.filter((nombre) => !enUso.has(nombre))
-
-if (sobran.length === 0) {
+if (sobra.length === 0) {
   console.log(`${archivos.length} archivos en ${carpeta}, todos en uso. No hay nada que limpiar.`)
   await prisma.$disconnect()
   process.exit(0)
 }
 
 let bytes = 0
-for (const nombre of sobran) {
+for (const nombre of sobra) {
   const { size } = await fs.stat(path.join(carpeta, nombre))
   bytes += size
   console.log(`  ${borrar ? 'borrado' : 'sobra'}: ${nombre} (${(size / 1024).toFixed(0)} KB)`)
@@ -86,8 +79,8 @@ for (const nombre of sobran) {
 const mb = (bytes / 1024 / 1024).toFixed(1)
 console.log(
   borrar
-    ? `\nBorrados ${sobran.length} de ${archivos.length} archivos. Liberados ${mb} MB.`
-    : `\nSobran ${sobran.length} de ${archivos.length} archivos, ${mb} MB. Vuelve a ejecutarlo con --borrar para eliminarlos.`,
+    ? `\nBorrados ${sobra.length} de ${archivos.length} archivos. Liberados ${mb} MB.`
+    : `\nSobran ${sobra.length} de ${archivos.length} archivos, ${mb} MB. Vuelve a ejecutarlo con --borrar para eliminarlos.`,
 )
 
 await prisma.$disconnect()

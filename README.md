@@ -28,7 +28,8 @@ npm run dev             # http://localhost:4000
 Variables de entorno relevantes (ver `.env.example`):
 
 - `DATABASE_URL` — conexión a PostgreSQL
-- `SMTP_*` / `MAIL_FROM` / `CONTACT_TO_EMAIL` — envío del formulario de contacto
+- `BREVO_API_KEY` / `MAIL_FROM` / `CONTACT_TO_EMAIL` — correo saliente (formularios, acuses y respuestas). Se manda por la API HTTPS de Brevo y no por SMTP: el servidor tiene bloqueada esa salida
+- `UPLOADS_DIR` — carpeta de las fotos y documentos subidos desde el panel
 - `CORS_ORIGIN` — origen permitido en producción (en desarrollo se acepta cualquier `localhost`)
 
 ## Frontend
@@ -54,9 +55,10 @@ Agregar el plugin de Railway (New → Database → PostgreSQL). Railway genera s
 - Build y start ya están definidos en `backend/package.json` / `backend/railway.json` (Railway los detecta solo): build corre `tsc`, start corre `prisma migrate deploy` y luego levanta el servidor. No hace falta configurar nada extra a mano.
 - Variables de entorno a copiar de `backend/.env.example`, con estos valores reales:
   - `DATABASE_URL` → referenciar la del servicio de Postgres (Railway permite enlazarla con `${{Postgres.DATABASE_URL}}`)
-  - `SMTP_*`, `MAIL_FROM`, `CONTACT_TO_EMAIL` → cuenta de correo real (no la de prueba)
+  - `BREVO_API_KEY`, `MAIL_FROM`, `CONTACT_TO_EMAIL` → la clave real de Brevo y el correo del Parque
   - `CORS_ORIGIN` → la URL pública que Railway le asigne al servicio de frontend
 - Healthcheck configurado en `/api/health`.
+- **Volumen para los archivos subidos**: el servicio necesita un volumen de Railway montado en la ruta a la que apunte `UPLOADS_DIR` (por omisión `backend/uploads`). Sin él, las fotos y los PDF que cargue el Parque desde el panel desaparecen en el siguiente despliegue, y las rutas guardadas en la base quedan apuntando a archivos que ya no existen (recuperarlo es volver a subirlos con `scripts/restaurar-uploads.mjs`).
 
 ### 3. Frontend
 - **Root Directory**: `frontend`

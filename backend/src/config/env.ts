@@ -25,13 +25,13 @@ export const env = {
   // el proveedor reescribe la direccion; el nombre si se respeta.
   mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
   contactToEmail: required("CONTACT_TO_EMAIL", "asistentepcs@gmail.com"),
-  admin: {
-    // Obligatorios: si faltan, es mejor que el servidor no arranque que quedar
-    // con un panel cuyo acceso depende de valores vacíos.
-    username: required("ADMIN_USERNAME"),
-    // Hash bcrypt de la contraseña de administrador (generar con scripts/hash-password.ts)
-    passwordHash: required("ADMIN_PASSWORD_HASH"),
-  },
+  // Firma la sesión del panel. Obligatorio: es mejor que el servidor no
+  // arranque a que quede con un acceso que depende de un valor vacío.
+  //
+  // Ya no hay aquí usuario ni contraseña de administrador: desde que existe la
+  // tabla de usuarios, el acceso al panel se comprueba contra ella. Las
+  // variables ADMIN_USERNAME y ADMIN_PASSWORD_HASH solo las lee todavía
+  // `scripts/crear-admin.mjs`, para crear la primera cuenta.
   jwtSecret: required("JWT_SECRET"),
   uploadsDir: process.env.UPLOADS_DIR ?? "uploads",
 };

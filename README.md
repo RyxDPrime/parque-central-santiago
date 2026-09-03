@@ -2,7 +2,7 @@
 
 Sitio web institucional del Parque Central de Santiago, desarrollado por **Ureña Limited Partners (ULP)**.
 
-Este repositorio corresponde a la **Fase 1** del proyecto: presencia institucional del parque (quién es, qué ofrece y cómo contactarlo).
+El sitio público, un panel administrativo desde el que el Parque edita casi todo lo que se ve, y las gestiones que puede recibir en línea: solicitudes de reserva de espacios, intenciones de aporte, contacto y sugerencias.
 
 ## Estructura del proyecto
 
@@ -14,7 +14,9 @@ Parque Central/
 
 ## Backend
 
-Expone los datos institucionales (junta directiva, instalaciones, programas, actividades, galería, aliados) y procesa el formulario de contacto.
+Expone el contenido institucional (junta directiva, personal técnico, instalaciones, programas, actividades, galería, mapa, blog, aliados, transparencia), recibe lo que llega por los cuatro formularios y sirve el panel: cuentas con rol, edición de contenido, bandejas y plantillas de correo.
+
+Todo lo que llega se guarda en la base aunque el correo falle, y la bandeja del panel indica a quién no se pudo avisar en vez de darlo por hecho.
 
 ```bash
 cd backend
@@ -41,11 +43,15 @@ cp .env.example .env   # VITE_API_URL apuntando al backend
 npm run dev             # http://localhost:5173 (o el siguiente puerto libre)
 ```
 
-Páginas: Inicio, Sobre el Parque, Misión y Visión, Instalaciones y Servicios, Programas y Proyectos, Junta Directiva, Actividades, Galería, Aliados y Patrocinadores, Transparencia, Contacto.
+Páginas públicas (18): Inicio · Sobre el Parque · Misión, visión y valores · Junta Directiva · Personal técnico · Reglamento · Instalaciones y servicios · Programas y proyectos · Galería · Mapa · Actividades · Reserva de espacios · Donaciones · Apóyanos · Transparencia · Blog · Contacto · Sugerencias.
+
+El panel vive en `/admin`, en el mismo servicio.
 
 ## Despliegue (Railway)
 
-Se despliegan **tres servicios** dentro de un mismo proyecto de Railway, dos apuntando a este repo (con distinto Root Directory) y uno de base de datos:
+Se despliegan **tres servicios** dentro de un mismo proyecto de Railway, dos apuntando a este repo (con distinto Root Directory) y uno de base de datos.
+
+Los dos servicios de código están conectados al repositorio de GitHub, rama `main`: **cada push despliega solo**. Si alguna vez aparecen desconectados (`repo: null` en `railway status --json`), se vuelven a enlazar con `railway service source connect --repo <owner>/<repo> --branch main --service <servicio>`; mientras estén sueltos, los push no llegan a producción y el sitio se queda corriendo lo último que se subió a mano.
 
 ### 1. PostgreSQL
 Agregar el plugin de Railway (New → Database → PostgreSQL). Railway genera su propia `DATABASE_URL`.
@@ -69,9 +75,15 @@ Agregar el plugin de Railway (New → Database → PostgreSQL). Railway genera s
 ### Orden recomendado
 Desplegar primero Postgres, luego backend (para tener su URL pública), y al final el frontend usando esa URL en `VITE_API_URL`.
 
+## Mantenimiento
+
+- `node scripts/respaldo.mjs [carpeta]` — vuelca cada tabla a JSON y descarga los archivos subidos.
+- `node scripts/restaurar.mjs <carpeta>` y `node scripts/restaurar-uploads.mjs <carpeta>` — el camino de vuelta, incluido el cambio de servidor (el volumen no viaja con el proyecto).
+- `node scripts/limpiar-uploads.mjs` — lista los archivos del volumen que ya no referencia ninguna fila; con `--borrar` los elimina.
+
 ## Estado
 
-Fase 1 en desarrollo activo. Contenido pendiente por confirmar con el Parque: cifras del parque, plano/mapa, fotos y reseñas del equipo, fecha de fundación oficial, y el texto definitivo de misión y visión.
+Qué hay construido, qué falta y de quién depende cada pendiente: [ESTADO-PROYECTO.md](ESTADO-PROYECTO.md). El detalle de cada página está en *El sitio web, sección por sección*, y el uso del panel en *Guía del panel administrativo*.
 
 ---
 Equipo ULP: Junior Ureña, José Luis Alonso y Yuji Yamaki.

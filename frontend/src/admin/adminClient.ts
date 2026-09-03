@@ -318,24 +318,42 @@ export async function listSolicitudes(): Promise<SolicitudReserva[]> {
 }
 
 /**
+ * Aprobarla chocaria con otra reserva ya aprobada del mismo espacio. No es un
+ * error del panel: es algo que el Parque puede decidir hacer igual, repitiendo
+ * la llamada con `forzar`. Va como clase aparte para que la pantalla lo pueda
+ * distinguir de un fallo cualquiera y preguntar en vez de solo avisar.
+ */
+export class ChoqueDeReserva extends Error {}
+
+/**
  * Aprobar, rechazar o cancelar.
  *
  * Aprobar y rechazar le escriben a quien solicito con la plantilla guardada; el
  * motivo entra en ese correo. Con `avisar` en false se decide sin mandar nada,
  * para cuando ya se hablo con la persona por telefono.
+ *
+ * Con `forzar` se aprueba aunque el espacio ya este apartado a esa hora. Solo
+ * se manda despues de que alguien lo haya confirmado en pantalla.
  */
 export async function cambiarEstadoSolicitud(
   id: number,
   estado: string,
   motivo?: string,
   avisar = true,
+  forzar = false,
 ): Promise<SolicitudReserva> {
   const res = await fetch(`${API_URL}/solicitudes-reserva/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
-    body: JSON.stringify({ estado, motivo, avisar }),
+    body: JSON.stringify({ estado, motivo, avisar, forzar }),
   });
-  if (!res.ok) throw new Error(await parseErrorMessage(res));
+  if (!res.ok) {
+    const payload = (await res.json().catch(() => null)) as
+      | { error?: string; conflicto?: boolean }
+      | null;
+    const mensaje = payload?.error ?? `Error (${res.status})`;
+    throw payload?.conflicto ? new ChoqueDeReserva(mensaje) : new Error(mensaje);
+  }
   return res.json() as Promise<SolicitudReserva>;
 }
 

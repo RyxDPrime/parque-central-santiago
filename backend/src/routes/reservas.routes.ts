@@ -161,6 +161,46 @@ reservasRouter.get(
 );
 
 /**
+ * Las reservas ya aprobadas que chocan con una solicitud: mismo espacio, mismo
+ * dia y horas que se pisan.
+ *
+ * Dos franjas se solapan cuando cada una empieza antes de que la otra termine;
+ * que una empiece justo cuando la otra acaba no es choque. Las horas se
+ * comparan como texto porque van guardadas en "HH:MM" con el cero delante, y
+ * en ese formato el orden alfabetico es el orden del reloj.
+ */
+async function reservasQueChocan(solicitud: {
+  id: number;
+  espacio: string;
+  fecha: string;
+  horaInicio: string;
+  horaFin: string;
+}) {
+  return prisma.solicitudReserva.findMany({
+    where: {
+      id: { not: solicitud.id },
+      estado: "aprobada",
+      espacio: solicitud.espacio,
+      fecha: solicitud.fecha,
+      horaInicio: { lt: solicitud.horaFin },
+      horaFin: { gt: solicitud.horaInicio },
+    },
+    orderBy: { horaInicio: "asc" },
+  });
+}
+
+/**
+ * Cuantos se pueden apartar a la vez. Un espacio con `cantidad` (ocho kioscos
+ * grandes) admite tantas reservas simultaneas como unidades tenga; sin ese
+ * dato, es uno solo.
+ */
+async function cupoDelEspacio(nombre: string): Promise<number> {
+  const espacio = await prisma.espacioReservable.findFirst({ where: { nombre } });
+  const cantidad = espacio?.cantidad ?? 0;
+  return cantidad > 0 ? cantidad : 1;
+}
+
+/**
  * Decidir una solicitud.
  *
  * Aprobar o rechazar le escribe a quien la pidió, con la plantilla que el
@@ -171,6 +211,12 @@ reservasRouter.get(
  *
  * Cancelar no manda nada: suele hacerse de acuerdo con la persona, que ya está
  * enterada.
+ *
+ * Aprobar es lo unico que aparta algo de verdad, asi que es lo unico que se
+ * comprueba contra lo ya apartado: sin esto, dos solicitudes del mismo espacio
+ * a la misma hora se podian aprobar las dos y el choque aparecia el dia de la
+ * actividad. No lo impide del todo —el Parque puede tener una razon para
+ * hacerlo igual— pero obliga a decirlo a proposito con `forzar`.
  */
 reservasRouter.patch(
   "/solicitudes-reserva/:id",
@@ -187,9 +233,37 @@ reservasRouter.patch(
       // Permite decidir sin avisar, para el caso en que ya se habló con la
       // persona por teléfono y un correo automático sobraría.
       const avisar = req.body?.avisar !== false;
+      const id = Number(req.params.id);
+
+      if (estado === "aprobada" && req.body?.forzar !== true) {
+        const solicitud = await prisma.solicitudReserva.findUnique({ where: { id } });
+        if (!solicitud) {
+          res.status(404).json({ error: "Registro no encontrado" });
+          return;
+        }
+
+        const choques = await reservasQueChocan(solicitud);
+        const cupo = await cupoDelEspacio(solicitud.espacio);
+
+        if (choques.length >= cupo) {
+          const detalle = choques
+            .map((c) => `${c.nombre} (${c.horaInicio}-${c.horaFin})`)
+            .join(", ");
+          // Se responde 409 y con `conflicto` para que el panel sepa que no es
+          // un error suyo, sino algo que el Parque puede decidir saltarse.
+          res.status(409).json({
+            conflicto: true,
+            error:
+              cupo > 1
+                ? `Ese día a esa hora ya están apartados los ${cupo} de "${solicitud.espacio}": ${detalle}.`
+                : `"${solicitud.espacio}" ya está apartado ese día a esa hora: ${detalle}.`,
+          });
+          return;
+        }
+      }
 
       let actualizada = await prisma.solicitudReserva.update({
-        where: { id: Number(req.params.id) },
+        where: { id },
         data: {
           estado,
           motivo,

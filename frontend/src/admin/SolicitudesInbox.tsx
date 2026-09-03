@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   cambiarEstadoSolicitud,
+  ChoqueDeReserva,
   eliminarSolicitud,
   listSolicitudes,
   type SolicitudReserva,
@@ -116,7 +117,7 @@ export function SolicitudesInbox() {
     setMotivo('')
   }
 
-  async function decidir(s: SolicitudReserva, estado: string) {
+  async function decidir(s: SolicitudReserva, estado: string, forzar = false) {
     if (estado === 'rechazada' && !motivo.trim()) {
       setError('Escribe el motivo: es lo que la persona va a leer en el correo.')
       return
@@ -124,12 +125,23 @@ export function SolicitudesInbox() {
     setDecidiendo(true)
     setError(null)
     try {
-      const actualizada = await cambiarEstadoSolicitud(s.id, estado, motivo.trim(), avisar)
+      const actualizada = await cambiarEstadoSolicitud(s.id, estado, motivo.trim(), avisar, forzar)
       setItems((prev) => prev.map((x) => (x.id === s.id ? actualizada : x)))
       setRecienDecididas((prev) => (prev.includes(s.id) ? prev : [...prev, s.id]))
       // Si el correo falló, la ventana se queda abierta: es donde se ve el aviso.
       if (!actualizada.respuestaError) cerrar()
     } catch (e) {
+      // El espacio ya está apartado a esa hora. No se decide por la persona:
+      // se le enseña con quién choca y ella dice si aun así procede.
+      if (e instanceof ChoqueDeReserva) {
+        if (window.confirm(`${e.message}\n\n¿Aprobarla de todos modos?`)) {
+          setDecidiendo(false)
+          await decidir(s, estado, true)
+          return
+        }
+        setError(e.message)
+        return
+      }
       setError(e instanceof Error ? e.message : 'Error al guardar')
     } finally {
       setDecidiendo(false)

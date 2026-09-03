@@ -5,6 +5,7 @@ import { sendAcuseSolicitud, sendSolicitudReservaNotification } from "../config/
 import { contactoLimiter } from "../middleware/rateLimit";
 import { ESTADOS_SOLICITUD, solicitudReservaSchema } from "../schemas/reserva.schema";
 import { HUECOS_POR_FAMILIA, PLANTILLAS, enviarRespuestaSolicitud } from "../config/plantillas";
+import { choquesCon, cupoDe, hayCupo } from "../dominio/reservas";
 
 export const reservasRouter = Router();
 
@@ -161,43 +162,29 @@ reservasRouter.get(
 );
 
 /**
- * Las reservas ya aprobadas que chocan con una solicitud: mismo espacio, mismo
- * dia y horas que se pisan.
+ * Lo ya apartado de ese espacio ese dia, sin contar la solicitud que se decide.
  *
- * Dos franjas se solapan cuando cada una empieza antes de que la otra termine;
- * que una empiece justo cuando la otra acaba no es choque. Las horas se
- * comparan como texto porque van guardadas en "HH:MM" con el cero delante, y
- * en ese formato el orden alfabetico es el orden del reloj.
+ * La base filtra por espacio y por fecha, que son igualdades; cual se pisa con
+ * cual lo decide `choquesCon`. Se reparte asi a proposito: son pocas filas —un
+ * espacio, un dia— y la regla del solape queda donde se puede comprobar sin
+ * levantar una base, en vez de escondida en un `where`.
  */
-async function reservasQueChocan(solicitud: {
-  id: number;
-  espacio: string;
-  fecha: string;
-  horaInicio: string;
-  horaFin: string;
-}) {
+async function apartadasEseDia(solicitud: { id: number; espacio: string; fecha: string }) {
   return prisma.solicitudReserva.findMany({
     where: {
       id: { not: solicitud.id },
       estado: "aprobada",
       espacio: solicitud.espacio,
       fecha: solicitud.fecha,
-      horaInicio: { lt: solicitud.horaFin },
-      horaFin: { gt: solicitud.horaInicio },
     },
     orderBy: { horaInicio: "asc" },
   });
 }
 
-/**
- * Cuantos se pueden apartar a la vez. Un espacio con `cantidad` (ocho kioscos
- * grandes) admite tantas reservas simultaneas como unidades tenga; sin ese
- * dato, es uno solo.
- */
+/** Cuantas reservas admite un espacio a la vez, segun sus unidades. */
 async function cupoDelEspacio(nombre: string): Promise<number> {
   const espacio = await prisma.espacioReservable.findFirst({ where: { nombre } });
-  const cantidad = espacio?.cantidad ?? 0;
-  return cantidad > 0 ? cantidad : 1;
+  return cupoDe(espacio?.cantidad);
 }
 
 /**
@@ -242,10 +229,10 @@ reservasRouter.patch(
           return;
         }
 
-        const choques = await reservasQueChocan(solicitud);
+        const choques = choquesCon(solicitud, await apartadasEseDia(solicitud));
         const cupo = await cupoDelEspacio(solicitud.espacio);
 
-        if (choques.length >= cupo) {
+        if (!hayCupo(choques.length, cupo)) {
           const detalle = choques
             .map((c) => `${c.nombre} (${c.horaInicio}-${c.horaFin})`)
             .join(", ");

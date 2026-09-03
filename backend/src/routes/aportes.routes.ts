@@ -5,6 +5,7 @@ import { sendAcuseAporte, sendAporteNotification } from "../config/mailer";
 import { contactoLimiter } from "../middleware/rateLimit";
 import { aporteSchema, decisionAporteSchema } from "../schemas/aporte.schema";
 import { PLANTILLAS, enviarPlantilla, valoresAporte } from "../config/plantillas";
+import { debeDeclarar, umbralDe } from "../dominio/aportes";
 
 export const aportesRouter = Router();
 
@@ -23,21 +24,16 @@ export const aportesRouter = Router();
  */
 async function umbralDeclaracion(): Promise<number> {
   const texto = await prisma.texto.findUnique({ where: { clave: "donaciones.umbral" } });
-  const valor = Number((texto?.valor ?? "").replace(/\D/g, ""));
-  return Number.isFinite(valor) && valor > 0 ? valor : 0;
+  return umbralDe(texto?.valor);
 }
 
 aportesRouter.post("/aportes", contactoLimiter, async (req, res, next) => {
   try {
     const datos = aporteSchema.parse(req.body);
 
-    // Un patrocinio institucional siempre declara, sin importar el monto: por
-    // definicion viene de una empresa y suele ser la cifra grande.
     const umbral = await umbralDeclaracion();
-    const debeDeclarar =
-      datos.tipo === "patrocinio" || (datos.tipo === "dinero" && (datos.monto ?? 0) >= umbral);
 
-    if (debeDeclarar) {
+    if (debeDeclarar(datos, umbral)) {
       if (!datos.donanteTipo || !datos.documento) {
         res.status(400).json({
           error: "Para un aporte de este tipo hace falta que digas quién eres.",

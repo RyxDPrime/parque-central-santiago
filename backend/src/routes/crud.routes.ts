@@ -2,6 +2,7 @@ import { Router } from "express";
 import { prisma } from "../config/db";
 import { requireAuth, requirePermiso } from "../middleware/auth";
 import type { Permiso } from "../config/permisos";
+import { movimiento, posicionAlCrear, posicionPedida } from "../dominio/orden";
 
 // Fábrica genérica de rutas crear/editar/borrar para un modelo de Prisma.
 // Las secciones administrables comparten la misma forma básica (una tabla con
@@ -109,11 +110,6 @@ export function crudRoutes(
   const del = (cliente: ClienteTx | typeof prisma): Delegado =>
     (cliente as Record<string, Delegado>)[modelo];
 
-  function posicionPedida(valor: unknown): number | null {
-    const n = Number(valor);
-    return Number.isInteger(n) && n > 0 ? n : null;
-  }
-
   if (!opciones.soloEditar) {
     router.post("/", requireAuth, permiso, async (req, res, next) => {
     try {
@@ -123,10 +119,7 @@ export function crudRoutes(
 
         if (opciones.reorder) {
           const total = await m.count();
-          const pedida = posicionPedida(data.orden);
-          // Sin posición explícita va al final; si la piden fuera de rango se
-          // ajusta al final para no dejar huecos.
-          const destino = pedida === null ? total + 1 : Math.min(pedida, total + 1);
+          const destino = posicionAlCrear(posicionPedida(data.orden), total);
 
           await m.updateMany({
             where: { orden: { gte: destino } },
@@ -159,15 +152,15 @@ export function crudRoutes(
           if (actual && pedida !== null) {
             const total = await m.count();
             const desde = actual.orden as number;
-            const hasta = Math.min(pedida, total);
+            const { hasta, direccion } = movimiento(desde, pedida, total);
 
-            if (hasta < desde) {
+            if (direccion === "bajan") {
               // Sube: los que estaban entre la posición nueva y la vieja bajan uno.
               await m.updateMany({
                 where: { orden: { gte: hasta, lt: desde } },
                 data: { orden: { increment: 1 } },
               });
-            } else if (hasta > desde) {
+            } else if (direccion === "suben") {
               // Baja: los que quedaron por encima suben uno.
               await m.updateMany({
                 where: { orden: { gt: desde, lte: hasta } },

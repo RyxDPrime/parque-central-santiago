@@ -25,8 +25,18 @@ app.use(
 // esa variable no está definida en el despliegue (quitarla fue necesario para
 // que la compilación instalara las dependencias de desarrollo), así que usarla
 // dejaba el permiso de localhost activo también en producción.
-const permitirLocalhost = !process.env.CORS_ORIGIN;
+const permitirLocalhost = env.corsOrigin === null;
 const esLocalhost = (origin: string) => /^http:\/\/localhost:\d+$/.test(origin);
+
+// Olvidar la variable no rompe nada visible en el servidor: la API sigue
+// respondiendo, y es el sitio el que se queda en blanco sin decir por qué. Un
+// aviso en el arranque es lo que convierte ese misterio en una línea de log.
+if (permitirLocalhost) {
+  console.warn(
+    "CORS_ORIGIN no está definida: solo se aceptarán orígenes de localhost. " +
+      "En producción esto deja al sitio sin poder leer la API, aunque la API responda bien.",
+  );
+}
 
 app.use(
   cors({
@@ -35,7 +45,7 @@ app.use(
         callback(null, true);
         return;
       }
-      callback(null, origin === env.corsOrigin);
+      callback(null, env.corsOrigin !== null && origin === env.corsOrigin);
     },
   }),
 );

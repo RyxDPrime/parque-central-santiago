@@ -8,14 +8,27 @@ function required(name: string, fallback?: string): string {
   return value;
 }
 
+/**
+ * El origen que puede leer la API, o `null` si no se configuró ninguno.
+ *
+ * Se le quita la barra final: el navegador manda el origen sin ella
+ * ("https://sitio.com"), así que copiar la dirección desde el navegador
+ * —donde sí aparece— dejaba fuera al frontend entero sin ninguna pista:
+ * la API responde bien y aun así el sitio no puede leerla.
+ *
+ * Vacía cuenta como no configurada. Antes caía a "*", que no permitía nada:
+ * el asterisco se comparaba por igualdad contra el origen real del navegador
+ * y no coincidía nunca, así que parecía un permiso abierto y era lo contrario.
+ */
+function normalizarOrigen(valor: string | undefined): string | null {
+  const limpio = (valor ?? "").trim().replace(/\/+$/, "");
+  return limpio === "" ? null : limpio;
+}
+
 export const env = {
   port: Number(process.env.PORT ?? 4000),
   nodeEnv: process.env.NODE_ENV ?? "development",
-  // Se le quita la barra final: el navegador manda el origen sin ella
-  // ("https://sitio.com"), así que copiar la dirección desde el navegador
-  // —donde sí aparece— dejaba fuera al frontend entero sin ninguna pista:
-  // la API responde bien y aun así el sitio no puede leerla.
-  corsOrigin: (process.env.CORS_ORIGIN ?? "*").trim().replace(/\/+$/, ""),
+  corsOrigin: normalizarOrigen(process.env.CORS_ORIGIN),
   // Correo saliente. Se envia por HTTPS y no por SMTP: el servidor donde vive
   // el sitio tiene bloqueada la salida SMTP y ninguna credencial la sortea.
   // Sin la clave, los mensajes se siguen guardando en el panel pero no se

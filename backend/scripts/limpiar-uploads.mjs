@@ -53,13 +53,19 @@ async function referenciados() {
 
 const enUso = await referenciados()
 
-let archivos
+let entradas
 try {
-  archivos = await fs.readdir(carpeta)
+  entradas = await fs.readdir(carpeta, { withFileTypes: true })
 } catch {
   console.error(`No existe la carpeta ${carpeta}. Revisa UPLOADS_DIR.`)
   process.exit(1)
 }
+
+// Solo archivos. El volumen trae un directorio `lost+found` que crea el propio
+// sistema de archivos: no lo referencia nadie, asi que sin este filtro salia
+// como sobrante y se intentaba borrar, cosa que ademas falla por ser directorio
+// y deja la limpieza a medias.
+const archivos = entradas.filter((e) => e.isFile()).map((e) => e.name)
 
 const sobran = archivos.filter((nombre) => !enUso.has(nombre))
 

@@ -4,6 +4,9 @@
   "description": "API del sitio web del Parque Central de Santiago (Fase 1)",
   "private": true,
   "main": "dist/server.js",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "tsx --test test/reservas.test.ts test/aportes.test.ts test/orden.test.ts test/uploads.test.mjs",
     "dev": "tsx watch src/server.ts",

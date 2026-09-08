@@ -1,7 +1,47 @@
+/**
+ * Las páginas del sitio, para los campos donde hay que elegir una.
+ *
+ * Existe para que en el panel se elija de una lista en vez de escribir una
+ * dirección a mano: quien administra el contenido del Parque no tiene por qué
+ * saber que una ruta empieza con barra ni recordar cómo se escribe
+ * "instalaciones-y-servicios". Una errata ahí es un botón que lleva a la página
+ * de no encontrada, y no se nota hasta que alguien lo pulsa.
+ *
+ * Va escrita aquí y no deducida de las rutas porque hace falta el nombre con el
+ * que el Parque conoce cada página, no su dirección. Al agregar una página al
+ * sitio, se agrega también aquí.
+ */
+export const PAGINAS_DEL_SITIO: { value: string; label: string }[] = [
+  { value: '/', label: 'Inicio' },
+  { value: '/sobre-el-parque', label: 'Historia' },
+  { value: '/mision-vision-valores', label: 'Misión, visión y valores' },
+  { value: '/junta-directiva', label: 'Junta Directiva' },
+  { value: '/personal-tecnico', label: 'Personal técnico' },
+  { value: '/reglamento', label: 'Reglamento' },
+  { value: '/instalaciones-y-servicios', label: 'Instalaciones y servicios' },
+  { value: '/programas-y-proyectos', label: 'Programas y proyectos' },
+  { value: '/galeria', label: 'Galería' },
+  { value: '/mapa', label: 'Mapa del parque' },
+  { value: '/actividades', label: 'Actividades' },
+  { value: '/reserva', label: 'Reserva de espacios' },
+  { value: '/donaciones', label: 'Donaciones' },
+  { value: '/apoyanos', label: 'Apóyanos' },
+  { value: '/transparencia', label: 'Transparencia' },
+  { value: '/blog', label: 'Blog' },
+  { value: '/contacto', label: 'Contacto' },
+  { value: '/sugerencias', label: 'Sugerencias' },
+]
+
 export interface FieldConfig {
   key: string
   label: string
-  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file' | 'checkbox'
+  /**
+   * `mover` es un desplegable que se arma con las propias filas de la tabla, y
+   * cuyo cambio no guarda un valor: intercambia el contenido de esta fila con
+   * la elegida. Se usa donde la clave es fija y lo que se quiere mover es lo
+   * que hay dentro, no la clave.
+   */
+  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file' | 'checkbox' | 'mover'
   /** Texto explicativo bajo el campo. */
   hint?: string
   /**
@@ -11,6 +51,8 @@ export interface FieldConfig {
    */
   aspect?: number
   options?: { value: string; label: string }[]
+  /** Solo para `mover`: qué columna de la fila trae el nombre legible. */
+  etiquetaDesde?: string
   accept?: string
   required?: boolean
   placeholder?: string
@@ -441,7 +483,9 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'etiqueta', label: 'Etiqueta sobre la foto (opcional)', type: 'text', placeholder: 'Ej: Complejo Deportivo', hint: 'Pastilla blanca que se ve sobre la esquina de la foto.' },
       { key: 'imagenUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 16 / 9, hint: 'Foto grande del bloque, al lado del texto.' },
       { key: 'enlaceTexto', label: 'Texto del enlace (opcional)', type: 'text', placeholder: 'Ej: Ver instalaciones y servicios', hint: 'Botón verde al pie del bloque. Déjalo vacío si no quieres botón.' },
-      { key: 'enlaceUrl', label: 'Dirección del enlace (opcional)', type: 'text', placeholder: 'Ej: /instalaciones-y-servicios', hint: 'A dónde lleva el botón. Ruta dentro del sitio, empezando con /' },
+      // Lista y no texto libre: escribir la ruta a mano es de donde salen los
+      // botones que llevan a "página no encontrada".
+      { key: 'enlaceUrl', label: 'A dónde lleva el botón (opcional)', type: 'select', options: [{ value: '', label: 'Sin enlace' }, ...PAGINAS_DEL_SITIO], hint: 'La página del sitio que abre el botón. Con "Sin enlace", el botón no aparece.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
@@ -466,7 +510,12 @@ export const entityConfigs: EntityConfig[] = [
     titleField: 'etiqueta',
     soloEditar: true,
     fields: [
-      { key: 'etiqueta', label: 'Página', type: 'text', hint: 'A qué página del sitio corresponde esta franja.' },
+      // Desplegable y no texto: la clave es la que une cada franja con su
+      // página, es única, y las diecinueve páginas ya tienen la suya. Elegir
+      // otra no reescribe la clave —no habría dónde ponerla— sino que
+      // intercambia la foto con esa página, que es lo que se quiere de verdad
+      // cuando una foto quedó en la sección equivocada.
+      { key: 'clave', label: 'Página', type: 'mover', etiquetaDesde: 'etiqueta', showOnCreate: false, hint: 'Elegir otra página intercambia esta foto con la que haya allí. Pide confirmación antes.' },
       { key: 'imagenUrl', label: 'Foto de la franja', type: 'file', accept: 'image/*', aspect: 16 / 5, hint: 'Con "Dejar sin foto" la franja queda solo con el fondo verde.' },
       {
         key: 'posicion',

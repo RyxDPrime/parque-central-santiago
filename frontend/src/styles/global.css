@@ -6,14 +6,15 @@
   --accent-400:#A38579;--accent-600:#8A6B60;--accent-800:#6F5349;
   --gray-100:#F5F5F2;--gray-200:#E8E8E4;--gray-400:#888780;--gray-700:#444441;
   --text-primary:#1a1a18;--text-secondary:#5a5a56;--text-muted:#888780;
-  /* --border es para separadores: lineas de tabla, el filo del menu, divisiones
-     dentro de una tarjeta. Contra el papel da 1.24:1, que es lo que se quiere de
-     una linea que solo divide.
-     --border-fuerte es para lo que tiene que leerse como un objeto: tarjetas,
-     paneles, botones y campos sobre fondo blanco. Da 3:1, el minimo que pide la
-     norma para el contorno de un control. Con --border esas cajas desaparecian
-     del sitio y solo se notaban al pasarles el raton, que las pone verdes. */
-  --border:#E0E0DA;--border-fuerte:#96958E;--radius:8px;--radius-lg:14px;--radius-xl:20px;
+  /* Dos pesos, y los dos tienen que verse.
+     --border separa: lineas de tabla, el filo del menu, la cabecera de un
+     formulario del resto. A 2:1 se lee como una linea fina sin pesar.
+     --border-fuerte contornea lo que es un objeto: tarjetas, paneles, botones y
+     campos. A 3:1, el minimo que pide la norma para el contorno de un control.
+     Los dos estaban antes en #E0E0DA, que contra el papel da 1.24:1: ni las
+     cajas ni las divisiones se distinguian, y las tarjetas solo aparecian al
+     pasarles el raton, que las pone verdes. */
+  --border:#B7B6AF;--border-fuerte:#96958E;--radius:8px;--radius-lg:14px;--radius-xl:20px;
   --font:'Poppins',system-ui,sans-serif;
 }
 html{scroll-behavior:smooth}
@@ -426,8 +427,10 @@ ul{list-style:none}
 .notfound-box h2{font-size:20px;font-weight:600;margin-bottom:8px}
 .notfound-box p{font-size:14px;color:var(--text-secondary);line-height:1.75;margin-bottom:24px}
 .notfound-links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-.notfound-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-100);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
-.notfound-link:hover{background:var(--green-100);border-color:var(--green-400)}
+/* El filo va en --green-400 y no en --green-100: verde palido sobre verde
+   palido no se distingue del fondo, y estos botones son botones. */
+.notfound-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-400);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
+.notfound-link:hover{background:var(--green-100);border-color:var(--green-600)}
 
 /* ── PAGINA EN PROCESO ── */
 /* Misma caja centrada que la de 404, con el sello verde por delante: quien llega
@@ -435,15 +438,15 @@ ul{list-style:none}
    llego temprano. */
 .enproceso{text-align:center;max-width:620px;margin:0 auto;padding:20px 0;display:flex;flex-direction:column;align-items:center}
 .enproceso-icono{font-size:48px;color:var(--green-400);display:block;margin-bottom:14px}
-.enproceso-sello{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green-800);background:var(--green-50);border:1px solid var(--green-100);padding:5px 13px;border-radius:20px;margin-bottom:14px}
+.enproceso-sello{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green-800);background:var(--green-50);border:1px solid var(--green-400);padding:5px 13px;border-radius:20px;margin-bottom:14px}
 .enproceso-sello::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green-400);animation:enproceso-latido 2.4s ease-in-out infinite}
 @keyframes enproceso-latido{0%,100%{opacity:1}50%{opacity:.35}}
 .enproceso h2{font-size:20px;font-weight:600;margin-bottom:8px}
 .enproceso p{font-size:14px;color:var(--text-secondary);line-height:1.75;margin-bottom:24px}
 .enproceso p strong{color:var(--green-800);font-weight:600}
 .enproceso-atajos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-.enproceso-atajo{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-100);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
-.enproceso-atajo:hover{background:var(--green-100);border-color:var(--green-400)}
+.enproceso-atajo{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-400);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
+.enproceso-atajo:hover{background:var(--green-100);border-color:var(--green-600)}
 .enproceso-pie{font-size:13px;color:var(--text-muted);margin:24px 0 0}
 .enproceso-pie a{color:var(--green-600);font-weight:500;border-bottom:1px solid var(--green-200)}
 .enproceso-pie a:hover{color:var(--green-800);border-color:var(--green-400)}
@@ -1096,6 +1099,15 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .modal-acciones{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
 
 /* ── PLANTILLAS DE RESPUESTA ── */
+/* Esta pantalla usa .admin-panel, que no trae relleno propio porque esta pensado
+   para tablas a sangre. Dentro hay texto, etiquetas y campos, y pegados al filo
+   quedaban desalineados con la cabecera y la franja de botones, que si tienen
+   relleno. Se los alinea a todos al mismo margen. */
+.plantilla-panel > .plantilla-descripcion,
+.plantilla-panel > .admin-field,
+.plantilla-panel > .plantilla-ayuda{margin-left:22px;margin-right:22px}
+.plantilla-panel > .plantilla-descripcion{margin-top:16px}
+
 .plantilla-descripcion{font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 18px;max-width:none}
 .plantilla-ayuda{margin:4px 0 20px;padding:15px 16px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);border:1px solid var(--border)}
 .plantilla-ayuda h3{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin:0 0 8px}

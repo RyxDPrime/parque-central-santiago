@@ -2,6 +2,7 @@ import { Router } from "express";
 import { adminRouter } from "./admin.routes";
 import { contactoRouter } from "./contacto.routes";
 import { contentRouter } from "./content.routes";
+import { encabezadosRouter } from "./encabezados.routes";
 import { crudRoutes } from "./crud.routes";
 import { apiLimiter } from "../middleware/rateLimit";
 import { mensajesRouter } from "./mensajes.routes";
@@ -28,6 +29,9 @@ apiRouter.use(sugerenciasRouter);
 apiRouter.use(reservasRouter);
 apiRouter.use(aportesRouter);
 apiRouter.use(usuariosRouter);
+// Va antes del CRUD generico de encabezados: si no, "/:id/mover" no se
+// distinguiria de una ruta suya.
+apiRouter.use(encabezadosRouter);
 
 // Crear / editar / borrar (protegido) para las secciones administrables del panel.
 // Todas llevan posición reordenable salvo Actividades, que se ordena por fecha.

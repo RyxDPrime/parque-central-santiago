@@ -37,7 +37,7 @@ export const env = {
   // Quien figura como remitente. Mientras no haya un dominio propio verificado,
   // el proveedor reescribe la direccion; el nombre si se respeta.
   mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
-  contactToEmail: required("CONTACT_TO_EMAIL", "asistentepcs@gmail.com"),
+  contactToEmail: required("CONTACT_TO_EMAIL", "info@parquecentralsantiagord.com"),
   // Firma la sesión del panel. Obligatorio: es mejor que el servidor no
   // arranque a que quede con un acceso que depende de un valor vacío.
   //

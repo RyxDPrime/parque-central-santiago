@@ -25,22 +25,13 @@ const instalacionIconos: Record<string, string> = {
   Hangares: 'ti-building',
 }
 
-const servicioFotos: Record<string, string> = {
-  'Cibao Fútbol Club': '/images/galeria/cibao-futbol-club.jpg',
-  'Escuela de Tenis – Washington Heights Tennis Association': '/images/galeria/cancha-tenis.jpg',
-  Tirolesa: '/images/galeria/vista-aerea-parque.jpg',
-  'Fun Stop – Carritos Corredores': '/images/galeria/funstop.jpg',
-  'Alquiler de Bicicletas – Bicicentro': '/images/galeria/ciclistas.jpg',
-}
-
 /** Foto cargada desde el panel; si no hay, la que estaba escrita por nombre. */
 function fotoDeInstalacion(inst: { nombre: string; fotoUrl: string | null }) {
   return inst.fotoUrl || instalacionFotos[inst.nombre] || null
 }
 
-export function InstalacionesYServicios() {
+export function Instalaciones() {
   const instalaciones = useApiData(api.getInstalaciones)
-  const programas = useApiData(api.getProgramas)
 
   const conFoto = instalaciones.data?.filter((i) => fotoDeInstalacion(i)) ?? []
   const sinFoto = instalaciones.data?.filter((i) => !fotoDeInstalacion(i)) ?? []
@@ -48,10 +39,10 @@ export function InstalacionesYServicios() {
   return (
     <>
       <PageHero
-        pagina="instalaciones-y-servicios"
+        pagina="instalaciones"
         label="El Parque"
-        title="Instalaciones y Servicios"
-        description="Las áreas y facilidades del parque, y los servicios que ofrece a la comunidad de Santiago."
+        title="Instalaciones"
+        description="Las áreas y facilidades del Parque Central de Santiago."
         image="/images/galeria/cancha-basketball.jpg"
       />
 
@@ -96,35 +87,6 @@ export function InstalacionesYServicios() {
               </div>
             </>
           )}
-        </div>
-      </section>
-
-      <section className="section" style={{ background: 'var(--gray-100)' }}>
-        <div className="section-inner">
-          <div className="sec-label">Actividades para la comunidad</div>
-          <h2 className="sec-title" style={{ marginBottom: 40 }}>
-            Servicios que ofrecemos
-          </h2>
-
-          {programas.loading && <LoadingState />}
-          {programas.error && <ErrorState message={programas.error} />}
-
-          {programas.data?.map((programa, i) => (
-            <div className={`service-row ${i % 2 === 1 ? 'reverse' : ''}`} key={programa.id}>
-              <div className="service-row-img">
-                <img
-                  src={programa.fotoUrl || servicioFotos[programa.nombre] || '/images/galeria/entrada-parque.jpg'}
-                  alt={programa.nombre}
-                  loading="lazy"
-                />
-              </div>
-              <div className="service-row-text">
-                <span className="tag">{programa.categoria}</span>
-                <h3>{programa.nombre}</h3>
-                <p>{programa.descripcion}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
     </>

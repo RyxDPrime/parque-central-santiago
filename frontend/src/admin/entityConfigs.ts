@@ -4,7 +4,7 @@
  * Existe para que en el panel se elija de una lista en vez de escribir una
  * dirección a mano: quien administra el contenido del Parque no tiene por qué
  * saber que una ruta empieza con barra ni recordar cómo se escribe
- * "instalaciones-y-servicios". Una errata ahí es un botón que lleva a la página
+ * "instalaciones". Una errata ahí es un botón que lleva a la página
  * de no encontrada, y no se nota hasta que alguien lo pulsa.
  *
  * Va escrita aquí y no deducida de las rutas porque hace falta el nombre con el
@@ -18,8 +18,8 @@ export const PAGINAS_DEL_SITIO: { value: string; label: string }[] = [
   { value: '/junta-directiva', label: 'Junta Directiva' },
   { value: '/personal-tecnico', label: 'Personal técnico' },
   { value: '/reglamento', label: 'Reglamento' },
-  { value: '/instalaciones-y-servicios', label: 'Instalaciones y servicios' },
-  { value: '/programas-y-proyectos', label: 'Programas y proyectos' },
+  { value: '/instalaciones', label: 'Instalaciones' },
+  { value: '/programas-y-servicios', label: 'Programas y servicios' },
   { value: '/galeria', label: 'Galería' },
   { value: '/mapa', label: 'Mapa del parque' },
   { value: '/actividades', label: 'Actividades' },
@@ -223,7 +223,7 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'instalaciones',
     icon: 'ti-building-stadium',
-    description: 'Primera mitad de la página El Parque → Instalaciones y Servicios. Cada registro es un área o facilidad del parque.',
+    description: 'Primera mitad de la página El Parque → Instalaciones. Cada registro es un área o facilidad del parque.',
     label: 'Instalaciones',
     titleField: 'nombre',
     fields: [
@@ -237,7 +237,7 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'programas',
     icon: 'ti-plant-2',
-    description: 'Segunda mitad de la página El Parque → Instalaciones y Servicios, y la página Programas y Proyectos. Cada registro es un servicio o programa.',
+    description: 'La página El Parque → Programas y Servicios. Cada registro es un programa o servicio del parque, con su foto.',
     label: 'Programas y Servicios',
     titleField: 'nombre',
     fields: [

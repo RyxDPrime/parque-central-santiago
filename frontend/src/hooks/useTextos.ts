@@ -7,7 +7,7 @@ import { api } from '../api/client'
  */
 const RESPALDO: Record<string, string> = {
   'contacto.direccion': 'Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros',
-  'contacto.email': 'asistentepcs@gmail.com',
+  'contacto.email': 'info@parquecentralsantiagord.com',
   'contacto.telefono': '(809) 583-9581',
   'contacto.whatsapp': '(849) 580-7344',
   'contacto.horarioParque': '5:30 a.m. – 9:00 p.m.',
@@ -25,6 +25,8 @@ const RESPALDO: Record<string, string> = {
   'inicio.quienesTitulo': 'Una institución al servicio de Santiago',
   'inicio.quienesTexto':
     'El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido de más de 25 años de gestión de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.',
+  'inicio.programasEtiqueta': 'En desarrollo',
+  'inicio.programasTitulo': 'Programas y Servicios',
   'inicio.mapaEtiqueta': 'Ubicación',
   'inicio.mapaTitulo': 'Explora el parque',
   'inicio.mapaTexto':

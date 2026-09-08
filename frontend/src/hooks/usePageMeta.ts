@@ -45,14 +45,14 @@ const META: Record<string, PageMeta> = {
     description: 'Normas de convivencia y uso de los espacios del Parque Central de Santiago.',
     image: '/images/galeria/vista-aerea-parque.jpg',
   },
-  '/instalaciones-y-servicios': {
-    title: `Instalaciones y Servicios | ${SITE}`,
+  '/instalaciones': {
+    title: `Instalaciones | ${SITE}`,
     description:
       'Canchas, campos de fútbol, área infantil, anfiteatro, kioscos y los servicios que ofrece el parque a la comunidad.',
     image: '/images/galeria/cancha-basketball.jpg',
   },
-  '/programas-y-proyectos': {
-    title: `Programas y Proyectos | ${SITE}`,
+  '/programas-y-servicios': {
+    title: `Programas y Servicios | ${SITE}`,
     description:
       'Cibao Fútbol Club, Escuela de Tenis, Tirolesa y Fun Stop: los programas activos del Parque Central de Santiago.',
     image: '/images/galeria/cibao-futbol-club.jpg',

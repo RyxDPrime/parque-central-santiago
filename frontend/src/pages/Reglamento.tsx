@@ -1,5 +1,5 @@
 import { PageHero } from '../components/PageHero'
-import { LoadingState, ErrorState, EmptyState } from '../components/DataState'
+import { LoadingState, ErrorState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
 import { api } from '../api/client'
 
@@ -38,14 +38,6 @@ export function Reglamento() {
               ))}
             </div>
           )}
-
-          <div style={{ marginTop: 24 }}>
-            <EmptyState
-              icon="ti-map-pin"
-              title="Reglamentos por área y por actividad"
-              description="Las normas específicas para cada instalación (canchas, kioscos, senderos) y para actividades particulares se publicarán en cuanto el Parque las defina."
-            />
-          </div>
         </div>
       </section>
     </>

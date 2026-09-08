@@ -246,11 +246,17 @@ ul{list-style:none}
 
 /* ── APOYANOS BANNER (inicio) ── */
 #support{background:var(--green-900);padding:56px 48px;text-align:center}
-#support i{font-size:36px;color:var(--green-100);margin-bottom:16px;display:block}
+/* Solo el corazón de la cabecera. Antes esta regla decía `#support i` y
+   alcanzaba también a los iconos de los botones: se los ponía a 36px, en
+   bloque —de ahí que quedaran descolocados— y en verde pálido, que sobre el
+   botón claro no se veía. */
+.support-corazon{color:var(--green-100);margin:0 auto 16px;display:block}
 #support h2{font-size:28px;font-weight:600;color:var(--green-50);margin-bottom:10px}
 #support p{font-size:14px;color:var(--green-100);line-height:1.7;margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto}
 .support-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn-light{background:var(--green-50);color:var(--green-900);border:none;padding:11px 22px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-weight:600;transition:background .2s}
+.btn-light{background:var(--green-50);color:var(--green-900);border:none;padding:11px 22px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600;transition:background .2s}
+/* El icono no se encoge cuando el texto es largo, y se alinea por su centro. */
+.btn-light svg{flex-shrink:0}
 .btn-light:hover{background:var(--green-100)}
 
 @media (max-width:900px){

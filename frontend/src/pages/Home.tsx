@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ProgramsCarousel } from '../components/ProgramsCarousel'
 import { AnnouncementPopup } from '../components/AnnouncementPopup'
 import { ParkMap } from '../components/ParkMap'
+import { IconoCorazon, IconoDonacion, IconoVoluntariado } from '../components/iconos'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
 import { useEncabezado } from '../hooks/useEncabezado'
@@ -266,18 +267,20 @@ export function Home() {
       </section>
 
       <section id="support">
-        <i className="ti ti-heart" aria-hidden="true" />
+        <IconoCorazon size={36} className="support-corazon" />
         <h2>¿Quieres apoyar al parque?</h2>
         <p>
           Súmate como voluntario, patrocinador o aliado institucional y ayuda a mantener vivo el
           pulmón verde de Santiago de los Caballeros.
         </p>
         <div className="support-btns">
+          {/* Los dos con el mismo tratamiento: aquí no hay una acción principal
+              y otra secundaria, son dos maneras igual de válidas de ayudar. */}
           <Link to="/apoyanos" className="btn-light">
-            <i className="ti ti-cash" /> Hacer una donación
+            <IconoDonacion /> Hacer una donación
           </Link>
-          <Link to="/apoyanos" className="btn-outline-white">
-            <i className="ti ti-run" /> Ser voluntario
+          <Link to="/apoyanos" className="btn-light">
+            <IconoVoluntariado /> Ser voluntario
           </Link>
         </div>
       </section>

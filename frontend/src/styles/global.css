@@ -550,8 +550,13 @@ a.contact-row.is-link{cursor:pointer;transition:color .18s}
 .contact-form{display:flex;flex-direction:column;gap:14px}
 .form-row{display:flex;flex-direction:column;gap:6px}
 .form-row label{font-size:12.5px;font-weight:500;color:var(--text-secondary)}
-.form-row input,.form-row textarea{border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-size:13.5px;font-family:var(--font);color:var(--text-primary)}
-.form-row input:focus,.form-row textarea:focus{outline:none;border-color:var(--green-400)}
+/* Campos con fondo propio y borde que se ve. Estaban en blanco sobre blanco con
+   el borde en --border (#E0E0DA), que contra el papel da 1.24:1 cuando la norma
+   pide 3:1 para el contorno de un control: los recuadros estaban dibujados y aun
+   asi no se veian. Es el mismo tratamiento que ya usaba el panel. */
+.form-row input,.form-row textarea{border:1px solid var(--gray-400);border-radius:var(--radius);background:var(--gray-100);padding:10px 12px;font-size:13.5px;font-family:var(--font);color:var(--text-primary);transition:border-color .18s,background .18s,box-shadow .18s}
+.form-row input:hover,.form-row textarea:hover{border-color:var(--green-400)}
+.form-row input:focus,.form-row textarea:focus{outline:none;background:#fff;border-color:var(--green-600);box-shadow:0 0 0 3px rgba(141,179,85,.18)}
 .form-row textarea{resize:vertical;min-height:120px}
 .form-feedback{font-size:13px;padding:10px 14px;border-radius:var(--radius)}
 .form-feedback.success{background:var(--green-50);color:var(--green-800)}
@@ -1116,14 +1121,16 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .form-group select,
 .form-group textarea{
   width:100%;
-  border:1px solid var(--border);
+  border:1px solid var(--gray-400);
   border-radius:var(--radius);
   padding:11px 13px;
   font-size:13.5px;
   font-family:var(--font);
   color:var(--text-primary);
-  background:#fff;
-  transition:border-color .18s,box-shadow .18s;
+  /* Fondo propio y borde visible: en blanco sobre blanco con --border el campo
+     no se distinguia del papel. Ver la nota en .form-row. */
+  background:var(--gray-100);
+  transition:border-color .18s,background .18s,box-shadow .18s;
   /* Sin esto, un campo largo estira su columna de la rejilla y descuadra la fila. */
   min-width:0;
 }
@@ -1132,12 +1139,14 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .form-group textarea::placeholder{color:var(--text-muted)}
 .form-group input:hover,
 .form-group select:hover,
-.form-group textarea:hover{border-color:#CFCFC7}
+.form-group textarea:hover{border-color:var(--green-400)}
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus{
   outline:none;
-  border-color:var(--green-400);
+  /* Al escribir, el campo se aclara: se distingue el que esta activo del resto. */
+  background:#fff;
+  border-color:var(--green-600);
   box-shadow:0 0 0 3px rgba(141,179,85,.18);
 }
 

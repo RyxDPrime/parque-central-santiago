@@ -97,28 +97,6 @@ export function Transparencia() {
                 <p>{texto('transparencia.marcoNormativo')}</p>
               </div>
             </div>
-            <div className="facility-icon-card">
-              <div className="facility-icon-badge">
-                <i className="ti ti-heart-handshake" />
-              </div>
-              <div>
-                <div className="facility-icon-head">
-                  <h3>Uso de donaciones</h3>
-                </div>
-                <p>{texto('transparencia.usoDonaciones')}</p>
-              </div>
-            </div>
-            <div className="facility-icon-card">
-              <div className="facility-icon-badge">
-                <i className="ti ti-file-certificate" />
-              </div>
-              <div>
-                <div className="facility-icon-head">
-                  <h3>Código de ética</h3>
-                </div>
-                <p>{texto('transparencia.codigoEtica')}</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>

@@ -416,6 +416,28 @@ ul{list-style:none}
 .notfound-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-100);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
 .notfound-link:hover{background:var(--green-100);border-color:var(--green-400)}
 
+/* ── PAGINA EN PROCESO ── */
+/* Misma caja centrada que la de 404, con el sello verde por delante: quien llega
+   tiene que entender en un vistazo que no se equivoco de direccion, sino que
+   llego temprano. */
+.enproceso{text-align:center;max-width:620px;margin:0 auto;padding:20px 0;display:flex;flex-direction:column;align-items:center}
+.enproceso-icono{font-size:48px;color:var(--green-400);display:block;margin-bottom:14px}
+.enproceso-sello{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green-800);background:var(--green-50);border:1px solid var(--green-100);padding:5px 13px;border-radius:20px;margin-bottom:14px}
+.enproceso-sello::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green-400);animation:enproceso-latido 2.4s ease-in-out infinite}
+@keyframes enproceso-latido{0%,100%{opacity:1}50%{opacity:.35}}
+.enproceso h2{font-size:20px;font-weight:600;margin-bottom:8px}
+.enproceso p{font-size:14px;color:var(--text-secondary);line-height:1.75;margin-bottom:24px}
+.enproceso p strong{color:var(--green-800);font-weight:600}
+.enproceso-atajos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.enproceso-atajo{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-100);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
+.enproceso-atajo:hover{background:var(--green-100);border-color:var(--green-400)}
+.enproceso-pie{font-size:13px;color:var(--text-muted);margin:24px 0 0}
+.enproceso-pie a{color:var(--green-600);font-weight:500;border-bottom:1px solid var(--green-200)}
+.enproceso-pie a:hover{color:var(--green-800);border-color:var(--green-400)}
+@media (prefers-reduced-motion:reduce){
+  .enproceso-sello::before{animation:none}
+}
+
 /* ── EMPTY STATE ── */
 .empty-state{margin-top:28px;border:1px dashed var(--border);border-radius:var(--radius-lg);padding:48px 32px;text-align:center;background:var(--gray-100)}
 .empty-state i{font-size:32px;color:var(--green-400);margin-bottom:12px;display:block}

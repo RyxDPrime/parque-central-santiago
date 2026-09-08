@@ -678,6 +678,19 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-sidebar-brand small{font-size:10px;font-weight:400;color:rgba(255,255,255,.55);letter-spacing:.2px}
 .admin-sidebar-brand:hover small{color:rgba(255,255,255,.75)}
 .admin-sidebar nav{display:flex;flex-direction:column;gap:2px;flex:1;padding:0 12px;overflow-y:auto}
+/* La barra de desplazamiento del menu, en los colores del panel.
+   El navegador la dibuja gris claro sobre el verde oscuro y canta; asi va fina,
+   verde y sin recuadro, y se oscurece al pasarle el raton para que siga
+   diciendo donde esta.
+   Se escribe de las dos formas porque no hay una sola: scrollbar-color es la
+   estandar y ::-webkit-scrollbar es la que entienden Chrome y Safari viejos.
+   Los colores son los mismos en las dos, asi que el navegador aplique la que
+   aplique se ve igual. */
+.admin-sidebar nav{scrollbar-width:thin;scrollbar-color:rgba(141,179,85,.45) transparent}
+.admin-sidebar nav::-webkit-scrollbar{width:10px}
+.admin-sidebar nav::-webkit-scrollbar-track{background:transparent}
+.admin-sidebar nav::-webkit-scrollbar-thumb{background:rgba(141,179,85,.45);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
+.admin-sidebar nav::-webkit-scrollbar-thumb:hover{background:var(--green-400);background-clip:padding-box}
 .admin-nav-title{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);padding:0 10px;margin-bottom:8px}
 .admin-nav-link{display:flex;align-items:center;gap:11px;padding:10px 12px;font-size:13px;color:rgba(255,255,255,.75);border-radius:var(--radius);transition:background .18s,color .18s}
 .admin-nav-link i{font-size:17px;flex-shrink:0;opacity:.85}

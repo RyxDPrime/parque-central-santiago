@@ -309,6 +309,22 @@ export interface SolicitudReserva {
   createdAt: string;
 }
 
+/**
+ * Intercambia el contenido de una fila con el de otra.
+ *
+ * Va en una llamada y no en dos escrituras desde aquí porque el servidor lo
+ * hace en una transacción: a medias dejaría la misma foto en dos páginas y la
+ * otra perdida.
+ */
+export async function moverFila(path: string, id: number, clave: string): Promise<void> {
+  const res = await fetch(`${API_URL}/${path}/${id}/mover`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+    body: JSON.stringify({ clave }),
+  });
+  if (!res.ok) throw new Error(await parseErrorMessage(res));
+}
+
 export async function listSolicitudes(): Promise<SolicitudReserva[]> {
   const res = await fetch(`${API_URL}/solicitudes-reserva`, {
     headers: { Authorization: `Bearer ${getToken()}` },

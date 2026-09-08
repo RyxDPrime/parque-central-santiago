@@ -35,7 +35,13 @@ export const PAGINAS_DEL_SITIO: { value: string; label: string }[] = [
 export interface FieldConfig {
   key: string
   label: string
-  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file' | 'checkbox'
+  /**
+   * `mover` es un desplegable que se arma con las propias filas de la tabla, y
+   * cuyo cambio no guarda un valor: intercambia el contenido de esta fila con
+   * la elegida. Se usa donde la clave es fija y lo que se quiere mover es lo
+   * que hay dentro, no la clave.
+   */
+  type: 'text' | 'textarea' | 'number' | 'date' | 'select' | 'file' | 'checkbox' | 'mover'
   /** Texto explicativo bajo el campo. */
   hint?: string
   /**
@@ -45,6 +51,8 @@ export interface FieldConfig {
    */
   aspect?: number
   options?: { value: string; label: string }[]
+  /** Solo para `mover`: qué columna de la fila trae el nombre legible. */
+  etiquetaDesde?: string
   accept?: string
   required?: boolean
   placeholder?: string
@@ -502,7 +510,12 @@ export const entityConfigs: EntityConfig[] = [
     titleField: 'etiqueta',
     soloEditar: true,
     fields: [
-      { key: 'etiqueta', label: 'Página', type: 'text', hint: 'A qué página del sitio corresponde esta franja.' },
+      // Desplegable y no texto: la clave es la que une cada franja con su
+      // página, es única, y las diecinueve páginas ya tienen la suya. Elegir
+      // otra no reescribe la clave —no habría dónde ponerla— sino que
+      // intercambia la foto con esa página, que es lo que se quiere de verdad
+      // cuando una foto quedó en la sección equivocada.
+      { key: 'clave', label: 'Página', type: 'mover', etiquetaDesde: 'etiqueta', showOnCreate: false, hint: 'Elegir otra página intercambia esta foto con la que haya allí. Pide confirmación antes.' },
       { key: 'imagenUrl', label: 'Foto de la franja', type: 'file', accept: 'image/*', aspect: 16 / 5, hint: 'Con "Dejar sin foto" la franja queda solo con el fondo verde.' },
       {
         key: 'posicion',

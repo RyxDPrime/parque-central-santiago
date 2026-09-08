@@ -1,6 +1,13 @@
 import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { createEntity, deleteEntity, listEntity, updateEntity, uploadFile } from './adminClient'
+import {
+  createEntity,
+  deleteEntity,
+  listEntity,
+  moverFila,
+  updateEntity,
+  uploadFile,
+} from './adminClient'
 import { entityConfigs, type FieldConfig } from './entityConfigs'
 import { TextosEditor } from './TextosEditor'
 import { FileDropzone } from './FileDropzone'
@@ -139,7 +146,32 @@ export function EntityManager() {
       const form = new FormData(formElement)
       const data: Record<string, unknown> = {}
 
+      // Mover es una operación aparte, no un campo más: si se eligió otra
+      // página, se intercambia el contenido con ella y no se guarda nada más de
+      // este formulario. Guardar las dos cosas a la vez volvería a escribir
+      // encima la foto que se acaba de mover.
+      const mover = config.fields.find((f) => f.type === 'mover')
+      if (mover && editing) {
+        const elegido = String(form.get(mover.key) ?? '')
+        if (elegido && elegido !== String(editing[mover.key] ?? '')) {
+          const destino = rows.find((r) => String(r[mover.key]) === elegido)
+          const nombre = String(destino?.[mover.etiquetaDesde ?? mover.key] ?? elegido)
+          const seguir = window.confirm(
+            `«${nombre}» ya tiene su propia foto.\n\n` +
+              `Se intercambian: esta foto pasa a «${nombre}» y la de «${nombre}» viene aquí. ` +
+              `Lo demás de este formulario no se guarda.\n\n¿Continuar?`,
+          )
+          if (!seguir) return
+          await moverFila(config.path, editing.id, elegido)
+          setEditing(null)
+          setRows(await listEntity<Row>(config.listPath ?? config.path))
+          setFormVersion((v) => v + 1)
+          return
+        }
+      }
+
       for (const field of config.fields) {
+        if (field.type === 'mover') continue
         if (field.type === 'file') {
           const file = form.get(field.key) as File | null
           if (file && file.size > 0) {
@@ -260,6 +292,16 @@ export function EntityManager() {
                   placeholder={field.placeholder}
                   defaultValue={(editing?.[field.key] as string) ?? ''}
                 />
+              )}
+
+              {field.type === 'mover' && (
+                <select id={field.key} name={field.key} defaultValue={(editing?.[field.key] as string) ?? ''}>
+                  {rows.map((row) => (
+                    <option key={row.id} value={String(row[field.key])}>
+                      {String(row[field.etiquetaDesde ?? field.key] ?? row[field.key])}
+                    </option>
+                  ))}
+                </select>
               )}
 
               {field.type === 'select' && (
@@ -481,6 +523,8 @@ export function EntityManager() {
                           ) : (
                             <span className="admin-chip">No</span>
                           )
+                        ) : f.type === 'mover' ? (
+                          String(row[f.etiquetaDesde ?? f.key] ?? '—')
                         ) : f.type === 'date' ? (
                           row[f.key] ? String(row[f.key]).slice(0, 10) : '—'
                         ) : (

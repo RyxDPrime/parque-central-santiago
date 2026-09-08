@@ -1,38 +1,70 @@
 # Estado del proyecto
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · Septiembre de 2026
+Ureña Limited Partners · 8 de septiembre de 2026
 
-Qué está construido y en línea, qué falta para cerrar la fase actual, y de quién depende cada cosa pendiente.
+Qué está construido y en línea, qué falta para cerrar la fase actual, y de quién depende cada
+cosa pendiente.
 
-> Sustituye a la versión de agosto. Aquella se escribió antes de que existieran las reservas, las donaciones y las cuentas de usuario, y hoy describe menos de la mitad del sitio.
+> Sustituye a la versión del 3 de septiembre. Desde entonces se conectó el dominio del Parque,
+> se ocultaron secciones a la espera de decisiones, y el sitio pasó a desplegarse solo con cada
+> cambio aprobado.
 
 ---
 
 ## 1. Dónde estamos
 
-Las diez secciones que la propuesta original definió para la Fase 1 están construidas y publicadas. Además hay **seis páginas y un panel administrativo completo** que no estaban contemplados, y tres funcionalidades que en la propuesta figuraban como Fase 2 y ya están hechas: reservas, donaciones y gestión de usuarios.
+Las diez secciones que la propuesta original definió para la Fase 1 están construidas. Además
+hay **seis páginas y un panel administrativo completo** que no estaban contemplados, y tres
+funcionalidades que en la propuesta figuraban como Fase 2 y ya están hechas: reservas,
+donaciones y gestión de usuarios.
 
-**Lo que falta para cerrar no es desarrollo.** Es contenido que el Parque todavía no ha enviado, decisiones que solo el Parque puede tomar, y dos trámites externos.
+**Lo que falta para cerrar no es desarrollo.** Es contenido que el Parque todavía no ha
+enviado, decisiones que solo el Parque puede tomar, y dos trámites externos.
 
 | Frente | Estado |
 |---|---|
-| Secciones de la propuesta original | Las 10, construidas y publicadas |
+| Secciones de la propuesta original | Las 10, construidas |
 | Entregado además de lo pedido | 6 páginas y un panel de 22 pantallas |
-| Reservas de espacios | Funcionando, a falta de confirmar listas |
+| Dominio propio | Conectado, **apagado a la espera de la revisión** |
+| Reservas de espacios | Construido, **en preparación** hasta confirmar las listas |
 | Donaciones | Funcionando, a falta de las cuentas bancarias |
 | Usuarios y roles | Funcionando, con una sola cuenta creada |
 | Correo saliente | Funcionando, pero desde una cuenta personal |
 | Pago con tarjeta | Bloqueado por la afiliación con la pasarela |
-| Dominio propio | Pendiente por decisión del equipo de desarrollo |
 
 ---
 
-## 2. Qué hay construido
+## 2. El dominio
 
-### 2.1 El sitio público
+**`www.parquecentralsantiagord.com` ya sirve el sitio.** Está conectado y responde.
 
-Dieciocho páginas. El detalle de cada una está en el documento *"El sitio web, sección por sección"*.
+Ahora mismo está **deliberadamente sin datos**: se dejó así mientras el equipo del Parque
+revisa qué secciones deben verse en el lanzamiento y cuáles conviene esconder todavía. La
+página carga pero no muestra contenido, y **eso se enciende con un solo cambio de
+configuración** en cuanto la decisión esté tomada.
+
+Quedan tres cosas por hacer el mismo día que se encienda, y las hacemos nosotros:
+
+1. **Autorizar el dominio** para que la página pueda leer sus propios datos.
+2. **Redirigir la dirección sin `www`**, que hoy lleva a la página anterior del Parque, alojada
+   en otro servidor.
+3. **Permitir que Google lo indexe.** Mientras el sitio se sirva desde una dirección distinta
+   de la definitiva, pide a los buscadores que no lo guarden — para que no queden dos copias
+   compitiendo. Con el dominio conectado, eso se invierte.
+
+> **La dirección con «www» y sin «www» no son la misma cosa para un navegador.**
+> Hay que decidir cuál es la oficial. Recomendamos publicar y comunicar siempre la misma, y que
+> la otra redirija a ella.
+
+---
+
+## 3. Qué hay construido
+
+### 3.1 El sitio público
+
+Dieciocho páginas. El detalle de cada una está en el documento *"El sitio web, sección por
+sección"*.
 
 | Bloque | Páginas |
 |---|---|
@@ -43,23 +75,37 @@ Dieciocho páginas. El detalle de cada una está en el documento *"El sitio web,
 | Institucional | Transparencia · Blog |
 | Contacto | Contacto · Sugerencias |
 
-### 2.2 El panel administrativo
+**Dos secciones están en preparación por decisión del equipo**, no por falta de trabajo:
 
-Veintidós secciones con tabla, repartidas en siete grupos, más los textos sueltos y las fotos de encabezado. El equipo del Parque cambia desde ahí prácticamente todo lo que se ve, sin tocar código ni depender de nosotros.
+- **Reserva de espacios.** La página está construida entera —formulario, calendario de lo ya
+  apartado, correos de respuesta— y hoy muestra un aviso de que la sección estará disponible
+  pronto. Se publica el día que el Parque confirme los tipos de actividad y qué espacios se
+  cobran. Volver a mostrarla es un cambio de una línea.
+- **Uso de donaciones** y **Código de ética**, dentro de Transparencia. Sus textos siguen
+  guardados y editables en el panel; solo dejaron de mostrarse.
 
-### 2.3 Lo que el Parque recibe
+### 3.2 El panel administrativo
 
-Cuatro formularios con su bandeja en el panel: contacto, sugerencias, solicitudes de reserva y aportes. Todo lo que llega se guarda aunque el correo falle.
+Veintidós secciones con tabla, repartidas en siete grupos, más los textos sueltos y las fotos
+de encabezado. El equipo del Parque cambia desde ahí prácticamente todo lo que se ve, sin tocar
+código ni depender de nosotros. Cómo se usa está en la *Guía del panel administrativo*.
+
+### 3.3 Lo que el Parque recibe
+
+Cuatro formularios con su bandeja en el panel: contacto, sugerencias, solicitudes de reserva y
+aportes. **Todo lo que llega se guarda aunque el correo falle**, y la bandeja avisa cuando a
+alguien no se le pudo escribir, en vez de darlo por hecho.
 
 ---
 
-## 3. Contenido cargado hoy
+## 4. Contenido cargado hoy
 
 | Sección | Registros |
 |---|---|
 | Instalaciones | 20 |
 | Junta Directiva | 19 |
 | Aliados y patrocinadores | 19 |
+| Fotos de encabezado | 19 |
 | Galería | 15 |
 | Hitos de la historia | 14 |
 | Actividades | 13 |
@@ -67,73 +113,117 @@ Cuatro formularios con su bandeja en el panel: contacto, sugerencias, solicitude
 | Espacios reservables | 12 |
 | Normas del reglamento | 12 |
 | Valores institucionales | 8 |
-| Motivos de rechazo de aportes | 8 |
 | Puntos del mapa | 8 |
 | Personal técnico | 6 |
 | Programas y servicios | 6 |
 | Cifras del inicio | 5 |
-| Formas de aportar | 4 |
 | Plantillas de correo | 4 |
+| Formas de aportar | 3 |
 | Pasos de reserva | 3 |
 | Documentos financieros | 2 |
 | Formas de apoyo | 2 |
-| Publicaciones del blog | 1 |
 | Usuarios del panel | 1 |
+| **Publicaciones del blog** | **0** |
 | **Cuentas bancarias** | **0** |
 
-Además, 37 textos sueltos en 9 grupos y 19 fotos de encabezado.
+Además, 37 textos sueltos en 9 grupos.
 
 ---
 
-## 4. Lo que falta, por responsable
+## 5. Lo que falta, por responsable
 
-### 4.1 Del Parque — contenido y decisiones
+### 5.1 Del Parque — contenido y decisiones
 
 | Qué | Por qué importa | Urgencia |
 |---|---|---|
-| **Cargar las cuentas bancarias** | Sin ellas, la página de Donaciones no ofrece ninguna forma de dar dinero. Se resuelve en cinco minutos desde el panel | **Alta** |
-| **Confirmar los tipos de actividad permitidos** | La lista de 13 es un borrador nuestro, y el sistema ya la aplica: lo que no está en ella no se puede solicitar | **Alta** |
-| **Confirmar cuáles espacios se cobran** | Los 12 están marcados con costo por suposición nuestra | **Alta** |
+| **Cargar las cuentas bancarias** | Sin ellas, Donaciones no ofrece ninguna forma de dar dinero. Se resuelve en cinco minutos desde el panel | **Alta** |
+| **Confirmar los tipos de actividad permitidos** | La lista de 13 es un borrador nuestro, y es lo que decide qué se puede solicitar. Es una de las dos cosas que mantienen Reserva sin publicar | **Alta** |
+| **Confirmar cuáles espacios se cobran** | Los 12 están marcados con costo por suposición nuestra. Es la otra | **Alta** |
 | **Revisar con su asesor legal el umbral y los motivos de rechazo** | Desde qué monto hay que identificar a quien aporta (hoy RD$ 25,000) y qué motivos de rechazo son válidos. Ambos son borrador nuestro | **Alta** |
+| **Decidir qué se publica el día del lanzamiento** | Es lo único que mantiene el dominio apagado | **Alta** |
+| **El blog quedó vacío** | La sección está en el menú y hoy no tiene ninguna publicación. O se carga algo, o conviene esconderla como se hizo con Reserva | **Alta** |
+| **Las cifras del inicio** | El Parque adelantó que quiere reemplazar las cinco actuales. Hacen falta las definitivas | Media |
 | **Crear las cuentas del equipo** | Hoy existe una sola, compartida. Con cuentas propias queda registro de quién cambió qué | Media |
-| Fotografías pendientes | Canchas, kioscos, entrada, inauguración, vista aérea y las instalaciones nuevas | Media |
+| Fotografías pendientes | 7 instalaciones, 4 programas, 4 encabezados, 2 del personal técnico y 2 logos de aliados | Media |
 | Reescribir los pasos de reserva | Dicen que hay que llamar; describen el proceso anterior al formulario | Media |
-| Revisar el hito de 2018 | Dice "Constitución del Patronato" y el sitio ya afirma que existe desde 2001 | Media |
-| Los nombres de los dos diputados | Sus tarjetas dicen "Representante por designar" | Media |
-| Publicar qué actividades no se permiten, en el Reglamento | Hoy esa regla no está escrita en ninguna de las 12 normas | Media |
-| Contenido para el blog | Hay una sola publicación | Baja |
+| Los nombres de los dos diputados | Sus tarjetas dicen "Representante por designar", y son las dos únicas sin imagen | Media |
+| Más documentos en Transparencia | Hay dos. Es poco para una sección que existe para mostrar apertura | Baja |
 
-### 4.2 Bloqueado por trámites
+### 5.2 Bloqueado por trámites
 
-- **Correo desde una cuenta del Parque.** Hoy el sitio manda correo desde una cuenta personal del equipo de desarrollo. Funciona, pero no tiene respaldo institucional. Ver el documento *"El correo del sitio"*.
-- **Pago con tarjeta.** Requiere afiliación con AZUL o equivalente. Ver el documento *"Cómo recibir donaciones en línea"*.
-- **Dominio propio.** Por decisión del equipo de desarrollo no se conecta hasta terminar la fase de desarrollo.
+**Correo desde una cuenta del Parque.** Ya existe la dirección institucional
+`info@parquecentralsantiagord.com`, pero el sitio **sigue enviando desde una cuenta personal**
+del equipo de desarrollo. Para cambiarlo hay que verificar el dominio con el proveedor de
+envío, añadiendo unos registros al DNS. Es un trámite con espera de propagación, así que
+conviene arrancarlo antes del lanzamiento y no el mismo día. Ver *"El correo del sitio"*.
 
-### 4.3 De nuestra parte
+**Pago con tarjeta.** Requiere afiliación con AZUL o equivalente. La forma de pago se retiró de
+la lista mientras tanto; el día que exista la afiliación se vuelve a agregar desde el panel.
+Ver *"Cómo recibir donaciones en línea"*.
+
+### 5.3 De nuestra parte
 
 - Integrar la pasarela de pago, cuando la afiliación esté.
-- Respaldo automático de la base de datos. Hoy existe el procedimiento, pero se ejecuta a mano.
+- Conectar el dominio del todo, en cuanto el Parque decida qué se publica.
+- **Respaldo automático de la base de datos.** Hoy existe el procedimiento y funciona, pero hay
+  que acordarse de ejecutarlo. Todo el contenido de la tabla del punto 4 es trabajo manual de
+  semanas.
 
 ---
 
-## 5. Riesgos que conviene tener presentes
+## 6. Lo que mejoró desde la versión anterior
 
-**Todo el modelo de reservas y donaciones se sostiene sobre el correo.** Quien solicita no sabe si tiene el espacio hasta que le llega la respuesta. El envío está funcionando y verificado, pero sale desde una cuenta personal: moverlo a una del Parque es lo que le da respaldo institucional.
+No cambia lo que el Parque ve, pero sí lo que puede pasar. Se resume aquí porque son las cosas
+que, cuando fallan, se notan tarde y mal.
 
-**Las listas sembradas ya se aplican de verdad.** Los tipos de actividad, los motivos de rechazo y el umbral de identificación no son adorno: el sistema los usa para permitir o impedir cosas. Mientras sean borrador nuestro, el sitio está aplicando criterios que el Parque no ha confirmado.
+**Dar de baja a alguien ahora surte efecto de inmediato.** Antes, una cuenta cerrada conservaba
+sus permisos hasta una semana. Importa ahora que están por crearse las cuentas del equipo.
 
-**Una sola cuenta de acceso.** Si varias personas van a cargar contenido, conviene crear sus cuentas antes de empezar, no después: es lo que permite saber quién hizo qué.
+**Nada llega al sitio sin comprobarse.** Cada cambio pasa por una revisión automática antes de
+publicarse, y el sitio se despliega solo cuando esa revisión da verde. Hay además una batería
+de pruebas sobre las reglas que deciden cosas: los horarios que se pisan, el umbral de
+identificación, el orden de las listas.
+
+**No se pueden aprobar dos reservas para el mismo espacio a la misma hora.** El sistema avisa
+antes, mostrando con cuál choca, y deja seguir solo si se confirma. Antes el choque aparecía el
+día de la actividad.
+
+**Los recuadros de los formularios y las tarjetas ahora se ven.** Estaban dibujados con un
+contraste por debajo del mínimo que pide la norma de accesibilidad, y en varias pantallas no se
+distinguían del fondo.
+
+**El servidor se actualizó a una versión con soporte.** La anterior llevaba más de un año sin
+recibir parches de seguridad.
 
 ---
 
-## 6. Los documentos del proyecto
+## 7. Riesgos que conviene tener presentes
+
+**Todo el modelo de reservas y donaciones se sostiene sobre el correo.** Quien solicita no sabe
+si tiene el espacio hasta que le llega la respuesta. El envío funciona y está verificado, pero
+sale desde una cuenta personal: moverlo a la del Parque es lo que le da respaldo institucional.
+
+**Las listas sembradas se aplican de verdad.** Los tipos de actividad, los motivos de rechazo y
+el umbral de identificación no son adorno: el sistema los usa para permitir o impedir cosas.
+Mientras sean borrador nuestro, el sitio está aplicando criterios que el Parque no ha
+confirmado.
+
+**Una sola cuenta de acceso.** Si varias personas van a cargar contenido, conviene crear sus
+cuentas antes de empezar, no después: es lo que permite saber quién hizo qué.
+
+**El dominio y el alojamiento deben quedar a nombre del Parque.** El dominio ya lo está. La
+cuenta donde hoy corre el sitio es del equipo de desarrollo, y conviene transferirla antes de
+la entrega.
+
+---
+
+## 8. Los documentos del proyecto
 
 | Documento | Para qué | Estado |
 |---|---|---|
 | **Estado del proyecto** | Este. Qué hay, qué falta y de quién depende | Vigente |
+| **Información pendiente** | La lista corta de lo que falta enviar, medida sobre el sitio | Vigente |
 | **El sitio web, sección por sección** | Qué contiene cada página y desde dónde se administra | Vigente |
 | **Guía del panel administrativo** | Cómo se usa el panel, pantalla por pantalla | Vigente |
 | **Cómo recibir donaciones en línea** | Pasarela de pago frente a transferencia: ventajas, costos y recomendación | Vigente |
 | **El correo del sitio** | Por qué el correo sale desde una cuenta personal y cómo corregirlo | Vigente |
-| *Reserva de espacios y donaciones en línea* (agosto) | Proponía ambas funcionalidades | **Sustituido**: ya están construidas |
-| *Clave de aplicación para el correo* (agosto) | Pedía una clave de Gmail para SMTP | **Sustituido**: SMTP está bloqueado en el servidor |

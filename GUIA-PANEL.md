@@ -1,11 +1,11 @@
 # Guía del panel administrativo
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · Septiembre de 2026
+Ureña Limited Partners · 8 de septiembre de 2026
 
 Cómo se usa el panel desde el que se administra el sitio: qué hace cada pantalla, qué cambia en la página pública, y qué conviene saber antes de tocar cada cosa.
 
-> Sustituye a la versión de agosto, que cubría cuatro de los siete grupos del menú. Faltaban Reservas, Donaciones y Administración, que son los más nuevos y los que tienen reglas que no se adivinan solas.
+> Actualiza la versión del 3 de septiembre. Lo nuevo: las pantallas donde antes había que escribir una dirección a mano ahora tienen desplegable, las fotos de encabezado se pueden mover de una página a otra, y hay secciones que existen en el panel pero todavía no se muestran en el sitio (punto 13).
 
 ---
 
@@ -18,6 +18,8 @@ Se entra en la dirección del sitio añadiendo `/admin` al final, con el usuario
 - Puede cambiar su propia contraseña sin pedírselo a nadie.
 
 **Si algo no aparece en su menú, no es un fallo:** su rol no tiene acceso a esa parte. Ver la sección 9.
+
+> **Si le dan de baja la cuenta, deja de entrar en ese mismo momento.** No hay ventana de gracia. Es lo que permite cerrarle el acceso a alguien el día que deja el equipo.
 
 ---
 
@@ -61,6 +63,12 @@ En varias secciones —espacios, cuentas bancarias, formas de aportar— hay una
 > **La regla práctica**
 > Si algo deja de usarse temporalmente —una cancha en reparación, una cuenta que se cerró—, **desmárquelo**. Elimine solo lo que fue un error o nunca debió existir.
 
+### 2.6 Cuando hay que elegir una página
+
+Varias pantallas piden indicar **a qué página del sitio** apunta algo: el botón de una cifra, la franja de una sección. En ninguna hay que escribir una dirección.
+
+**Se elige de una lista, por su nombre** —*Instalaciones y Servicios*, *Junta Directiva*, *Galería*— y el sistema se encarga de la dirección. Es a propósito: una dirección escrita a mano con una letra de más es un botón que lleva a "página no encontrada", y eso no se descubre hasta que alguien lo pulsa.
+
 ---
 
 ## 3. Página de inicio
@@ -70,11 +78,13 @@ Todo lo que se ve al abrir el sitio.
 | Pantalla | Qué cambia |
 |---|---|
 | **Portada** | El título grande y el texto de entrada |
-| **Títulos y textos** | Los encabezados de cada bloque de la portada (11 textos) |
-| **Cifras** | Los cinco bloques grandes con foto que se alternan a izquierda y derecha |
-| **Foto de Quiénes somos** | La imagen del bloque institucional |
+| **Títulos y textos** | Los encabezados de cada bloque de la portada |
+| **Cifras del Inicio** | Los cinco bloques grandes con foto que se alternan a izquierda y derecha |
+| **Quiénes somos** | La imagen del bloque institucional |
 
 **Sobre las cifras:** cada una es un dato del parque con su foto. Se alternan solas de lado; no hay que indicarlo. Si el número es muy largo —por ejemplo *"Instalaciones y espacios"*— baja de tamaño solo para que quepa.
+
+Cada cifra puede llevar un **botón verde al pie**. Necesita dos cosas: el texto del botón, y **a qué página lleva**, que se elige de la lista de páginas (punto 2.6). Con *"Sin enlace"*, el botón no aparece.
 
 ---
 
@@ -85,20 +95,20 @@ Quince pantallas, una por sección de la página pública. Todas funcionan como 
 | Pantalla | Qué alimenta |
 |---|---|
 | Historia | Los hitos de la línea de tiempo y los textos de Sobre el Parque |
-| Aliados | Los logos del carrusel |
+| Logos Institucionales | Los logos del carrusel de aliados |
 | Reglamento | Las normas de uso del parque |
-| Valores | Los valores institucionales, con sus íconos |
+| Misión, Visión y Valores | Los valores institucionales, con sus íconos |
 | Junta Directiva | Las instituciones del Patronato |
 | Personal Técnico | El equipo del parque |
 | Instalaciones | Lo que hay en el parque |
-| Programas | Los programas y servicios activos |
+| Programas y Servicios | Los programas y servicios activos |
 | Galería | Las fotografías |
-| Mapa | Los puntos ubicados en el mapa |
+| Puntos del Mapa | Los puntos ubicados en el mapa |
 | Actividades | El calendario de eventos |
 | Reserva | Los pasos de "cómo reservar" y el texto del calendario |
-| Documentos financieros | Los archivos descargables de Transparencia |
+| Transparencia | Los archivos descargables y sus textos |
 | Blog | Los artículos y noticias |
-| Formas de apoyo | Las tarjetas de Apóyanos |
+| Formas de Apoyo | Las tarjetas de Apóyanos |
 
 ### 4.1 Cosas que conviene saber
 
@@ -112,6 +122,10 @@ Quince pantallas, una por sección de la página pública. Todas funcionan como 
 
 **Mapa.** Cada punto se ubica con sus coordenadas.
 
+**Blog.** Hoy está **sin publicaciones**. La sección sigue en el menú del sitio, así que quien entre encuentra una página vacía. Conviene cargar algo —una nota de prensa, el resumen de una actividad— o pedirnos que la escondamos mientras tanto, como se hizo con Reserva.
+
+**Reserva.** Esta pantalla sigue funcionando y lo que se guarde queda registrado, pero **la página pública está en preparación** y hoy no se ve. Ver el punto 13.
+
 ---
 
 ## 5. Todo el sitio
@@ -119,10 +133,21 @@ Quince pantallas, una por sección de la página pública. Todas funcionan como 
 | Pantalla | Qué cambia |
 |---|---|
 | **Contacto** | Dirección, teléfono, WhatsApp, correo y horarios |
-| **Fotos de encabezado** | La franja con foto de cada una de las 19 páginas |
+| **Fotos de Encabezado** | La franja con foto de cada una de las 19 páginas |
 
 > **Los datos de contacto se escriben una sola vez**
 > Se usan en el pie de página, en la página de Contacto, en la de Reserva y en los correos. Cambiar el teléfono aquí lo cambia en todas partes.
+
+### 5.1 Fotos de encabezado
+
+Es la franja verde con foto que encabeza cada página. **La lista es fija: hay una por página y no se crean ni se borran.** De cada una se cambian dos cosas:
+
+- **La foto.** Con *"Dejar sin foto"*, la franja queda solo con el fondo verde.
+- **El encuadre vertical**, que decide qué parte de la foto se ve cuando es más alta que la franja.
+
+**Si una foto quedó en la sección equivocada, se mueve sin volver a subirla.** En el campo *Página* se elige la sección a la que debería ir. Como todas las páginas ya tienen su franja, elegir otra **intercambia las dos fotos**: la de aquí pasa allá y la de allá viene aquí. El panel lo avisa antes y pide confirmación, diciendo con cuál va a intercambiar.
+
+> **Al mover, no se guarda nada más de ese formulario.** Si quería además cambiar la foto o el encuadre, hágalo en dos pasos: primero mueva, y luego edite la que corresponda.
 
 ---
 
@@ -143,6 +168,8 @@ Los mensajes se pueden marcar como leídos, buscar y filtrar. Todo lo que llega 
 
 Aquí sí se decide. Cuatro pantallas.
 
+> **La página pública de Reserva está en preparación.** Hoy nadie puede enviar una solicitud nueva. Estas pantallas siguen operativas para lo que ya llegó y para dejar las listas listas antes de publicarla. Ver el punto 13.
+
 ### 7.1 Solicitudes
 
 La lista muestra una línea por solicitud —quién, qué espacio, cuándo y para qué—, y el detalle completo se abre con **Ver detalle**, que es donde se decide.
@@ -156,6 +183,9 @@ Al decidir:
 3. Sale el correo con la plantilla correspondiente.
 
 Hay una casilla para **decidir sin avisar**, por si ya se habló por teléfono.
+
+> **Si el espacio ya está apartado a esa hora, el panel lo dice antes**
+> Al aprobar, el sistema comprueba lo que ya está aprobado para ese espacio ese día. Si se pisan, avisa mostrando con quién choca y a qué hora, y deja continuar solo si usted confirma. Los espacios de los que hay varios —los kioscos— admiten tantas reservas a la vez como unidades tengan.
 
 > **Si el correo no sale, la bandeja lo dice**
 > Aparece un aviso en la solicitud. No hay que suponer que la persona se enteró: si el aviso está, hay que escribirle a mano.
@@ -179,11 +209,15 @@ El texto lleva **huecos** que el sistema rellena con los datos de cada caso: `{{
 > **Esta lista es el filtro, y funciona de verdad**
 > Lo que no esté aquí no se puede solicitar, ni siquiera saltándose el formulario. Cambiarla cambia inmediatamente lo que el sitio acepta.
 
+**Los 13 tipos cargados hoy son un borrador nuestro.** Confirmarlos es una de las dos cosas que faltan para publicar la página de Reserva.
+
 ### 7.4 Espacios reservables
 
 Qué se puede pedir prestado. Es una lista **aparte de Instalaciones** a propósito: hay veinte instalaciones, pero nadie reserva una ciclovía.
 
 De cada espacio se indica cuántos hay, su capacidad aproximada y si tiene costo de uso. Si lo tiene, se le avisa a quien solicita **antes de enviar** —sin cobrarle nada ahí.
+
+**Los 12 están marcados con costo por suposición nuestra.** Revisarlos es la otra cosa que falta para publicar Reserva.
 
 ---
 
@@ -211,18 +245,20 @@ Las cuentas donde el Parque puede recibir transferencias. Pueden ser varias: una
 > **Revise el número dos veces antes de guardar**
 > Es el dato más delicado de todo el sitio. Cópielo del estado de cuenta, no de memoria: un dígito mal manda el dinero de un ciudadano a otra parte.
 
+**Hoy no hay ninguna cargada.** Es el pendiente más urgente del proyecto, y se resuelve en cinco minutos.
+
 ### 8.3 Formas de aportar
 
-Cómo puede hacerse efectivo un aporte: transferencia, efectivo en la administración, cheque, tarjeta.
+Cómo puede hacerse efectivo un aporte. Hoy hay tres: transferencia, efectivo en la administración y cheque.
 
 Cada forma tiene **dos casillas**, y la diferencia importa:
 
 | Casilla | Qué hace |
 |---|---|
 | **Se muestra en el formulario** | Aparece o desaparece del todo |
-| **Se puede elegir ya** | Desmarcada, se ve con la nota *"próximamente"* pero no se puede elegir |
+| **Se puede elegir ya** | Desmarcada, se ve con la nota *"en desarrollo"* pero no se puede elegir |
 
-Hoy la tarjeta está visible y desactivada, porque falta la afiliación con la plataforma de pagos. **El día que esté, habilitarla es marcar esa casilla.**
+Esa segunda casilla existe para anunciar algo que todavía no funciona sin dejar que alguien lo elija. **El pago con tarjeta se agregará aquí** el día que exista la afiliación con la pasarela: se crea la forma, se marca *"se muestra"* y se deja *"se puede elegir"* sin marcar hasta que esté operativa.
 
 ### 8.4 Motivos de rechazo
 
@@ -233,6 +269,8 @@ Por qué el Parque puede no aceptar un aporte. Existe como lista, y no como text
 ### 8.5 Textos de la página
 
 Lo que se lee en Donaciones, más el **monto a partir del cual hay que identificar a quien aporta**. Por debajo de ese monto no se le pide nada; por encima, cédula o RNC y una declaración de que los fondos son lícitos. Los patrocinios institucionales lo declaran siempre.
+
+**El umbral de hoy —RD$ 25,000— lo pusimos nosotros.** Conviene que lo revise el asesor legal del Parque.
 
 ---
 
@@ -256,7 +294,9 @@ Dos cosas están bloqueadas siempre, y el panel no deja hacerlas:
 Cualquiera de las dos dejaría el panel sin nadie que pueda repartir accesos.
 
 > **Dar de baja en vez de eliminar**
-> A una persona que deja el equipo conviene darla de baja, no borrarla: así se conserva el registro de lo que hizo mientras estuvo.
+> A una persona que deja el equipo conviene darla de baja, no borrarla: así se conserva el registro de lo que hizo mientras estuvo. La baja tiene efecto inmediato: deja de poder entrar en ese momento.
+
+**Hoy existe una sola cuenta, compartida.** Conviene crear las del equipo antes de empezar a cargar contenido, no después: es lo que permite saber quién hizo qué.
 
 ---
 
@@ -267,12 +307,14 @@ Cualquiera de las dos dejaría el panel sin nadie que pueda repartir accesos.
 | Cambiar el teléfono del parque | Todo el sitio → Contacto |
 | Publicar una actividad | Secciones del sitio → Actividades |
 | Subir fotos nuevas | Secciones del sitio → Galería |
-| Cambiar la foto de una página | Todo el sitio → Fotos de encabezado |
+| Cambiar la foto de una página | Todo el sitio → Fotos de Encabezado |
+| Mover una foto de encabezado a otra sección | Todo el sitio → Fotos de Encabezado → editar → campo *Página* |
+| Cambiar a dónde lleva el botón de una cifra | Página de inicio → Cifras del Inicio |
 | Responder una solicitud de reserva | Reservas → Solicitudes → Ver detalle |
 | Cambiar el texto de un correo automático | Reservas → Plantillas de respuesta |
 | Permitir un tipo de actividad nuevo | Reservas → Tipos de actividad |
 | Poner la cuenta bancaria | Donaciones → Cuentas bancarias |
-| Habilitar el pago con tarjeta | Donaciones → Formas de aportar |
+| Agregar el pago con tarjeta | Donaciones → Formas de aportar |
 | Dar acceso a alguien del equipo | Administración → Usuarios del panel |
 
 ---
@@ -281,6 +323,7 @@ Cualquiera de las dos dejaría el panel sin nadie que pueda repartir accesos.
 
 - Cambiar la estructura o el diseño de las páginas.
 - Crear páginas nuevas.
+- **Ocultar o volver a publicar una sección entera.**
 - Cambiar los textos de los botones y avisos del propio sitio.
 - Modificar los correos que no usan plantilla (los acuses automáticos).
 
@@ -296,6 +339,22 @@ Todo eso lo hacemos nosotros. Basta con pedirlo.
 
 **Una foto se ve cortada.** Vuelva a editarla y ajuste el recorte. En las fotos de encabezado hay además un campo de *encuadre* para elegir qué parte se ve.
 
-**El sitio no muestra un cambio.** Recargue la página. Si sigue igual, avísenos.
+**El sitio no muestra un cambio.** Recargue la página. **A veces hace falta recargar dos veces**: el navegador guarda una copia de la página y no siempre la suelta a la primera. Si después de eso sigue igual, avísenos.
+
+**Edito un texto y no aparece en ninguna parte.** Puede ser de una sección que hoy está oculta. Ver el punto 13.
 
 **No puedo entrar.** Que un administrador le restablezca la contraseña desde *Usuarios del panel*. Si nadie puede entrar, avísenos.
+
+---
+
+## 13. Secciones que existen en el panel y hoy no se ven en el sitio
+
+Se ocultaron a la espera de una decisión o de contenido. **Nada se borró:** todo sigue guardado y editable, y volver a publicarlo lo hacemos nosotros en minutos.
+
+| Qué | Por qué está oculto | Qué hace falta |
+|---|---|---|
+| **Página de Reserva de espacios** | Las listas que la gobiernan son borrador nuestro | Confirmar los tipos de actividad y qué espacios se cobran |
+| **Uso de donaciones**, en Transparencia | A la espera del texto definitivo | Que el Parque confirme qué dice |
+| **Código de ética**, en Transparencia | Todavía no está redactado | Que el Parque lo apruebe |
+
+Si edita alguno de esos textos en el panel, **el cambio se guarda pero no se ve**. No es un fallo: la sección está oculta, y el texto que escriba ahora es el que aparecerá el día que se publique.

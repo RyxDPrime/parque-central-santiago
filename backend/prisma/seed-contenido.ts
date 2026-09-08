@@ -42,8 +42,8 @@ const pasosReserva = [
 ];
 
 const formasApoyo = [
-  { icono: "ti-friends", etiqueta: "Voluntariado", titulo: "Ser voluntario", texto: "Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias. El Parque firma las horas de servicio ambiental que exigen los centros educativos a sus estudiantes." },
   { icono: "ti-coin", etiqueta: "Donaciones", titulo: "Hacer una donación", texto: "Tu aporte ayuda a mantener las instalaciones y los programas del parque. Próximamente habilitaremos donaciones en línea." },
+  { icono: "ti-friends", etiqueta: "Voluntariado", titulo: "Ser voluntario", texto: "Súmate a las jornadas de mantenimiento, educación ambiental y actividades comunitarias. El Parque firma las horas de servicio ambiental que exigen los centros educativos a sus estudiantes." },
 ];
 
 const cifras = [

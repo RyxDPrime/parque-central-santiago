@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
@@ -44,6 +44,18 @@ const TIPOS: { valor: TipoAporte; etiqueta: string; icono: string; ayuda: string
 /** Cifras redondas para no obligar a pensar un número desde cero. */
 const MONTOS = [500, 1000, 2500, 5000]
 
+/**
+ * Con qué opción abre el formulario.
+ *
+ * Se puede pedir desde el enlace —/donaciones?tipo=voluntariado— que es como
+ * llega quien pulsó «Ser voluntario» en Apóyanos. Si esa persona tuviera que
+ * volver a elegir aquí lo que ya eligió allá, el enlace no la habría llevado a
+ * ninguna parte. Lo que no esté en la lista se ignora y abre en el de siempre.
+ */
+function tipoPedido(valor: string | null): TipoAporte {
+  return TIPOS.some((t) => t.valor === valor) ? (valor as TipoAporte) : 'dinero'
+}
+
 type Estado =
   | { tipo: 'listo' }
   | { tipo: 'enviando' }
@@ -54,7 +66,8 @@ export function Donaciones() {
   const texto = useTextos()
   const { data: cuentas } = useApiData(api.getCuentasBancarias)
   const { data: metodos } = useApiData(api.getMetodosPago)
-  const [tipo, setTipo] = useState<TipoAporte>('dinero')
+  const [parametros] = useSearchParams()
+  const [tipo, setTipo] = useState<TipoAporte>(() => tipoPedido(parametros.get('tipo')))
   const [monto, setMonto] = useState('')
   const [frecuencia, setFrecuencia] = useState<'unica' | 'mensual'>('unica')
   const [donanteTipo, setDonanteTipo] = useState<'persona' | 'empresa'>('persona')

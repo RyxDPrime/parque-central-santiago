@@ -168,7 +168,13 @@ ul{list-style:none}
 .page-hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--green-900) 18%,rgba(23,51,15,.86) 42%,rgba(23,51,15,.35) 72%,rgba(23,51,15,.12) 100%)}
 .page-hero-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto}
 .page-hero-label{display:inline-block;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--green-100);font-weight:600;margin-bottom:12px}
-.page-hero.has-image .page-hero-label{background:rgba(255,255,255,.14);padding:5px 12px;border-radius:20px;backdrop-filter:blur(4px)}
+/* Sin backdrop-filter a proposito. El desenfoque obliga al navegador a crear una
+   capa de composicion que muestrea el fondo, y en varias maquinas eso dejaba sin
+   pintar el contenido de mas abajo —los recuadros de los formularios— hasta que
+   algo forzaba un repintado: aparecian justo al tirar una captura de pantalla.
+   El fondo se sube de .14 a .22 y se le pone un filo para que la etiqueta se lea
+   igual de bien sobre la foto. */
+.page-hero.has-image .page-hero-label{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.2);padding:5px 12px;border-radius:20px}
 .page-hero h1{font-size:36px;font-weight:600;line-height:1.2;margin-bottom:12px;max-width:720px}
 .page-hero p{font-size:15px;color:rgba(255,255,255,.82);line-height:1.7;max-width:600px}
 .page-hero.has-image h1{text-shadow:0 2px 18px rgba(0,0,0,.35)}
@@ -416,6 +422,28 @@ ul{list-style:none}
 .notfound-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-100);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
 .notfound-link:hover{background:var(--green-100);border-color:var(--green-400)}
 
+/* ── PAGINA EN PROCESO ── */
+/* Misma caja centrada que la de 404, con el sello verde por delante: quien llega
+   tiene que entender en un vistazo que no se equivoco de direccion, sino que
+   llego temprano. */
+.enproceso{text-align:center;max-width:620px;margin:0 auto;padding:20px 0;display:flex;flex-direction:column;align-items:center}
+.enproceso-icono{font-size:48px;color:var(--green-400);display:block;margin-bottom:14px}
+.enproceso-sello{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--green-800);background:var(--green-50);border:1px solid var(--green-100);padding:5px 13px;border-radius:20px;margin-bottom:14px}
+.enproceso-sello::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green-400);animation:enproceso-latido 2.4s ease-in-out infinite}
+@keyframes enproceso-latido{0%,100%{opacity:1}50%{opacity:.35}}
+.enproceso h2{font-size:20px;font-weight:600;margin-bottom:8px}
+.enproceso p{font-size:14px;color:var(--text-secondary);line-height:1.75;margin-bottom:24px}
+.enproceso p strong{color:var(--green-800);font-weight:600}
+.enproceso-atajos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.enproceso-atajo{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--green-600);background:var(--green-50);border:1px solid var(--green-100);padding:10px 16px;border-radius:var(--radius);transition:background .18s,border-color .18s}
+.enproceso-atajo:hover{background:var(--green-100);border-color:var(--green-400)}
+.enproceso-pie{font-size:13px;color:var(--text-muted);margin:24px 0 0}
+.enproceso-pie a{color:var(--green-600);font-weight:500;border-bottom:1px solid var(--green-200)}
+.enproceso-pie a:hover{color:var(--green-800);border-color:var(--green-400)}
+@media (prefers-reduced-motion:reduce){
+  .enproceso-sello::before{animation:none}
+}
+
 /* ── EMPTY STATE ── */
 .empty-state{margin-top:28px;border:1px dashed var(--border);border-radius:var(--radius-lg);padding:48px 32px;text-align:center;background:var(--gray-100)}
 .empty-state i{font-size:32px;color:var(--green-400);margin-bottom:12px;display:block}
@@ -528,8 +556,13 @@ a.contact-row.is-link{cursor:pointer;transition:color .18s}
 .contact-form{display:flex;flex-direction:column;gap:14px}
 .form-row{display:flex;flex-direction:column;gap:6px}
 .form-row label{font-size:12.5px;font-weight:500;color:var(--text-secondary)}
-.form-row input,.form-row textarea{border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-size:13.5px;font-family:var(--font);color:var(--text-primary)}
-.form-row input:focus,.form-row textarea:focus{outline:none;border-color:var(--green-400)}
+/* Campos con fondo propio y borde que se ve. Estaban en blanco sobre blanco con
+   el borde en --border (#E0E0DA), que contra el papel da 1.24:1 cuando la norma
+   pide 3:1 para el contorno de un control: los recuadros estaban dibujados y aun
+   asi no se veian. Es el mismo tratamiento que ya usaba el panel. */
+.form-row input,.form-row textarea{border:1px solid var(--gray-400);border-radius:var(--radius);background:var(--gray-100);padding:10px 12px;font-size:13.5px;font-family:var(--font);color:var(--text-primary);transition:border-color .18s,background .18s,box-shadow .18s}
+.form-row input:hover,.form-row textarea:hover{border-color:var(--green-400)}
+.form-row input:focus,.form-row textarea:focus{outline:none;background:#fff;border-color:var(--green-600);box-shadow:0 0 0 3px rgba(141,179,85,.18)}
 .form-row textarea{resize:vertical;min-height:120px}
 .form-feedback{font-size:13px;padding:10px 14px;border-radius:var(--radius)}
 .form-feedback.success{background:var(--green-50);color:var(--green-800)}
@@ -1094,14 +1127,16 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .form-group select,
 .form-group textarea{
   width:100%;
-  border:1px solid var(--border);
+  border:1px solid var(--gray-400);
   border-radius:var(--radius);
   padding:11px 13px;
   font-size:13.5px;
   font-family:var(--font);
   color:var(--text-primary);
-  background:#fff;
-  transition:border-color .18s,box-shadow .18s;
+  /* Fondo propio y borde visible: en blanco sobre blanco con --border el campo
+     no se distinguia del papel. Ver la nota en .form-row. */
+  background:var(--gray-100);
+  transition:border-color .18s,background .18s,box-shadow .18s;
   /* Sin esto, un campo largo estira su columna de la rejilla y descuadra la fila. */
   min-width:0;
 }
@@ -1110,12 +1145,14 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .form-group textarea::placeholder{color:var(--text-muted)}
 .form-group input:hover,
 .form-group select:hover,
-.form-group textarea:hover{border-color:#CFCFC7}
+.form-group textarea:hover{border-color:var(--green-400)}
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus{
   outline:none;
-  border-color:var(--green-400);
+  /* Al escribir, el campo se aclara: se distingue el que esta activo del resto. */
+  background:#fff;
+  border-color:var(--green-600);
   box-shadow:0 0 0 3px rgba(141,179,85,.18);
 }
 

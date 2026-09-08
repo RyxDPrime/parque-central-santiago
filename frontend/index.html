@@ -5,6 +5,15 @@
     <link rel="icon" type="image/png" href="/images/brand/logo-pcs.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Parque Central de Santiago — el pulmón verde de Santiago de los Caballeros." />
+    <!-- Por omisión se pide no indexar. Mientras dura el desarrollo el sitio se
+         sirve desde direcciones provisionales, y una copia indexada competiría
+         con la buena el día que el dominio propio apunte aquí. En la dirección
+         definitiva, usePageMeta lo sube a "index, follow" al cargar la página.
+
+         Va en el HTML inicial y no solo en el código: los buscadores que no
+         ejecutan JavaScript nunca llegan a ver lo que el código pone después,
+         así que el estado seguro tiene que ser el de partida. -->
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />

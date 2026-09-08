@@ -145,6 +145,8 @@ const APOYO_DE_RESPALDO = [
 export function Home() {
   const texto = useTextos()
   const portada = useEncabezado('inicio')
+  const { data: formasApoyo } = useApiData(api.getFormasApoyo)
+  const formasApoyoVisibles = formasApoyo ?? APOYO_DE_RESPALDO
 
   return (
     <>
@@ -292,7 +294,7 @@ export function Home() {
 
               Los dos con el mismo tratamiento: aquí no hay una acción principal
               y otra secundaria, son dos maneras igual de válidas de ayudar. */}
-          {formasApoyo.map((forma) => (
+          {formasApoyoVisibles.map((forma) => (
             <Link to="/apoyanos" className="btn-light" key={forma.titulo}>
               {tipoDeApoyo(forma) === 'voluntariado' ? <IconoVoluntariado /> : <IconoDonacion />}
               {forma.titulo}

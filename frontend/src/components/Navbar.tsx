@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTextos } from '../hooks/useTextos'
 import { NavLink, useLocation } from 'react-router-dom'
 
 const menuGroups = [
@@ -43,6 +44,11 @@ const soloLinks = [
 ]
 
 export function Navbar() {
+  // El correo sale del panel, igual que el teléfono y la dirección. Estaba
+  // escrito aquí, así que cambiarlo en Contacto no lo movía de la barra ni del
+  // menú de móvil: quedaban dos correos distintos en la misma página.
+  const texto = useTextos()
+
   const [open, setOpen] = useState(false)
   const location = useLocation()
 
@@ -111,8 +117,8 @@ export function Navbar() {
         </div>
 
         <div className="nav-cta">
-          <a href="mailto:asistentepcs@gmail.com">
-            <i className="ti ti-mail" /> asistentepcs@gmail.com
+          <a href={`mailto:${texto('contacto.email')}`}>
+            <i className="ti ti-mail" /> {texto('contacto.email')}
           </a>
           <NavLink to="/contacto" className="btn-primary">
             <i className="ti ti-map-pin" /> Contáctanos
@@ -182,8 +188,8 @@ export function Navbar() {
             <NavLink to="/contacto" className="btn-primary">
               <i className="ti ti-map-pin" /> Contáctanos
             </NavLink>
-            <a href="mailto:asistentepcs@gmail.com" className="mobile-menu-mail">
-              <i className="ti ti-mail" /> asistentepcs@gmail.com
+            <a href={`mailto:${texto('contacto.email')}`} className="mobile-menu-mail">
+              <i className="ti ti-mail" /> {texto('contacto.email')}
             </a>
           </div>
         </div>

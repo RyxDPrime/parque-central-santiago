@@ -7,7 +7,7 @@ import { api } from '../api/client'
  */
 const RESPALDO: Record<string, string> = {
   'contacto.direccion': 'Av. Bartolomé Colón esq. Padre Las Casas, Santiago de los Caballeros',
-  'contacto.email': 'asistentepcs@gmail.com',
+  'contacto.email': 'info@parquecentralsantiagord.com',
   'contacto.telefono': '(809) 583-9581',
   'contacto.whatsapp': '(849) 580-7344',
   'contacto.horarioParque': '5:30 a.m. – 9:00 p.m.',

@@ -87,14 +87,14 @@ export function Blog() {
                 publicaciones={articulos}
                 icono="ti-article"
                 titulo="Artículos"
-                vacio="Contenido informativo y educativo del parque, en preparación."
+                vacio="Contenido informativo y educativo del parque."
                 onAbrir={setAbierta}
               />
               <Listado
                 publicaciones={noticias}
                 icono="ti-news"
                 titulo="Noticias"
-                vacio="Novedades y anuncios del parque, en preparación."
+                vacio="Novedades y anuncios del parque."
                 onAbrir={setAbierta}
               />
             </div>

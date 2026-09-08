@@ -25,6 +25,8 @@ const RESPALDO: Record<string, string> = {
   'inicio.quienesTitulo': 'Una institución al servicio de Santiago',
   'inicio.quienesTexto':
     'El Parque Central de Santiago es administrado por un patronato sin fines de lucro, nacido de más de 25 años de gestión de la Asociación para el Desarrollo, Inc. (APEDI) junto a instituciones públicas y privadas de la región.',
+  'inicio.programasEtiqueta': 'En desarrollo',
+  'inicio.programasTitulo': 'Programas y Proyectos',
   'inicio.mapaEtiqueta': 'Ubicación',
   'inicio.mapaTitulo': 'Explora el parque',
   'inicio.mapaTexto':

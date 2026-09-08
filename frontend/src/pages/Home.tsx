@@ -240,9 +240,9 @@ export function Home() {
             }}
           >
             <div>
-              <div className="sec-label">Para la comunidad</div>
+              <div className="sec-label">{texto('inicio.programasEtiqueta')}</div>
               <h2 className="sec-title" style={{ marginBottom: 0 }}>
-                Programas y Proyectos
+                {texto('inicio.programasTitulo')}
               </h2>
             </div>
             <Link to="/programas-y-proyectos" className="stat-cta" style={{ marginTop: 0 }}>

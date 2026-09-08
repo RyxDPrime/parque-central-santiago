@@ -3,7 +3,7 @@ import { PageHero } from '../components/PageHero'
 
 const atajos = [
   { to: '/', icon: 'ti-home', label: 'Inicio' },
-  { to: '/instalaciones-y-servicios', icon: 'ti-building', label: 'Instalaciones y Servicios' },
+  { to: '/instalaciones', icon: 'ti-building', label: 'Instalaciones' },
   { to: '/actividades', icon: 'ti-calendar-event', label: 'Actividades' },
   { to: '/contacto', icon: 'ti-mail', label: 'Contacto' },
 ]

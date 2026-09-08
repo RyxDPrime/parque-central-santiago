@@ -47,7 +47,7 @@ const formasApoyo = [
 ];
 
 const cifras = [
-  { numero: "2 campos", descripcion: "Dos campos de fútbol reglamentarios, además de canchas de baloncesto, tenis, voleibol y disc golf para toda la comunidad.", imagenUrl: "/images/galeria/campo-futbol.jpg", etiqueta: "Complejo Deportivo", enlaceTexto: "Ver instalaciones y servicios", enlaceUrl: "/instalaciones-y-servicios" },
+  { numero: "2 campos", descripcion: "Dos campos de fútbol reglamentarios, además de canchas de baloncesto, tenis, voleibol y disc golf para toda la comunidad.", imagenUrl: "/images/galeria/campo-futbol.jpg", etiqueta: "Complejo Deportivo", enlaceTexto: "Ver instalaciones y servicios", enlaceUrl: "/instalaciones" },
   { numero: "19", descripcion: "Instituciones públicas y privadas conforman la Junta Directiva del Patronato para la Administración del Parque Central de Santiago.", imagenUrl: "/images/galeria/entrada-parque.jpg", etiqueta: "Patronato PCS", enlaceTexto: "Conoce la Junta Directiva", enlaceUrl: "/junta-directiva" },
   { numero: "32 kioscos", descripcion: "8 grandes y 24 pequeños para reuniones familiares.", imagenUrl: "/images/galeria/gimnasio-aire-libre.jpg", etiqueta: "Áreas de Picnic", enlaceTexto: null, enlaceUrl: null },
   { numero: "450", descripcion: "Espacios de estacionamiento para los visitantes.", imagenUrl: "/images/galeria/voleibol.jpg", etiqueta: "Parqueos", enlaceTexto: null, enlaceUrl: null },
@@ -61,8 +61,8 @@ const encabezados = [
   { clave: "junta-directiva", etiqueta: "Junta Directiva", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 4 },
   { clave: "personal-tecnico", etiqueta: "Personal Tecnico", imagenUrl: "/images/galeria/entrada-parque.jpg", posicion: "center", orden: 5 },
   { clave: "transparencia", etiqueta: "Transparencia", imagenUrl: "/images/galeria/entrada-parque.jpg", posicion: "center", orden: 6 },
-  { clave: "instalaciones-y-servicios", etiqueta: "Instalaciones y Servicios", imagenUrl: "/images/galeria/cancha-basketball.jpg", posicion: "center", orden: 7 },
-  { clave: "programas-y-proyectos", etiqueta: "Programas y Proyectos", imagenUrl: "/images/galeria/cibao-futbol-club.jpg", posicion: "center", orden: 8 },
+  { clave: "instalaciones", etiqueta: "Instalaciones", imagenUrl: "/images/galeria/cancha-basketball.jpg", posicion: "center", orden: 7 },
+  { clave: "programas-y-servicios", etiqueta: "Programas y Proyectos", imagenUrl: "/images/galeria/cibao-futbol-club.jpg", posicion: "center", orden: 8 },
   { clave: "galeria", etiqueta: "Galeria", imagenUrl: "/images/galeria/parque-infantil.jpg", posicion: "center", orden: 9 },
   { clave: "mapa", etiqueta: "Mapa del Parque", imagenUrl: "/images/galeria/vista-aerea-parque.jpg", posicion: "center", orden: 10 },
   { clave: "actividades", etiqueta: "Actividades", imagenUrl: "/images/galeria/maraton-5k.jpg", posicion: "center", orden: 11 },

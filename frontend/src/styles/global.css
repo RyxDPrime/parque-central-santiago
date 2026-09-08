@@ -845,7 +845,7 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .admin-table-actions button.is-danger:hover{border-color:#C0392B;color:#C0392B;background:#FBEAE3}
 
 /* En pantallas muy angostas el pie a dos columnas deja unos 86px por columna y
-   nombres como "Instalaciones y Servicios" se salen del ancho. */
+   nombres largos como "Misión, Visión y Valores" se salen del ancho. */
 @media (max-width:480px){
   .footer-top{grid-template-columns:1fr;gap:24px}
 }

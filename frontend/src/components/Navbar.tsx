@@ -20,8 +20,8 @@ const menuGroups = [
   {
     label: 'El Parque',
     items: [
-      { to: '/instalaciones-y-servicios', icon: 'ti-building', label: 'Instalaciones y Servicios' },
-      { to: '/programas-y-proyectos', icon: 'ti-plant-2', label: 'Programas y Proyectos' },
+      { to: '/instalaciones', icon: 'ti-building', label: 'Instalaciones' },
+      { to: '/programas-y-servicios', icon: 'ti-plant-2', label: 'Programas y Servicios' },
       { to: '/mision-vision-valores', icon: 'ti-target-arrow', label: 'Misión, Visión y Valores' },
       { to: '/galeria', icon: 'ti-photo', label: 'Galería' },
       { to: '/mapa', icon: 'ti-map', label: 'Mapa del Parque' },

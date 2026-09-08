@@ -1,4 +1,4 @@
--- El rotulo y el titulo del bloque de Programas y Proyectos de la portada eran
+-- El rotulo y el titulo del bloque de Programas y Servicios de la portada eran
 -- los dos unicos de esa pagina escritos en el codigo: todos los demas ya se
 -- editaban desde el panel. Se agregan como textos para que el Parque los pueda
 -- cambiar sin pedirnoslo.
@@ -17,6 +17,6 @@ INSERT INTO "Texto" ("clave", "etiqueta", "grupo", "valor", "multiline", "ayuda"
 VALUES
   ('inicio.programasEtiqueta', 'Programas — etiqueta', 'Títulos del inicio', 'En desarrollo', false,
    'Texto pequeño en verde sobre el título del bloque de programas de la portada.', 9, NOW()),
-  ('inicio.programasTitulo', 'Programas — título', 'Títulos del inicio', 'Programas y Proyectos', false,
+  ('inicio.programasTitulo', 'Programas — título', 'Títulos del inicio', 'Programas y Servicios', false,
    'Título del bloque de programas de la portada.', 10, NOW())
 ON CONFLICT ("clave") DO NOTHING;

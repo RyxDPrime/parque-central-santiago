@@ -27,7 +27,7 @@ interface Atajo {
 /** A dónde mandar a quien llegó aquí. Son las secciones que sí están completas. */
 const ATAJOS_POR_DEFECTO: Atajo[] = [
   { to: '/', icon: 'ti-home', label: 'Inicio' },
-  { to: '/instalaciones-y-servicios', icon: 'ti-building', label: 'Instalaciones y Servicios' },
+  { to: '/instalaciones', icon: 'ti-building', label: 'Instalaciones' },
   { to: '/actividades', icon: 'ti-calendar-event', label: 'Actividades' },
   { to: '/galeria', icon: 'ti-photo', label: 'Galería' },
 ]

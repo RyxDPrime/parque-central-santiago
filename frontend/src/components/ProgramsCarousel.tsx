@@ -54,7 +54,7 @@ export function ProgramsCarousel() {
           <div className="prog-content">
             <div className="prog-label">{slide.label}</div>
             <h3 className="prog-title">{slide.title}</h3>
-            <Link to="/instalaciones-y-servicios" className="prog-btn">
+            <Link to="/instalaciones" className="prog-btn">
               Conocer más <i className="ti ti-arrow-right" />
             </Link>
           </div>

@@ -81,8 +81,8 @@ export function Footer() {
 
           <div className="footer-col">
             <h4>El Parque</h4>
-            <Link to="/instalaciones-y-servicios">Instalaciones y Servicios</Link>
-            <Link to="/programas-y-proyectos">Programas y Proyectos</Link>
+            <Link to="/instalaciones">Instalaciones</Link>
+            <Link to="/programas-y-servicios">Programas y Servicios</Link>
             <Link to="/galeria">Galería</Link>
             <Link to="/mapa">Mapa del Parque</Link>
             <Link to="/actividades">Actividades</Link>

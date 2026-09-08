@@ -94,15 +94,15 @@ function CifraImagen({ cifra }: { cifra: Cifra }) {
 
 const quickLinks = [
   {
-    to: '/instalaciones-y-servicios',
+    to: '/instalaciones',
     icon: 'ti-building',
-    title: 'Instalaciones y Servicios',
+    title: 'Instalaciones',
     description: 'Canchas, campos de fútbol, kioscos, Cibao Fútbol Club, tirolesa y más.',
   },
   {
-    to: '/programas-y-proyectos',
+    to: '/programas-y-servicios',
     icon: 'ti-plant-2',
-    title: 'Programas y Proyectos',
+    title: 'Programas y Servicios',
     description: 'Las iniciativas del parque para la comunidad de Santiago.',
   },
   {
@@ -155,7 +155,7 @@ export function Home() {
           <h1>{texto('inicio.heroTitulo')}</h1>
           <p>{texto('inicio.heroTexto')}</p>
           <div className="hero-btns">
-            <Link to="/instalaciones-y-servicios" className="btn-primary">
+            <Link to="/instalaciones" className="btn-primary">
               <i className="ti ti-run" /> Ver instalaciones y servicios
             </Link>
             <Link to="/contacto" className="btn-outline-white">
@@ -246,7 +246,7 @@ export function Home() {
                 {texto('inicio.programasTitulo')}
               </h2>
             </div>
-            <Link to="/programas-y-proyectos" className="stat-cta" style={{ marginTop: 0 }}>
+            <Link to="/programas-y-servicios" className="stat-cta" style={{ marginTop: 0 }}>
               Ver todos <i className="ti ti-arrow-right" />
             </Link>
           </div>

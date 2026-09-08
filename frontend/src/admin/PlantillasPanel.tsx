@@ -131,7 +131,7 @@ export function PlantillasPanel() {
           const misHuecos = huecos[familia] ?? []
 
           return (
-            <section className="admin-panel" key={p.id}>
+            <section className="admin-panel plantilla-panel" key={p.id}>
               <div className="admin-panel-head">
                 <h2>{p.nombre}</h2>
                 {sello && (

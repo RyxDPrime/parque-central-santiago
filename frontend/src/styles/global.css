@@ -1097,6 +1097,15 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .modal-acciones{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
 
 /* ── PLANTILLAS DE RESPUESTA ── */
+/* Esta pantalla usa .admin-panel, que no trae relleno propio porque esta pensado
+   para tablas a sangre. Dentro hay texto, etiquetas y campos, y pegados al filo
+   quedaban desalineados con la cabecera y la franja de botones, que si tienen
+   relleno. Se los alinea a todos al mismo margen. */
+.plantilla-panel > .plantilla-descripcion,
+.plantilla-panel > .admin-field,
+.plantilla-panel > .plantilla-ayuda{margin-left:22px;margin-right:22px}
+.plantilla-panel > .plantilla-descripcion{margin-top:16px}
+
 .plantilla-descripcion{font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 18px;max-width:none}
 .plantilla-ayuda{margin:4px 0 20px;padding:15px 16px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);border:1px solid var(--border)}
 .plantilla-ayuda h3{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin:0 0 8px}

@@ -240,7 +240,7 @@ export function Home() {
             }}
           >
             <div>
-              <div className="sec-label">En desarrollo</div>
+              <div className="sec-label">Para la comunidad</div>
               <h2 className="sec-title" style={{ marginBottom: 0 }}>
                 Programas y Proyectos
               </h2>

@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
@@ -311,7 +311,7 @@ export function Donaciones() {
                     >
                       <span className="donacion-metodo-nombre">
                         {m.nombre}
-                        {!m.disponible && <em> · próximamente</em>}
+                        {!m.disponible && <em> · en desarrollo</em>}
                       </span>
                       {m.nota && <small>{m.nota}</small>}
                     </button>
@@ -476,22 +476,6 @@ export function Donaciones() {
               )}
             </div>
           )}
-
-          {/* ── Transparencia ── */}
-          <div className="donacion-transparencia">
-            <i className="ti ti-file-check" />
-            <div>
-              <h3>Puedes ver en qué se usa</h3>
-              <p>
-                El Parque es administrado por un patronato sin fines de lucro, registrado bajo la
-                Ley 122-05. Los estados financieros y los documentos institucionales están
-                publicados.
-              </p>
-              <Link to="/transparencia" className="btn-outline">
-                Ver Transparencia <i className="ti ti-arrow-right" />
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
     </>

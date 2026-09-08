@@ -2,31 +2,22 @@ import { Link } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
 import { LoadingState, ErrorState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
-import { api, type FormaApoyo, type TipoAporte } from '../api/client'
-
-/**
- * A qué opción del formulario lleva cada tarjeta.
- *
- * Se deduce de la etiqueta que el Parque le puso a la forma de apoyo, que es
- * justo el campo que la clasifica. Sin esto, «Ser voluntario» y «Hacer una
- * donación» llevaban al mismo sitio y abrían los dos en la opción de dinero:
- * quien venía a ofrecer horas tenía que darse cuenta solo de que había que
- * cambiarla.
- *
- * Si mañana renombran la etiqueta y deja de coincidir, el botón sigue llevando
- * al formulario, solo que sin nada preseleccionado. Es un fallo que no rompe
- * nada, y por eso se prefiere a obligar al Parque a mantener un campo más.
- */
-function tipoDeApoyo(forma: FormaApoyo): TipoAporte | null {
-  const texto = `${forma.etiqueta} ${forma.titulo}`.toLowerCase()
-  if (texto.includes('volunt')) return 'voluntariado'
-  if (texto.includes('patrocin')) return 'patrocinio'
-  if (texto.includes('donac') || texto.includes('aporte')) return 'dinero'
-  return null
-}
+import { api } from '../api/client'
+import { tipoDeApoyo } from '../api/apoyo'
 
 export function Apoyanos() {
   const { data: formas, loading, error } = useApiData(api.getFormasApoyo)
+  const formasOrdenadas = formas
+    ? [...formas].sort((a, b) => {
+        const prioridad = (forma: typeof a) => {
+          const tipo = tipoDeApoyo(forma)
+          if (tipo === 'dinero') return 0
+          if (tipo === 'voluntariado') return 1
+          return 2
+        }
+        return prioridad(a) - prioridad(b)
+      })
+    : null
 
   return (
     <>
@@ -43,9 +34,9 @@ export function Apoyanos() {
           {loading && <LoadingState />}
           {error && <ErrorState message={error} />}
 
-          {formas && formas.length > 0 && (
+          {formasOrdenadas && formasOrdenadas.length > 0 && (
             <div className="support-grid">
-              {formas.map((forma) => {
+              {formasOrdenadas.map((forma) => {
                 const tipo = tipoDeApoyo(forma)
                 return (
                   <div className="support-card" key={forma.id}>

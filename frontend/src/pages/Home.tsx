@@ -3,6 +3,7 @@ import { ProgramsCarousel } from '../components/ProgramsCarousel'
 import { AnnouncementPopup } from '../components/AnnouncementPopup'
 import { ParkMap } from '../components/ParkMap'
 import { IconoCorazon, IconoDonacion, IconoVoluntariado } from '../components/iconos'
+import { tipoDeApoyo } from '../api/apoyo'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
 import { useEncabezado } from '../hooks/useEncabezado'
@@ -129,6 +130,16 @@ const quickLinks = [
     title: 'Contacto y Ubicación',
     description: 'Dirección, horario, teléfono y formulario de contacto.',
   },
+]
+
+/**
+ * Lo que se muestra en la franja de apoyo mientras la lista no haya llegado.
+ * Va en el mismo orden con el que nace la base, para que el primer instante no
+ * enseñe un orden y el siguiente otro.
+ */
+const APOYO_DE_RESPALDO = [
+  { etiqueta: 'Voluntariado', titulo: 'Ser voluntario' },
+  { etiqueta: 'Donaciones', titulo: 'Hacer una donación' },
 ]
 
 export function Home() {
@@ -274,14 +285,19 @@ export function Home() {
           pulmón verde de Santiago de los Caballeros.
         </p>
         <div className="support-btns">
-          {/* Los dos con el mismo tratamiento: aquí no hay una acción principal
+          {/* Salen de la misma lista que las tarjetas de Apóyanos y en su mismo
+              orden. Antes estaban escritos aquí, y bastaba con que alguien
+              reordenara las tarjetas en el panel para que las dos pantallas
+              dijeran lo mismo en distinto orden.
+
+              Los dos con el mismo tratamiento: aquí no hay una acción principal
               y otra secundaria, son dos maneras igual de válidas de ayudar. */}
-          <Link to="/apoyanos" className="btn-light">
-            <IconoDonacion /> Hacer una donación
-          </Link>
-          <Link to="/apoyanos" className="btn-light">
-            <IconoVoluntariado /> Ser voluntario
-          </Link>
+          {formasApoyo.map((forma) => (
+            <Link to="/apoyanos" className="btn-light" key={forma.titulo}>
+              {tipoDeApoyo(forma) === 'voluntariado' ? <IconoVoluntariado /> : <IconoDonacion />}
+              {forma.titulo}
+            </Link>
+          ))}
         </div>
       </section>
     </>

@@ -1312,7 +1312,6 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 }
 /* Institucion sin representante designado: se dice, en letra discreta, en vez
    de dejar la tarjeta con un hueco donde deberia ir un nombre. */
-.leadership-cargo.es-pendiente{font-style:italic;color:var(--text-muted);font-weight:400}
 
 /* ── LA TARJETA CRECE AL PASAR EL RATON ── */
 /* Crece la tarjeta entera —foto, nombre, institucion y cargo— y no solo la

@@ -5,3 +5,7 @@ Thumbs.db
 # Respaldos de la base y de los archivos subidos. El repositorio es publico y
 # ademas un volcado no es codigo: se guarda fuera, en el Drive del parque.
 respaldos/
+
+# El acta de entrega. Es un documento contractual entre el Parque y ULP, no
+# codigo, y el repositorio es publico: se guarda y se firma fuera de aqui.
+ACTA-DE-ENTREGA.md

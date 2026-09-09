@@ -237,15 +237,15 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'programas',
     icon: 'ti-plant-2',
-    description: 'La página El Parque → Programas y Servicios. Cada registro es un programa o servicio del parque, con su foto.',
+    description: 'Alimenta dos sitios a la vez: la página El Parque → Programas y Servicios, y el carrusel grande de la portada. Lo que se cambie aquí se ve en los dos.',
     label: 'Programas y Servicios',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'Título del servicio en la página.' },
-      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol', hint: 'Etiqueta verde que aparece encima del título.' },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...', hint: 'Texto que se lee junto a la foto.' },
-      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 4 / 3, hint: 'Foto grande que acompaña al servicio. Sin foto se usa una general del parque.' },
-      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'Título del programa, en la página y en el carrusel de la portada.' },
+      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol', hint: 'Etiqueta pequeña sobre el título, en la página y en el carrusel.' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...', hint: 'Texto que se lee junto a la foto. Solo en la página: en el carrusel no cabe.' },
+      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 4 / 3, hint: 'Se usa en la página y de fondo en el carrusel. Sin foto se usa una general del parque.' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true, hint: 'Manda en las dos: el orden de la página y el de las diapositivas del carrusel.' },
     ],
   },
   {

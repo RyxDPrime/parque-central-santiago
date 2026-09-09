@@ -98,7 +98,7 @@ const quickLinks = [
     to: '/instalaciones',
     icon: 'ti-building',
     title: 'Instalaciones',
-    description: 'Canchas, campos de fútbol, kioscos, Cibao Fútbol Club, tirolesa y más.',
+    description: 'Canchas, campos de fútbol, kioscos, áreas de picnic y más.',
   },
   {
     to: '/programas-y-servicios',
@@ -146,7 +146,7 @@ export function Home() {
   const texto = useTextos()
   const portada = useEncabezado('inicio')
   const { data: formasApoyo } = useApiData(api.getFormasApoyo)
-  const formasApoyoVisibles = formasApoyo ?? APOYO_DE_RESPALDO
+  const formasApoyoVisibles = formasApoyo?.length ? formasApoyo : APOYO_DE_RESPALDO
 
   return (
     <>
@@ -169,7 +169,7 @@ export function Home() {
           <p>{texto('inicio.heroTexto')}</p>
           <div className="hero-btns">
             <Link to="/instalaciones" className="btn-primary">
-              <i className="ti ti-run" /> Ver instalaciones y servicios
+              <i className="ti ti-run" /> Ver instalaciones
             </Link>
             <Link to="/contacto" className="btn-outline-white">
               <i className="ti ti-map-2" /> Cómo llegar

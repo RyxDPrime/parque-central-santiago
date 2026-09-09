@@ -1,60 +1,62 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useApiData } from '../hooks/useApiData'
+import { api } from '../api/client'
+import { fotoDePrograma } from '../api/programas'
 
-const slides = [
-  {
-    label: 'Programa deportivo · Fútbol',
-    title: 'Cibao Fútbol Club',
-    img: '/images/galeria/cibao-futbol-club.jpg',
-  },
-  {
-    label: 'Programa deportivo · Tenis',
-    title: 'Escuela de Tenis',
-    img: '/images/galeria/cancha-tenis.jpg',
-  },
-  {
-    label: 'Aventura familiar',
-    title: 'Tirolesa',
-    img: '/images/galeria/ciclistas.jpg',
-  },
-  {
-    label: 'Recreación infantil',
-    title: 'Fun Stop',
-    img: '/images/galeria/funstop.jpg',
-  },
-]
-
+/**
+ * Carrusel de programas de la portada.
+ *
+ * Los cuatro que enseñaba estaban escritos aquí, con su foto y su categoría:
+ * era la tercera copia de la misma información —las otras dos vivían en
+ * Instalaciones y en Programas— y la única que el Parque no podía tocar. Ya se
+ * había quedado vieja: mostraba cuatro de los seis programas cargados, y la
+ * tirolesa con la foto de los ciclistas.
+ *
+ * Ahora sale de la misma lista que la página de Programas y Servicios. Lo que
+ * el Parque cargue o reordene desde el panel se ve aquí sin tocar nada.
+ */
 export function ProgramsCarousel() {
+  const { data } = useApiData(api.getProgramas)
+  const programas = data ?? []
   const [current, setCurrent] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  function goTo(index: number) {
-    setCurrent((index + slides.length) % slides.length)
-    if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => {
-      setCurrent((c) => (c + 1) % slides.length)
-    }, 6000)
-  }
-
+  // El intervalo se rearma cuando cambia la cantidad: al llegar la lista, el
+  // que estaba corriendo daba la vuelta sobre cero diapositivas.
   useEffect(() => {
+    if (programas.length === 0) return
     timerRef.current = setInterval(() => {
-      setCurrent((c) => (c + 1) % slides.length)
+      setCurrent((c) => (c + 1) % programas.length)
     }, 6000)
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
     }
-  }, [])
+  }, [programas.length])
+
+  function goTo(index: number) {
+    if (programas.length === 0) return
+    setCurrent((index + programas.length) % programas.length)
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setCurrent((c) => (c + 1) % programas.length)
+    }, 6000)
+  }
+
+  // Sin programas no hay carrusel: es preferible a un recuadro negro vacío
+  // ocupando media portada.
+  if (programas.length === 0) return null
 
   return (
     <div className="prog-wrap">
-      {slides.map((slide, i) => (
-        <div key={slide.title} className={`prog-slide${i === current ? ' active' : ''}`}>
-          <img src={slide.img} alt={slide.title} className="prog-slide-bg" />
+      {programas.map((programa, i) => (
+        <div key={programa.id} className={`prog-slide${i === current ? ' active' : ''}`}>
+          <img src={fotoDePrograma(programa)} alt={programa.nombre} className="prog-slide-bg" />
           <div className="prog-overlay" />
           <div className="prog-content">
-            <div className="prog-label">{slide.label}</div>
-            <h3 className="prog-title">{slide.title}</h3>
-            <Link to="/instalaciones" className="prog-btn">
+            <div className="prog-label">{programa.categoria}</div>
+            <h3 className="prog-title">{programa.nombre}</h3>
+            <Link to="/programas-y-servicios" className="prog-btn">
               Conocer más <i className="ti ti-arrow-right" />
             </Link>
           </div>
@@ -79,12 +81,12 @@ export function ProgramsCarousel() {
       </button>
 
       <div className="prog-indicators">
-        {slides.map((slide, i) => (
+        {programas.map((programa, i) => (
           <button
-            key={slide.title}
+            key={programa.id}
             type="button"
             className={`prog-dot${i === current ? ' active' : ''}`}
-            aria-label={`Ver ${slide.title}`}
+            aria-label={`Ver ${programa.nombre}`}
             onClick={() => goTo(i)}
           />
         ))}

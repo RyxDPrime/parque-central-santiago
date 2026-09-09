@@ -154,12 +154,25 @@ async function main() {
   // El carrusel de la portada arranca con los mismos programas, que es lo que
   // enseñaba antes. Es una lista aparte: desde el panel se decide qué se
   // destaca en el inicio sin tocar el catálogo de programas.
+  //
+  // Las fotos van explícitas y no copiadas del programa: los programas de aquí
+  // no traen la suya, y una diapositiva sin foto sale con la genérica de la
+  // entrada. Son las mismas que el sitio usaba de reserva para cada uno.
+  const fotosDelCarrusel: Record<string, string> = {
+    "Cibao Fútbol Club": "/images/galeria/cibao-futbol-club.jpg",
+    "Escuela de Tenis – Washington Heights Tennis Association": "/images/galeria/cancha-tenis.jpg",
+    Tirolesa: "/images/galeria/vista-aerea-parque.jpg",
+    "Alquiler de Bicicletas – Bicicentro": "/images/galeria/ciclistas.jpg",
+    "Fun Stop – Carritos Corredores": "/images/galeria/funstop.jpg",
+  };
+
   await prisma.destacadoInicio.deleteMany();
   for (const [i, p] of programas.entries()) {
     await prisma.destacadoInicio.create({
       data: {
         titulo: p.nombre,
         categoria: p.categoria,
+        imagenUrl: fotosDelCarrusel[p.nombre] ?? null,
         enlaceTexto: "Conocer más",
         enlaceUrl: "/programas-y-servicios",
         orden: i + 1,

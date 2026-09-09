@@ -485,3 +485,26 @@ model MetodoPago {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Las diapositivas del carrusel grande de la portada.
+//
+// Tabla propia y no los programas: son dos decisiones distintas. La lista de
+// programas es el catalogo completo del parque, y el carrusel es una seleccion
+// editorial de la portada —cuatro o cinco, con la foto que mejor se ve a ancho
+// completo—. Atarlos significaba que agregar un programa nuevo lo metia en la
+// portada sin que nadie lo decidiera, y que la foto buena para una tarjeta
+// tuviera que servir tambien de fondo a pantalla completa.
+model DestacadoInicio {
+  id          Int      @id @default(autoincrement())
+  // El texto grande de la diapositiva.
+  titulo      String
+  // La etiqueta pequena de encima. Ej: "Programa deportivo · Futbol".
+  categoria   String
+  imagenUrl   String?
+  // A donde lleva el boton. Vacio, la diapositiva no lo muestra.
+  enlaceTexto String?
+  enlaceUrl   String?
+  orden       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

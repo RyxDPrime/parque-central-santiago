@@ -102,6 +102,7 @@ const listasSimples = [
   ["pasos-reserva", "pasoReserva"],
   ["formas-apoyo", "formaApoyo"],
   ["cifras", "cifra"],
+  ["destacados-inicio", "destacadoInicio"],
 ] as const;
 
 for (const [ruta, modelo] of listasSimples) {

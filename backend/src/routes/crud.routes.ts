@@ -37,6 +37,7 @@ export type ModeloOrdenable =
   | "pasoReserva"
   | "formaApoyo"
   | "cifra"
+  | "destacadoInicio"
   | "aliado"
   | "espacioReservable"
   | "tipoActividad"
@@ -77,6 +78,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   metodoPago: ["nombre", "nota", "activo", "disponible", "orden"],
   plantillaCorreo: ["asunto", "cuerpo"],
   cifra: ["numero", "descripcion", "imagenUrl", "etiqueta", "enlaceTexto", "enlaceUrl", "orden"],
+  destacadoInicio: ["titulo", "categoria", "imagenUrl", "enlaceTexto", "enlaceUrl", "orden"],
   aliado: ["nombre", "logoUrl", "sitioWeb", "orden"],
   // Los textos no se crean ni se borran: solo cambia su valor.
   texto: ["valor"],

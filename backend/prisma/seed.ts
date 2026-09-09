@@ -151,6 +151,22 @@ async function main() {
     await prisma.programa.create({ data: { ...p, orden: i + 1 } });
   }
 
+  // El carrusel de la portada arranca con los mismos programas, que es lo que
+  // enseñaba antes. Es una lista aparte: desde el panel se decide qué se
+  // destaca en el inicio sin tocar el catálogo de programas.
+  await prisma.destacadoInicio.deleteMany();
+  for (const [i, p] of programas.entries()) {
+    await prisma.destacadoInicio.create({
+      data: {
+        titulo: p.nombre,
+        categoria: p.categoria,
+        enlaceTexto: "Conocer más",
+        enlaceUrl: "/programas-y-servicios",
+        orden: i + 1,
+      },
+    });
+  }
+
   // Aliados institucionales: mismas instituciones de la Junta Directiva, con sus logos reales.
   await prisma.aliado.deleteMany();
   for (const [i, m] of juntaDirectiva.entries()) {

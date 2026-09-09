@@ -472,6 +472,21 @@ export const entityConfigs: EntityConfig[] = [
     ],
   },
   {
+    path: 'destacados-inicio',
+    icon: 'ti-slideshow',
+    description: 'El carrusel grande de la portada, debajo de las cifras. Es una selección aparte de la lista de Programas y Servicios: aquí se decide qué se destaca en la página de inicio, con la foto que mejor se vea a lo ancho.',
+    label: 'Carrusel del Inicio',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'El texto grande de la diapositiva.' },
+      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Programa deportivo · Fútbol', hint: 'La línea pequeña que va encima del título.' },
+      { key: 'imagenUrl', label: 'Foto', type: 'file', accept: 'image/*', aspect: 21 / 9, hint: 'Se ve a todo lo ancho y muy apaisada: conviene una foto donde lo importante esté al centro.' },
+      { key: 'enlaceTexto', label: 'Texto del botón (opcional)', type: 'text', placeholder: 'Ej: Conocer más', hint: 'Botón blanco sobre la foto. Sin texto y sin página, la diapositiva va sin botón.' },
+      { key: 'enlaceUrl', label: 'A dónde lleva el botón (opcional)', type: 'select', options: [{ value: '', label: 'Sin enlace' }, ...PAGINAS_DEL_SITIO], hint: 'La página del sitio que abre el botón.' },
+      { key: 'orden', label: 'Posición en el carrusel', type: 'number', placeholder: '1', nextPosition: true, hint: 'El orden en que se van pasando las diapositivas.' },
+    ],
+  },
+  {
     path: 'cifras',
     icon: 'ti-chart-bar',
     description: 'Bloques grandes con foto de la página de inicio, debajo del título principal. Se alternan solos a izquierda y derecha.',

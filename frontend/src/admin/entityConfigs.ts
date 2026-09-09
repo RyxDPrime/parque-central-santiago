@@ -200,8 +200,8 @@ export const entityConfigs: EntityConfig[] = [
     titleField: 'institucion',
     fields: [
       { key: 'institucion', label: 'Institución', type: 'text', required: true, placeholder: 'Ej: Asociación para el Desarrollo, Inc.', hint: 'Nombre que aparece bajo la foto, en negrita.' },
-      { key: 'representante', label: 'Representante', type: 'text', placeholder: 'Ej: Juan Carlos Ortiz', hint: 'Opcional. Si todavía no se sabe quién representa a la institución, déjalo vacío: la tarjeta muestra la institución como título y avisa que está por designar.' },
-      { key: 'cargo', label: 'Cargo', type: 'text', placeholder: 'Ej: Presidente', hint: 'Opcional. Puesto dentro de la Junta; si no hay representante, déjalo vacío también.' },
+      { key: 'representante', label: 'Representante', type: 'text', placeholder: 'Ej: Juan Carlos Ortiz', hint: 'Opcional. Si todavía no se sabe quién representa a la institución, déjalo vacío: la tarjeta muestra la institución como título, sin la línea del nombre.' },
+      { key: 'cargo', label: 'Cargo', type: 'text', placeholder: 'Ej: Presidente', hint: 'Opcional. Puesto dentro de la Junta. Si no hay representante, esta línea sirve para describir a la institución: la circunscripción de una diputación, por ejemplo.' },
       { key: 'fotoUrl', label: 'Foto del representante', type: 'file', accept: 'image/*', aspect: 1, hint: 'Solo se usa si arriba eliges mostrar fotos en vez de logos.' },
       { key: 'logoUrl', label: 'Logo de la institución', type: 'file', accept: 'image/*', aspect: 1, hint: 'Lo que se ve hoy en el recuadro de la tarjeta, sobre fondo blanco.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },

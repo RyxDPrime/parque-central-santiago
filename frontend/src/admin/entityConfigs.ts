@@ -237,15 +237,15 @@ export const entityConfigs: EntityConfig[] = [
   {
     path: 'programas',
     icon: 'ti-plant-2',
-    description: 'La página El Parque → Programas y Servicios. Cada registro es un programa o servicio del parque, con su foto.',
+    description: 'Alimenta dos sitios a la vez: la página El Parque → Programas y Servicios, y el carrusel grande de la portada. Lo que se cambie aquí se ve en los dos.',
     label: 'Programas y Servicios',
     titleField: 'nombre',
     fields: [
-      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'Título del servicio en la página.' },
-      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol', hint: 'Etiqueta verde que aparece encima del título.' },
-      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...', hint: 'Texto que se lee junto a la foto.' },
-      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 4 / 3, hint: 'Foto grande que acompaña al servicio. Sin foto se usa una general del parque.' },
-      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+      { key: 'nombre', label: 'Nombre', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'Título del programa, en la página y en el carrusel de la portada.' },
+      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Deportivo · Fútbol', hint: 'Etiqueta pequeña sobre el título, en la página y en el carrusel.' },
+      { key: 'descripcion', label: 'Descripción', type: 'textarea', required: true, placeholder: 'Describe brevemente este programa...', hint: 'Texto que se lee junto a la foto. Solo en la página: en el carrusel no cabe.' },
+      { key: 'fotoUrl', label: 'Foto (opcional)', type: 'file', accept: 'image/*', aspect: 4 / 3, hint: 'Se usa en la página y de fondo en el carrusel. Sin foto se usa una general del parque.' },
+      { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true, hint: 'Manda en las dos: el orden de la página y el de las diapositivas del carrusel.' },
     ],
   },
   {
@@ -469,6 +469,21 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'texto', label: 'Descripción', type: 'textarea', required: true, placeholder: 'En qué consiste esta forma de apoyo...', hint: 'Explicación de cómo colaborar de esta forma.' },
       { key: 'icono', label: 'Ícono', type: 'select', options: ICONOS, hint: 'Dibujo que acompaña a la tarjeta en la página.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'destacados-inicio',
+    icon: 'ti-slideshow',
+    description: 'El carrusel grande de la portada, debajo de las cifras. Es una selección aparte de la lista de Programas y Servicios: aquí se decide qué se destaca en la página de inicio, con la foto que mejor se vea a lo ancho.',
+    label: 'Carrusel del Inicio',
+    titleField: 'titulo',
+    fields: [
+      { key: 'titulo', label: 'Título', type: 'text', required: true, placeholder: 'Ej: Cibao Fútbol Club', hint: 'El texto grande de la diapositiva.' },
+      { key: 'categoria', label: 'Categoría', type: 'text', required: true, placeholder: 'Ej: Programa deportivo · Fútbol', hint: 'La línea pequeña que va encima del título.' },
+      { key: 'imagenUrl', label: 'Foto', type: 'file', accept: 'image/*', aspect: 21 / 9, hint: 'Se ve a todo lo ancho y muy apaisada: conviene una foto donde lo importante esté al centro.' },
+      { key: 'enlaceTexto', label: 'Texto del botón (opcional)', type: 'text', placeholder: 'Ej: Conocer más', hint: 'Botón blanco sobre la foto. Sin texto y sin página, la diapositiva va sin botón.' },
+      { key: 'enlaceUrl', label: 'A dónde lleva el botón (opcional)', type: 'select', options: [{ value: '', label: 'Sin enlace' }, ...PAGINAS_DEL_SITIO], hint: 'La página del sitio que abre el botón.' },
+      { key: 'orden', label: 'Posición en el carrusel', type: 'number', placeholder: '1', nextPosition: true, hint: 'El orden en que se van pasando las diapositivas.' },
     ],
   },
   {

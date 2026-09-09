@@ -2,6 +2,7 @@ import { PageHero } from '../components/PageHero'
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState'
 import { useApiData } from '../hooks/useApiData'
 import { api } from '../api/client'
+import { fotoDePrograma } from '../api/programas'
 
 /**
  * Programas y servicios del Parque.
@@ -11,19 +12,6 @@ import { api } from '../api/client'
  * como tarjetas con ícono, allá como filas con foto. Quedó una sola, con el
  * estilo de las filas, que es el que deja ver la foto de cada programa.
  */
-
-/**
- * Fotos de reserva para los programas que todavía no tienen la suya cargada
- * desde el panel. Se mantienen por nombre porque son las que el Parque nos pasó
- * al principio; en cuanto suban la suya, esta lista deja de usarse sola.
- */
-const fotosPorNombre: Record<string, string> = {
-  'Cibao Fútbol Club': '/images/galeria/cibao-futbol-club.jpg',
-  'Escuela de Tenis – Washington Heights Tennis Association': '/images/galeria/cancha-tenis.jpg',
-  Tirolesa: '/images/galeria/vista-aerea-parque.jpg',
-  'Fun Stop – Carritos Corredores': '/images/galeria/funstop.jpg',
-  'Alquiler de Bicicletas – Bicicentro': '/images/galeria/ciclistas.jpg',
-}
 
 export function ProgramasYServicios() {
   const { data, loading, error } = useApiData(api.getProgramas)
@@ -57,15 +45,7 @@ export function ProgramasYServicios() {
           {data?.map((programa, i) => (
             <div className={`service-row ${i % 2 === 1 ? 'reverse' : ''}`} key={programa.id}>
               <div className="service-row-img">
-                <img
-                  src={
-                    programa.fotoUrl ||
-                    fotosPorNombre[programa.nombre] ||
-                    '/images/galeria/entrada-parque.jpg'
-                  }
-                  alt={programa.nombre}
-                  loading="lazy"
-                />
+                <img src={fotoDePrograma(programa)} alt={programa.nombre} loading="lazy" />
               </div>
               <div className="service-row-text">
                 <span className="tag">{programa.categoria}</span>

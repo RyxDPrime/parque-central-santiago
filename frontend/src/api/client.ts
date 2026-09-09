@@ -141,6 +141,17 @@ export interface Cifra {
   orden: number;
 }
 
+/** Una diapositiva del carrusel grande de la portada. */
+export interface DestacadoInicio {
+  id: number;
+  titulo: string;
+  categoria: string;
+  imagenUrl: string | null;
+  enlaceTexto: string | null;
+  enlaceUrl: string | null;
+  orden: number;
+}
+
 export interface Texto {
   id: number;
   clave: string;
@@ -323,6 +334,7 @@ export const api = {
   getPasosReserva: () => get<PasoReserva[]>("/pasos-reserva"),
   getFormasApoyo: () => get<FormaApoyo[]>("/formas-apoyo"),
   getCifras: () => get<Cifra[]>("/cifras"),
+  getDestacadosInicio: () => get<DestacadoInicio[]>("/destacados-inicio"),
   getTextos: () => get<Texto[]>("/textos"),
   getEncabezados: () => get<EncabezadoPagina[]>("/encabezados"),
   getAliados: () => get<Aliado[]>("/aliados"),

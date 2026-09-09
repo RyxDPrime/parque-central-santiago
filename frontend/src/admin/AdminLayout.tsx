@@ -18,7 +18,7 @@ import { NOMBRE_ROL, permisoDeSeccion, type Rol } from './permisos'
 const divisiones = [
   {
     titulo: 'Página de inicio',
-    rutas: ['textos/inicio', 'textos/titulos-inicio', 'cifras', 'foto/inicio-quienes'],
+    rutas: ['textos/inicio', 'textos/titulos-inicio', 'cifras', 'destacados-inicio', 'foto/inicio-quienes'],
   },
   {
     titulo: 'Secciones del sitio',

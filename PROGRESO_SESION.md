@@ -155,7 +155,7 @@ El backend está separado por responsabilidad (configuración, middleware, rutas
 - **Plano oficial** del parque, para reemplazar el mapa referencial.
 
 ### Pendientes técnicos
-- **Cuenta de correo del parque.** Los mensajes ya llegan a `asistentepcs@gmail.com`, pero se envían desde una cuenta personal porque el proveedor exige que coincida con la cuenta autenticada. Hace falta acceso al correo del parque para generar una contraseña de aplicación.
+- **Cuenta de correo del parque.** Los mensajes ya llegan a `info@parquecentralsantiagord.com`, pero se siguen enviando desde una cuenta personal: el proveedor solo acepta remitentes de un dominio verificado con él. Falta verificar `parquecentralsantiagord.com` y, solo después, cambiar el remitente.
 - `robots.txt` y `sitemap.xml` para buscadores.
 - **Borrar dos archivos de prueba** que quedaron en el disco del backend al comprobar la vulnerabilidad de subidas: `1786194961303-prueba-extension.html` y `1786195600044-ataque.png`. Están neutralizados por la política de seguridad, pero conviene eliminarlos. Requiere acceso al contenedor (`railway ssh`, que necesita una clave SSH configurada en tu cuenta).
 

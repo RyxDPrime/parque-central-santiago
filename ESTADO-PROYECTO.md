@@ -30,7 +30,7 @@ enviado, decisiones que solo el Parque puede tomar, y dos trámites externos.
 | Reservas de espacios | Construido, **en preparación** hasta confirmar las listas |
 | Donaciones | Funcionando, a falta de las cuentas bancarias |
 | Usuarios y roles | Funcionando, con una sola cuenta creada |
-| Correo saliente | Funcionando, pero desde una cuenta personal |
+| Correo saliente | Funcionando. Ya llega al correo institucional; falta que salga desde él |
 | Pago con tarjeta | Bloqueado por la afiliación con la pasarela |
 
 ---
@@ -151,11 +151,19 @@ Además, 37 textos sueltos en 9 grupos.
 
 ### 5.2 Bloqueado por trámites
 
-**Correo desde una cuenta del Parque.** Ya existe la dirección institucional
-`info@parquecentralsantiagord.com`, pero el sitio **sigue enviando desde una cuenta personal**
-del equipo de desarrollo. Para cambiarlo hay que verificar el dominio con el proveedor de
-envío, añadiendo unos registros al DNS. Es un trámite con espera de propagación, así que
-conviene arrancarlo antes del lanzamiento y no el mismo día. Ver *"El correo del sitio"*.
+**Correo desde una cuenta del Parque.** Los mensajes del sitio **ya llegan** a
+`info@parquecentralsantiagord.com`: ese cambio está hecho y comprobado. Lo que falta es lo
+inverso — que los correos **salgan** desde esa dirección y no desde la cuenta personal del
+equipo de desarrollo.
+
+Para eso hay que verificar el dominio con el proveedor de envío, añadiendo unos registros al
+DNS. Es un trámite con espera de propagación, así que conviene arrancarlo antes del
+lanzamiento y no el mismo día.
+
+> **El remitente no se cambia antes de esa verificación.** El proveedor solo acepta enviar
+> desde dominios verificados con él: cambiarlo antes no empeora los correos, los rechaza
+> todos. Y el primero en notarlo es quien pidió una reserva y se queda esperando una
+> respuesta que el Parque cree haber enviado. Ver *"El correo del sitio"*.
 
 **Pago con tarjeta.** Requiere afiliación con AZUL o equivalente. La forma de pago se retiró de
 la lista mientras tanto; el día que exista la afiliación se vuelve a agregar desde el panel.
@@ -200,8 +208,9 @@ recibir parches de seguridad.
 ## 7. Riesgos que conviene tener presentes
 
 **Todo el modelo de reservas y donaciones se sostiene sobre el correo.** Quien solicita no sabe
-si tiene el espacio hasta que le llega la respuesta. El envío funciona y está verificado, pero
-sale desde una cuenta personal: moverlo a la del Parque es lo que le da respaldo institucional.
+si tiene el espacio hasta que le llega la respuesta. El envío funciona y está verificado, y lo
+que llega ya entra por el correo institucional; lo que sale todavía sale desde una cuenta
+personal, y moverlo a la del Parque es lo que le da respaldo institucional.
 
 **Las listas sembradas se aplican de verdad.** Los tipos de actividad, los motivos de rechazo y
 el umbral de identificación no son adorno: el sistema los usa para permitir o impedir cosas.
@@ -226,4 +235,4 @@ la entrega.
 | **El sitio web, sección por sección** | Qué contiene cada página y desde dónde se administra | Vigente |
 | **Guía del panel administrativo** | Cómo se usa el panel, pantalla por pantalla | Vigente |
 | **Cómo recibir donaciones en línea** | Pasarela de pago frente a transferencia: ventajas, costos y recomendación | Vigente |
-| **El correo del sitio** | Por qué el correo sale desde una cuenta personal y cómo corregirlo | Vigente |
+| **El correo del sitio** | Qué parte del correo ya es institucional, qué falta y en qué orden hacerlo | Vigente |

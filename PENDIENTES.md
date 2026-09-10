@@ -128,7 +128,7 @@ reglamento · 8 valores institucionales · 8 puntos del mapa · 19 aliados · 6 
 |---|---|
 | **El dominio sin «www» lleva a la página anterior** | Pendiente |
 | **El sitio pide a Google que no lo indexe** | Pendiente |
-| **Correo institucional** | En curso |
+| **Correo institucional** | Recibe ya · falta enviar |
 | **Respaldo automático de la base** | Manual hoy |
 
 **Dominio sin «www».** Escribir la dirección sin «www» sirve otro sitio, en otro servidor.
@@ -138,9 +138,12 @@ Hay que redirigirlo hacia la dirección buena.
 configurada, cada página pide no aparecer en buscadores. Funciona todo; simplemente no se
 encuentra.
 
-**Correo institucional.** Ya existe la dirección del Parque. Falta verificar el dominio con
-el proveedor de envío para que los correos salgan a su nombre y no se marquen como
-sospechosos. Es trámite de DNS y tarda en propagar.
+**Correo institucional.** Los mensajes del sitio **ya llegan** a
+`info@parquecentralsantiagord.com`, y esa es también la dirección que se muestra en la
+página. Falta la mitad inversa: que los correos **salgan** a nombre del Parque. Para eso hay
+que verificar el dominio con el proveedor de envío — trámite de DNS, tarda en propagar — y
+solo después cambiar el remitente. Cambiarlo antes hace que el proveedor rechace todos los
+envíos, incluidas las respuestas de reserva.
 
 **Respaldo automático.** El procedimiento existe y funciona, pero hay que acordarse de
 ejecutarlo. Todo el contenido de las secciones anteriores es trabajo manual de semanas.

@@ -1,9 +1,9 @@
 # El correo del sitio
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · Septiembre de 2026
+Ureña Limited Partners · 10 de septiembre de 2026
 
-Por qué los correos del sitio salen hoy desde una cuenta personal, qué hace falta para que salgan a nombre del Parque, y qué hay que pedirle a quién.
+Los mensajes del sitio ya llegan al correo institucional del Parque. Falta lo otro: que además *salgan* a su nombre. Este documento explica la diferencia, qué hace falta para cerrarla, y por qué el orden de los pasos importa.
 
 > **Sustituye al documento *"Clave de aplicación para el correo del sitio"*, de agosto.** Aquel pedía una clave de aplicación de Gmail para conectarse por SMTP. Ese camino ya no sirve, y conviene no seguirlo: el servidor donde vive el sitio tiene el SMTP bloqueado, y ninguna clave lo desbloquea.
 
@@ -43,7 +43,16 @@ Se perdieron varios intentos persiguiendo lo que parecía un problema de credenc
 
 ## 3. Dónde está el problema hoy
 
-El servicio de correo funciona, pero **está registrado a nombre de una cuenta personal del equipo de desarrollo**, y los correos salen desde esa dirección.
+Hay dos direcciones en juego y conviene no confundirlas, porque una ya está resuelta y la otra no.
+
+| | Dirección | Estado |
+|---|---|---|
+| **A dónde llegan** los mensajes del sitio | `info@parquecentralsantiagord.com` | **Resuelto** |
+| **Desde dónde salen** los correos del sitio | Una cuenta personal del equipo | **Pendiente** |
+
+El destino ya es institucional: lo que escriben los ciudadanos en contacto, sugerencias y aportes cae en la bandeja del Parque. Eso se cambió y quedó comprobado.
+
+Lo que sigue pendiente es el remitente. El servicio de correo **está registrado a nombre de una cuenta personal del equipo de desarrollo**, y los correos salen desde esa dirección.
 
 Para quien los recibe, un correo del Parque que llega desde una dirección personal de Gmail:
 
@@ -82,7 +91,8 @@ Para evitar que alguien repita el camino que ya no sirve:
 
 - **No hace falta una clave de aplicación de Gmail.** Era para SMTP, que está bloqueado.
 - **No hace falta cambiar de proveedor de correo** ni contratar nada nuevo.
-- **No hace falta tocar la cuenta `asistentepcs@gmail.com`** para que el sitio funcione. Esa dirección sigue siendo la que *recibe* los mensajes del formulario, y eso no cambia.
+- **No hace falta tocar la cuenta `asistentepcs@gmail.com`** para que el sitio funcione. Ya no recibe nada: hoy es solo la dirección desde la que salen los correos, hasta que se verifique el dominio.
+- **No hay que cambiar el remitente a mano antes de verificar el dominio.** Ver el aviso de la sección 6: hacerlo antes tumba todo el correo saliente.
 
 ---
 
@@ -91,7 +101,20 @@ Para evitar que alguien repita el camino que ya no sirve:
 | Cosa | Estado |
 |---|---|
 | El sitio manda correos | **Funcionando y verificado** |
+| Llegan al Parque | Sí, a `info@parquecentralsantiagord.com` |
 | Salen desde | Una cuenta personal del equipo de desarrollo |
-| Llegan al Parque | Sí, a `asistentepcs@gmail.com` |
 | Cuenta del servicio a nombre del Parque | **Pendiente** — falta que el Parque indique la dirección |
-| Correos desde el dominio del Parque | **Pendiente** — falta acceso a la configuración del dominio |
+| Correos desde el dominio del Parque | **Pendiente** — falta verificar el dominio |
+
+### El orden importa
+
+El servicio de correo solo acepta enviar desde direcciones cuyo dominio esté verificado con él. Cambiar el remitente antes de esa verificación no deja los correos "un poco peor": los **rechaza todos**.
+
+Y donde más se nota no es en el formulario de contacto, sino en las reservas: quien pide un espacio no sabe si lo tiene hasta que le llega la respuesta. Sin correo saliente, esa persona se queda esperando una respuesta que el Parque cree haber enviado.
+
+Por eso los pasos van en este orden, y no en otro:
+
+1. Añadir al dominio `parquecentralsantiagord.com` los registros que pide el servicio de correo.
+2. Comprobar en el servicio que el dominio aparece **verificado**.
+3. Recién entonces, cambiar el remitente a `info@parquecentralsantiagord.com`.
+4. Mandar un correo de prueba y confirmar que llega.

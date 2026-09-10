@@ -481,7 +481,7 @@ Nada de esto es desarrollo pendiente. Son decisiones y contenido que solo el Par
 - Si aprobar una reserva debe asignar automáticamente cuál kiosco toca, o seguir haciéndose a mano en el mensaje.
 
 > **De qué depende que todo esto funcione**
-> El modelo entero se sostiene sobre el correo: quien solicita no sabe si tiene el espacio hasta que le llega la respuesta. El envío está funcionando y verificado, pero sale desde una cuenta personal; moverlo a una cuenta del Parque es lo que le da respaldo institucional.
+> El modelo entero se sostiene sobre el correo: quien solicita no sabe si tiene el espacio hasta que le llega la respuesta. El envío está funcionando y verificado. Lo que llega ya entra por `info@parquecentralsantiagord.com`; lo que sale todavía sale desde una cuenta personal, y moverlo a una del Parque es lo que le da respaldo institucional.
 
 ---
 

@@ -1286,6 +1286,9 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .donacion-tabla td{padding:13px 14px;font-size:13.5px;color:var(--text-secondary);border-bottom:1px solid var(--border);vertical-align:top}
 .donacion-tabla tr:last-child td{border-bottom:none}
 .donacion-tabla td:first-child{font-weight:600;color:var(--text-primary)}
+/* La cuenta a la que llego alguien por un codigo QR. Verde suave y un filo a la
+   izquierda: se distingue del resto sin que parezca un error ni un aviso. */
+.donacion-tabla tr.es-destacada td{background:var(--green-50);box-shadow:inset 3px 0 0 var(--green-400)}
 /* El numero se copia a mano: tabular para que no baile al leerlo, y sin cortes
    de linea para que no se lea uno de dos renglones distintos. */
 .donacion-tabla td.es-cuenta{font-variant-numeric:tabular-nums;letter-spacing:.03em;font-size:14.5px;font-weight:600;color:var(--text-primary);white-space:nowrap}
@@ -1396,3 +1399,35 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .donacion-metodo-btn.no-disponible .donacion-metodo-nombre{color:var(--text-muted)}
 .donacion-metodo-nombre em{font-style:normal;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--accent-400,#A38579)}
 .donacion-metodo-nota{margin:11px 0 0;font-size:12px;line-height:1.55;color:var(--text-muted);max-width:none}
+
+/* ── Codigo QR de una fila del panel ─────────────────────────────────────── */
+.qr-caja{max-width:520px}
+/* El cartel: lo unico que se imprime. Centrado y con aire, porque es lo que se
+   va a pegar en una pared o poner sobre un mostrador. */
+.qr-cartel{padding:28px 26px 22px;text-align:center}
+.qr-titulo{margin:0 0 4px;font-size:20px;font-weight:700;color:var(--green-800)}
+.qr-instruccion{margin:0 0 18px;font-size:13px;color:var(--text-muted);max-width:none}
+.qr-codigo{width:240px;height:240px;margin:0 auto 20px;padding:10px;background:#fff;border:1px solid var(--border);border-radius:var(--radius)}
+.qr-codigo svg{display:block;width:100%;height:100%}
+.qr-cargando{background:var(--gray-100,#F5F5F2)}
+/* Los datos en dos columnas apretadas: etiqueta a la derecha, valor a la
+   izquierda, alineados por el centro para que se lean como una ficha. */
+.qr-datos{margin:0 auto 14px;display:grid;grid-template-columns:auto auto;gap:6px 14px;justify-content:center;text-align:left}
+.qr-datos div{display:contents}
+.qr-datos dt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);text-align:right;padding-top:2px}
+.qr-datos dd{margin:0;font-size:14px;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.qr-enlace{margin:0;font-size:11px;color:var(--text-muted);word-break:break-all;max-width:none}
+.qr-pie{display:flex;justify-content:flex-end;gap:10px;padding:14px 22px;border-top:1px solid var(--border);background:var(--gray-100,#F5F5F2)}
+
+/* Al imprimir, la pagina entera desaparece salvo el cartel: sin panel, sin
+   fondo oscuro, sin botones. Queda un QR con sus datos, centrado en la hoja. */
+@media print{
+  body.imprime-qr *{visibility:hidden}
+  body.imprime-qr .qr-cartel,body.imprime-qr .qr-cartel *{visibility:visible}
+  body.imprime-qr .modal-fondo{position:static;padding:0;background:none;backdrop-filter:none;overflow:visible}
+  body.imprime-qr .qr-caja{position:absolute;left:0;top:0;width:100%;max-width:none;box-shadow:none;border-radius:0}
+  body.imprime-qr .qr-cartel{padding:40px 0}
+  body.imprime-qr .qr-codigo{width:320px;height:320px;border:none}
+  body.imprime-qr .qr-titulo{font-size:26px}
+  body.imprime-qr .qr-datos dd{font-size:16px}
+}

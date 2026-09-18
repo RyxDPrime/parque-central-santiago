@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { deleteMessage, listMessages, type ContactMessage } from './adminClient'
+import { useConfirmar } from './Confirmar'
 
 const fechaFormatter = new Intl.DateTimeFormat('es-DO', {
   day: 'numeric',
@@ -10,6 +11,7 @@ const fechaFormatter = new Intl.DateTimeFormat('es-DO', {
 })
 
 export function MessagesInbox() {
+  const confirmar = useConfirmar()
   const [mensajes, setMensajes] = useState<ContactMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -28,7 +30,7 @@ export function MessagesInbox() {
   }, [])
 
   async function handleDelete(id: number) {
-    if (!window.confirm('¿Eliminar este mensaje?')) return
+    if (!(await confirmar({ titulo: '¿Eliminar este mensaje?', mensaje: 'No se puede deshacer.', confirmar: 'Eliminar', peligrosa: true }))) return
     try {
       await deleteMessage(id)
       setMensajes((prev) => prev.filter((m) => m.id !== id))

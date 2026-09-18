@@ -5,6 +5,7 @@ import {
   marcarSugerenciaLeida,
   type Sugerencia,
 } from './adminClient'
+import { useConfirmar } from './Confirmar'
 
 const fechaFormatter = new Intl.DateTimeFormat('es-DO', {
   day: 'numeric',
@@ -30,6 +31,7 @@ const TIPOS: Record<string, { etiqueta: string; icono: string }> = {
  * cada mensaje se puede marcar como leído.
  */
 export function SugerenciasInbox() {
+  const confirmar = useConfirmar()
   const [items, setItems] = useState<Sugerencia[]>([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -57,7 +59,7 @@ export function SugerenciasInbox() {
   }
 
   async function eliminar(id: number) {
-    if (!window.confirm('¿Eliminar este mensaje?')) return
+    if (!(await confirmar({ titulo: '¿Eliminar esta sugerencia?', mensaje: 'No se puede deshacer.', confirmar: 'Eliminar', peligrosa: true }))) return
     try {
       await deleteSugerencia(id)
       setItems((prev) => prev.filter((x) => x.id !== id))

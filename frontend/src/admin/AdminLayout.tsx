@@ -3,6 +3,7 @@ import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react
 import { clearToken, getSesion, isLoggedIn, refrescarSesion, type Sesion } from './adminClient'
 import { entityConfigs, fotoSecciones, textoSecciones } from './entityConfigs'
 import { NOMBRE_ROL, permisoDeSeccion, type Rol } from './permisos'
+import { ProveedorConfirmar } from './Confirmar'
 
 /**
  * Divisiones del menú lateral, en el orden en que se muestran.
@@ -302,7 +303,11 @@ export function AdminLayout() {
       </aside>
 
       <main className="admin-content">
-        <Outlet />
+        {/* Las pantallas piden su ventana de confirmacion a este proveedor;
+            el menu no la necesita, asi que basta con envolver el contenido. */}
+        <ProveedorConfirmar>
+          <Outlet />
+        </ProveedorConfirmar>
       </main>
     </div>
   )

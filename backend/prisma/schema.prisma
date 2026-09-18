@@ -2,9 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// La URL de conexion ya no va aqui: desde Prisma 7 se declara en
+// prisma.config.ts, junto con la ruta de las migraciones y la semilla.
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // Miembros de la Junta Directiva del Patronato (institución, representante, cargo)

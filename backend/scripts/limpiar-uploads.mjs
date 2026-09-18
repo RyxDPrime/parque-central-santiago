@@ -21,12 +21,12 @@
 // borrar archivos que sí se usaban.
 //
 // Las cuentas viven en scripts/lib/uploads.mjs, que es lo que cubren los tests.
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { nombresReferenciados, soloArchivos, sobrantes } from './lib/uploads.mjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 const borrar = process.argv.includes('--borrar')
 const carpeta = path.resolve(process.cwd(), process.env.UPLOADS_DIR ?? 'uploads')
 

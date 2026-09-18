@@ -8,9 +8,9 @@
 // No pisa lo que ya exista: si la tabla tiene filas, no hace nada.
 //
 //   node scripts/sembrar-reservas.mjs
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 const ESPACIOS = [
   { nombre: 'Kiosco pequeño', descripcion: 'Kiosco techado con mesa, para grupos familiares. Hay 24 en el parque.', cantidad: 24, capacidad: 15, requierePago: true },

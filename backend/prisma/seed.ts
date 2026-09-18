@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { conectar } from "../scripts/lib/prisma.mjs";
 
-const prisma = new PrismaClient();
+const prisma = conectar();
 
 // Fuente: levantamiento-informacion-parque-central.docx, listados de miembros pcs.docx,
 // Puntos del mapa. Las coordenadas son PROVISIONALES: quedan repartidas sobre

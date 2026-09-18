@@ -1,9 +1,9 @@
 // Contenido que antes estaba escrito dentro de las páginas y ahora vive en la
 // base de datos. Se ejecuta con `npm run seed:contenido` y solo inserta lo que
 // falta, así no pisa lo que el Parque ya haya editado desde el panel.
-import { PrismaClient } from "@prisma/client";
+import { conectar } from "../scripts/lib/prisma.mjs";
 
-const prisma = new PrismaClient();
+const prisma = conectar();
 
 const hitos = [
   {

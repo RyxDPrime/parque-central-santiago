@@ -7,11 +7,11 @@
 //
 // Se niega a escribir sobre tablas que ya tienen datos, para que no se pueda
 // duplicar el contenido de una base en uso por error.
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 const carpeta = process.argv[2]
 if (!carpeta) {

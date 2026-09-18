@@ -8,11 +8,11 @@
 //   node scripts/respaldo.mjs [carpeta]
 //
 // Necesita DATABASE_URL apuntando a la base que se quiere respaldar.
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 // Todos los modelos con contenido. El orden importa al restaurar solo si
 // hubiera relaciones entre tablas; hoy no las hay, cada una es independiente.

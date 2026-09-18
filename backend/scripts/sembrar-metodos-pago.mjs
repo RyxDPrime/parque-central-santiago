@@ -8,9 +8,9 @@
 // No pisa lo que ya exista.
 //
 //   node scripts/sembrar-metodos-pago.mjs
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 const METODOS = [
   {

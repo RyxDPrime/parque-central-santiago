@@ -7,9 +7,9 @@
 // No pisa lo que ya exista: solo crea las que falten.
 //
 //   node scripts/sembrar-plantillas.mjs
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 const PLANTILLAS = [
   {

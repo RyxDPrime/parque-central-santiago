@@ -8,10 +8,10 @@
 // usaba el panel entra igual que siempre. Si el usuario ya existe, no lo toca.
 //
 //   node scripts/crear-admin.mjs
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 const usuario = (process.env.ADMIN_USERNAME ?? '').trim().toLowerCase()
 const hash = process.env.ADMIN_PASSWORD_HASH ?? ''

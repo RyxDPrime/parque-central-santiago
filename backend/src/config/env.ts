@@ -27,6 +27,10 @@ function normalizarOrigen(valor: string | undefined): string | null {
 
 export const env = {
   port: Number(process.env.PORT ?? 4000),
+  // La conexion a la base. Antes la leia Prisma por su cuenta desde el esquema;
+  // desde la version 7 se le pasa al cliente al crearlo, en db.ts. Obligatoria:
+  // sin base no hay nada que servir.
+  databaseUrl: required("DATABASE_URL"),
   nodeEnv: process.env.NODE_ENV ?? "development",
   corsOrigin: normalizarOrigen(process.env.CORS_ORIGIN),
   // Correo saliente. Se envia por HTTPS y no por SMTP: el servidor donde vive

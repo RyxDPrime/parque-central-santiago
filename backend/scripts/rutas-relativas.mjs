@@ -9,9 +9,9 @@
 //
 //   node scripts/rutas-relativas.mjs           (muestra qué cambiaría)
 //   node scripts/rutas-relativas.mjs --aplicar (lo hace)
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 const aplicar = process.argv.includes('--aplicar')
 
 const CAMPOS = [

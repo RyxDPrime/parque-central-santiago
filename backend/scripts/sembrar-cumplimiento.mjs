@@ -9,9 +9,9 @@
 // No pisa lo que ya exista.
 //
 //   node scripts/sembrar-cumplimiento.mjs
-import { PrismaClient } from '@prisma/client'
+import { conectar } from './lib/prisma.mjs'
 
-const prisma = new PrismaClient()
+const prisma = conectar()
 
 const MOTIVOS = [
   { nombre: 'No se pudo verificar el origen de los fondos', nota: 'Se pidió aclaración y no llegó, o lo aportado no basta' },

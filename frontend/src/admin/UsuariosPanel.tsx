@@ -8,6 +8,7 @@ import {
   type UsuarioPanel as Usuario,
 } from './adminClient'
 import { DESCRIPCION_ROL, NOMBRE_ROL, ROLES, type Rol } from './permisos'
+import { useConfirmar } from './Confirmar'
 
 const fecha = new Intl.DateTimeFormat('es-DO', {
   day: 'numeric',
@@ -24,6 +25,7 @@ const fecha = new Intl.DateTimeFormat('es-DO', {
  * igual en cada petición: esconder el enlace no basta.
  */
 export function UsuariosPanel() {
+  const confirmar = useConfirmar()
   const yo = getSesion()
   const [usuarios, setUsuarios] = useState<Usuario[]>([])
   const [cargando, setCargando] = useState(true)
@@ -89,7 +91,17 @@ export function UsuariosPanel() {
 
   async function alternarActivo(u: Usuario) {
     const accion = u.activo ? 'dar de baja' : 'reactivar'
-    if (!window.confirm(`¿Seguro que quieres ${accion} a ${u.nombre}?`)) return
+    if (
+      !(await confirmar({
+        titulo: `¿${accion.charAt(0).toUpperCase() + accion.slice(1)} a ${u.nombre}?`,
+        mensaje: u.activo
+          ? 'Deja de poder entrar al panel de inmediato. Se puede reactivar después.'
+          : 'Vuelve a poder entrar al panel con su contraseña de siempre.',
+        confirmar: u.activo ? 'Dar de baja' : 'Reactivar',
+        peligrosa: u.activo,
+      }))
+    )
+      return
     try {
       const actualizado = await actualizarUsuario(u.id, { activo: !u.activo })
       setUsuarios((prev) => prev.map((x) => (x.id === u.id ? actualizado : x)))
@@ -100,7 +112,15 @@ export function UsuariosPanel() {
   }
 
   async function borrar(u: Usuario) {
-    if (!window.confirm(`¿Eliminar la cuenta de ${u.nombre}? Esto no se puede deshacer.`)) return
+    if (
+      !(await confirmar({
+        titulo: `¿Eliminar la cuenta de ${u.nombre}?`,
+        mensaje: 'Esto no se puede deshacer. Si solo quieres que no entre, dale de baja.',
+        confirmar: 'Eliminar',
+        peligrosa: true,
+      }))
+    )
+      return
     try {
       await eliminarUsuario(u.id)
       setUsuarios((prev) => prev.filter((x) => x.id !== u.id))

@@ -6,6 +6,7 @@ import {
   listSolicitudes,
   type SolicitudReserva,
 } from './adminClient'
+import { useConfirmar } from './Confirmar'
 
 const fechaHora = new Intl.DateTimeFormat('es-DO', {
   day: 'numeric',
@@ -61,6 +62,7 @@ function resumen(s: SolicitudReserva): string {
  * Parque tenga guardada en Plantillas de respuesta.
  */
 export function SolicitudesInbox() {
+  const confirmar = useConfirmar()
   const [items, setItems] = useState<SolicitudReserva[]>([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -134,7 +136,7 @@ export function SolicitudesInbox() {
       // El espacio ya está apartado a esa hora. No se decide por la persona:
       // se le enseña con quién choca y ella dice si aun así procede.
       if (e instanceof ChoqueDeReserva) {
-        if (window.confirm(`${e.message}\n\n¿Aprobarla de todos modos?`)) {
+        if (await confirmar({ titulo: 'El espacio ya está apartado a esa hora', mensaje: e.message, confirmar: 'Aprobar de todos modos' })) {
           setDecidiendo(false)
           await decidir(s, estado, true)
           return
@@ -149,7 +151,7 @@ export function SolicitudesInbox() {
   }
 
   async function borrar(id: number) {
-    if (!window.confirm('¿Eliminar esta solicitud? No se puede deshacer.')) return
+    if (!(await confirmar({ titulo: '¿Eliminar esta solicitud?', mensaje: 'No se puede deshacer.', confirmar: 'Eliminar', peligrosa: true }))) return
     try {
       await eliminarSolicitud(id)
       setItems((prev) => prev.filter((x) => x.id !== id))

@@ -129,14 +129,14 @@ export function QrModal({ config, row, onClose }: Props) {
           <p className="qr-enlace">{enlace}</p>
         </div>
 
-        <footer className="qr-pie qr-no-imprimir">
+        <div className="qr-pie qr-no-imprimir">
           <button type="button" className="btn-outline" onClick={() => window.print()}>
             <i className="ti ti-printer" /> Imprimir
           </button>
           <button type="button" className="btn-primary" onClick={descargar} disabled={!svg}>
             <i className="ti ti-download" /> Descargar PNG
           </button>
-        </footer>
+        </div>
       </div>
     </div>
   )

@@ -164,6 +164,11 @@ ul{list-style:none}
 .btn-primary:disabled:hover{background:var(--green-600)}
 .btn-outline{background:transparent;color:var(--green-600);border:1.5px solid var(--green-600);padding:9px 18px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;transition:background .2s}
 .btn-outline:hover{background:var(--green-50)}
+/* Accion que no se deshace: borrar, dar de baja. Rojo solo aqui, para que
+   el color siga significando algo. */
+.btn-peligro{background:#A33B2A;color:#fff;border:none;padding:9px 18px;border-radius:var(--radius);font-size:13px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;transition:background .2s}
+.btn-peligro:hover{background:#7F2D20}
+.btn-peligro:focus-visible,.btn-primary:focus-visible,.btn-outline:focus-visible{outline:2px solid var(--green-400);outline-offset:2px}
 .btn-outline-white{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.65);padding:10px 20px;border-radius:var(--radius);font-size:13.5px;font-family:var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .2s}
 .btn-outline-white:hover{background:rgba(255,255,255,.1)}
 
@@ -1431,3 +1436,15 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   body.imprime-qr .qr-titulo{font-size:26px}
   body.imprime-qr .qr-datos dd{font-size:16px}
 }
+
+/* ── Ventana de confirmacion del panel ───────────────────────────────────── */
+/* Centrada en vertical, a diferencia de las ventanas de detalle: es corta y
+   se lee de un vistazo, no hace falta arrancar desde arriba. */
+.confirmar-fondo{align-items:center;z-index:300}
+.confirmar-caja{max-width:440px}
+.confirmar-cuerpo{padding:28px 26px 8px;text-align:center}
+.confirmar-icono{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--green-50);color:var(--green-600);font-size:24px;margin-bottom:14px}
+.confirmar-icono.es-peligro{background:#FBEAE3;color:#A33B2A}
+.confirmar-cuerpo h2{margin:0 0 8px;font-size:17px;font-weight:600;color:var(--text-primary);line-height:1.35}
+.confirmar-mensaje{margin:0;font-size:13.5px;line-height:1.55;color:var(--text-secondary);white-space:pre-line;max-width:none}
+.confirmar-pie{display:flex;justify-content:center;gap:10px;padding:18px 26px 24px}

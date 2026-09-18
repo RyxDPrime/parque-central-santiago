@@ -7,6 +7,7 @@ import {
   type Aporte,
   type MotivoRechazo,
 } from './adminClient'
+import { useConfirmar } from './Confirmar'
 
 const fechaHora = new Intl.DateTimeFormat('es-DO', {
   day: 'numeric',
@@ -65,6 +66,7 @@ function resumen(a: Aporte): string {
  * el texto que el equipo redacta aparte.
  */
 export function AportesInbox() {
+  const confirmar = useConfirmar()
   const [items, setItems] = useState<Aporte[]>([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -154,7 +156,7 @@ export function AportesInbox() {
   }
 
   async function borrar(id: number) {
-    if (!window.confirm('¿Eliminar este mensaje? No se puede deshacer.')) return
+    if (!(await confirmar({ titulo: '¿Eliminar este aporte?', mensaje: 'No se puede deshacer.', confirmar: 'Eliminar', peligrosa: true }))) return
     try {
       await eliminarAporte(id)
       setItems((prev) => prev.filter((x) => x.id !== id))

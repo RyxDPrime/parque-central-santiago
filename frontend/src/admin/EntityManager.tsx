@@ -12,6 +12,7 @@ import { entityConfigs, type FieldConfig } from './entityConfigs'
 import { TextosEditor } from './TextosEditor'
 import { FileDropzone } from './FileDropzone'
 import { QrModal } from './QrModal'
+import { useConfirmar } from './Confirmar'
 
 type Row = Record<string, unknown> & { id: number }
 
@@ -53,6 +54,7 @@ function textoDe(valor: unknown): string {
 export function EntityManager() {
   const { entity } = useParams<{ entity: string }>()
   const config = entityConfigs.find((e) => e.path === entity)
+  const confirmar = useConfirmar()
 
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
@@ -159,11 +161,14 @@ export function EntityManager() {
         if (elegido && elegido !== String(editing[mover.key] ?? '')) {
           const destino = rows.find((r) => String(r[mover.key]) === elegido)
           const nombre = String(destino?.[mover.etiquetaDesde ?? mover.key] ?? elegido)
-          const seguir = window.confirm(
-            `«${nombre}» ya tiene su propia foto.\n\n` +
-              `Se intercambian: esta foto pasa a «${nombre}» y la de «${nombre}» viene aquí. ` +
-              `Lo demás de este formulario no se guarda.\n\n¿Continuar?`,
-          )
+          const seguir = await confirmar({
+            titulo: `«${nombre}» ya tiene su propia foto`,
+            mensaje:
+              `Se intercambian: esta foto pasa a «${nombre}» y la de «${nombre}» viene aquí.
+` +
+              'Lo demás de este formulario no se guarda.',
+            confirmar: 'Intercambiar',
+          })
           if (!seguir) return
           await moverFila(config.path, editing.id, elegido)
           setEditing(null)
@@ -210,7 +215,7 @@ export function EntityManager() {
 
   async function handleDelete(id: number) {
     if (!config) return
-    if (!window.confirm('¿Eliminar este registro?')) return
+    if (!(await confirmar({ titulo: '¿Eliminar este registro?', mensaje: 'No se puede deshacer.', confirmar: 'Eliminar', peligrosa: true }))) return
     try {
       await deleteEntity(config.path, id)
       // Igual que al guardar: borrar cierra el hueco y renumera el resto.

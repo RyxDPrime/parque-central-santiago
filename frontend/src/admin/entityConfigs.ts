@@ -83,6 +83,26 @@ export interface EntityConfig {
    * aquí en vez de en una lista aparte: se administran donde se usan.
    */
   textosGrupo?: string
+  /**
+   * Un código QR por fila, para imprimir. El QR lleva a una página del sitio y
+   * no contiene los datos en sí: así un número que se corrija en el panel no
+   * deja inservibles los carteles ya impresos. Los datos van escritos debajo
+   * del código, para quien prefiera leerlos.
+   */
+  qr?: QrConfig
+}
+
+export interface QrConfig {
+  /** Nombre del botón y título de la ventana. */
+  etiqueta: string
+  /** Ruta del sitio a la que lleva el código, relativa al dominio. */
+  ruta: (row: Record<string, unknown>) => string
+  /** Título que se imprime sobre los datos. */
+  titulo: (row: Record<string, unknown>) => string
+  /** Los datos que se imprimen debajo del código, en orden. */
+  detalle: (row: Record<string, unknown>) => { etiqueta: string; valor: string }[]
+  /** Explicación corta para quien lo va a usar. */
+  ayuda: string
 }
 
 /**
@@ -399,6 +419,20 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'activa', label: 'Se muestra en el sitio', type: 'checkbox', hint: 'Desmarcada, deja de aparecer en la página de Donaciones sin tener que borrarla.' },
       { key: 'orden', label: 'Posición en la tabla', type: 'number', placeholder: '1', nextPosition: true },
     ],
+    qr: {
+      etiqueta: 'Código QR para donar',
+      ruta: (c) => `/donaciones?cuenta=${c.id}`,
+      titulo: (c) => `Dona al Parque · ${c.banco}`,
+      detalle: (c) => [
+        { etiqueta: 'Banco', valor: String(c.banco ?? '') },
+        { etiqueta: 'Tipo', valor: String(c.tipoCuenta ?? '') },
+        { etiqueta: 'Número', valor: String(c.numero ?? '') },
+        { etiqueta: 'A nombre de', valor: String(c.titular ?? '') },
+        ...(c.rnc ? [{ etiqueta: 'RNC', valor: String(c.rnc) }] : []),
+        { etiqueta: 'Moneda', valor: c.moneda === 'USD' ? 'Dólares (US$)' : 'Pesos dominicanos (RD$)' },
+      ],
+      ayuda: 'Al escanearlo, el teléfono abre la página de Donaciones del sitio con esta cuenta resaltada. El QR no lleva el número dentro: si un día corriges la cuenta aquí, los carteles ya impresos siguen sirviendo.',
+    },
   },
   {
     path: 'metodos-pago',

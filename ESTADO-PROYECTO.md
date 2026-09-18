@@ -1,14 +1,15 @@
 # Estado del proyecto
 
 **Parque Central de Santiago** · Documento para el equipo administrativo
-Ureña Limited Partners · 8 de septiembre de 2026
+Ureña Limited Partners · 12 de septiembre de 2026
 
 Qué está construido y en línea, qué falta para cerrar la fase actual, y de quién depende cada
 cosa pendiente.
 
-> Sustituye a la versión del 3 de septiembre. Desde entonces se conectó el dominio del Parque,
-> se ocultaron secciones a la espera de decisiones, y el sitio pasó a desplegarse solo con cada
-> cambio aprobado.
+> Sustituye a la versión del 8 de septiembre. Desde entonces el sitio quedó sirviendo en el
+> dominio del Parque, el correo pasó a una cuenta a nombre del Parque, el carrusel de la
+> portada tiene su propia pantalla en el panel, y cada cuenta bancaria puede imprimir un código
+> QR para donar.
 
 ---
 
@@ -25,12 +26,12 @@ enviado, decisiones que solo el Parque puede tomar, y dos trámites externos.
 | Frente | Estado |
 |---|---|
 | Secciones de la propuesta original | Las 10, construidas |
-| Entregado además de lo pedido | 6 páginas y un panel de 22 pantallas |
-| Dominio propio | Conectado, **apagado a la espera de la revisión** |
+| Entregado además de lo pedido | 6 páginas y un panel de 34 pantallas |
+| Dominio propio | Conectado y sirviendo el sitio. Los buscadores aún no lo indexan |
 | Reservas de espacios | Construido, **en preparación** hasta confirmar las listas |
 | Donaciones | Funcionando, a falta de las cuentas bancarias |
 | Usuarios y roles | Funcionando, con una sola cuenta creada |
-| Correo saliente | Funcionando. Ya llega al correo institucional; falta que salga desde él |
+| Correo saliente | **Detenido** hasta que propague el DNS (48 h como máximo). La cuenta ya es del Parque |
 | Pago con tarjeta | Bloqueado por la afiliación con la pasarela |
 
 ---
@@ -86,8 +87,8 @@ sección"*.
 
 ### 3.2 El panel administrativo
 
-Veintidós secciones con tabla, repartidas en siete grupos, más los textos sueltos y las fotos
-de encabezado. El equipo del Parque cambia desde ahí prácticamente todo lo que se ve, sin tocar
+Veintitrés secciones con tabla, repartidas en siete grupos, más los textos sueltos, las fotos
+de encabezado y las bandejas: treinta y cuatro pantallas en total. El equipo del Parque cambia desde ahí prácticamente todo lo que se ve, sin tocar
 código ni depender de nosotros. Cómo se usa está en la *Guía del panel administrativo*.
 
 ### 3.3 Lo que el Parque recibe
@@ -151,19 +152,33 @@ Además, 37 textos sueltos en 9 grupos.
 
 ### 5.2 Bloqueado por trámites
 
-**Correo desde una cuenta del Parque.** Los mensajes del sitio **ya llegan** a
-`info@parquecentralsantiagord.com`: ese cambio está hecho y comprobado. Lo que falta es lo
-inverso — que los correos **salgan** desde esa dirección y no desde la cuenta personal del
-equipo de desarrollo.
+**Correo saliente.** El 10 de septiembre se descubrió, en los registros del proveedor de
+envío, que **ningún correo del sitio estaba saliendo**: el remitente personal con el que se
+había abierto la cuenta ya no figuraba como válido, y el proveedor rechazaba todos los envíos
+— avisos de contacto, sugerencias, aportes y las respuestas a quien pide una reserva. Los
+mensajes se guardaron igual en la base y se leen desde el panel; lo que no llegó fue el aviso.
 
-Para eso hay que verificar el dominio con el proveedor de envío, añadiendo unos registros al
-DNS. Es un trámite con espera de propagación, así que conviene arrancarlo antes del
-lanzamiento y no el mismo día.
+En vez de parchar la cuenta personal, **se abrió una cuenta nueva a nombre del Parque**, con
+`info@parquecentralsantiagord.com`, el 11 de septiembre. Ya está hecho:
 
-> **El remitente no se cambia antes de esa verificación.** El proveedor solo acepta enviar
-> desde dominios verificados con él: cambiarlo antes no empeora los correos, los rechaza
-> todos. Y el primero en notarlo es quien pidió una reserva y se queda esperando una
-> respuesta que el Parque cree haber enviado. Ver *"El correo del sitio"*.
+- La cuenta existe y la clave nueva está puesta en el servidor.
+- El remitente configurado ya es `info@parquecentralsantiagord.com`.
+- Los mensajes llegan a esa misma dirección.
+
+Lo único que falta es que **el dominio quede autenticado** en el proveedor. Eso exige añadir
+unos registros en el DNS del dominio, que administra otra persona del equipo; el enlace para
+hacerlo ya se le envió. El proveedor avisa que puede tardar hasta 48 horas en propagar. **En el
+momento en que marque el dominio como autenticado, el correo arranca solo**, sin tocar nada
+más en el servidor.
+
+Quedan después dos cierres: mandar un mensaje de prueba y verlo llegar, y borrar la clave de
+la cuenta personal para que no quede un acceso suelto. Los pasos completos están en el
+documento *"La cuenta de correo del sitio"*, que se guarda fuera del repositorio.
+
+> **Por qué una cuenta nueva y no un arreglo.** La cuenta personal funcionaba, pero dejaba al
+> Parque dependiendo de un acceso que no controla: si esa persona deja el proyecto, el sitio se
+> queda sin correo y nadie puede recuperarlo. Con la cuenta a nombre de `info@`, el acceso es
+> del Parque y sobrevive al equipo actual.
 
 **Pago con tarjeta.** Requiere afiliación con AZUL o equivalente. La forma de pago se retiró de
 la lista mientras tanto; el día que exista la afiliación se vuelve a agregar desde el panel.
@@ -203,6 +218,21 @@ distinguían del fondo.
 **El servidor se actualizó a una versión con soporte.** La anterior llevaba más de un año sin
 recibir parches de seguridad.
 
+**El carrusel de la portada tiene su propia pantalla.** Antes salía de la lista de programas,
+así que agregar un programa lo metía en la portada sin que nadie lo decidiera. Ahora es una
+selección aparte, en *Página de inicio → Carrusel del Inicio*, y el rótulo de ese bloque —que
+decía «En desarrollo»— pasó a «Lo que ofrecemos», editable desde el panel.
+
+**Cada cuenta bancaria puede imprimir un código QR para donar.** Desde *Donaciones → Cuentas
+bancarias*, con un botón por fila: abre un cartel con el código y los datos, para imprimir o
+descargar. Al escanearlo, el teléfono abre la página de Donaciones con esa cuenta resaltada.
+El código lleva a la página y no contiene el número, a propósito: un cartel impreso no se puede
+corregir, y si un día cambia la cuenta, los carteles siguen sirviendo.
+
+**Se unificaron Programas e Instalaciones.** La misma información vivía en tres sitios —la
+página de Instalaciones, la de Programas y el carrusel— y se corregía en uno solo. Ahora cada
+dato tiene un único lugar.
+
 ---
 
 ## 7. Riesgos que conviene tener presentes
@@ -235,4 +265,6 @@ la entrega.
 | **El sitio web, sección por sección** | Qué contiene cada página y desde dónde se administra | Vigente |
 | **Guía del panel administrativo** | Cómo se usa el panel, pantalla por pantalla | Vigente |
 | **Cómo recibir donaciones en línea** | Pasarela de pago frente a transferencia: ventajas, costos y recomendación | Vigente |
-| **El correo del sitio** | Qué parte del correo ya es institucional, qué falta y en qué orden hacerlo | Vigente |
+| **El correo del sitio** | Qué correos manda el sitio, por qué no se usa SMTP y qué parte ya es institucional | Vigente |
+| **La cuenta de correo del sitio** | Cómo abrir la cuenta del proveedor a nombre del Parque y sacar la clave. Se guarda fuera del repositorio | Vigente |
+| **Informe de entrega y acta de aceptación** | Funcionalidad por funcionalidad, para comprobar y firmar. Se guarda fuera del repositorio | Borrador |

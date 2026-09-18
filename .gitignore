@@ -9,3 +9,7 @@ respaldos/
 # El acta de entrega. Es un documento contractual entre el Parque y ULP, no
 # codigo, y el repositorio es publico: se guarda y se firma fuera de aqui.
 ACTA-DE-ENTREGA.md
+
+# Los pasos para abrir la cuenta de Brevo. Se guarda fuera mientras el Parque
+# decide con que cuenta la abre; se sube el dia que este cerrado.
+CUENTA-DE-BREVO.md

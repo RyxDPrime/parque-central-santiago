@@ -24,7 +24,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -42,7 +42,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.2.0",
     "@types/node": "^20.16.10",
-    "prisma": "^5.20.0",
+    "prisma": "^6.19.3",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2"
   }

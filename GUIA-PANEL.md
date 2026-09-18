@@ -247,6 +247,24 @@ Las cuentas donde el Parque puede recibir transferencias. Pueden ser varias: una
 
 **Hoy no hay ninguna cargada.** Es el pendiente más urgente del proyecto, y se resuelve en cinco minutos.
 
+#### El código QR para donar
+
+Cada cuenta tiene, en su fila, un botón con el icono de código QR. Al pulsarlo se abre un cartel
+con el código, el nombre del banco y los datos de la cuenta, listo para **imprimir** o para
+**descargar como imagen** y ponerlo en un afiche, un brochure o una pantalla.
+
+Cuando alguien lo escanea con la cámara del teléfono, se abre la página de Donaciones del sitio
+**con esa cuenta resaltada**, para que no tenga que buscarla.
+
+> **El código no lleva el número de cuenta dentro**
+> Lleva un enlace a la página. Se hizo así a propósito: un QR impreso no se puede corregir. Si
+> llevara el número y un día la cuenta cambia, todos los carteles seguirían mandando dinero a la
+> cuenta vieja. Como apunta a la página, lo que se corrija aquí se ve al escanear — y los
+> carteles ya impresos siguen sirviendo.
+
+Los datos se imprimen igualmente debajo del código, para quien prefiera leerlos y transferir a
+mano.
+
 ### 8.3 Formas de aportar
 
 Cómo puede hacerse efectivo un aporte. Hoy hay tres: transferencia, efectivo en la administración y cheque.

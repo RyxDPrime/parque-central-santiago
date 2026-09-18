@@ -11,6 +11,7 @@ import {
 import { entityConfigs, type FieldConfig } from './entityConfigs'
 import { TextosEditor } from './TextosEditor'
 import { FileDropzone } from './FileDropzone'
+import { QrModal } from './QrModal'
 
 type Row = Record<string, unknown> & { id: number }
 
@@ -58,6 +59,8 @@ export function EntityManager() {
   const [error, setError] = useState<string | null>(null)
   const [editing, setEditing] = useState<Row | null>(null)
   const [saving, setSaving] = useState(false)
+  // Fila cuyo código QR está abierto en pantalla, si la sección los ofrece.
+  const [qrDe, setQrDe] = useState<Row | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
   // Cambiarlo remonta el formulario, que es lo único que limpia de verdad los
   // campos de archivo (reset() no borra la vista previa ni el nombre elegido).
@@ -533,6 +536,11 @@ export function EntityManager() {
                       </td>
                     ))}
                     <td className="admin-table-actions">
+                      {config.qr && (
+                        <button type="button" title={config.qr.etiqueta} onClick={() => setQrDe(row)}>
+                          <i className="ti ti-qrcode" />
+                        </button>
+                      )}
                       <button type="button" title="Editar" onClick={() => setEditing(row)}>
                         <i className="ti ti-edit" />
                       </button>
@@ -554,6 +562,8 @@ export function EntityManager() {
           </div>
         )}
       </section>
+
+      {config.qr && qrDe && <QrModal config={config.qr} row={qrDe} onClose={() => setQrDe(null)} />}
     </div>
   )
 }

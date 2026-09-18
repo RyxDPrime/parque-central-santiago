@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { PageHero } from '../components/PageHero'
 import { useApiData } from '../hooks/useApiData'
@@ -78,6 +78,15 @@ export function Donaciones() {
   const esDinero = tipo === 'dinero'
 
   const hayCuentas = cuentas !== null && cuentas.length > 0
+
+  // Los códigos QR impresos llegan aquí con "?cuenta=ID": la cuenta se resalta
+  // y la página baja hasta ella, para que quien escaneó no tenga que buscarla.
+  // Si el ID ya no existe —la cuenta se borró—, se ve la tabla completa y ya.
+  const cuentaPedida = Number(parametros.get('cuenta')) || null
+  useEffect(() => {
+    if (!cuentaPedida || !hayCuentas) return
+    document.getElementById(`cuenta-${cuentaPedida}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [cuentaPedida, hayCuentas])
 
   /**
    * A partir de qué monto hay que declarar de dónde salen los fondos. Lo fija
@@ -453,7 +462,7 @@ export function Donaciones() {
                   </thead>
                   <tbody>
                     {cuentas!.map((c) => (
-                      <tr key={c.id}>
+                      <tr key={c.id} id={`cuenta-${c.id}`} className={c.id === cuentaPedida ? 'es-destacada' : undefined}>
                         <td>
                           {c.banco}
                           {c.moneda === 'USD' && <span className="donacion-moneda">US$</span>}

@@ -81,6 +81,10 @@ interface SolicitudMailInput {
   personas: number;
   requerimientos: string;
   descripcion: string;
+  montajeFecha?: string;
+  montajeHora?: string;
+  desmontajeFecha?: string;
+  desmontajeHora?: string;
 }
 
 /** "2026-09-14" -> "lunes 14 de septiembre de 2026". */
@@ -103,6 +107,14 @@ function resumen(s: SolicitudMailInput): string[] {
     `Horario: ${s.horaInicio} a ${s.horaFin}`,
     `Personas: ${s.personas}`,
     s.requerimientos ? `Requiere: ${s.requerimientos}` : null,
+    // Montaje y desmontaje solo aparecen cuando los hay: en un cumpleanos en
+    // un kiosco, dos lineas vacias son ruido en un correo que se lee de prisa.
+    s.montajeFecha
+      ? `Montaje: ${fechaLarga(s.montajeFecha)}${s.montajeHora ? ` a las ${s.montajeHora}` : ""}`
+      : null,
+    s.desmontajeFecha
+      ? `Desmontaje: ${fechaLarga(s.desmontajeFecha)}${s.desmontajeHora ? ` a las ${s.desmontajeHora}` : ""}`
+      : null,
   ].filter((linea): linea is string => linea !== null);
 }
 

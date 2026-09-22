@@ -24,6 +24,7 @@ export const PAGINAS_DEL_SITIO: { value: string; label: string }[] = [
   { value: '/mapa', label: 'Mapa del parque' },
   { value: '/actividades', label: 'Actividades' },
   { value: '/reserva', label: 'Reserva de espacios' },
+  { value: '/condiciones-de-uso', label: 'Condiciones de uso' },
   { value: '/donaciones', label: 'Donaciones' },
   { value: '/apoyanos', label: 'Apóyanos' },
   { value: '/transparencia', label: 'Transparencia' },
@@ -459,6 +460,30 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'nota', label: 'Aclaración', type: 'text', placeholder: 'Cuándo usar este motivo', hint: 'Opcional. Ayuda a que todo el equipo lo use igual.' },
       { key: 'activo', label: 'Se puede elegir', type: 'checkbox', hint: 'Desmarcado, deja de ofrecerse sin perder los rechazos que ya lo usaron.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
+    ],
+  },
+  {
+    path: 'reglas-uso',
+    icon: 'ti-list-check',
+    description: 'Las condiciones de uso de los espacios, tal como las publica el Parque. Se ven en dos sitios: las generales en la página de Condiciones de uso, y las de un trámite o un espacio dentro del formulario de Reserva, solo cuando alguien elige eso. Cambiar una aquí la cambia en los dos.',
+    label: 'Condiciones de uso',
+    titleField: 'texto',
+    fields: [
+      { key: 'texto', label: 'La regla', type: 'textarea', required: true, placeholder: 'No está permitido clavar, perforar ni dañar la estructura del kiosco.', hint: 'Escríbela completa y en una sola frase. Es lo que lee quien va a solicitar.' },
+      { key: 'tipo', label: 'Qué clase de regla es', type: 'select', required: true, options: [
+        { value: 'requisito', label: 'Requisito — hay que cumplirlo' },
+        { value: 'permitido', label: 'Permitido — se puede hacer' },
+        { value: 'prohibido', label: 'Prohibido — no se puede hacer' },
+      ], hint: 'Decide el icono y el color. Sin esta distinción, veinte líneas iguales esconden justo la que después se reclama.' },
+      { key: 'ambito', label: 'A qué aplica', type: 'select', required: true, options: [
+        { value: 'general', label: 'A todo — sale en Condiciones de uso' },
+        { value: 'tramite', label: 'A un tipo de actividad' },
+        { value: 'espacio', label: 'A un espacio' },
+      ], hint: 'Las generales valen siempre. Las otras dos aparecen en el formulario solo cuando alguien elige ese trámite o ese espacio.' },
+      { key: 'aplicaA', label: 'Nombre del trámite o del espacio', type: 'text', placeholder: 'Alquiler de kiosco', hint: 'Déjalo vacío si aplica a todo. Si no, escríbelo EXACTAMENTE como está en Tipos de actividad o en Espacios reservables: si no coincide, la regla no aparece.' },
+      { key: 'grupo', label: 'Apartado', type: 'text', required: true, placeholder: 'Seguridad y restricciones', hint: 'El encabezado bajo el que se agrupa. Las reglas del mismo apartado salen juntas.' },
+      { key: 'activa', label: 'Se muestra', type: 'checkbox', hint: 'Desmarcada, deja de verse sin tener que borrarla.' },
+      { key: 'orden', label: 'Posición dentro del apartado', type: 'number', placeholder: '1', nextPosition: true },
     ],
   },
   {

@@ -48,6 +48,7 @@ apiRouter.use("/valores", crudRoutes("valor", { reorder: true }));
 apiRouter.use("/pasos-reserva", crudRoutes("pasoReserva", { reorder: true }));
 apiRouter.use("/formas-apoyo", crudRoutes("formaApoyo", { reorder: true }));
 apiRouter.use("/espacios-reservables", crudRoutes("espacioReservable", { reorder: true }));
+apiRouter.use("/reglas-uso", crudRoutes("reglaUso", { reorder: true }));
 apiRouter.use("/tipos-actividad", crudRoutes("tipoActividad", { reorder: true }));
 // Solo editar: el conjunto de plantillas es fijo. Si faltara la de una
 // decision, esa decision se quedaria sin correo.

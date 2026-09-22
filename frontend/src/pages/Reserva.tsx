@@ -4,6 +4,7 @@ import { PageHero } from '../components/PageHero'
 import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
 import { api, type EspacioReservable } from '../api/client'
+import { ListaDeReglas, reglasDeLoElegido } from '../components/ListaDeReglas'
 
 /**
  * Solicitud de reserva de espacios.
@@ -61,9 +62,11 @@ export function Reserva() {
   const { data: espacios } = useApiData(api.getEspaciosReservables)
   const { data: tipos } = useApiData(api.getTiposActividad)
   const { data: ocupadas } = useApiData(api.getReservasOcupadas)
+  const { data: reglas } = useApiData(api.getReglasUso)
 
   const [fecha, setFecha] = useState('')
   const [espacioId, setEspacioId] = useState('')
+  const [tipoActividad, setTipoActividad] = useState('')
   const [personas, setPersonas] = useState('')
   const [extras, setExtras] = useState<string[]>([])
   const [normasAbiertas, setNormasAbiertas] = useState(false)
@@ -82,6 +85,11 @@ export function Reserva() {
     () => (ocupadas ?? []).filter((o) => o.fecha === fecha),
     [ocupadas, fecha],
   )
+
+  // El trámite elegido decide dos cosas: qué datos se le piden y qué reglas se
+  // le enseñan. Por eso vive en el estado y no solo en el campo del formulario.
+  const tipoElegido = (tipos ?? []).find((t) => t.nombre === tipoActividad)
+  const reglasAplicables = reglasDeLoElegido(reglas, tipoActividad, espacio?.nombre ?? '')
 
   // Un espacio que el Parque no reserva no puede aceptarse aquí: la solicitud
   // llegaría a una bandeja donde nadie puede aprobarla.
@@ -117,6 +125,12 @@ export function Reserva() {
         personas: Number(datos.get('personas') ?? 0),
         requerimientos: extras.join(', '),
         descripcion: String(datos.get('descripcion') ?? ''),
+        // Vacíos se omiten: el servidor los trata como "no hay montaje", no
+        // como una fecha invalida.
+        montajeFecha: String(datos.get('montajeFecha') ?? '') || undefined,
+        montajeHora: String(datos.get('montajeHora') ?? '') || undefined,
+        desmontajeFecha: String(datos.get('desmontajeFecha') ?? '') || undefined,
+        desmontajeHora: String(datos.get('desmontajeHora') ?? '') || undefined,
         acepta: true,
       })
       formulario.reset()
@@ -383,7 +397,13 @@ export function Reserva() {
 
                 <div className="form-group">
                   <label htmlFor="r-tipo">Tipo de actividad</label>
-                  <select id="r-tipo" name="tipoActividad" required defaultValue="">
+                  <select
+                    id="r-tipo"
+                    name="tipoActividad"
+                    required
+                    value={tipoActividad}
+                    onChange={(e) => setTipoActividad(e.target.value)}
+                  >
                     <option value="">Elige el tipo</option>
                     {permitidos.map((t) => (
                       <option key={t.id} value={t.nombre}>
@@ -395,6 +415,9 @@ export function Reserva() {
                     Si lo tuyo no está en la lista, escríbenos por{' '}
                     <Link to="/contacto">Contacto</Link> antes de solicitar.
                   </small>
+                  {tipoElegido?.nota && (
+                    <small className="reserva-ayuda">{tipoElegido.nota}</small>
+                  )}
                 </div>
 
                 <div className="form-group form-group-medio">
@@ -435,6 +458,19 @@ export function Reserva() {
                     cómo y cuándo pagar.
                   </span>
                 </p>
+              )}
+
+              {/* Las reglas de lo que acaba de elegir, aquí y no al final: leerlas
+                  después de llenar todo el formulario es leerlas cuando ya no
+                  sirven para decidir. Las generales no se repiten; viven en la
+                  página de Condiciones, enlazada junto a la casilla de aceptar. */}
+              {reglasAplicables.length > 0 && (
+                <div className="reserva-reglas">
+                  <p className="reserva-reglas-titulo">
+                    <i className="ti ti-list-check" /> Lo que aplica a lo que elegiste
+                  </p>
+                  <ListaDeReglas reglas={reglasAplicables} compacta />
+                </div>
               )}
             </fieldset>
 
@@ -505,6 +541,57 @@ export function Reserva() {
                   )}
                 </div>
               )}
+
+              {/* Montaje y desmontaje. Opcionales a propósito: quien pide un
+                  kiosco para un cumpleaños no monta nada, y obligarle a llenar
+                  cuatro campos vacíos es la forma más rápida de que abandone. */}
+              <div className="reserva-montaje">
+                <p className="reserva-montaje-titulo">
+                  ¿Vas a montar algo antes? <span className="opcional">opcional</span>
+                </p>
+                <p className="reserva-ayuda">
+                  Si tu actividad lleva carpas, tarima, sonido o cualquier estructura, dinos cuándo
+                  entras a montarla y cuándo la retiras. El montaje solo puede hacerse en los días y
+                  horarios que el Parque autorice.
+                </p>
+                <div className="form-row">
+                  <div className="form-group form-group-medio">
+                    <label htmlFor="r-montaje-fecha">Día del montaje</label>
+                    <input id="r-montaje-fecha" name="montajeFecha" type="date" min={hoyIso()} />
+                  </div>
+                  <div className="form-group form-group-medio">
+                    <label htmlFor="r-montaje-hora">Hora del montaje</label>
+                    <select id="r-montaje-hora" name="montajeHora" defaultValue="">
+                      <option value="">Sin definir</option>
+                      {HORAS.map((h) => (
+                        <option key={h} value={h}>
+                          {h}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group form-group-medio">
+                    <label htmlFor="r-desmontaje-fecha">Día del desmontaje</label>
+                    <input
+                      id="r-desmontaje-fecha"
+                      name="desmontajeFecha"
+                      type="date"
+                      min={hoyIso()}
+                    />
+                  </div>
+                  <div className="form-group form-group-medio">
+                    <label htmlFor="r-desmontaje-hora">Hora del desmontaje</label>
+                    <select id="r-desmontaje-hora" name="desmontajeHora" defaultValue="">
+                      <option value="">Sin definir</option>
+                      {HORAS.map((h) => (
+                        <option key={h} value={h}>
+                          {h}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
             </fieldset>
 
             <fieldset className="reserva-grupo">
@@ -514,6 +601,12 @@ export function Reserva() {
 
               <div className="form-group">
                 <label htmlFor="r-descripcion">¿Qué van a hacer?</label>
+                {tipoElegido?.datosPedidos && (
+                  <small className="reserva-ayuda es-pedido">
+                    <i className="ti ti-info-circle" /> Para {tipoElegido.nombre.toLowerCase()},
+                    incluye también: {tipoElegido.datosPedidos}
+                  </small>
+                )}
                 <textarea
                   id="r-descripcion"
                   name="descripcion"
@@ -551,7 +644,7 @@ export function Reserva() {
             <label className="reserva-acepta">
               <input type="checkbox" name="acepta" required />
               <span>
-                Leí las condiciones de uso, entiendo que esto es una solicitud y que el espacio no
+                Leí las <Link to="/condiciones-de-uso">condiciones de uso</Link>, entiendo que esto es una solicitud y que el espacio no
                 queda apartado hasta que el Parque me responda.
               </span>
             </label>

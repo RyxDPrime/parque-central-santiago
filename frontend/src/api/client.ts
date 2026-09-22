@@ -222,6 +222,26 @@ export interface TipoActividad {
   nombre: string;
   permitido: boolean;
   nota: string | null;
+  /** Qué datos pide este trámite en particular. Se muestra sobre la descripción. */
+  datosPedidos: string | null;
+  orden: number;
+}
+
+/**
+ * Una regla de uso, tal como la publica el Parque.
+ *
+ * `ambito` dice a qué aplica: "general" vale para todo, "tramite" y "espacio"
+ * se atan por nombre a través de `aplicaA`. `tipo` decide cómo se ve:
+ * permitido, prohibido o requisito.
+ */
+export interface ReglaUso {
+  id: number;
+  ambito: string;
+  aplicaA: string | null;
+  grupo: string;
+  texto: string;
+  tipo: string;
+  activa: boolean;
   orden: number;
 }
 
@@ -248,6 +268,10 @@ export interface SolicitudReservaInput {
   personas: number;
   requerimientos: string;
   descripcion: string;
+  montajeFecha?: string;
+  montajeHora?: string;
+  desmontajeFecha?: string;
+  desmontajeHora?: string;
   acepta: true;
 }
 
@@ -346,6 +370,7 @@ export const api = {
   getAliados: () => get<Aliado[]>("/aliados"),
   getEspaciosReservables: () => get<EspacioReservable[]>("/espacios-reservables"),
   getTiposActividad: () => get<TipoActividad[]>("/tipos-actividad"),
+  getReglasUso: () => get<ReglaUso[]>("/reglas-uso"),
   getReservasOcupadas: () => get<ReservaOcupada[]>("/reservas-ocupadas"),
   enviarSolicitudReserva: (data: SolicitudReservaInput) =>
     post<{ ok: boolean; id: number }>("/solicitudes-reserva", data),

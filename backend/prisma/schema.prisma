@@ -334,9 +334,49 @@ model TipoActividad {
   nombre    String
   permitido Boolean  @default(true)
   nota      String?
+  // Que datos pide este tramite en particular. Un bazar necesita cuantas mesas
+  // y cuantos expositores; una visita escolar, el nombre de la escuela y
+  // cuantos estudiantes. En vez de inventar un formulario distinto por tramite,
+  // se le dice a quien solicita que incluya eso en la descripcion.
+  datosPedidos String?
   orden     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/**
+ * Las reglas de uso, tal como las publica el Parque.
+ *
+ * Viven en la base y no en el codigo por la misma razon que el resto del
+ * contenido: son del Parque, y cambiarlas no deberia requerir un despliegue.
+ *
+ * Cada regla dice a que aplica. Las generales valen para todo; las demas se
+ * atan al nombre de un tramite o de un espacio, y aparecen solo cuando alguien
+ * elige ese tramite o ese espacio en el formulario. Se enlazan por nombre y no
+ * por referencia porque asi funciona el resto del esquema -una solicitud
+ * guarda el espacio como texto-, y porque una regla debe sobrevivir a que se
+ * borre el espacio al que aludia.
+ */
+model ReglaUso {
+  id      Int     @id @default(autoincrement())
+  // general | tramite | espacio
+  ambito  String  @default("general")
+  // El nombre del tramite o del espacio. Vacio cuando el ambito es general.
+  aplicaA String?
+  // El apartado bajo el que se agrupa: "Responsabilidad del usuario",
+  // "Montaje y desmontaje", "Seguridad y restricciones"...
+  grupo   String
+  texto   String
+  // permitido | prohibido | requisito. Decide el icono y el color con que se
+  // muestra: no es lo mismo "se permite musica a volumen moderado" que
+  // "prohibido clavar la estructura".
+  tipo    String  @default("requisito")
+  activa  Boolean @default(true)
+  orden   Int     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ambito, aplicaA])
 }
 
 // Una solicitud, no una reserva. Nada queda apartado hasta que el Parque la
@@ -358,6 +398,18 @@ model SolicitudReserva {
   personas       Int
   requerimientos String   @default("")
   descripcion    String
+  // Montaje y desmontaje. El documento del Parque los pide aparte del horario
+  // de la actividad: quien monta una tarima llega el dia antes. Opcionales
+  // porque la mayoria de las solicitudes -un kiosco para un cumpleanos- no
+  // montan nada.
+  montajeFecha      String?
+  montajeHora       String?
+  desmontajeFecha   String?
+  desmontajeHora    String?
+  // Que declaro haber leido las condiciones. Se guarda porque el dia que haya
+  // un desacuerdo, la fecha de la solicitud es la prueba de que estaban a la
+  // vista cuando la envio.
+  aceptoCondiciones Boolean @default(false)
   // pendiente | aprobada | rechazada | cancelada
   estado         String   @default("pendiente")
   motivo         String?

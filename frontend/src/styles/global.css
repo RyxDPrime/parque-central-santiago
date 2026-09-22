@@ -1486,10 +1486,19 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .condiciones-cierre{margin-top:36px;padding-top:22px;border-top:1px solid var(--border);font-size:14px;color:var(--text-muted)}
 
 /* ── Reglas dentro del formulario de Reserva ─────────────────────────────── */
-.reserva-reglas{margin-top:18px;padding:16px 18px;background:var(--green-50);border:1px solid var(--green-100);border-radius:var(--radius)}
-.reserva-reglas-titulo{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13px;font-weight:600;color:var(--green-800);max-width:none}
-.reserva-reglas-titulo i{font-size:17px}
-.reserva-reglas .reglas-grupo li{color:var(--text-primary)}
+/* Las condiciones del espacio elegido. Tarjeta propia, con cabecera y filo
+   ambar: no es una nota al pie, es lo que la persona se compromete a cumplir
+   al enviar. Antes era un recuadro verde claro y se perdia entre los campos. */
+.reserva-reglas{margin-top:22px;background:#FFFDF7;border:1px solid #E8DCC0;border-left:4px solid #C9A227;border-radius:var(--radius-lg);overflow:hidden}
+.reserva-reglas-cabecera{display:flex;gap:12px;align-items:flex-start;padding:16px 20px;background:#FCF6E8;border-bottom:1px solid #E8DCC0}
+.reserva-reglas-cabecera i{font-size:22px;color:#9A7B10;flex-shrink:0;margin-top:1px}
+.reserva-reglas-cabecera h3{margin:0 0 3px;font-size:15px;font-weight:600;color:var(--text-primary)}
+.reserva-reglas-cabecera p{margin:0;font-size:13px;color:var(--text-secondary);max-width:none}
+.reserva-reglas .reglas{padding:18px 20px 4px}
+.reserva-reglas .reglas-grupo li{color:var(--text-primary);font-size:14px}
+.reserva-reglas .reglas-grupo h3{color:var(--text-primary)}
+.reserva-reglas-pie{margin:0;padding:12px 20px 16px;font-size:13px;max-width:none}
+.reserva-reglas-pie a{color:var(--green-600);font-weight:500}
 
 /* ── Montaje y desmontaje ────────────────────────────────────────────────── */
 .reserva-montaje{margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}

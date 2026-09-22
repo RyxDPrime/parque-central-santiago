@@ -56,6 +56,63 @@ type Estado =
   | { tipo: 'enviado' }
   | { tipo: 'error'; texto: string }
 
+/**
+ * Lo que falta o esta mal, en el orden en que aparece en el formulario.
+ *
+ * Devuelve el mensaje y el campo al que hay que llevar el foco. Se comprueba
+ * aqui y no solo con los atributos del navegador porque varias reglas dependen
+ * de dos campos a la vez -la hora de salida contra la de entrada, el
+ * desmontaje contra el montaje- y porque el aviso del navegador no dice cual
+ * de los cuatro bloques hay que revisar.
+ */
+function loQueFalta(d: FormData, espacioElegido: boolean): { texto: string; campo: string } | null {
+  const v = (n: string) => String(d.get(n) ?? '').trim()
+  const faltan: [boolean, string, string][] = [
+    [!espacioElegido, 'Elige el espacio que necesitas.', 'r-espacio'],
+    [!v('tipoActividad'), 'Elige el tipo de actividad.', 'r-tipo'],
+    [!v('personas'), 'Indica para cuántas personas es.', 'r-personas'],
+    [Number(v('personas')) < 1, 'La cantidad de personas tiene que ser al menos 1.', 'r-personas'],
+    [!v('fecha'), 'Elige el día de la actividad.', 'r-fecha'],
+    [!v('horaInicio'), 'Elige la hora de entrada.', 'r-inicio'],
+    [!v('horaFin'), 'Elige la hora de salida.', 'r-fin'],
+    [
+      Boolean(v('horaInicio') && v('horaFin')) && v('horaFin') <= v('horaInicio'),
+      'La hora de salida tiene que ser después de la de entrada.',
+      'r-fin',
+    ],
+    [
+      Boolean(v('montajeHora') && !v('montajeFecha')),
+      'Pusiste hora de montaje pero no el día. Completa el día o deja los dos vacíos.',
+      'r-montaje-fecha',
+    ],
+    [
+      Boolean(v('desmontajeHora') && !v('desmontajeFecha')),
+      'Pusiste hora de desmontaje pero no el día. Completa el día o deja los dos vacíos.',
+      'r-desmontaje-fecha',
+    ],
+    [
+      Boolean(v('montajeFecha') && v('fecha')) && v('montajeFecha') > v('fecha'),
+      'El montaje no puede ser después de la actividad.',
+      'r-montaje-fecha',
+    ],
+    [
+      Boolean(v('desmontajeFecha') && v('fecha')) && v('desmontajeFecha') < v('fecha'),
+      'El desmontaje no puede ser antes de la actividad.',
+      'r-desmontaje-fecha',
+    ],
+    [v('descripcion').length < 15, 'Cuéntanos un poco más de la actividad, en una o dos frases.', 'r-descripcion'],
+    [!v('nombre'), 'Escribe tu nombre completo.', 'r-nombre'],
+    [v('cedula').replace(/\D/g, '').length !== 11, 'La cédula tiene 11 dígitos.', 'r-cedula'],
+    [!v('email'), 'Escribe tu correo electrónico: por ahí te llega la respuesta.', 'r-email'],
+    [Boolean(v('email')) && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email')), 'Ese correo no parece válido.', 'r-email'],
+    [v('telefono').replace(/\D/g, '').length < 7, 'Escribe un teléfono donde podamos localizarte.', 'r-telefono'],
+    [d.get('acepta') === null, 'Falta aceptar las condiciones de uso.', 'r-acepta'],
+  ]
+
+  const primero = faltan.find(([malo]) => malo)
+  return primero ? { texto: primero[1], campo: primero[2] } : null
+}
+
 export function Reserva() {
   const texto = useTextos()
   const { data: pasos } = useApiData(api.getPasosReserva)
@@ -108,6 +165,19 @@ export function Reserva() {
     event.preventDefault()
     const formulario = event.currentTarget
     const datos = new FormData(formulario)
+
+    // Antes de mandar nada: si falta algo, se dice cual es y se lleva el foco
+    // ahi. Sin esto, el error vuelve del servidor y la persona tiene que
+    // adivinar en cual de los cuatro bloques estaba el problema.
+    const falta = loQueFalta(datos, espacio !== undefined)
+    if (falta) {
+      setEstado({ tipo: 'error', texto: falta.texto })
+      const campo = document.getElementById(falta.campo)
+      campo?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      ;(campo as HTMLElement | null)?.focus({ preventScroll: true })
+      return
+    }
+
     setEstado({ tipo: 'enviando' })
 
     try {
@@ -284,71 +354,15 @@ export function Reserva() {
           </div>
 
           {/* ── Formulario ── */}
-          <form className="reserva-form" onSubmit={enviar}>
+          {/* noValidate: la validacion del navegador se adelantaba a la nuestra y
+              la tapaba. La suya dice "complete este campo" en un globo que
+              desaparece; la nuestra dice que falta, en que bloque, y lleva el
+              foco ahi. Los campos conservan required para los lectores de
+              pantalla, y el servidor valida todo otra vez de su lado. */}
+          <form className="reserva-form" onSubmit={enviar} noValidate>
             <fieldset className="reserva-grupo">
               <legend>
-                <span className="reserva-grupo-num">1</span> Tus datos
-              </legend>
-              <div className="reserva-campos">
-                <div className="form-group">
-                  <label htmlFor="r-nombre">Nombre completo</label>
-                  <input
-                    id="r-nombre"
-                    name="nombre"
-                    type="text"
-                    required
-                    minLength={3}
-                    placeholder="Como aparece en tu cédula"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="r-cedula">Cédula</label>
-                  <input
-                    id="r-cedula"
-                    name="cedula"
-                    type="text"
-                    required
-                    inputMode="numeric"
-                    placeholder="000-0000000-0"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="r-email">Correo electrónico</label>
-                  <input
-                    id="r-email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="Aquí te llega la respuesta"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="r-telefono">Teléfono</label>
-                  <input
-                    id="r-telefono"
-                    name="telefono"
-                    type="tel"
-                    required
-                    placeholder="(809) 000-0000"
-                  />
-                </div>
-                <div className="form-group form-group-ancho">
-                  <label htmlFor="r-institucion">
-                    Institución o empresa <span className="opcional">opcional</span>
-                  </label>
-                  <input
-                    id="r-institucion"
-                    name="institucion"
-                    type="text"
-                    placeholder="Si solicitas a nombre de una organización"
-                  />
-                </div>
-              </div>
-            </fieldset>
-
-            <fieldset className="reserva-grupo">
-              <legend>
-                <span className="reserva-grupo-num">2</span> Qué espacio necesitas
+                <span className="reserva-grupo-num">1</span> Qué espacio necesitas
               </legend>
               <div className="reserva-campos">
                 <div className="form-group">
@@ -466,17 +480,26 @@ export function Reserva() {
                   página de Condiciones, enlazada junto a la casilla de aceptar. */}
               {reglasAplicables.length > 0 && (
                 <div className="reserva-reglas">
-                  <p className="reserva-reglas-titulo">
-                    <i className="ti ti-list-check" /> Lo que aplica a lo que elegiste
-                  </p>
+                  <header className="reserva-reglas-cabecera">
+                    <i className="ti ti-alert-circle" aria-hidden="true" />
+                    <div>
+                      <h3>Condiciones de este espacio y esta actividad</h3>
+                      <p>
+                        Léelas antes de seguir. Al enviar la solicitud confirmas que las aceptas.
+                      </p>
+                    </div>
+                  </header>
                   <ListaDeReglas reglas={reglasAplicables} compacta />
+                  <p className="reserva-reglas-pie">
+                    <Link to="/condiciones-de-uso">Ver todas las condiciones de uso</Link>
+                  </p>
                 </div>
               )}
             </fieldset>
 
             <fieldset className="reserva-grupo">
               <legend>
-                <span className="reserva-grupo-num">3</span> Cuándo
+                <span className="reserva-grupo-num">2</span> Cuándo
               </legend>
               <div className="reserva-campos es-cuando">
                 <div className="form-group">
@@ -596,7 +619,7 @@ export function Reserva() {
 
             <fieldset className="reserva-grupo">
               <legend>
-                <span className="reserva-grupo-num">4</span> Detalles de la actividad
+                <span className="reserva-grupo-num">3</span> Detalles de la actividad
               </legend>
 
               <div className="form-group">
@@ -641,8 +664,68 @@ export function Reserva() {
               </div>
             </fieldset>
 
+            <fieldset className="reserva-grupo">
+              <legend>
+                <span className="reserva-grupo-num">4</span> Tus datos
+              </legend>
+              <div className="reserva-campos">
+                <div className="form-group">
+                  <label htmlFor="r-nombre">Nombre completo</label>
+                  <input
+                    id="r-nombre"
+                    name="nombre"
+                    type="text"
+                    required
+                    minLength={3}
+                    placeholder="Como aparece en tu cédula"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="r-cedula">Cédula</label>
+                  <input
+                    id="r-cedula"
+                    name="cedula"
+                    type="text"
+                    required
+                    inputMode="numeric"
+                    placeholder="000-0000000-0"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="r-email">Correo electrónico</label>
+                  <input
+                    id="r-email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="Aquí te llega la respuesta"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="r-telefono">Teléfono</label>
+                  <input
+                    id="r-telefono"
+                    name="telefono"
+                    type="tel"
+                    required
+                    placeholder="(809) 000-0000"
+                  />
+                </div>
+                <div className="form-group form-group-ancho">
+                  <label htmlFor="r-institucion">
+                    Institución o empresa <span className="opcional">opcional</span>
+                  </label>
+                  <input
+                    id="r-institucion"
+                    name="institucion"
+                    type="text"
+                    placeholder="Si solicitas a nombre de una organización"
+                  />
+                </div>
+              </div>
+            </fieldset>
             <label className="reserva-acepta">
-              <input type="checkbox" name="acepta" required />
+              <input id="r-acepta" type="checkbox" name="acepta" required />
               <span>
                 Leí las <Link to="/condiciones-de-uso">condiciones de uso</Link>, entiendo que esto es una solicitud y que el espacio no
                 queda apartado hasta que el Parque me responda.

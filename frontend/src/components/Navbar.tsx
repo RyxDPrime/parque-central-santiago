@@ -8,6 +8,7 @@ const menuGroups = [
     items: [
       { to: '/sobre-el-parque', icon: 'ti-book', label: 'Historia' },
       { to: '/reglamento', icon: 'ti-clipboard-list', label: 'Reglamento' },
+      { to: '/condiciones-de-uso', icon: 'ti-list-check', label: 'Condiciones de Uso' },
     ],
   },
   {

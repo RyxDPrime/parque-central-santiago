@@ -9,7 +9,7 @@ import { MisionVisionValores } from './pages/MisionVisionValores'
 import { JuntaDirectiva } from './pages/JuntaDirectiva'
 import { PersonalTecnico } from './pages/PersonalTecnico'
 import { Actividades } from './pages/Actividades'
-import { EnProceso } from './pages/EnProceso'
+import { Reserva } from './pages/Reserva'
 import { Galeria } from './pages/Galeria'
 import { Mapa } from './pages/Mapa'
 import { Transparencia } from './pages/Transparencia'
@@ -46,21 +46,11 @@ function App() {
           <Route path="/junta-directiva" element={<JuntaDirectiva />} />
           <Route path="/personal-tecnico" element={<PersonalTecnico />} />
           <Route path="/actividades" element={<Actividades />} />
-          {/* Reserva de espacios queda en preparación hasta que el Parque
-              confirme las listas y las condiciones. La página está construida
-              y sin tocar en pages/Reserva.tsx: para publicarla se devuelve su
-              import y se cambia esta línea de vuelta. */}
-          <Route
-            path="/reserva"
-            element={
-              <EnProceso
-                titulo="Reserva de espacios"
-                descripcion="Estamos afinando el proceso de solicitud antes de abrirlo al público."
-                pagina="reserva"
-                image="/images/galeria/navidad-en-el-parque.jpg"
-              />
-            }
-          />
+          {/* Si hiciera falta volver a ocultar una página, la plantilla
+              EnProceso (pages/EnProceso.tsx) se pone en su lugar, con el texto
+              y la foto que le toquen. Reserva estuvo así hasta el 22 de
+              septiembre, mientras el Parque confirmaba espacios y condiciones. */}
+          <Route path="/reserva" element={<Reserva />} />
           <Route path="/galeria" element={<Galeria />} />
           <Route path="/mapa" element={<Mapa />} />
           <Route path="/transparencia" element={<Transparencia />} />

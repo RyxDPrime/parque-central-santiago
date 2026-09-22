@@ -1014,6 +1014,12 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 
 .reserva-nota-pago{display:flex;gap:11px;align-items:flex-start;margin:16px 0 0;padding:13px 15px;border-radius:var(--radius);background:var(--gray-100,#F5F5F2);font-size:13px;line-height:1.6;color:var(--text-secondary);max-width:none}
 .reserva-nota-pago i{font-size:18px;color:var(--accent-400,#A38579);flex-shrink:0;margin-top:1px}
+/* Espacio que el Parque no reserva: se enseña a quien escribirle en vez de
+   aceptar una solicitud que nadie puede aprobar. Verde y no rojo: no es un
+   error de quien lo eligio, es informacion. */
+.reserva-nota-tercero{display:flex;gap:11px;align-items:flex-start;margin:12px 0 0;padding:13px 15px;border-radius:var(--radius);background:var(--green-50);border:1px solid var(--green-100);font-size:13px;line-height:1.6;color:var(--text-primary);max-width:none}
+.reserva-nota-tercero i{font-size:18px;color:var(--green-600);flex-shrink:0;margin-top:1px}
+.reserva-nota-tercero b{color:var(--green-800)}
 
 /* Lo ocupado ese día: el equivalente al calendario que la biblioteca incrusta,
    recortado al día que se acaba de elegir. */

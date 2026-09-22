@@ -71,7 +71,7 @@ const CAMPOS_PERMITIDOS: Record<ModeloCrud, readonly string[]> = {
   norma: ["icono", "titulo", "texto", "orden"],
   pasoReserva: ["icono", "titulo", "texto", "orden"],
   formaApoyo: ["icono", "etiqueta", "titulo", "texto", "orden"],
-  espacioReservable: ["nombre", "descripcion", "cantidad", "capacidad", "requierePago", "activo", "orden"],
+  espacioReservable: ["nombre", "descripcion", "cantidad", "capacidad", "requierePago", "aporte", "gestion", "contacto", "activo", "orden"],
   tipoActividad: ["nombre", "permitido", "nota", "orden"],
   cuentaBancaria: ["banco", "tipoCuenta", "numero", "titular", "rnc", "moneda", "nota", "activa", "orden"],
   motivoRechazo: ["nombre", "nota", "activo", "orden"],

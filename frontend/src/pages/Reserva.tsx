@@ -83,6 +83,10 @@ export function Reserva() {
     [ocupadas, fecha],
   )
 
+  // Un espacio que el Parque no reserva no puede aceptarse aquí: la solicitud
+  // llegaría a una bandeja donde nadie puede aprobarla.
+  const noLoReservaElParque = espacio !== undefined && espacio.gestion !== 'parque'
+
   const excedeCapacidad =
     espacio?.capacidad != null && Number(personas) > espacio.capacidad && Number(personas) > 0
 
@@ -347,6 +351,7 @@ export function Reserva() {
                       <option key={e.id} value={e.id}>
                         {e.nombre}
                         {e.cantidad ? ` (hay ${e.cantidad})` : ''}
+                        {e.gestion !== 'parque' ? ' — se pide aparte' : ''}
                       </option>
                     ))}
                   </select>
@@ -357,6 +362,22 @@ export function Reserva() {
                         ? ` Capacidad aproximada: ${espacio.capacidad} personas.`
                         : ''}
                     </small>
+                  )}
+                  {/* Este espacio no lo reserva el Parque: mandarle una solicitud
+                      no lleva a ninguna parte, asi que se enseña a quién escribirle
+                      y el formulario deja de aceptar el envío. */}
+                  {espacio && espacio.gestion !== 'parque' && (
+                    <p className="reserva-nota-tercero">
+                      <i className={`ti ${espacio.gestion === 'libre' ? 'ti-info-circle' : 'ti-phone'}`} />
+                      <span>
+                        <b>
+                          {espacio.gestion === 'libre'
+                            ? 'Este espacio no necesita reserva.'
+                            : 'Este espacio no lo reserva el Parque.'}
+                        </b>{' '}
+                        {espacio.contacto}
+                      </span>
+                    </p>
                   )}
                 </div>
 
@@ -399,12 +420,19 @@ export function Reserva() {
                 </div>
               </div>
 
-              {espacio?.requierePago && (
+              {espacio?.requierePago && espacio.gestion === 'parque' && (
                 <p className="reserva-nota-pago">
                   <i className="ti ti-cash" />
                   <span>
-                    Este espacio tiene un costo de uso. No se cobra nada al solicitar: si la
-                    solicitud se aprueba, el Parque te indica cómo y cuándo pagar.
+                    {espacio.aporte ? (
+                      <>
+                        Aporte por el uso de este espacio: <b>{espacio.aporte}</b>.{' '}
+                      </>
+                    ) : (
+                      <>Este espacio tiene un costo de uso. </>
+                    )}
+                    No se cobra nada al solicitar: si la solicitud se aprueba, el Parque te indica
+                    cómo y cuándo pagar.
                   </span>
                 </p>
               )}
@@ -537,11 +565,17 @@ export function Reserva() {
             <button
               type="submit"
               className="btn-primary reserva-enviar"
-              disabled={estado.tipo === 'enviando'}
+              disabled={estado.tipo === 'enviando' || noLoReservaElParque}
             >
               <i className="ti ti-send" />
               {estado.tipo === 'enviando' ? 'Enviando…' : 'Enviar solicitud'}
             </button>
+            {noLoReservaElParque && (
+              <p className="reserva-ayuda es-alerta" style={{ marginTop: 10 }}>
+                <i className="ti ti-alert-triangle" /> Ese espacio se pide por su propia vía, no
+                por este formulario. Arriba está a quién escribirle.
+              </p>
+            )}
 
             <p className="reserva-nota">
               Tus datos se usan solo para gestionar esta solicitud. No se comparten con nadie.

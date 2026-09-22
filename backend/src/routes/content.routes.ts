@@ -105,6 +105,20 @@ const listasSimples = [
   ["destacados-inicio", "destacadoInicio"],
 ] as const;
 
+// Las reglas de uso: solo las activas, y ordenadas por apartado para que la
+// pagina de condiciones no tenga que reordenarlas.
+contentRouter.get("/reglas-uso", async (_req, res, next) => {
+  try {
+    const data = await prisma.reglaUso.findMany({
+      where: { activa: true },
+      orderBy: [{ ambito: "asc" }, { aplicaA: "asc" }, { orden: "asc" }],
+    });
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
 for (const [ruta, modelo] of listasSimples) {
   contentRouter.get(`/${ruta}`, async (_req, res, next) => {
     try {

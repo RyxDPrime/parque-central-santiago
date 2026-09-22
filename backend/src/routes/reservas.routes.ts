@@ -93,7 +93,6 @@ reservasRouter.get("/reservas-ocupadas", async (req, res, next) => {
 reservasRouter.post("/solicitudes-reserva", contactoLimiter, async (req, res, next) => {
   try {
     const { acepta, ...datos } = solicitudReservaSchema.parse(req.body);
-    void acepta;
 
     // El desplegable del formulario solo esconde lo que no se permite; esto es
     // lo que de verdad lo impide. Sin esta comprobacion, una peticion directa a
@@ -121,7 +120,22 @@ reservasRouter.post("/solicitudes-reserva", contactoLimiter, async (req, res, ne
       return;
     }
 
-    const guardada = await prisma.solicitudReserva.create({ data: datos });
+    // Hay espacios que el Parque no reserva: los gestiona un operador externo, o
+    // son de uso libre. El formulario ya no los deja enviar, pero esto es lo que
+    // de verdad lo impide; sin ello, una peticion directa a la API dejaria una
+    // solicitud en una bandeja donde nadie puede aprobarla.
+    if (espacio.gestion !== "parque") {
+      res.status(400).json({
+        error:
+          espacio.contacto ??
+          "Ese espacio no se reserva por este formulario. Consulta en la pagina de Reserva como pedirlo.",
+      });
+      return;
+    }
+
+    const guardada = await prisma.solicitudReserva.create({
+      data: { ...datos, aceptoCondiciones: acepta },
+    });
 
     try {
       await sendSolicitudReservaNotification(datos);

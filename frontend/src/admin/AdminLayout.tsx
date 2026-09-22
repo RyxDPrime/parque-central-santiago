@@ -55,6 +55,7 @@ const divisiones = [
 const CON_GRUPO_PROPIO = [
   'espacios-reservables',
   'tipos-actividad',
+  'reglas-uso',
   'cuentas-bancarias',
   'metodos-pago',
   'motivos-rechazo',
@@ -239,6 +240,10 @@ export function AdminLayout() {
                   <NavLink to="/admin/espacios-reservables" className="admin-nav-link">
                     <i className="ti ti-map-pin-check" />
                     Espacios reservables
+                  </NavLink>
+                  <NavLink to="/admin/reglas-uso" className="admin-nav-link">
+                    <i className="ti ti-list-check" />
+                    Condiciones de uso
                   </NavLink>
                 </>
               )}

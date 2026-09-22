@@ -10,6 +10,7 @@ import { JuntaDirectiva } from './pages/JuntaDirectiva'
 import { PersonalTecnico } from './pages/PersonalTecnico'
 import { Actividades } from './pages/Actividades'
 import { Reserva } from './pages/Reserva'
+import { CondicionesDeUso } from './pages/CondicionesDeUso'
 import { Galeria } from './pages/Galeria'
 import { Mapa } from './pages/Mapa'
 import { Transparencia } from './pages/Transparencia'
@@ -51,6 +52,7 @@ function App() {
               y la foto que le toquen. Reserva estuvo así hasta el 22 de
               septiembre, mientras el Parque confirmaba espacios y condiciones. */}
           <Route path="/reserva" element={<Reserva />} />
+          <Route path="/condiciones-de-uso" element={<CondicionesDeUso />} />
           <Route path="/galeria" element={<Galeria />} />
           <Route path="/mapa" element={<Mapa />} />
           <Route path="/transparencia" element={<Transparencia />} />

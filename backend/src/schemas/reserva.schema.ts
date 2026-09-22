@@ -46,6 +46,14 @@ export const solicitudReservaSchema = z
       .min(1, "Indica cuántas personas")
       .max(5000, "Para un grupo así hay que coordinar por teléfono"),
 
+    // Montaje y desmontaje. Opcionales: la mayoria de las solicitudes no montan
+    // nada. Se validan igual que la fecha y la hora de la actividad, para que
+    // "32 de febrero" no entre por una puerta lateral.
+    montajeFecha: fechaIso.optional().or(z.literal("").transform(() => undefined)),
+    montajeHora: hora.optional().or(z.literal("").transform(() => undefined)),
+    desmontajeFecha: fechaIso.optional().or(z.literal("").transform(() => undefined)),
+    desmontajeHora: hora.optional().or(z.literal("").transform(() => undefined)),
+
     requerimientos: unaLinea(300).default(""),
     descripcion: z
       .string()

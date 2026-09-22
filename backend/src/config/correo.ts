@@ -35,7 +35,7 @@ function partirRemitente(remitente: string): { email: string; name?: string } {
 }
 
 export function hayCorreoConfigurado(): boolean {
-  return Boolean(env.brevoApiKey && env.mailFrom && env.contactToEmail);
+  return Boolean(env.brevoApiKey && env.mailFrom && env.contactToEmails.length > 0);
 }
 
 export async function enviarCorreo({ asunto, texto, responderA, para }: CorreoSalida): Promise<void> {
@@ -52,7 +52,13 @@ export async function enviarCorreo({ asunto, texto, responderA, para }: CorreoSa
     },
     body: JSON.stringify({
       sender: partirRemitente(env.mailFrom),
-      to: [para ? { email: para.email, name: para.nombre } : { email: env.contactToEmail }],
+      // Al Parque van todas las direcciones configuradas; al visitante, solo la
+      // suya. Van en "to" y no en copia oculta a proposito: entre ellas no hay
+      // nada que esconderse, y ver a quien mas le llego evita que dos personas
+      // respondan la misma solicitud.
+      to: para
+        ? [{ email: para.email, name: para.nombre }]
+        : env.contactToEmails.map((email) => ({ email })),
       replyTo: responderA,
       subject: asunto,
       textContent: texto,

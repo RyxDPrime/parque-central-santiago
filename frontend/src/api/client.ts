@@ -207,6 +207,12 @@ export interface EspacioReservable {
   cantidad: number | null;
   capacidad: number | null;
   requierePago: boolean;
+  /** El aporte tal como lo publica el Parque. Texto: varios dependen de la actividad. */
+  aporte: string | null;
+  /** parque | tercero | libre. Quién lo reserva; decide si el formulario lo acepta. */
+  gestion: string;
+  /** A quién escribirle cuando no lo reserva el Parque. */
+  contacto: string | null;
   activo: boolean;
   orden: number;
 }

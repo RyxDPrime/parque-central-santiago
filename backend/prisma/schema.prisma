@@ -308,6 +308,18 @@ model EspacioReservable {
   capacidad    Int?
   // Si se cobra, se le advierte antes de enviar, no después de aprobarle.
   requierePago Boolean  @default(false)
+  // El aporte tal como lo publica el Parque: "RD$2,000.00 por el día completo".
+  // Texto y no número porque varios dependen de la actividad ("entre 2,000 y
+  // 2,500 según la cantidad") y redondearlos a una cifra seria mentir.
+  aporte       String?
+  // Quién lo reserva. "parque" entra por el formulario; "tercero" no: lo
+  // gestiona un operador externo —las canchas de tenis, el campo de fútbol— y
+  // el sitio manda a su contacto en vez de aceptar una solicitud que el Parque
+  // no puede aprobar. "libre" es de uso público sin reserva, como el área de
+  // picnic hasta veinte personas.
+  gestion      String   @default("parque")
+  // A quién escribirle cuando no lo reserva el Parque. Vacío en los demás.
+  contacto     String?
   activo       Boolean  @default(true)
   orden        Int      @default(0)
   createdAt    DateTime @default(now())

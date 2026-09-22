@@ -25,6 +25,24 @@ function normalizarOrigen(valor: string | undefined): string | null {
   return limpio === "" ? null : limpio;
 }
 
+/**
+ * Separa "uno@x.com, dos@y.com" en direcciones. Tolera espacios y comas de mas
+ * —una lista escrita a mano en un panel de configuracion los tiene— y descarta
+ * duplicados, que de otro modo mandarian el mismo aviso dos veces a la misma
+ * bandeja.
+ */
+function listaDeCorreos(valor: string): string[] {
+  const direcciones = valor
+    .split(",")
+    .map((d) => d.trim())
+    .filter((d) => d !== "");
+  const unicas = [...new Set(direcciones.map((d) => d.toLowerCase()))];
+  if (unicas.length === 0) {
+    throw new Error("CONTACT_TO_EMAIL no tiene ninguna direccion valida");
+  }
+  return unicas;
+}
+
 export const env = {
   port: Number(process.env.PORT ?? 4000),
   // La conexion a la base. Antes la leia Prisma por su cuenta desde el esquema;
@@ -41,7 +59,13 @@ export const env = {
   // Quien figura como remitente. Mientras no haya un dominio propio verificado,
   // el proveedor reescribe la direccion; el nombre si se respeta.
   mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
-  contactToEmail: required("CONTACT_TO_EMAIL", "info@parquecentralsantiagord.com"),
+  // A donde llegan los formularios. Admite varias direcciones separadas por
+  // coma: el Parque quiere que los avisos entren tanto al correo institucional
+  // como a la cuenta que la administracion ya revisa a diario, para que el
+  // cambio de una no deje a nadie sin ver una solicitud.
+  contactToEmails: listaDeCorreos(
+    required("CONTACT_TO_EMAIL", "info@parquecentralsantiagord.com"),
+  ),
   // Firma la sesión del panel. Obligatorio: es mejor que el servidor no
   // arranque a que quede con un acceso que depende de un valor vacío.
   //

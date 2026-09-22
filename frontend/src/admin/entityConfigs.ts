@@ -465,7 +465,7 @@ export const entityConfigs: EntityConfig[] = [
     path: 'espacios-reservables',
     listPath: 'espacios-reservables-todos',
     icon: 'ti-map-pin-check',
-    description: 'Los espacios que el Parque acepta prestar. Es una lista aparte de Instalaciones a propósito: hay veintiuna instalaciones, pero nadie reserva una ciclovía. Lo que esté aquí es lo que aparece en el formulario de Reserva.',
+    description: 'Los espacios que se pueden pedir, con su aporte y sus condiciones, según el documento "Solicitud y condiciones para el uso de espacios". Es una lista aparte de Instalaciones a propósito: hay veintiuna instalaciones, pero nadie reserva una ciclovía. Los que dicen que los reserva un operador externo no se piden por el formulario: el sitio muestra su contacto.',
     label: 'Espacios reservables',
     titleField: 'nombre',
     fields: [
@@ -474,6 +474,13 @@ export const entityConfigs: EntityConfig[] = [
       { key: 'cantidad', label: 'Cuántos hay', type: 'number', placeholder: '8', hint: 'Cuántos existen de este tipo. Cuál le toca a quién lo asigna el Parque al aprobar; el visitante solo pide "un kiosco grande".' },
       { key: 'capacidad', label: 'Capacidad aproximada', type: 'number', placeholder: '40', hint: 'Cuántas personas caben. Si alguien pide para más, el formulario se lo advierte, pero lo deja enviar igual.' },
       { key: 'requierePago', label: 'Tiene costo de uso', type: 'checkbox', hint: 'Marcado, se le avisa del costo antes de enviar. No se le cobra nada ahí: el pago se coordina si la solicitud se aprueba.' },
+      { key: 'aporte', label: 'Aporte', type: 'text', placeholder: 'RD$2,000.00 por el día completo', hint: 'El monto tal como se publica. Va en texto y no en cifra porque varios dependen de la actividad ("entre RD$2,000 y RD$2,500 según la cantidad").' },
+      { key: 'gestion', label: 'Quién lo reserva', type: 'select', required: true, options: [
+        { value: 'parque', label: 'El Parque — se pide por el formulario' },
+        { value: 'tercero', label: 'Un operador externo — se pide a su contacto' },
+        { value: 'libre', label: 'Uso libre — no se reserva' },
+      ], hint: 'Si no lo reserva el Parque, el formulario no acepta la solicitud: muestra el contacto de abajo. Evita que alguien espere tres días por algo que el Parque no puede aprobar.' },
+      { key: 'contacto', label: 'A quién escribirle', type: 'textarea', placeholder: 'Reserve con Jeudy al (829) 468-0617, o en línea en yourcourts.com...', hint: 'Solo para los espacios que no reserva el Parque. Se muestra en el formulario al elegir este espacio.' },
       { key: 'activo', label: 'Disponible para solicitar', type: 'checkbox', hint: 'Desmarcado, deja de aparecer en el formulario sin tener que borrarlo ni perder su descripción.' },
       { key: 'orden', label: 'Posición en la lista', type: 'number', placeholder: '1', nextPosition: true },
     ],

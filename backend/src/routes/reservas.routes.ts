@@ -76,7 +76,21 @@ reservasRouter.get("/reservas-ocupadas", async (req, res, next) => {
           fecha: { gte: desde, ...(hasta ? { lte: hasta } : {}) },
         },
         orderBy: [{ fecha: "asc" }, { horaInicio: "asc" }],
-        select: { id: true, espacio: true, fecha: true, horaInicio: true, horaFin: true },
+        // Lo que se publica de una reserva aprobada, y nada mas. El espacio, el
+        // horario, el tipo de actividad y cuanta gente bastan para que alguien
+        // sepa si el sitio esta libre. Quedan fuera el nombre, la cedula, el
+        // correo, el telefono y la descripcion: esa ultima la escribe el
+        // ciudadano y suele llevar datos de su vida -el cumpleanos de una hija,
+        // un telefono-, y publicarla seria divulgar lo que nos conto en privado.
+        select: {
+          id: true,
+          espacio: true,
+          fecha: true,
+          horaInicio: true,
+          horaFin: true,
+          tipoActividad: true,
+          personas: true,
+        },
       }),
     );
   } catch (err) {

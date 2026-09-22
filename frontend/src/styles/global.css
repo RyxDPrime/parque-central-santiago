@@ -1505,3 +1505,56 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .reserva-montaje-titulo{margin:0 0 4px;font-size:14px;font-weight:600;color:var(--text-primary);max-width:none}
 .reserva-ayuda.es-pedido{display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;padding:10px 12px;background:var(--green-50);border-radius:var(--radius);color:var(--text-primary)}
 .reserva-ayuda.es-pedido i{font-size:16px;color:var(--green-600);flex-shrink:0;margin-top:1px}
+
+/* ── Calendario de ocupación ─────────────────────────────────────────────── */
+.calendario{border:1px solid var(--border-fuerte);border-radius:var(--radius-lg);background:#fff;overflow:hidden;margin-bottom:28px}
+.calendario-barra{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 20px;border-bottom:1px solid var(--border)}
+.calendario-titulo h3{margin:0;font-size:18px;font-weight:600;color:var(--green-800)}
+.calendario-titulo p{margin:3px 0 0;font-size:13px;color:var(--text-muted);max-width:none}
+.calendario-mandos{display:flex;gap:8px;flex-shrink:0}
+.calendario-mandos button{border:1px solid var(--border-fuerte);background:#fff;color:var(--text-secondary);border-radius:var(--radius);min-height:34px;padding:0 12px;font-family:var(--font);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .18s,color .18s,background .18s}
+.calendario-mandos button:hover{border-color:var(--green-400);color:var(--green-600);background:var(--green-50)}
+.calendario-mandos button:focus-visible{outline:2px solid var(--green-400);outline-offset:2px}
+
+.calendario-rejilla{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.calendario-cabecera{background:var(--gray-100,#F5F5F2);padding:9px 6px;text-align:center;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+/* Cada día es un botón: se llega con el teclado y se pulsa con Enter. */
+.calendario-dia{background:#fff;border:none;min-height:96px;padding:7px 8px 8px;display:flex;flex-direction:column;align-items:stretch;gap:3px;text-align:left;font-family:var(--font);cursor:pointer;transition:background .15s}
+.calendario-dia:hover{background:var(--green-50)}
+.calendario-dia:focus-visible{outline:2px solid var(--green-400);outline-offset:-2px;z-index:1}
+.calendario-dia.es-hueco{background:var(--gray-100,#F5F5F2);cursor:default}
+.calendario-dia.es-hueco:hover{background:var(--gray-100,#F5F5F2)}
+.calendario-dia.es-pasado{color:var(--text-muted)}
+.calendario-dia.es-pasado .calendario-numero{opacity:.55}
+.calendario-dia.esta-abierto{background:var(--green-50);box-shadow:inset 0 0 0 2px var(--green-400)}
+.calendario-dia.es-elegido{background:var(--green-100)}
+.calendario-numero{font-size:13px;font-weight:600;color:var(--text-primary);width:24px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.calendario-dia.es-hoy .calendario-numero{background:var(--green-600);color:#fff;border-radius:50%}
+.calendario-marca{display:flex;align-items:center;gap:2px;font-size:10.5px;line-height:1.35;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.calendario-marca i{font-size:12px;color:#C9A227;flex-shrink:0}
+.calendario-mas{font-size:10.5px;color:var(--text-muted);font-weight:600;padding-left:2px}
+
+.calendario-detalle{padding:16px 20px 18px;background:var(--green-50)}
+.calendario-detalle header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.calendario-detalle h4{margin:0;font-size:15px;font-weight:600;color:var(--green-800)}
+.calendario-detalle header button{border:1px solid var(--border-fuerte);background:#fff;color:var(--text-secondary);width:30px;height:30px;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+.calendario-detalle header button:hover{color:var(--text-primary)}
+.calendario-libre{display:flex;gap:9px;align-items:flex-start;margin:0;font-size:13.5px;line-height:1.6;color:var(--text-secondary);max-width:none}
+.calendario-libre i{font-size:18px;color:var(--green-600);flex-shrink:0;margin-top:1px}
+.calendario-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.calendario-lista li{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;padding:11px 14px;background:#fff;border:1px solid var(--green-100);border-radius:var(--radius)}
+.calendario-horario{font-size:13px;font-weight:600;color:var(--green-800);font-variant-numeric:tabular-nums;white-space:nowrap}
+.calendario-espacio{font-size:13.5px;font-weight:600;color:var(--text-primary)}
+.calendario-meta{grid-column:2;font-size:12.5px;color:var(--text-muted)}
+.calendario-aviso{margin:12px 0 0;font-size:12.5px;color:var(--text-muted);max-width:none}
+
+/* En teléfono la rejilla no cabe con texto: cada día se queda con su número y
+   un punto por reserva, y el detalle se lee al pulsarlo. */
+@media (max-width:720px){
+  .calendario-dia{min-height:60px;padding:6px 4px;align-items:center;gap:2px}
+  .calendario-marca{font-size:0;gap:0}
+  .calendario-marca i{font-size:10px}
+  .calendario-mas{font-size:9.5px}
+  .calendario-lista li{grid-template-columns:1fr;gap:2px}
+  .calendario-meta{grid-column:1}
+}

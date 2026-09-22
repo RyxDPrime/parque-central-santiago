@@ -246,12 +246,21 @@ export interface ReglaUso {
 }
 
 /** Lo ya apartado. Sin datos de quién reservó: eso es asunto del Parque. */
+/**
+ * Una reserva ya aprobada, tal como se publica.
+ *
+ * Sin nombre, cédula, correo, teléfono ni la descripción que escribió quien la
+ * pidió: eso se lo contó al Parque en privado. Lo que queda basta para saber si
+ * un espacio está libre.
+ */
 export interface ReservaOcupada {
   id: number;
   espacio: string;
   fecha: string;
   horaInicio: string;
   horaFin: string;
+  tipoActividad: string;
+  personas: number;
 }
 
 export interface SolicitudReservaInput {

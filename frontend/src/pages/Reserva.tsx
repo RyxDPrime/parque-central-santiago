@@ -5,6 +5,7 @@ import { useApiData } from '../hooks/useApiData'
 import { useTextos } from '../hooks/useTextos'
 import { api, type EspacioReservable } from '../api/client'
 import { ListaDeReglas, reglasDeLoElegido } from '../components/ListaDeReglas'
+import { CalendarioOcupacion } from '../components/CalendarioOcupacion'
 
 /**
  * Solicitud de reserva de espacios.
@@ -359,6 +360,16 @@ export function Reserva() {
               desaparece; la nuestra dice que falta, en que bloque, y lleva el
               foco ahi. Los campos conservan required para los lectores de
               pantalla, y el servidor valida todo otra vez de su lado. */}
+          {/* El calendario va antes del formulario porque responde la pregunta
+              con la que llega la gente —«¿está libre el sábado?»— antes de
+              pedirle que elija una fecha a ciegas. Pulsar un día la lleva al
+              campo de abajo. */}
+          <CalendarioOcupacion
+            ocupadas={ocupadas}
+            fechaElegida={fecha}
+            onElegirFecha={(f) => setFecha(f)}
+          />
+
           <form className="reserva-form" onSubmit={enviar} noValidate>
             <fieldset className="reserva-grupo">
               <legend>

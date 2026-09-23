@@ -1075,6 +1075,9 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
 .btn-outline.es-aprobar:hover{background:var(--green-600);border-color:var(--green-600);color:#fff}
 .btn-outline.es-rechazar{border-color:#E0B6AE;color:#A33B2A}
 .btn-outline.es-rechazar:hover{background:#A33B2A;border-color:#A33B2A;color:#fff}
+/* El verde de WhatsApp, no el del Parque: aqui el color dice a donde lleva. */
+.btn-outline.es-whatsapp{border-color:#25D366;color:#128C4A}
+.btn-outline.es-whatsapp:hover{background:#25D366;border-color:#25D366;color:#fff}
 
 @media (max-width:640px){
   .solicitud-datos{grid-template-columns:1fr 1fr}
@@ -1558,3 +1561,20 @@ footer{background:#0a1205;padding:48px 48px 24px;margin-top:auto}
   .calendario-lista li{grid-template-columns:1fr;gap:2px}
   .calendario-meta{grid-column:1}
 }
+
+/* ── Suscripcion al calendario (bandeja de solicitudes) ──────────────────── */
+/* Plegado: se usa una vez por persona y no debe robarle espacio a la bandeja. */
+.suscripcion{margin:0 0 18px;border:1px solid var(--border-fuerte);border-radius:var(--radius);background:#fff}
+.suscripcion summary{display:flex;align-items:center;gap:9px;padding:12px 16px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--green-800);list-style:none}
+.suscripcion summary::-webkit-details-marker{display:none}
+.suscripcion summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid var(--text-muted);border-bottom:2px solid var(--text-muted);transform:rotate(45deg);transition:transform .2s}
+.suscripcion[open] summary::after{transform:rotate(-135deg)}
+.suscripcion summary i{font-size:18px;color:var(--green-600)}
+.suscripcion summary:focus-visible{outline:2px solid var(--green-400);outline-offset:-2px;border-radius:var(--radius)}
+.suscripcion-cuerpo{padding:4px 16px 16px;border-top:1px solid var(--border)}
+.suscripcion-cuerpo p{font-size:13px;line-height:1.6;color:var(--text-secondary);max-width:none}
+.suscripcion-direccion{display:flex;gap:8px;margin:12px 0}
+.suscripcion-direccion input{flex:1;min-width:0;font-family:var(--font);font-size:12.5px;padding:8px 10px;border:1px solid var(--gray-400);border-radius:var(--radius);background:var(--gray-100,#F5F5F2);color:var(--text-primary)}
+.suscripcion-pasos{margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px;color:var(--text-secondary)}
+.suscripcion-pasos a{color:var(--green-600);font-weight:500}
+.suscripcion-nota{margin:12px 0 0;font-size:12px;color:var(--text-muted)}

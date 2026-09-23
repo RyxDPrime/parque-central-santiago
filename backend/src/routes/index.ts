@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { adminRouter } from "./admin.routes";
 import { contactoRouter } from "./contacto.routes";
+import { calendarioRouter } from "./calendario.routes";
 import { contentRouter } from "./content.routes";
 import { encabezadosRouter } from "./encabezados.routes";
 import { crudRoutes } from "./crud.routes";
@@ -21,6 +22,7 @@ apiRouter.get("/health", (_req, res) => {
 });
 
 apiRouter.use(contentRouter);
+apiRouter.use(calendarioRouter);
 apiRouter.use(contactoRouter);
 apiRouter.use(adminRouter);
 apiRouter.use(uploadsRouter);

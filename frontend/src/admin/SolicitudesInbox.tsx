@@ -7,6 +7,7 @@ import {
   type SolicitudReserva,
 } from './adminClient'
 import { useConfirmar } from './Confirmar'
+import { SuscripcionCalendario } from './SuscripcionCalendario'
 
 const fechaHora = new Intl.DateTimeFormat('es-DO', {
   day: 'numeric',
@@ -61,6 +62,38 @@ function resumen(s: SolicitudReserva): string {
  * Aprobar y rechazar SÍ le escriben a quien solicitó, con la plantilla que el
  * Parque tenga guardada en Plantillas de respuesta.
  */
+/**
+ * El telefono en el formato que WhatsApp entiende: solo digitos, con el codigo
+ * del pais delante. Aqui la gente lo escribe de seis maneras -"809-555-1234",
+ * "(809) 555 1234", "+1 809 555 1234"- y todas tienen que acabar igual.
+ */
+function paraWhatsApp(telefono: string): string | null {
+  const digitos = telefono.replace(/\D/g, '')
+  if (digitos.length === 10) return `1${digitos}`
+  if (digitos.length === 11 && digitos.startsWith('1')) return digitos
+  // Cualquier otra cosa se deja pasar tal cual si parece un numero
+  // internacional; si no, no se ofrece el boton en vez de abrir un chat con
+  // un numero inventado.
+  return digitos.length >= 11 ? digitos : null
+}
+
+/** El mensaje ya escrito, segun en que quedo la solicitud. */
+function mensajeWhatsApp(s: SolicitudReserva): string {
+  const saludo = `Hola ${s.nombre.trim().split(/\s+/)[0]}, le escribimos del Parque Central de Santiago.`
+  const loQuePidio = `Su solicitud: ${s.tipoActividad} en ${s.espacio}, el ${s.fecha} de ${s.horaInicio} a ${s.horaFin}.`
+
+  if (s.estado === 'aprobada') {
+    return `${saludo}\n\n${loQuePidio}\n\nFue APROBADA.${s.motivo ? ` ${s.motivo}` : ''}\n\nCualquier duda, por aqui mismo.`
+  }
+  if (s.estado === 'rechazada') {
+    return `${saludo}\n\n${loQuePidio}\n\nNo pudimos aprobarla.${s.motivo ? ` ${s.motivo}` : ''}\n\nSi quiere, buscamos otra fecha.`
+  }
+  if (s.estado === 'cancelada') {
+    return `${saludo}\n\n${loQuePidio}\n\nLa reserva quedo cancelada.${s.motivo ? ` ${s.motivo}` : ''}`
+  }
+  return `${saludo}\n\n${loQuePidio}\n\nLa estamos revisando y le confirmamos pronto.`
+}
+
 export function SolicitudesInbox() {
   const confirmar = useConfirmar()
   const [items, setItems] = useState<SolicitudReserva[]>([])
@@ -201,6 +234,8 @@ export function SolicitudesInbox() {
           </p>
         </div>
       </header>
+
+      <SuscripcionCalendario />
 
       {pendientes > 0 && (
         <p className="admin-warning">
@@ -511,6 +546,20 @@ export function SolicitudesInbox() {
                 <a className="btn-outline" href={`mailto:${abierta.email}`}>
                   <i className="ti ti-corner-up-left" /> Escribirle aparte
                 </a>
+                {/* WhatsApp abre con el mensaje ya escrito, pero NO lo manda:
+                    lo manda la persona, despues de leerlo. Es deliberado — un
+                    mensaje automatico al telefono de alguien se siente distinto
+                    de un correo, y quien atiende sabe cuando conviene. */}
+                {paraWhatsApp(abierta.telefono) && (
+                  <a
+                    className="btn-outline es-whatsapp"
+                    href={`https://wa.me/${paraWhatsApp(abierta.telefono)}?text=${encodeURIComponent(mensajeWhatsApp(abierta))}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="ti ti-brand-whatsapp" /> Avisar por WhatsApp
+                  </a>
+                )}
                 <button
                   type="button"
                   className="inbox-delete"

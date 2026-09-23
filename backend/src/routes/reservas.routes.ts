@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { Router } from "express";
 import { prisma } from "../config/db";
 import { requireAuth, requirePermiso } from "../middleware/auth";
@@ -148,7 +149,10 @@ reservasRouter.post("/solicitudes-reserva", contactoLimiter, async (req, res, ne
     }
 
     const guardada = await prisma.solicitudReserva.create({
-      data: { ...datos, aceptoCondiciones: acepta },
+      // La clave se genera al crear y no al aprobar: asi la aprobacion no
+      // depende de que un paso mas salga bien, y el enlace ya existe cuando
+      // hace falta.
+      data: { ...datos, aceptoCondiciones: acepta, token: randomBytes(24).toString("base64url") },
     });
 
     try {

@@ -190,6 +190,23 @@ Hay una casilla para **decidir sin avisar**, por si ya se habló por teléfono.
 > **Si el correo no sale, la bandeja lo dice**
 > Aparece un aviso en la solicitud. No hay que suponer que la persona se enteró: si el aviso está, hay que escribirle a mano.
 
+#### Avisar por WhatsApp
+
+En el detalle de cada solicitud hay un botón **Avisar por WhatsApp**. Abre un chat con esa persona y **el mensaje ya escrito** según en qué quedó la solicitud: aprobada, rechazada, cancelada o en revisión, con el espacio, la fecha, el horario y el mensaje que usted puso al decidir.
+
+**El mensaje no sale solo.** Se abre escrito, y lo manda usted después de leerlo —y de cambiarlo, si hace falta—. Es a propósito: un mensaje automático al teléfono de alguien se siente distinto de un correo, y quien atiende sabe cuándo conviene.
+
+No cuesta nada ni requiere cuenta de empresa: usa el WhatsApp que tenga abierto en ese equipo. Si el teléfono de la solicitud no tiene forma de número válido, el botón no aparece.
+
+#### Guardar la actividad en el calendario
+
+**Quien pidió la reserva** recibe, en el correo de aprobación, un enlace para meterla en su calendario —Google, Outlook o el del teléfono— con un toque. Solo funciona si la solicitud está aprobada: mientras está pendiente no hay nada que guardar.
+
+**El equipo del Parque** puede ver todas las reservas aprobadas en su propio calendario. Arriba de la bandeja está **Ver las reservas aprobadas en tu propio calendario**: se abre, se copia la dirección y se suscribe una vez. Cada reserva que se apruebe aparece sola, y desaparece si se cancela.
+
+> **Esa dirección no lleva datos personales**
+> Solo el espacio, el horario, el tipo de actividad y cuántas personas. Una dirección de suscripción se copia y se comparte sin querer; si llevara nombres y teléfonos, compartirla sería entregar los datos de todo el que reservó. Quién pidió qué se sigue viendo aquí, en el panel.
+
 ### 7.2 Plantillas de respuesta
 
 Los correos que salen solos al decidir. Se escriben una vez y el sistema los manda muchas.
@@ -198,6 +215,7 @@ El texto lleva **huecos** que el sistema rellena con los datos de cada caso: `{{
 
 - Si un hueco queda vacío, **se borra con su línea**. Nadie recibe un correo que diga "Motivo:" y nada detrás.
 - Cada plantilla muestra solo los huecos que le sirven.
+- `{{enlaceCalendario}}` trae un bloque entero —el título y el enlace para guardar la actividad en el calendario—. Póngalo **en una línea sola**. Ya viene en la plantilla de aprobación; tiene sentido solo ahí.
 
 ### 7.3 Tipos de actividad
 
@@ -209,7 +227,7 @@ El texto lleva **huecos** que el sistema rellena con los datos de cada caso: `{{
 > **Esta lista es el filtro, y funciona de verdad**
 > Lo que no esté aquí no se puede solicitar, ni siquiera saltándose el formulario. Cambiarla cambia inmediatamente lo que el sitio acepta.
 
-**Los 13 tipos cargados hoy son un borrador nuestro.** Confirmarlos es una de las dos cosas que faltan para publicar la página de Reserva.
+Los tipos cargados salen del documento del Parque *Solicitud y condiciones para el uso de espacios*: uno por trámite —kiosco, evento general, bazar, visita escolar, actividad deportiva, fotos y dron, 30 horas de servicio— más la venta individual, que se publica como no permitida.
 
 ### 7.4 Espacios reservables
 

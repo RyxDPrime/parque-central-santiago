@@ -75,4 +75,8 @@ export const env = {
   // `scripts/crear-admin.mjs`, para crear la primera cuenta.
   jwtSecret: required("JWT_SECRET"),
   uploadsDir: process.env.UPLOADS_DIR ?? "uploads",
+  // Donde vive el sitio de cara al publico. Se usa para armar enlaces que van
+  // dentro de un correo, donde una ruta relativa no lleva a ningun lado.
+  // Por omision cae al origen autorizado, que en la practica es el mismo.
+  sitioUrl: (process.env.SITE_URL ?? normalizarOrigen(process.env.CORS_ORIGIN) ?? "https://www.parquecentralsantiagord.com").replace(/\/+$/, ""),
 };

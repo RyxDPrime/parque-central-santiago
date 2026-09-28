@@ -32,6 +32,8 @@ Personas: {{personas}}
 
 {{motivo}}
 
+{{enlaceCalendario}}
+
 ANTES DE VENIR
 Preséntate en la administración del parque el día de tu actividad. Si algo
 cambia —la fecha, la hora o la cantidad de personas— avísanos con tiempo para

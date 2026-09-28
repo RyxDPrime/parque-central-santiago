@@ -8,7 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "tsx --test test/reservas.test.ts test/aportes.test.ts test/orden.test.ts test/uploads.test.mjs",
+    "test": "tsx --test test/reservas.test.ts test/aportes.test.ts test/orden.test.ts test/calendario.test.ts test/uploads.test.mjs",
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "prisma migrate deploy && node dist/server.js",

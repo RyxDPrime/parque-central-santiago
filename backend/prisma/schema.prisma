@@ -410,6 +410,12 @@ model SolicitudReserva {
   // un desacuerdo, la fecha de la solicitud es la prueba de que estaban a la
   // vista cuando la envio.
   aceptoCondiciones Boolean @default(false)
+  // Clave larga y aleatoria de esta solicitud. Sirve para dos cosas que no
+  // pueden ir por id: el enlace del calendario que se le manda al aprobarla, y
+  // cualquier acceso futuro que se le de a quien la pidio sin obligarle a
+  // tener cuenta. Con el id bastaria con contar de uno en uno para leer las
+  // reservas de todo el mundo.
+  token             String?  @unique
   // pendiente | aprobada | rechazada | cancelada
   estado         String   @default("pendiente")
   motivo         String?

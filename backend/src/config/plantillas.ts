@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { env } from "./env";
 import { enviarCorreo } from "./correo";
 
 /**
@@ -48,6 +49,10 @@ const HUECOS_RESERVA: Hueco[] = [
   { clave: "cedula", descripcion: "Cedula" },
   { clave: "telefono", descripcion: "Telefono" },
   { clave: "motivo", descripcion: "Lo que se escribio al aprobar o rechazar" },
+  {
+    clave: "enlaceCalendario",
+    descripcion: "Bloque con el enlace para guardar la actividad en su calendario. Ponlo en una linea sola; si no hay enlace, la linea desaparece",
+  },
 ];
 
 const HUECOS_APORTE: Hueco[] = [
@@ -98,6 +103,7 @@ export interface DatosSolicitud {
   requerimientos: string;
   descripcion: string;
   motivo?: string | null;
+  token?: string | null;
 }
 
 export function valoresSolicitud(s: DatosSolicitud): Record<string, string> {
@@ -116,6 +122,13 @@ export function valoresSolicitud(s: DatosSolicitud): Record<string, string> {
     cedula: s.cedula,
     telefono: s.telefono,
     motivo: s.motivo ?? "",
+    // Vacio cuando la solicitud no tiene clave -las de antes de que existiera-
+    // o cuando se esta armando un correo que no es el de aprobacion. La
+    // plantilla que lo use quedara sin esa linea, no con un hueco a medio
+    // rellenar.
+    enlaceCalendario: s.token
+      ? `GUARDALA EN TU CALENDARIO\nAbre este enlace y se agrega sola a Google Calendar, Outlook o el calendario del telefono:\n${env.sitioUrl}/api/calendario/solicitud/${s.token}.ics`
+      : "",
   };
 }
 

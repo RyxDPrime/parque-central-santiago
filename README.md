@@ -2,88 +2,143 @@
 
 Sitio web institucional del Parque Central de Santiago, desarrollado por **Ureña Limited Partners (ULP)**.
 
-El sitio público, un panel administrativo desde el que el Parque edita casi todo lo que se ve, y las gestiones que puede recibir en línea: solicitudes de reserva de espacios, intenciones de aporte, contacto y sugerencias.
+Tres piezas que se despliegan juntas: el sitio público, un panel administrativo desde el que el Parque edita casi todo lo que se ve, y las gestiones que recibe en línea — solicitudes de reserva de espacios, intenciones de aporte, contacto y sugerencias.
 
-## Estructura del proyecto
+En línea en **https://www.parquecentralsantiagord.com** · panel en `/admin`.
+
+## Estructura
 
 ```
-Parque Central/
-├── backend/     API (Node.js + Express + TypeScript + Prisma + PostgreSQL)
-└── frontend/    Sitio web (React + Vite + TypeScript)
+parque-central-santiago/
+├── backend/     API · Node 22 + Express + TypeScript + Prisma 7 + PostgreSQL
+│   ├── prisma/      esquema, migraciones y semillas
+│   ├── scripts/     respaldo, restauración y mantenimiento
+│   ├── src/         la API
+│   └── test/        pruebas de las reglas del negocio
+└── frontend/    Sitio público y panel · React 19 + Vite + TypeScript
 ```
+
+**Casi todo el contenido vive en la base, no en el código.** Textos, fotos, cifras, miembros de la Junta, espacios reservables, condiciones de uso y plantillas de correo se editan desde el panel y se ven en el sitio al instante. Cambiar lo que dice una página no debería requerir un despliegue.
+
+## Requisitos
+
+- **Node 22** — la versión la fija `.node-version` en cada carpeta, y es la misma que usan Railway y la integración continua.
+- **PostgreSQL** — local, o la de Railway.
 
 ## Backend
 
-Expone el contenido institucional (junta directiva, personal técnico, instalaciones, programas, actividades, galería, mapa, blog, aliados, transparencia), recibe lo que llega por los cuatro formularios y sirve el panel: cuentas con rol, edición de contenido, bandejas y plantillas de correo.
-
-Todo lo que llega se guarda en la base aunque el correo falle, y la bandeja del panel indica a quién no se pudo avisar en vez de darlo por hecho.
-
 ```bash
 cd backend
-npm install
-cp .env.example .env   # completar con los valores reales
+npm install             # corre prisma generate al terminar
+cp .env.example .env    # completar con los valores reales
 npm run prisma:migrate
 npm run prisma:seed
 npm run dev             # http://localhost:4000
 ```
 
-Variables de entorno relevantes (ver `.env.example`):
+La configuración de Prisma está en `backend/prisma.config.ts` (obligatorio desde Prisma 7): de ahí salen la conexión, las migraciones y la semilla. El cliente se conecta a través del adaptador de Postgres, creado en `src/config/db.ts` para el servidor y en `scripts/lib/prisma.mjs` para los scripts.
 
-- `DATABASE_URL` — conexión a PostgreSQL
-- `BREVO_API_KEY` / `MAIL_FROM` / `CONTACT_TO_EMAIL` — correo saliente (formularios, acuses y respuestas). Se manda por la API HTTPS de Brevo y no por SMTP: el servidor tiene bloqueada esa salida
-- `UPLOADS_DIR` — carpeta de las fotos y documentos subidos desde el panel
-- `CORS_ORIGIN` — origen permitido en producción (en desarrollo se acepta cualquier `localhost`)
+### Variables de entorno
+
+Las completas, comentadas, en `backend/.env.example`.
+
+| Variable | Para qué |
+|---|---|
+| `DATABASE_URL` | Conexión a PostgreSQL |
+| `JWT_SECRET` | Firma la sesión del panel. Cualquier cadena larga y aleatoria |
+| `CORS_ORIGIN` | El dominio del sitio. En desarrollo, vacía acepta cualquier `localhost` |
+| `BREVO_API_KEY` | Clave del servicio de correo. Se envía por la API HTTPS de Brevo, no por SMTP: el servidor tiene bloqueada esa salida |
+| `MAIL_FROM` | Remitente. Tiene que ser una dirección de un dominio verificado en Brevo |
+| `CONTACT_TO_EMAIL` | A dónde llegan los avisos de los formularios. **Admite varias, separadas por coma** |
+| `SITE_URL` | Dirección pública del sitio, para los enlaces que van dentro de un correo |
+| `UPLOADS_DIR` | Carpeta de lo que se sube desde el panel. En Railway, un volumen montado |
+
+Todo lo que llega por los formularios **se guarda aunque el correo falle**, y la bandeja del panel indica a quién no se pudo avisar en vez de darlo por hecho.
+
+### Pruebas
+
+```bash
+npm test
+```
+
+Cubren las reglas que no pueden fallar: el solape de reservas y el cupo por espacio, el umbral de declaración de aportes, el orden de las listas, la limpieza de archivos y el formato de los calendarios `.ics`.
 
 ## Frontend
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env   # VITE_API_URL apuntando al backend
-npm run dev             # http://localhost:5173 (o el siguiente puerto libre)
+cp .env.example .env    # VITE_API_URL apuntando al backend
+npm run dev             # http://localhost:5173
 ```
 
-Páginas públicas (18): Inicio · Sobre el Parque · Misión, visión y valores · Junta Directiva · Personal técnico · Reglamento · Instalaciones y servicios · Programas y proyectos · Galería · Mapa · Actividades · Reserva de espacios · Donaciones · Apóyanos · Transparencia · Blog · Contacto · Sugerencias.
+| Variable | Para qué |
+|---|---|
+| `VITE_API_URL` | La URL pública del backend, con `/api` al final |
+| `VITE_SITE_URL` | La dirección definitiva del sitio. Mientras la página se sirva desde otra, pide a los buscadores que no la indexen |
+| `SITE_URL` | La misma dirección, para el `sitemap.xml` que se genera al compilar |
+
+> **Vite incrusta estas variables al compilar, no al arrancar.** Si se cambian en Railway, hay que volver a desplegar el frontend para que surtan efecto.
+
+**Páginas públicas (19):** Inicio · Historia · Misión, visión y valores · Reglamento · Condiciones de uso · Junta Directiva · Personal técnico · Instalaciones · Programas y servicios · Galería · Mapa · Actividades · Reserva de espacios · Transparencia · Blog · Apóyanos · Donaciones · Contacto · Sugerencias. El `sitemap.xml` se genera solo, leyendo las rutas de `App.tsx`.
 
 El panel vive en `/admin`, en el mismo servicio.
 
+## Cómo se trabaja
+
+- Todo el trabajo va a la rama **`Check`**; de ahí, un pull request a `main`.
+- `main` está protegida: no entra nada que no pase la integración continua (`.github/workflows/ci.yml`), que compila, revisa y prueba las dos mitades.
+- **Cada merge a `main` despliega solo** en Railway. Las migraciones de la base corren al arrancar el backend.
+- Antes de empezar una tanda de cambios, poner `Check` al día con `main`.
+
 ## Despliegue (Railway)
 
-Se despliegan **tres servicios** dentro de un mismo proyecto de Railway, dos apuntando a este repo (con distinto Root Directory) y uno de base de datos.
+Tres servicios dentro de un mismo proyecto: dos apuntando a este repositorio, con distinto Root Directory, y la base de datos.
 
-Los dos servicios de código están conectados al repositorio de GitHub, rama `main`: **cada push despliega solo**. Si alguna vez aparecen desconectados (`repo: null` en `railway status --json`), se vuelven a enlazar con `railway service source connect --repo <owner>/<repo> --branch main --service <servicio>`; mientras estén sueltos, los push no llegan a producción y el sitio se queda corriendo lo último que se subió a mano.
+Los dos servicios de código están conectados a la rama `main`. Si alguna vez aparecen desconectados (`repo: null` en `railway status --json`), se vuelven a enlazar con `railway service source connect --repo <owner>/<repo> --branch main --service <servicio>`; mientras estén sueltos, los merge no llegan a producción.
 
 ### 1. PostgreSQL
-Agregar el plugin de Railway (New → Database → PostgreSQL). Railway genera su propia `DATABASE_URL`.
+New → Database → PostgreSQL. Railway genera su propia `DATABASE_URL`.
 
 ### 2. Backend
 - **Root Directory**: `backend`
-- Build y start ya están definidos en `backend/package.json` / `backend/railway.json` (Railway los detecta solo): build corre `tsc`, start corre `prisma migrate deploy` y luego levanta el servidor. No hace falta configurar nada extra a mano.
-- Variables de entorno a copiar de `backend/.env.example`, con estos valores reales:
-  - `DATABASE_URL` → referenciar la del servicio de Postgres (Railway permite enlazarla con `${{Postgres.DATABASE_URL}}`)
-  - `BREVO_API_KEY`, `MAIL_FROM`, `CONTACT_TO_EMAIL` → la clave real de Brevo y el correo del Parque
-  - `CORS_ORIGIN` → la URL pública que Railway le asigne al servicio de frontend
-- Healthcheck configurado en `/api/health`.
-- **Volumen para los archivos subidos**: el servicio necesita un volumen de Railway montado en la ruta a la que apunte `UPLOADS_DIR` (por omisión `backend/uploads`). Sin él, las fotos y los PDF que cargue el Parque desde el panel desaparecen en el siguiente despliegue, y las rutas guardadas en la base quedan apuntando a archivos que ya no existen (recuperarlo es volver a subirlos con `scripts/restaurar-uploads.mjs`).
+- Build y start ya están en `package.json` y `railway.json`: build corre `tsc`; start corre `prisma migrate deploy` y levanta el servidor.
+- `DATABASE_URL` → referenciar la del servicio de Postgres: `${{Postgres.DATABASE_URL}}`.
+- `CORS_ORIGIN` y `SITE_URL` → `https://www.parquecentralsantiagord.com`.
+- Healthcheck en `/api/health`.
+- **Volumen para los archivos subidos**, montado en la ruta de `UPLOADS_DIR`. Sin él, las fotos y los PDF que cargue el Parque desaparecen en el siguiente despliegue.
 
 ### 3. Frontend
 - **Root Directory**: `frontend`
-- Build: `npm run build` (ya lo detecta Railway). Start: `npm run start` (sirve `dist/` con `serve`, con fallback de rutas para el SPA).
-- Variable de entorno: `VITE_API_URL` → la URL pública del backend.
-  - **Importante**: Vite incrusta esta variable *durante el build*, no en tiempo de ejecución. Hay que configurarla en Railway **antes** del primer deploy del frontend (o forzar un redeploy después de cambiarla), de lo contrario el sitio queda apuntando al backend equivocado.
+- Build `npm run build`; start `npm run start`, que sirve `dist/` con fallback de rutas para el SPA.
+- `VITE_API_URL` → la URL pública del backend, configurada **antes** del primer despliegue.
 
-### Orden recomendado
-Desplegar primero Postgres, luego backend (para tener su URL pública), y al final el frontend usando esa URL en `VITE_API_URL`.
+**Orden:** Postgres, luego el backend —para tener su URL—, y al final el frontend.
+
+## Calendarios
+
+El backend sirve las reservas en formato iCalendar (`.ics`), que entienden Google Calendar, Outlook y el iPhone, sin ninguna API externa:
+
+- `/api/calendario/reservas.ics` — todas las aprobadas, para que el equipo se suscriba. Sin datos personales: una dirección de suscripción se comparte sin querer.
+- `/api/calendario/solicitud/<clave>.ics` — una sola reserva, la que se le envía a quien la pidió al aprobarla. Va por una clave aleatoria y no por el id, y solo responde si está aprobada.
 
 ## Mantenimiento
 
-- `node scripts/respaldo.mjs [carpeta]` — vuelca cada tabla a JSON y descarga los archivos subidos.
-- `node scripts/restaurar.mjs <carpeta>` y `node scripts/restaurar-uploads.mjs <carpeta>` — el camino de vuelta, incluido el cambio de servidor (el volumen no viaja con el proyecto).
-- `node scripts/limpiar-uploads.mjs` — lista los archivos del volumen que ya no referencia ninguna fila; con `--borrar` los elimina.
+Desde `backend/`, con `DATABASE_URL` apuntando a la base que corresponda:
 
-## Estado
+| Script | Qué hace |
+|---|---|
+| `node scripts/respaldo.mjs [carpeta]` | Vuelca cada tabla a JSON y descarga los archivos subidos |
+| `node scripts/restaurar.mjs <carpeta>` | Devuelve las tablas a la base |
+| `node scripts/restaurar-uploads.mjs <carpeta>` | Devuelve los archivos al volumen. El volumen no viaja con el proyecto: al cambiar de servidor hace falta |
+| `node scripts/limpiar-uploads.mjs` | Lista los archivos del volumen que ya no usa ninguna fila; con `--borrar`, los elimina |
+| `node scripts/crear-admin.mjs` | Crea la primera cuenta del panel |
 
-Qué hay construido, qué falta y de quién depende cada pendiente: [ESTADO-PROYECTO.md](ESTADO-PROYECTO.md). El detalle de cada página está en *El sitio web, sección por sección*, y el uso del panel en *Guía del panel administrativo*.
+Los respaldos no se guardan en el repositorio.
+
+## Documentación
+
+Los documentos del proyecto —estado, guía del panel, sección por sección, acta de entrega— **no están en este repositorio**: el repositorio es público y esos documentos son del Parque y de ULP. Los mantiene el equipo de ULP. El `.gitignore` deja fuera cualquier documento de la raíz, incluidos los que se escriban después.
 
 ---
 Equipo ULP: Junior Ureña, José Luis Alonso y Yuji Yamaki.

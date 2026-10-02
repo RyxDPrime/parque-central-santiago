@@ -14,7 +14,7 @@ const DEFAULT_IMAGE = '/images/galeria/vista-aerea-parque.jpg'
  * los buscadores que no indexen, y el día que el dominio apunte aquí la
  * indexación se activa sola, sin tocar el código.
  */
-const SITIO = (import.meta.env.VITE_SITE_URL ?? 'https://parquecentralsantiago.com').replace(
+const SITIO = (import.meta.env.VITE_SITE_URL ?? 'https://www.parquecentralsantiagord.com').replace(
   /\/$/,
   '',
 )

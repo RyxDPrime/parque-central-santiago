@@ -10,7 +10,7 @@ const RAIZ = path.resolve(import.meta.dirname, '..')
 
 // Dónde vivirá el sitio de cara al público. Se puede cambiar sin tocar el
 // código, con la variable SITE_URL.
-const SITIO = (process.env.SITE_URL ?? 'https://parquecentralsantiago.com').replace(/\/$/, '')
+const SITIO = (process.env.SITE_URL ?? 'https://www.parquecentralsantiagord.com').replace(/\/$/, '')
 
 /** Cuánto pesa cada página dentro del sitio, para los buscadores. */
 function prioridad(ruta) {

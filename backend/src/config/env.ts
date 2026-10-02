@@ -58,7 +58,7 @@ export const env = {
   brevoApiKey: process.env.BREVO_API_KEY ?? "",
   // Quien figura como remitente. Mientras no haya un dominio propio verificado,
   // el proveedor reescribe la direccion; el nombre si se respeta.
-  mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <no-reply@parquecentralsantiago.com>",
+  mailFrom: process.env.MAIL_FROM ?? "Parque Central de Santiago <info@parquecentralsantiagord.com>",
   // A donde llegan los formularios. Admite varias direcciones separadas por
   // coma: el Parque quiere que los avisos entren tanto al correo institucional
   // como a la cuenta que la administracion ya revisa a diario, para que el

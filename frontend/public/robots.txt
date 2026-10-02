@@ -4,4 +4,4 @@ Allow: /
 # El panel no tiene nada que indexar y pide contraseña.
 Disallow: /admin
 
-Sitemap: https://parquecentralsantiago.com/sitemap.xml
+Sitemap: https://www.parquecentralsantiagord.com/sitemap.xml
